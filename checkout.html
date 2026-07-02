@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    color: #044147;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── Celestial background ── */
+  .celestial-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(4,65,71,0.15);
+    animation: twinkle var(--dur, 3s) ease-in-out infinite alternate;
+  }
+
+  .star.small { width: 2px; height: 2px; }
+  .star.med { width: 3px; height: 3px; background: rgba(4,65,71,0.2); }
+  .star.large { width: 4px; height: 4px; background: rgba(4,65,71,0.3); }
+
+  @keyframes twinkle {
+    0% { opacity: 0.2; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .celestial-icon {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.08;
+    color: #044147;
+    animation: floatCelestial 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatCelestial {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(8deg); }
+    100% { transform: translateY(4px) rotate(-4deg); }
+  }
+
+  .moon-glow {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(4,65,71,0.06) 0%, transparent 70%);
+    top: 60px;
+    right: 8%;
+    animation: moonPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes moonPulse {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.15); }
+  }
+
+  .constellation {
+    position: absolute;
+    opacity: 0.08;
+  }
+
+  .constellation line {
+    stroke: rgba(4,65,71,0.15);
+    stroke-width: 1;
+  }
+
+  .constellation circle {
+    fill: rgba(4,65,71,0.2);
+  }
+
+  /* ── Main content ── */
+  .content-wrap {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    padding: 40px 0 20px;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #044147;
+    margin-bottom: 8px;
+  }
+
+  .header .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: rgba(4,65,71,0.45);
+  }
+
+  /* Steps indicator */
+  .steps-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 28px 0 36px;
+    align-items: center;
+  }
+
+  .step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(4,65,71,0.12);
+    border: 1px solid rgba(4,65,71,0.2);
+    transition: all 0.4s ease;
+  }
+
+  .step-dot.active {
+    background: #044147;
+    border-color: #044147;
+    box-shadow: 0 0 10px rgba(4,65,71,0.25);
+  }
+
+  .step-dot.done {
+    background: rgba(4,65,71,0.4);
+    border-color: rgba(4,65,71,0.4);
+  }
+
+  .step-line {
+    width: 32px;
+    height: 1px;
+    background: rgba(4,65,71,0.15);
+  }
+
+  .step-card {
+    padding: 0 0 20px;
+  }
+
+  .step {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .step.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 6px;
+    color: #044147;
+  }
+
+  .step-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-style: italic;
+    text-align: center;
+    color: rgba(4,65,71,0.45);
+    margin-bottom: 28px;
+  }
+
+  /* Subscription card */
+  .sub-card {
+    background: rgba(4,65,71,0.03);
+    border: 2px solid rgba(4,65,71,0.1);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .sub-card-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(4,65,71,0.08);
+    margin: 0 auto 16px;
+    display: block;
+  }
+
+  .sub-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #044147;
+    margin-bottom: 6px;
+  }
+
+  .sub-card-price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #044147;
+    margin-bottom: 10px;
+  }
+
+  .sub-card-price span {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(4,65,71,0.5);
+  }
+
+  .sub-card-desc {
+    font-size: 13px;
+    color: rgba(4,65,71,0.5);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .sub-card-features {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .sub-feature {
+    font-size: 11px;
+    padding: 4px 12px;
+    background: rgba(4,65,71,0.06);
+    border-radius: 20px;
+    color: #044147;
+  }
+
+  /* Add-on toggle */
+  .addon-section {
+    margin-bottom: 24px;
+  }
+
+  .addon-toggle {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 2px dashed rgba(4,65,71,0.15);
+    border-radius: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .addon-toggle:hover {
+    border-color: rgba(4,65,71,0.3);
+  }
+
+  .addon-toggle.active {
+    border-style: solid;
+    border-color: #044147;
+    background: rgba(4,65,71,0.02);
+  }
+
+  .addon-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(4,65,71,0.08);
+    flex-shrink: 0;
+  }
+
+  .addon-info {
+    flex: 1;
+    text-align: left;
+  }
+
+  .addon-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #044147;
+    margin-bottom: 4px;
+  }
+
+  .addon-sublabel {
+    font-size: 12px;
+    color: rgba(4,65,71,0.45);
+  }
+
+  .addon-price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #044147;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch {
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background: rgba(4,65,71,0.12);
+    position: relative;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(4,65,71,0.3);
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .addon-toggle.active .toggle-switch {
+    background: #044147;
+  }
+
+  .addon-toggle.active .toggle-switch::after {
+    transform: translateX(20px);
+    background: #ffffff;
+  }
+
+  /* Product description */
+  .product-desc {
+    padding: 18px;
+    background: rgba(4,65,71,0.02);
+    border: 1px solid rgba(4,65,71,0.08);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .product-desc-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(4,65,71,0.7);
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+
+  .product-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .product-spec {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 4px 12px;
+    background: rgba(4,65,71,0.05);
+    border: 1px solid rgba(4,65,71,0.08);
+    border-radius: 20px;
+    color: #044147;
+  }
+
+  /* Collection cards */
+  .addon-details {
+    display: none;
+    margin-top: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .addon-details.visible {
+    display: block;
+  }
+
+  .addon-details-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #044147;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .collection-card {
+    background: #ffffff;
+    border: 2px solid rgba(4,65,71,0.1);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .collection-card:hover {
+    border-color: rgba(4,65,71,0.25);
+    transform: translateY(-2px);
+  }
+
+  .collection-card.selected {
+    border-color: #044147;
+    background: rgba(4,65,71,0.03);
+    box-shadow: 0 4px 16px rgba(4,65,71,0.08);
+  }
+
+  .collection-card .card-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 2px solid rgba(4,65,71,0.08);
+    transition: border-color 0.3s ease;
+  }
+
+  .collection-card.selected .card-img {
+    border-color: #044147;
+  }
+
+  .collection-card .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #044147;
+    line-height: 1.3;
+  }
+
+  .collection-card .card-check {
+    display: none;
+    margin-top: 6px;
+    font-size: 16px;
+    color: #044147;
+  }
+
+  .collection-card.selected .card-check {
+    display: block;
+  }
+
+  /* Customisation */
+  .custom-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid rgba(4,65,71,0.12);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .custom-toggle:hover { border-color: rgba(4,65,71,0.25); }
+
+  .custom-toggle.active {
+    border-color: #044147;
+    background: rgba(4,65,71,0.03);
+  }
+
+  .custom-toggle-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #044147;
+  }
+
+  .custom-toggle-sub {
+    font-size: 11px;
+    color: rgba(4,65,71,0.45);
+    margin-top: 3px;
+  }
+
+  .custom-input-area {
+    display: none;
+    margin-bottom: 20px;
+  }
+
+  .custom-input-area.visible { display: block; }
+
+  /* Price total bar */
+  .price-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    background: rgba(4,65,71,0.04);
+    border-radius: 12px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  .price-total-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #044147;
+  }
+
+  .price-total-amount {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #044147;
+  }
+
+  .price-breakdown {
+    font-size: 11px;
+    color: rgba(4,65,71,0.45);
+    text-align: center;
+    margin-bottom: 20px;
+    padding-right: 4px;
+  }
+
+  /* Form inputs */
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(4,65,71,0.5);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .form-input, .form-textarea {
+    width: 100%;
+    padding: 11px 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #044147;
+    background: #ffffff;
+    border: 1px solid rgba(4,65,71,0.15);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .form-input:focus, .form-textarea:focus { border-color: #044147; }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(4,65,71,0.25); }
+
+  .form-textarea { min-height: 70px; resize: vertical; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Gift */
+  .gift-recipient {
+    display: none;
+    margin-top: 14px;
+    padding: 18px;
+    background: rgba(4,65,71,0.02);
+    border: 1px solid rgba(4,65,71,0.1);
+    border-radius: 12px;
+  }
+
+  .gift-recipient.visible { display: block; }
+
+  .gift-recipient-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #044147;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .gift-note-info {
+    font-size: 12px;
+    color: rgba(4,65,71,0.45);
+    text-align: center;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+
+  .shipping-note {
+    font-size: 12px;
+    color: rgba(4,65,71,0.4);
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* Navigation */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 28px;
+  }
+
+  .btn-back {
+    font-size: 13px;
+    font-weight: 500;
+    color: #044147;
+    background: none;
+    border: 1px solid rgba(4,65,71,0.2);
+    border-radius: 24px;
+    padding: 11px 26px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-back:hover { border-color: rgba(4,65,71,0.4); }
+
+  .btn-next, .btn-checkout {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #044147;
+    border: none;
+    border-radius: 24px;
+    padding: 11px 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-next:hover, .btn-checkout:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(4,65,71,0.25);
+  }
+
+  .btn-next:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-checkout {
+    width: 100%;
+    font-size: 15px;
+    padding: 15px 32px;
+    margin-top: 24px;
+  }
+
+  /* Summary */
+  .summary-card {
+    background: rgba(4,65,71,0.02);
+    border: 1px solid rgba(4,65,71,0.1);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(4,65,71,0.06);
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .summary-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(4,65,71,0.4);
+  }
+
+  .summary-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #044147;
+    text-align: right;
+  }
+
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: #044147;
+    color: #ffffff;
+    border-radius: 12px;
+    margin-bottom: 18px;
+  }
+
+  .summary-total-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .summary-total-amount {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .summary-note {
+    font-size: 11px;
+    color: rgba(4,65,71,0.4);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(4,65,71,0.3);
+    padding: 20px 0 40px;
+    letter-spacing: 1px;
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .content-wrap { padding: 14px; }
+    .header h1 { font-size: 26px; }
+    .step-card { padding: 24px 18px; }
+    .collection-grid { grid-template-columns: 1fr; gap: 10px; }
+    .collection-card { display: flex; align-items: center; gap: 12px; text-align: left; padding: 12px; }
+    .collection-card .card-img { width: 70px; height: 70px; margin-bottom: 0; flex-shrink: 0; }
+    .form-row { grid-template-columns: 1fr; }
+    .addon-toggle { flex-wrap: wrap; gap: 10px; }
+    .addon-img { width: 48px; height: 48px; }
+    .moon-glow { width: 60px; height: 60px; top: 30px; right: 5%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Celestial background -->
+<div class="celestial-bg" id="celestialBg">
+  <div class="moon-glow"></div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="header">
+    <h1>Your Sanctuary Awaits</h1>
+    <div class="subtitle">Complete your ritual experience</div>
+  </div>
+
+  <div class="steps-bar" id="stepsBar">
+    <div class="step-dot active" data-step="0"></div>
+    <div class="step-line"></div>
+    <div class="step-dot" data-step="1"></div>
+    <div class="step-line"></div>
+    <div class="step-dot" data-step="2"></div>
+  </div>
+
+  <!-- STEP 1: Subscription + Add-on -->
+  <div class="step active" id="step0">
+    <div class="step-card">
+    <div class="step-title">Your Ritual Plan</div>
+    <div class="step-desc" id="step0Desc"></div>
+
+    <div class="sub-card">
+      <img class="sub-card-img" id="subCardImg" src="https://static.wixstatic.com/media/00228e_52d89c9ee5954a2d852ed2737e4b21fe~mv2.png" alt="Home Wellness Sanctuary Club"/>
+      <div class="sub-card-title">Home Wellness Sanctuary Club</div>
+      <div class="sub-card-price">$29 <span>/month</span></div>
+      <div class="sub-card-desc">A guided 30-day ritual designed around your needs, with daily lessons, meditations, and a community gathering.</div>
+      <div class="sub-card-features">
+        <span class="sub-feature" id="ritualTag"></span>
+        <span class="sub-feature">30-day guided ritual</span>
+        <span class="sub-feature">Daily lessons</span>
+        <span class="sub-feature">Community gathering</span>
+      </div>
+    </div>
+
+    <div class="addon-section">
+      <div class="addon-toggle" id="addonToggle" onclick="toggleAddon()">
+        <img class="addon-img" id="addonImg" src="" alt="Anchor Object"/>
+        <div class="addon-info">
+          <div class="addon-label" id="addonLabel"></div>
+          <div class="addon-sublabel">One-time purchase &#8226; ships to USA only</div>
+        </div>
+        <div class="addon-price" id="addonPrice"></div>
+        <div class="toggle-switch"></div>
+      </div>
+
+      <div class="addon-details" id="addonDetails">
+        <div class="product-desc" id="productDesc">
+          <div class="product-desc-text" id="productDescText"></div>
+          <div class="product-specs" id="productSpecs"></div>
+        </div>
+        <div class="addon-details-title" id="collectionTitle"></div>
+        <div class="collection-grid" id="collectionGrid"></div>
+
+        <div class="custom-toggle" id="toggleCustom" onclick="toggleCustomise()">
+          <div>
+            <div class="custom-toggle-label">Add a name or mantra</div>
+            <div class="custom-toggle-sub" id="customSub"></div>
+          </div>
+          <div class="toggle-switch"></div>
+        </div>
+
+        <div class="custom-input-area" id="customArea">
+          <div class="form-group">
+            <label class="form-label">Your name or mantra</label>
+            <input class="form-input" type="text" id="customText" placeholder="" maxlength="40"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-total">
+      <div class="price-total-label">Today's total</div>
+      <div class="price-total-amount" id="totalPrice">$89</div>
+    </div>
+    <div class="price-breakdown" id="priceBreakdown">Subscription: $89/month</div>
+
+    <div class="nav-buttons" style="justify-content: flex-end;">
+      <button class="btn-next" id="btn0" onclick="goToStep(1)">Continue</button>
+    </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Details & Gift -->
+  <div class="step" id="step1">
+    <div class="step-card">
+    <div class="step-title" id="step1Title">Your Details</div>
+    <div class="step-desc" id="step1Desc">Enter your details to set up your subscription</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Full name</label>
+        <input class="form-input" type="text" id="shipName" placeholder="Your full name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="shipEmail" placeholder="your@email.com"/>
+      </div>
+    </div>
+
+    <div id="addressFields" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Street address</label>
+        <input class="form-input" type="text" id="shipAddress" placeholder="Street address"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">City</label>
+          <input class="form-input" type="text" id="shipCity" placeholder="City"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State</label>
+          <input class="form-input" type="text" id="shipState" placeholder="State"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ZIP code</label>
+          <input class="form-input" type="text" id="shipZip" placeholder="ZIP code"/>
+        </div>
+        <div class="form-group" style="display:flex; align-items:flex-end;">
+          <div style="width:100%; padding:11px 14px; font-size:13px; color:#044147; background:rgba(4,65,71,0.03); border:1px solid rgba(4,65,71,0.1); border-radius:10px;">United States</div>
+          <input type="hidden" id="shipCountry" value="US"/>
+        </div>
+      </div>
+      <div class="shipping-note">Shipping is currently available within the United States only</div>
+    </div>
+
+    <div style="margin-top: 24px;">
+      <div class="custom-toggle" id="toggleGift" onclick="toggleGift()">
+        <div>
+          <div class="custom-toggle-label">This is a gift &#127873;</div>
+          <div class="custom-toggle-sub">We'll send a special note to your loved one</div>
+        </div>
+        <div class="toggle-switch"></div>
+      </div>
+
+      <div class="gift-recipient" id="giftArea">
+        <div class="gift-recipient-title">Gift Note</div>
+        <div class="gift-note-info">We'll email a beautiful note to your recipient on your behalf</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Recipient name</label>
+            <input class="form-input" type="text" id="giftName" placeholder="Their name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Recipient email</label>
+            <input class="form-input" type="email" id="giftEmail" placeholder="their@email.com"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gift message</label>
+          <textarea class="form-textarea" id="giftMessage" placeholder="Write a personal note..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-back" onclick="goToStep(0)">&larr; Back</button>
+      <button class="btn-next" onclick="goToStep(2)">Review Order</button>
+    </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Review & Pay -->
+  <div class="step" id="step2">
+    <div class="step-card">
+    <div class="step-title">Review Your Order</div>
+    <div class="step-desc">Confirm your selections and proceed to payment</div>
+
+    <div class="summary-card">
+      <div class="summary-row">
+        <span class="summary-label">Ritual</span>
+        <span class="summary-value" id="sumRitual"></span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Subscription</span>
+        <span class="summary-value">$29/month</span>
+      </div>
+      <div class="summary-row" id="sumProductRow" style="display:none;">
+        <span class="summary-label" id="sumProductLabel">Anchor Object</span>
+        <span class="summary-value" id="sumProduct"></span>
+      </div>
+      <div class="summary-row" id="sumCollectionRow" style="display:none;">
+        <span class="summary-label">Collection</span>
+        <span class="summary-value" id="sumCollection"></span>
+      </div>
+      <div class="summary-row" id="sumCustomRow" style="display:none;">
+        <span class="summary-label">Personalisation</span>
+        <span class="summary-value" id="sumCustom"></span>
+      </div>
+      <div class="summary-row" id="sumGiftRow" style="display:none;">
+        <span class="summary-label">Gift note for</span>
+        <span class="summary-value" id="sumGift"></span>
+      </div>
+      <div class="summary-row" id="sumShipRow" style="display:none;">
+        <span class="summary-label">Ships to</span>
+        <span class="summary-value" id="sumAddress"></span>
+      </div>
+    </div>
+
+    <div class="summary-total">
+      <div class="summary-total-label">Total due today</div>
+      <div class="summary-total-amount" id="sumTotal"></div>
+    </div>
+    <div class="summary-note" id="sumNote"></div>
+
+    <div class="nav-buttons" style="justify-content: flex-start;">
+      <button class="btn-back" onclick="goToStep(1)">&larr; Edit Details</button>
+    </div>
+
+    <button class="btn-checkout" onclick="submitAndCheckout()">Proceed to Payment</button>
+    </div>
+  </div>
+
+  <div class="footer-note">~ your home, your sanctuary ~</div>
+</div>
+
+<script>
+var WIX_API = 'https://www.marmaroph.com/_functions';
+var SUBSCRIPTION_PRICE = 29;
+var currentStep = 0;
+
+var urlParams = new URLSearchParams(window.location.search);
+var ritualSlug = urlParams.get(‘ritual’) || ‘mindful-eating’;
+var ritualConfig = null;
+
+var selections = {
+  ritual: ritualSlug,
+  ritualName: ‘’,
+  addProduct: false,
+  anchorObject: ‘’,
+  anchorPrice: 0,
+  collection: ‘’,
+  collectionName: ‘’,
+  customise: false,
+  customText: ‘’,
+  isGift: false,
+  giftName: ‘’,
+  giftEmail: ‘’,
+  giftMessage: ‘’,
+  shipName: ‘’,
+  shipEmail: ‘’,
+  shipAddress: ‘’,
+  shipCity: ‘’,
+  shipState: ‘’,
+  shipZip: ‘’,
+  shipCountry: ‘US’
+};
+
+function loadRitualConfig() {
+  fetch(WIX_API + ‘/ritualConfig?slug=’ + encodeURIComponent(ritualSlug))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      ritualConfig = data;
+      if (!ritualConfig.customPlaceholder) {
+        ritualConfig.customPlaceholder = ‘e.g. Your name or mantra’;
+      }
+      selections.ritualName = ritualConfig.name;
+      selections.anchorObject = ritualConfig.anchor;
+      selections.anchorPrice = ritualConfig.anchorPrice;
+      buildPage();
+    })
+    .catch(function(err) {
+      console.error(‘Failed to load ritual config:’, err);
+      document.querySelector(‘.content-wrap’).innerHTML =
+        ‘<div style="text-align:center;padding:60px 20px;">’ +
+        ‘<h2 style="font-family:Cormorant Garamond,serif;color:#044147;">Unable to load ritual</h2>’ +
+        ‘<p style="color:rgba(4,65,71,0.5);margin-top:12px;">Please try again or go back to choose a ritual.</p>’ +
+        ‘</div>’;
+    });
+}
+
+function sendHeight() {
+  var h = document.documentElement.scrollHeight;
+  window.parent.postMessage({ type: 'checkoutHeight', height: h }, '*');
+}
+
+function getTotal() {
+  var total = SUBSCRIPTION_PRICE;
+  if (selections.addProduct) total += ritualConfig.anchorPrice;
+  return total;
+}
+
+function updatePriceDisplay() {
+  var total = getTotal();
+  document.getElementById('totalPrice').textContent = '$' + total.toFixed(2);
+
+  var breakdown = 'Subscription: $' + SUBSCRIPTION_PRICE.toFixed(2) + '/month';
+  if (selections.addProduct) {
+    breakdown += ' + ' + ritualConfig.anchor + ': $' + ritualConfig.anchorPrice.toFixed(2);
+  }
+  document.getElementById('priceBreakdown').textContent = breakdown;
+}
+
+/* ── Celestial background ── */
+function buildCelestialBg() {
+  var bg = document.getElementById('celestialBg');
+
+  // Stars
+  var starCount = 80;
+  for (var i = 0; i < starCount; i++) {
+    var star = document.createElement('div');
+    var sizes = ['small','small','small','med','large'];
+    star.className = 'star ' + sizes[Math.floor(Math.random() * sizes.length)];
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.setProperty('--dur', (2 + Math.random() * 4) + 's');
+    star.style.animationDelay = (Math.random() * 5) + 's';
+    bg.appendChild(star);
+  }
+
+  // Celestial icons (moons, planets, stars, constellations)
+  var icons = [
+    { symbol: '☽', x: '12%', y: '15%', size: '32px', delay: '0s' },
+    { symbol: '✦', x: '85%', y: '25%', size: '18px', delay: '3s' },
+    { symbol: '✧', x: '5%', y: '55%', size: '22px', delay: '6s' },
+    { symbol: '♃', x: '90%', y: '65%', size: '26px', delay: '2s' },
+    { symbol: '♀', x: '18%', y: '80%', size: '20px', delay: '8s' },
+    { symbol: '☉', x: '75%', y: '10%', size: '24px', delay: '4s' },
+    { symbol: '♁', x: '50%', y: '90%', size: '18px', delay: '7s' },
+    { symbol: '♄', x: '30%', y: '40%', size: '28px', delay: '1s' },
+    { symbol: '⋆', x: '65%', y: '50%', size: '16px', delay: '5s' },
+    { symbol: '✶', x: '40%', y: '70%', size: '14px', delay: '9s' },
+    { symbol: '✩', x: '8%', y: '35%', size: '20px', delay: '11s' },
+    { symbol: '★', x: '92%', y: '45%', size: '16px', delay: '10s' }
+  ];
+
+  icons.forEach(function(ic) {
+    var el = document.createElement('div');
+    el.className = 'celestial-icon';
+    el.textContent = ic.symbol;
+    el.style.left = ic.x;
+    el.style.top = ic.y;
+    el.style.fontSize = ic.size;
+    el.style.animationDelay = ic.delay;
+    el.style.animationDuration = (15 + Math.random() * 10) + 's';
+    bg.appendChild(el);
+  });
+
+  // Constellation SVGs
+  var constellations = [
+    { x: '22%', y: '20%', points: [[0,0],[20,15],[45,8],[60,28],[40,40]], size: 80 },
+    { x: '70%', y: '75%', points: [[0,10],[18,0],[35,18],[22,35],[40,30]], size: 60 }
+  ];
+
+  constellations.forEach(function(c) {
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'constellation');
+    svg.setAttribute('width', c.size);
+    svg.setAttribute('height', c.size);
+    svg.style.left = c.x;
+    svg.style.top = c.y;
+
+    for (var j = 0; j < c.points.length - 1; j++) {
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', c.points[j][0]);
+      line.setAttribute('y1', c.points[j][1]);
+      line.setAttribute('x2', c.points[j+1][0]);
+      line.setAttribute('y2', c.points[j+1][1]);
+      svg.appendChild(line);
+    }
+
+    c.points.forEach(function(p) {
+      var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', p[0]);
+      circle.setAttribute('cy', p[1]);
+      circle.setAttribute('r', '2');
+      svg.appendChild(circle);
+    });
+
+    bg.appendChild(svg);
+  });
+}
+
+function buildPage() {
+  document.getElementById('step0Desc').textContent = ritualConfig.stepDesc;
+  document.getElementById('ritualTag').textContent = ritualConfig.name;
+  document.getElementById('addonLabel').textContent = 'Add the ' + ritualConfig.anchor + ' for your ritual';
+  document.getElementById('addonPrice').textContent = ritualConfig.anchorPrice > 0 ? '+$' + ritualConfig.anchorPrice.toFixed(2) : '';
+  document.getElementById('collectionTitle').textContent = ritualConfig.collectionTitle;
+  document.getElementById('customSub').textContent = ritualConfig.customSub;
+  document.getElementById('customText').placeholder = ritualConfig.customPlaceholder;
+
+  // Anchor object image in add-on toggle
+  var addonImgEl = document.getElementById('addonImg');
+  if (ritualConfig.anchorImg) {
+    addonImgEl.src = ritualConfig.anchorImg;
+  } else {
+    addonImgEl.style.display = 'none';
+  }
+
+  // Product description and specs
+  document.getElementById('productDescText').textContent = ritualConfig.anchorDesc || '';
+  var specsEl = document.getElementById('productSpecs');
+  specsEl.innerHTML = '';
+  if (ritualConfig.anchorSpecs) {
+    ritualConfig.anchorSpecs.forEach(function(spec) {
+      var tag = document.createElement('span');
+      tag.className = 'product-spec';
+      tag.textContent = spec;
+      specsEl.appendChild(tag);
+    });
+  }
+  if (!ritualConfig.anchorDesc) {
+    document.getElementById('productDesc').style.display = 'none';
+  }
+
+  // Hide addon if price is 0 (not ready yet)
+  if (ritualConfig.anchorPrice === 0) {
+    document.querySelector('.addon-section').style.display = 'none';
+  }
+
+  // Build collection grid
+  var grid = document.getElementById('collectionGrid');
+  grid.innerHTML = '';
+  ritualConfig.collections.forEach(function(col) {
+    var card = document.createElement('div');
+    card.className = 'collection-card';
+    card.setAttribute('data-collection', col.slug);
+    card.onclick = function() { selectCollection(card); };
+
+    var imgSrc = col.img || 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="%23e8f4f2"/><text x="100" y="105" text-anchor="middle" fill="%23044147" font-size="13">' + col.name + '</text></svg>');
+
+    card.innerHTML =
+      '<img class="card-img" src="' + imgSrc + '" alt="' + col.name + '"/>' +
+      '<div>' +
+      '<div class="card-name">' + col.name + '</div>' +
+      '<div class="card-check">&#10003;</div>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+
+  if (ritualConfig.collections.length === 1) {
+    grid.style.gridTemplateColumns = '1fr';
+    grid.style.maxWidth = '220px';
+    grid.style.margin = '0 auto 20px';
+  }
+
+  document.getElementById('sumRitual').textContent = ritualConfig.name;
+  updatePriceDisplay();
+  sendHeight();
+}
+
+function toggleAddon() {
+  var toggle = document.getElementById('addonToggle');
+  toggle.classList.toggle('active');
+  selections.addProduct = toggle.classList.contains('active');
+
+  var details = document.getElementById('addonDetails');
+  if (selections.addProduct) {
+    details.classList.add('visible');
+  } else {
+    details.classList.remove('visible');
+    selections.collection = '';
+    selections.collectionName = '';
+  }
+  updatePriceDisplay();
+  sendHeight();
+}
+
+function selectCollection(card) {
+  document.querySelectorAll('.collection-card').forEach(function(c) {
+    c.classList.remove('selected');
+  });
+  card.classList.add('selected');
+  selections.collection = card.getAttribute('data-collection');
+  selections.collectionName = card.querySelector('.card-name').textContent.replace(/\n/g, ' ');
+}
+
+function toggleCustomise() {
+  var toggle = document.getElementById('toggleCustom');
+  toggle.classList.toggle('active');
+  selections.customise = toggle.classList.contains('active');
+  var area = document.getElementById('customArea');
+  if (selections.customise) {
+    area.classList.add('visible');
+  } else {
+    area.classList.remove('visible');
+  }
+  sendHeight();
+}
+
+function toggleGift() {
+  var toggle = document.getElementById('toggleGift');
+  toggle.classList.toggle('active');
+  selections.isGift = toggle.classList.contains('active');
+  var area = document.getElementById('giftArea');
+  if (selections.isGift) {
+    area.classList.add('visible');
+  } else {
+    area.classList.remove('visible');
+  }
+  sendHeight();
+}
+
+function goToStep(step) {
+  // Validate step 0
+  if (step > 0 && selections.addProduct && !selections.collection) {
+    alert('Please select a collection for your ' + ritualConfig.anchor);
+    return;
+  }
+
+  if (step === 2) {
+    gatherFormData();
+    populateSummary();
+  }
+
+  // Show/hide address fields and update title based on product
+  if (step === 1) {
+    var addressFields = document.getElementById('addressFields');
+    if (selections.addProduct) {
+      addressFields.style.display = 'block';
+      document.getElementById('step1Title').textContent = 'Shipping & Details';
+      document.getElementById('step1Desc').textContent = 'Where should we send your ' + ritualConfig.anchor.toLowerCase() + '?';
+    } else {
+      addressFields.style.display = 'none';
+      document.getElementById('step1Title').textContent = 'Your Details';
+      document.getElementById('step1Desc').textContent = 'Enter your details to set up your subscription';
+    }
+  }
+
+  document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('step' + step).classList.add('active');
+
+  document.querySelectorAll('.step-dot').forEach(function(dot, i) {
+    dot.classList.remove('active', 'done');
+    if (i < step) dot.classList.add('done');
+    if (i === step) dot.classList.add('active');
+  });
+
+  currentStep = step;
+  window.scrollTo(0, 0);
+  sendHeight();
+}
+
+function gatherFormData() {
+  selections.customText = document.getElementById('customText').value.trim();
+  selections.shipName = document.getElementById('shipName').value.trim();
+  selections.shipEmail = document.getElementById('shipEmail').value.trim();
+  if (selections.addProduct) {
+    selections.shipAddress = document.getElementById('shipAddress').value.trim();
+    selections.shipCity = document.getElementById('shipCity').value.trim();
+    selections.shipState = document.getElementById('shipState').value.trim();
+    selections.shipZip = document.getElementById('shipZip').value.trim();
+    selections.shipCountry = 'United States';
+  }
+  if (selections.isGift) {
+    selections.giftName = document.getElementById('giftName').value.trim();
+    selections.giftEmail = document.getElementById('giftEmail').value.trim();
+    selections.giftMessage = document.getElementById('giftMessage').value.trim();
+  }
+}
+
+function populateSummary() {
+  var total = getTotal();
+  document.getElementById('sumTotal').textContent = '$' + total.toFixed(2);
+
+  // Product row
+  var productRow = document.getElementById('sumProductRow');
+  if (selections.addProduct) {
+    productRow.style.display = 'flex';
+    document.getElementById('sumProductLabel').textContent = ritualConfig.anchor;
+    document.getElementById('sumProduct').textContent = '$' + ritualConfig.anchorPrice.toFixed(2);
+  } else {
+    productRow.style.display = 'none';
+  }
+
+  // Collection row
+  var collRow = document.getElementById('sumCollectionRow');
+  if (selections.addProduct && selections.collectionName) {
+    collRow.style.display = 'flex';
+    document.getElementById('sumCollection').textContent = selections.collectionName;
+  } else {
+    collRow.style.display = 'none';
+  }
+
+  // Custom row
+  var customRow = document.getElementById('sumCustomRow');
+  if (selections.customise && selections.customText) {
+    customRow.style.display = 'flex';
+    document.getElementById('sumCustom').textContent = '“' + selections.customText + '”';
+  } else {
+    customRow.style.display = 'none';
+  }
+
+  // Gift row
+  var giftRow = document.getElementById('sumGiftRow');
+  if (selections.isGift && selections.giftName) {
+    giftRow.style.display = 'flex';
+    document.getElementById('sumGift').textContent = selections.giftName;
+  } else {
+    giftRow.style.display = 'none';
+  }
+
+  // Shipping row
+  var shipRow = document.getElementById('sumShipRow');
+  if (selections.addProduct && selections.shipCity) {
+    shipRow.style.display = 'flex';
+    var addr = selections.shipCity;
+    if (selections.shipState) addr += ', ' + selections.shipState;
+    addr += ' - USA';
+    document.getElementById('sumAddress').textContent = addr;
+  } else {
+    shipRow.style.display = 'none';
+  }
+
+  // Note
+  var note = 'Subscription renews at $29/month.';
+  if (selections.addProduct) note += ' ' + ritualConfig.anchor + ' is a one-time charge.';
+  document.getElementById('sumNote').textContent = note;
+}
+
+var memberData = null;
+
+function submitAndCheckout() {
+  var btn = document.querySelector('.btn-checkout');
+  btn.textContent = 'Processing...';
+  btn.disabled = true;
+
+  var email = selections.shipEmail || (memberData && memberData.loginEmail) || '';
+  var memberId = (memberData && memberData.memberId) || '';
+
+  if (!email) {
+    alert('Please enter your email address.');
+    btn.textContent = 'Proceed to Payment';
+    btn.disabled = false;
+    return;
+  }
+
+  var payload = {
+    memberId: memberId,
+    ritual: selections.ritual,
+    ritualName: selections.ritualName,
+    addProduct: selections.addProduct,
+    anchorObject: selections.anchorObject,
+    anchorPrice: selections.anchorPrice,
+    collection: selections.collection,
+    collectionName: selections.collectionName,
+    customise: selections.customise,
+    customText: selections.customText,
+    isGift: selections.isGift,
+    giftName: selections.giftName,
+    giftEmail: selections.giftEmail,
+    giftMessage: selections.giftMessage,
+    shipName: selections.shipName,
+    shipEmail: email,
+    shipAddress: selections.shipAddress,
+    shipCity: selections.shipCity,
+    shipState: selections.shipState,
+    shipZip: selections.shipZip,
+    shipCountry: selections.shipCountry,
+    totalAmount: getTotal()
+  };
+
+  // Save selections, then create Stripe checkout
+  fetch(WIX_API + '/saveCheckoutSelections', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function() {
+    // Create Stripe checkout session
+    return fetch(WIX_API + '/createCheckoutSession', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        memberId: memberId,
+        email: email,
+        ritual: selections.ritual
+      })
+    });
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.url) {
+      window.top.location.href = data.url;
+    } else {
+      alert('Could not create checkout session. Please try again.');
+      btn.textContent = 'Proceed to Payment';
+      btn.disabled = false;
+    }
+  })
+  .catch(function(err) {
+    console.error('Checkout error:', err);
+    alert('Something went wrong. Please try again.');
+    btn.textContent = 'Proceed to Payment';
+    btn.disabled = false;
+  });
+}
+
+var configLoaded = false;
+
+window.addEventListener('load', function() {
+  buildCelestialBg();
+  if (!configLoaded) {
+    loadRitualConfig();
+  }
+});
+
+window.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'setRitual' && event.data.ritual) {
+    ritualSlug = event.data.ritual;
+    selections.ritual = ritualSlug;
+    configLoaded = true;
+    loadRitualConfig();
+  }
+  if (event.data && event.data.type === 'memberData') {
+    memberData = event.data;
+    // Pre-fill email if available
+    if (memberData.loginEmail) {
+      var emailField = document.getElementById('shipEmail');
+      if (emailField && !emailField.value) {
+        emailField.value = memberData.loginEmail;
+      }
+    }
+    // Pre-fill name if available
+    if (memberData.firstName) {
+      var nameField = document.getElementById('shipName');
+      if (nameField && !nameField.value) {
+        nameField.value = (memberData.firstName + ' ' + (memberData.lastName || '')).trim();
+      }
+    }
+  }
+  if (event.data && event.data.type === 'paymentFailed') {
+    var btn = document.querySelector('.btn-checkout');
+    btn.textContent = 'Proceed to Payment';
+    btn.disabled = false;
+  }
+});
+
+var resizeObserver = new ResizeObserver(sendHeight);
+resizeObserver.observe(document.body);
+</script>
+</body>
+</html>
