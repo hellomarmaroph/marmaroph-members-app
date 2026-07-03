@@ -18,7 +18,7 @@
     position: relative;
   }
 
-  /* ── Celestial background ── */
+  /* -- Celestial background -- */
   .celestial-bg {
     position: fixed;
     top: 0; left: 0;
@@ -88,7 +88,7 @@
     fill: rgba(4,65,71,0.2);
   }
 
-  /* ── Main content ── */
+  /* -- Main content -- */
   .content-wrap {
     position: relative;
     z-index: 2;
@@ -978,53 +978,136 @@ var SUBSCRIPTION_PRICE = 29;
 var currentStep = 0;
 
 var urlParams = new URLSearchParams(window.location.search);
-var ritualSlug = urlParams.get(‘ritual’) || ‘mindful-eating’;
+var ritualSlug = urlParams.get('ritual') || 'mindful-eating';
 var ritualConfig = null;
+
+var RITUAL_CONFIGS = {
+  'energised-mornings': {
+    name: "DON'T TOUCH YOUR PHONE (YET) : ESSENTIAL MORNINGS",
+    ritualSlug: 'energised-mornings',
+    anchor: 'Yoga Mat',
+    anchorPrice: 55,
+    anchorImg: 'https://static.wixstatic.com/media/00228e_fe7977f27fa14937b578382df7a4bf9e~mv2.jpg',
+    anchorDesc: 'A premium yoga mat to anchor your morning movement practice.',
+    anchorSpecs: ['Non-slip surface', 'Eco-friendly material', 'Personalizable'],
+    stepDesc: 'Start every morning with intention and movement.',
+    collectionTitle: 'Choose Your Mat Design',
+    customSub: 'Add your name or mantra to the mat',
+    customPlaceholder: 'e.g. Your name or mantra',
+    collections: [
+      { name: "Don't Quit", slug: 'dont-quit', img: 'https://static.wixstatic.com/media/00228e_fe7977f27fa14937b578382df7a4bf9e~mv2.jpg' },
+      { name: 'Be Strong', slug: 'be-strong', img: 'https://static.wixstatic.com/media/00228e_f83eca1f3a8b491d991bea2a44894420~mv2.jpg' },
+      { name: 'Wild Tiger', slug: 'wild-tiger', img: 'https://static.wixstatic.com/media/00228e_b1bb95897e1645e3965463df6df3b92d~mv2.jpg' }
+    ]
+  },
+  'mindful-eating': {
+    name: 'THE PLATE THAT CHANGED MY BODY: MINDFUL EATING',
+    ritualSlug: 'mindful-eating',
+    anchor: 'Healthy Plate',
+    anchorPrice: 70,
+    anchorImg: 'https://static.wixstatic.com/media/00228e_52d89c9ee5954a2d852ed2737e4b21fe~mv2.png',
+    anchorDesc: '26.3cm Fine Bone China — Our designs are printed using a specialist process that fuses the ink deep into the material. Your design won\'t peel, scratch, or fade over time. The StoneMax resin is strong, hardwearing, and moulded to shape in house, making each plate totally bespoke. A favourite home décor piece for years to come.',
+    anchorSpecs: ['26.3cm Fine Bone China', 'Fused Ink Printing — Won\'t Peel or Fade', 'StoneMax Resin — Strong & Hardwearing', 'Handcrafted & Bespoke', 'Personalisation Available'],
+    stepDesc: 'Your mindful eating journey begins with the right setting.',
+    collectionTitle: 'Choose Your Plate Collection',
+    customSub: 'Add your name or intention to the plate',
+    customPlaceholder: 'e.g. Your name or mantra',
+    collections: [
+      { name: 'Humming Bird Healthy Plate', slug: 'humming-bird', img: 'https://static.wixstatic.com/media/00228e_e71732a4933d4871be0ac66f352714e5~mv2.jpg' },
+      { name: 'Blue Bird Healthy Plate', slug: 'blue-bird', img: 'https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg' },
+      { name: 'Painted Bird Healthy Plate', slug: 'painted-bird', img: 'https://static.wixstatic.com/media/00228e_ee60faa3aee046519fc86dafc4ae0c7e~mv2.jpg' }
+    ]
+  },
+  'sacred-connection': {
+    name: 'RE CONNECT : SACRED CONNECTION',
+    ritualSlug: 'sacred-connection',
+    anchor: 'Connection Pillow Set',
+    anchorPrice: 42,
+    anchorImg: 'https://static.wixstatic.com/media/00228e_d9d6fb76ff944f53b194c0e28de71ff1~mv2.jpg',
+    anchorDesc: 'Personalised pillow set to symbolise your sacred bond with your partner.',
+    anchorSpecs: ['Premium cotton', 'Personalizable', 'Set of 2'],
+    stepDesc: 'Deepen the connection with your loved one through daily rituals.',
+    collectionTitle: 'Choose Your Pillow Design',
+    customSub: 'Add your names to the pillows',
+    customPlaceholder: 'e.g. Your names',
+    collections: [
+      { name: 'Green & Pink Hearts Set', slug: 'green-pink-hearts-set', img: 'https://static.wixstatic.com/media/00228e_d9d6fb76ff944f53b194c0e28de71ff1~mv2.jpg' }
+    ]
+  },
+  'im-enough': {
+    name: 'COMING HOME TO ME: YOU ARE ENOUGH',
+    ritualSlug: 'im-enough',
+    anchor: 'Wall Art Frame',
+    anchorPrice: 48,
+    anchorImg: 'https://static.wixstatic.com/media/00228e_20c78a0197e245ef8a8b3be0acfe887a~mv2.jpg',
+    anchorDesc: 'Beautifully framed wall art to remind you daily that you are enough.',
+    anchorSpecs: ['Premium print', 'Ready to hang', 'Personalizable'],
+    stepDesc: 'A daily reminder of your worth, right on your wall.',
+    collectionTitle: 'Choose Your Frame Design',
+    customSub: 'Add your name or affirmation',
+    customPlaceholder: 'e.g. Your name or affirmation',
+    collections: [
+      { name: 'Minimalist', slug: 'minimalist', img: 'https://static.wixstatic.com/media/00228e_20c78a0197e245ef8a8b3be0acfe887a~mv2.jpg' },
+      { name: 'Botanical', slug: 'botanical', img: 'https://static.wixstatic.com/media/00228e_352a8113a7cb4792b16cd668d464e217~mv2.jpg' },
+      { name: 'Abstract', slug: 'abstract', img: 'https://static.wixstatic.com/media/00228e_ec9da0f98aff4cc9aeb37f8dbda43219~mv2.jpg' }
+    ]
+  },
+  'sanctuary-protection': {
+    name: 'BAD VIBES STAY OUT: SANCTUARY PROTECTION',
+    ritualSlug: 'sanctuary-protection',
+    anchor: 'Protection Bowl',
+    anchorPrice: 38,
+    anchorImg: 'https://static.wixstatic.com/media/00228e_3b8483e149e544ce8621cf76a9958909~mv2.jpg',
+    anchorDesc: 'A handcrafted bowl to hold your protective intentions and sacred objects.',
+    anchorSpecs: ['Handcrafted ceramic', 'Ritual-ready', 'Personalizable'],
+    stepDesc: 'Create a shield of positive energy around your home.',
+    collectionTitle: 'Choose Your Bowl Design',
+    customSub: 'Add your name or protective mantra',
+    customPlaceholder: 'e.g. Your name or mantra',
+    collections: [
+      { name: 'Sacred Bowl', slug: 'sacred-bowl', img: 'https://static.wixstatic.com/media/00228e_3b8483e149e544ce8621cf76a9958909~mv2.jpg' }
+    ]
+  }
+};
 
 var selections = {
   ritual: ritualSlug,
-  ritualName: ‘’,
+  ritualName: '',
   addProduct: false,
-  anchorObject: ‘’,
+  anchorObject: '',
   anchorPrice: 0,
-  collection: ‘’,
-  collectionName: ‘’,
+  collection: '',
+  collectionName: '',
   customise: false,
-  customText: ‘’,
+  customText: '',
   isGift: false,
-  giftName: ‘’,
-  giftEmail: ‘’,
-  giftMessage: ‘’,
-  shipName: ‘’,
-  shipEmail: ‘’,
-  shipAddress: ‘’,
-  shipCity: ‘’,
-  shipState: ‘’,
-  shipZip: ‘’,
-  shipCountry: ‘US’
+  giftName: '',
+  giftEmail: '',
+  giftMessage: '',
+  shipName: '',
+  shipEmail: '',
+  shipAddress: '',
+  shipCity: '',
+  shipState: '',
+  shipZip: '',
+  shipCountry: 'US'
 };
 
 function loadRitualConfig() {
-  fetch(WIX_API + ‘/ritualConfig?slug=’ + encodeURIComponent(ritualSlug))
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      ritualConfig = data;
-      if (!ritualConfig.customPlaceholder) {
-        ritualConfig.customPlaceholder = ‘e.g. Your name or mantra’;
-      }
-      selections.ritualName = ritualConfig.name;
-      selections.anchorObject = ritualConfig.anchor;
-      selections.anchorPrice = ritualConfig.anchorPrice;
-      buildPage();
-    })
-    .catch(function(err) {
-      console.error(‘Failed to load ritual config:’, err);
-      document.querySelector(‘.content-wrap’).innerHTML =
-        ‘<div style="text-align:center;padding:60px 20px;">’ +
-        ‘<h2 style="font-family:Cormorant Garamond,serif;color:#044147;">Unable to load ritual</h2>’ +
-        ‘<p style="color:rgba(4,65,71,0.5);margin-top:12px;">Please try again or go back to choose a ritual.</p>’ +
-        ‘</div>’;
-    });
+  var config = RITUAL_CONFIGS[ritualSlug];
+  if (config) {
+    ritualConfig = config;
+    selections.ritualName = ritualConfig.name;
+    selections.anchorObject = ritualConfig.anchor;
+    selections.anchorPrice = ritualConfig.anchorPrice;
+    buildPage();
+  } else {
+    document.querySelector('.content-wrap').innerHTML =
+      '<div style="text-align:center;padding:60px 20px;">' +
+      '<h2 style="font-family:Cormorant Garamond,serif;color:#044147;">Unable to load ritual</h2>' +
+      '<p style="color:rgba(4,65,71,0.5);margin-top:12px;">Please try again or go back to choose a ritual.</p>' +
+      '</div>';
+  }
 }
 
 function sendHeight() {
@@ -1049,7 +1132,7 @@ function updatePriceDisplay() {
   document.getElementById('priceBreakdown').textContent = breakdown;
 }
 
-/* ── Celestial background ── */
+/* -- Celestial background -- */
 function buildCelestialBg() {
   var bg = document.getElementById('celestialBg');
 
@@ -1068,18 +1151,18 @@ function buildCelestialBg() {
 
   // Celestial icons (moons, planets, stars, constellations)
   var icons = [
-    { symbol: '☽', x: '12%', y: '15%', size: '32px', delay: '0s' },
-    { symbol: '✦', x: '85%', y: '25%', size: '18px', delay: '3s' },
-    { symbol: '✧', x: '5%', y: '55%', size: '22px', delay: '6s' },
-    { symbol: '♃', x: '90%', y: '65%', size: '26px', delay: '2s' },
-    { symbol: '♀', x: '18%', y: '80%', size: '20px', delay: '8s' },
-    { symbol: '☉', x: '75%', y: '10%', size: '24px', delay: '4s' },
-    { symbol: '♁', x: '50%', y: '90%', size: '18px', delay: '7s' },
-    { symbol: '♄', x: '30%', y: '40%', size: '28px', delay: '1s' },
-    { symbol: '⋆', x: '65%', y: '50%', size: '16px', delay: '5s' },
-    { symbol: '✶', x: '40%', y: '70%', size: '14px', delay: '9s' },
-    { symbol: '✩', x: '8%', y: '35%', size: '20px', delay: '11s' },
-    { symbol: '★', x: '92%', y: '45%', size: '16px', delay: '10s' }
+    { symbol: '\u263D', x: '12%', y: '15%', size: '32px', delay: '0s' },
+    { symbol: '\u2726', x: '85%', y: '25%', size: '18px', delay: '3s' },
+    { symbol: '\u2727', x: '5%', y: '55%', size: '22px', delay: '6s' },
+    { symbol: '\u2643', x: '90%', y: '65%', size: '26px', delay: '2s' },
+    { symbol: '\u2640', x: '18%', y: '80%', size: '20px', delay: '8s' },
+    { symbol: '\u2609', x: '75%', y: '10%', size: '24px', delay: '4s' },
+    { symbol: '\u2641', x: '50%', y: '90%', size: '18px', delay: '7s' },
+    { symbol: '\u2644', x: '30%', y: '40%', size: '28px', delay: '1s' },
+    { symbol: '\u22C6', x: '65%', y: '50%', size: '16px', delay: '5s' },
+    { symbol: '\u2736', x: '40%', y: '70%', size: '14px', delay: '9s' },
+    { symbol: '\u2729', x: '8%', y: '35%', size: '20px', delay: '11s' },
+    { symbol: '\u2605', x: '92%', y: '45%', size: '16px', delay: '10s' }
   ];
 
   icons.forEach(function(ic) {
@@ -1335,7 +1418,7 @@ function populateSummary() {
   var customRow = document.getElementById('sumCustomRow');
   if (selections.customise && selections.customText) {
     customRow.style.display = 'flex';
-    document.getElementById('sumCustom').textContent = '“' + selections.customText + '”';
+    document.getElementById('sumCustom').textContent = '"' + selections.customText + '"';
   } else {
     customRow.style.display = 'none';
   }
@@ -1424,7 +1507,10 @@ function submitAndCheckout() {
       body: JSON.stringify({
         memberId: memberId,
         email: email,
-        ritual: selections.ritual
+        ritual: selections.ritual,
+        addProduct: selections.addProduct,
+        anchorObject: selections.anchorObject,
+        anchorPrice: selections.anchorPrice
       })
     });
   })
