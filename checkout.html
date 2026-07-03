@@ -18,7 +18,7 @@
     position: relative;
   }
 
-  /* -- Celestial background -- */
+  /* ── Celestial background ── */
   .celestial-bg {
     position: fixed;
     top: 0; left: 0;
@@ -88,7 +88,7 @@
     fill: rgba(4,65,71,0.2);
   }
 
-  /* -- Main content -- */
+  /* ── Main content ── */
   .content-wrap {
     position: relative;
     z-index: 2;
@@ -854,6 +854,78 @@
       </div>
     </div>
 
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Birthday</label>
+        <input class="form-input" type="date" id="birthDate"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Country</label>
+        <select class="form-input" id="clientCountry">
+          <option value="">Select your country</option>
+          <option value="US">United States</option>
+          <option value="CA">Canada</option>
+          <option value="GB">United Kingdom</option>
+          <option value="AU">Australia</option>
+          <option value="MX">Mexico</option>
+          <option value="ES">Spain</option>
+          <option value="FR">France</option>
+          <option value="DE">Germany</option>
+          <option value="BR">Brazil</option>
+          <option value="AR">Argentina</option>
+          <option value="CO">Colombia</option>
+          <option value="CL">Chile</option>
+          <option value="IT">Italy</option>
+          <option value="PT">Portugal</option>
+          <option value="NL">Netherlands</option>
+          <option value="SE">Sweden</option>
+          <option value="NO">Norway</option>
+          <option value="DK">Denmark</option>
+          <option value="IN">India</option>
+          <option value="AE">United Arab Emirates</option>
+          <option value="SA">Saudi Arabia</option>
+          <option value="SG">Singapore</option>
+          <option value="JP">Japan</option>
+          <option value="KR">South Korea</option>
+          <option value="NZ">New Zealand</option>
+          <option value="ZA">South Africa</option>
+          <option value="OTHER">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">WhatsApp number <span style="font-weight:300;color:rgba(4,65,71,0.4)">(optional)</span></label>
+        <input class="form-input" type="tel" id="whatsappNumber" placeholder="+1 555 123 4567"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">How did you find us?</label>
+        <select class="form-input" id="referralSource">
+          <option value="">Select one</option>
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="facebook">Facebook</option>
+          <option value="pinterest">Pinterest</option>
+          <option value="google">Google search</option>
+          <option value="youtube">YouTube</option>
+          <option value="friend">Friend or family</option>
+          <option value="podcast">Podcast</option>
+          <option value="blog">Blog or article</option>
+          <option value="therapist">Therapist / coach</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="custom-toggle" id="toggleWhatsapp" onclick="toggleWhatsappOptIn()" style="margin-bottom:16px">
+      <div>
+        <div class="custom-toggle-label">Send me tips via WhatsApp</div>
+        <div class="custom-toggle-sub">Get gentle reminders and ritual tips on WhatsApp</div>
+      </div>
+      <div class="toggle-switch" id="whatsappToggle"></div>
+    </div>
+
     <div id="addressFields" style="display:none;">
       <div class="form-group">
         <label class="form-label">Street address</label>
@@ -1003,19 +1075,19 @@ var RITUAL_CONFIGS = {
   'mindful-eating': {
     name: 'THE PLATE THAT CHANGED MY BODY: MINDFUL EATING',
     ritualSlug: 'mindful-eating',
-    anchor: 'Healthy Plate',
-    anchorPrice: 70,
+    anchor: 'Mindful Eating Plate Set',
+    anchorPrice: 45,
     anchorImg: 'https://static.wixstatic.com/media/00228e_52d89c9ee5954a2d852ed2737e4b21fe~mv2.png',
-    anchorDesc: '26.3cm Fine Bone China — Our designs are printed using a specialist process that fuses the ink deep into the material. Your design won\'t peel, scratch, or fade over time. The StoneMax resin is strong, hardwearing, and moulded to shape in house, making each plate totally bespoke. A favourite home décor piece for years to come.',
-    anchorSpecs: ['26.3cm Fine Bone China', 'Fused Ink Printing — Won\'t Peel or Fade', 'StoneMax Resin — Strong & Hardwearing', 'Handcrafted & Bespoke', 'Personalisation Available'],
+    anchorDesc: 'A beautifully crafted plate set designed to bring intention and presence to every meal.',
+    anchorSpecs: ['Ceramic', 'Dishwasher safe', 'Personalizable'],
     stepDesc: 'Your mindful eating journey begins with the right setting.',
-    collectionTitle: 'Choose Your Plate Collection',
+    collectionTitle: 'Choose Your Plate Design',
     customSub: 'Add your name or intention to the plate',
     customPlaceholder: 'e.g. Your name or mantra',
     collections: [
-      { name: 'Humming Bird Healthy Plate', slug: 'humming-bird', img: 'https://static.wixstatic.com/media/00228e_e71732a4933d4871be0ac66f352714e5~mv2.jpg' },
-      { name: 'Blue Bird Healthy Plate', slug: 'blue-bird', img: 'https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg' },
-      { name: 'Painted Bird Healthy Plate', slug: 'painted-bird', img: 'https://static.wixstatic.com/media/00228e_ee60faa3aee046519fc86dafc4ae0c7e~mv2.jpg' }
+      { name: 'Classic White', slug: 'classic-white', img: '' },
+      { name: 'Earth Tones', slug: 'earth-tones', img: '' },
+      { name: 'Ocean Blue', slug: 'ocean-blue', img: '' }
     ]
   },
   'sacred-connection': {
@@ -1031,7 +1103,8 @@ var RITUAL_CONFIGS = {
     customSub: 'Add your names to the pillows',
     customPlaceholder: 'e.g. Your names',
     collections: [
-      { name: 'Green & Pink Hearts Set', slug: 'green-pink-hearts-set', img: 'https://static.wixstatic.com/media/00228e_d9d6fb76ff944f53b194c0e28de71ff1~mv2.jpg' }
+      { name: 'Green Hearts', slug: 'green-hearts', img: 'https://static.wixstatic.com/media/00228e_d9d6fb76ff944f53b194c0e28de71ff1~mv2.jpg' },
+      { name: 'Pink Hearts', slug: 'pink-hearts', img: 'https://static.wixstatic.com/media/00228e_600dfbb3b55b41869fde2d961fe6c626~mv2.jpg' }
     ]
   },
   'im-enough': {
@@ -1090,7 +1163,12 @@ var selections = {
   shipCity: '',
   shipState: '',
   shipZip: '',
-  shipCountry: 'US'
+  shipCountry: 'US',
+  birthDate: '',
+  whatsappNumber: '',
+  whatsappOptIn: false,
+  clientCountry: '',
+  referralSource: ''
 };
 
 function loadRitualConfig() {
@@ -1132,7 +1210,7 @@ function updatePriceDisplay() {
   document.getElementById('priceBreakdown').textContent = breakdown;
 }
 
-/* -- Celestial background -- */
+/* ── Celestial background ── */
 function buildCelestialBg() {
   var bg = document.getElementById('celestialBg');
 
@@ -1151,18 +1229,18 @@ function buildCelestialBg() {
 
   // Celestial icons (moons, planets, stars, constellations)
   var icons = [
-    { symbol: '\u263D', x: '12%', y: '15%', size: '32px', delay: '0s' },
-    { symbol: '\u2726', x: '85%', y: '25%', size: '18px', delay: '3s' },
-    { symbol: '\u2727', x: '5%', y: '55%', size: '22px', delay: '6s' },
-    { symbol: '\u2643', x: '90%', y: '65%', size: '26px', delay: '2s' },
-    { symbol: '\u2640', x: '18%', y: '80%', size: '20px', delay: '8s' },
-    { symbol: '\u2609', x: '75%', y: '10%', size: '24px', delay: '4s' },
-    { symbol: '\u2641', x: '50%', y: '90%', size: '18px', delay: '7s' },
-    { symbol: '\u2644', x: '30%', y: '40%', size: '28px', delay: '1s' },
-    { symbol: '\u22C6', x: '65%', y: '50%', size: '16px', delay: '5s' },
-    { symbol: '\u2736', x: '40%', y: '70%', size: '14px', delay: '9s' },
-    { symbol: '\u2729', x: '8%', y: '35%', size: '20px', delay: '11s' },
-    { symbol: '\u2605', x: '92%', y: '45%', size: '16px', delay: '10s' }
+    { symbol: '☽', x: '12%', y: '15%', size: '32px', delay: '0s' },
+    { symbol: '✦', x: '85%', y: '25%', size: '18px', delay: '3s' },
+    { symbol: '✧', x: '5%', y: '55%', size: '22px', delay: '6s' },
+    { symbol: '♃', x: '90%', y: '65%', size: '26px', delay: '2s' },
+    { symbol: '♀', x: '18%', y: '80%', size: '20px', delay: '8s' },
+    { symbol: '☉', x: '75%', y: '10%', size: '24px', delay: '4s' },
+    { symbol: '♁', x: '50%', y: '90%', size: '18px', delay: '7s' },
+    { symbol: '♄', x: '30%', y: '40%', size: '28px', delay: '1s' },
+    { symbol: '⋆', x: '65%', y: '50%', size: '16px', delay: '5s' },
+    { symbol: '✶', x: '40%', y: '70%', size: '14px', delay: '9s' },
+    { symbol: '✩', x: '8%', y: '35%', size: '20px', delay: '11s' },
+    { symbol: '★', x: '92%', y: '45%', size: '16px', delay: '10s' }
   ];
 
   icons.forEach(function(ic) {
@@ -1333,6 +1411,12 @@ function toggleGift() {
   sendHeight();
 }
 
+function toggleWhatsappOptIn() {
+  var toggle = document.getElementById('toggleWhatsapp');
+  toggle.classList.toggle('active');
+  selections.whatsappOptIn = toggle.classList.contains('active');
+}
+
 function goToStep(step) {
   // Validate step 0
   if (step > 0 && selections.addProduct && !selections.collection) {
@@ -1389,6 +1473,10 @@ function gatherFormData() {
     selections.giftEmail = document.getElementById('giftEmail').value.trim();
     selections.giftMessage = document.getElementById('giftMessage').value.trim();
   }
+  selections.birthDate = document.getElementById('birthDate').value || '';
+  selections.whatsappNumber = document.getElementById('whatsappNumber').value.trim();
+  selections.clientCountry = document.getElementById('clientCountry').value || '';
+  selections.referralSource = document.getElementById('referralSource').value || '';
 }
 
 function populateSummary() {
@@ -1489,7 +1577,12 @@ function submitAndCheckout() {
     shipState: selections.shipState,
     shipZip: selections.shipZip,
     shipCountry: selections.shipCountry,
-    totalAmount: getTotal()
+    totalAmount: getTotal(),
+    birthDate: selections.birthDate,
+    whatsappNumber: selections.whatsappNumber,
+    whatsappOptIn: selections.whatsappOptIn,
+    clientCountry: selections.clientCountry,
+    referralSource: selections.referralSource
   };
 
   // Save selections, then create Stripe checkout
@@ -1507,10 +1600,7 @@ function submitAndCheckout() {
       body: JSON.stringify({
         memberId: memberId,
         email: email,
-        ritual: selections.ritual,
-        addProduct: selections.addProduct,
-        anchorObject: selections.anchorObject,
-        anchorPrice: selections.anchorPrice
+        ritual: selections.ritual
       })
     });
   })
