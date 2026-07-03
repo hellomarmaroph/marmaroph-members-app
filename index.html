@@ -142,7 +142,7 @@
   .mobile-menu .sb-logout { margin: 8px 20px 16px; width: calc(100% - 40px); }
 
   /* ══ MAIN ══ */
-  .main { flex: 1; overflow-y: auto; }
+  .main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; will-change: scroll-position; }
   .section { display: none; }
   .section.active { display: block; }
 
@@ -502,6 +502,25 @@
     .mascot-lumi { width: 80px; bottom: 60px; right: 5px; }
     .mascot-marmi { width: 70px; top: 30px; left: 5px; }
   }
+
+  @media (max-width: 768px) {
+    .mascot-float { animation: mascotFloatIn 1.8s ease-out forwards !important; }
+    .floating-flower { animation: floatIn 1s ease-out forwards !important; filter: none !important; }
+    .sb-cosmos .star-twinkle { animation: none !important; opacity: 0.2 !important; }
+    .glass { background: rgba(255,255,255,0.92) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+    .glass-teal { background: rgba(4,65,71,0.85) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+    .home-rituals-header { background: rgba(255,255,255,0.95) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+    .hr-card { background: rgba(255,255,255,0.95) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+    .cm-card { background: rgba(255,255,255,0.95) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+    .quiz-option { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.95) !important; }
+    .circle-card { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.95) !important; }
+    .cele-post { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.92) !important; }
+    .form-input { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.95) !important; }
+    .dark-ritual-card, .dark-sub-card, .dark-quiz-card { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(4,65,71,0.85) !important; }
+  }
+
+  .floating-flower, .mascot-float { transform: translateZ(0); }
+  .main { transform: translateZ(0); }
 </style>
 </head>
 <body>
