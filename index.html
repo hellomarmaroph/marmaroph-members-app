@@ -536,7 +536,7 @@
   <div class="mobile-header">
     <button class="menu-btn" id="menuBtn">&#9776;</button>
     <div class="mobile-title">MARMAROPH</div>
-    <div class="mobile-av" id="mobileAv"><span id="mobileAvInit">MA</span></div>
+    <div class="mobile-av" id="mobileAv" onclick="document.getElementById('avatarInput').click()"><span id="mobileAvInit">MA</span></div>
     <div class="mobile-menu" id="mobileMenu">
       <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Home Sanctuary Club</div>
       <div class="sb-item" onclick="navigate('rituals',this)"><span class="sb-icon">&#10022;</span> My Rituals</div>
@@ -1408,7 +1408,7 @@ var now=new Date();var monthLabel=months[now.getMonth()]+' '+now.getFullYear();
 document.getElementById('homeMonth').textContent=monthLabel;
 document.getElementById('ritualsMonth').textContent=monthLabel;
 
-setTimeout(function(){if(!memberData.memberId){document.getElementById('loading').classList.add('hide');document.getElementById('app').classList.add('ready');}},3000);
+setTimeout(function(){if(!memberData.memberId){document.getElementById('loading').classList.add('hide');document.getElementById('app').classList.add('ready');}},1500);
 </script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </body>
