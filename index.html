@@ -1408,7 +1408,7 @@ var now=new Date();var monthLabel=months[now.getMonth()]+' '+now.getFullYear();
 document.getElementById('homeMonth').textContent=monthLabel;
 document.getElementById('ritualsMonth').textContent=monthLabel;
 
-setTimeout(function(){if(!memberData.memberId){document.getElementById('loading').classList.add('hide');document.getElementById('app').classList.add('ready');}},1500);
+setTimeout(function(){document.getElementById('loading').classList.add('hide');document.getElementById('app').classList.add('ready');},1500);
 </script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </body>
