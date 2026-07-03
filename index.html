@@ -39,7 +39,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; font-family: var(--fb); color: var(--text); background: var(--bg); overflow: hidden; }
+  html, body { height: 100%; font-family: var(--fb); color: var(--text); background: var(--bg); }
 
   .loading {
     position: fixed; inset: 0;
@@ -57,7 +57,7 @@
   @keyframes goldPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
   .loading-sub { font-size: 10px; font-weight: 300; color: var(--sage); letter-spacing: 2px; margin-top: 8px; opacity: 0.5; }
 
-  .app { display: none; height: 100%; overflow: hidden; }
+  .app { display: none; height: 100%; }
   .app.ready { display: flex; }
 
   /* ══ SIDEBAR ══ */
@@ -142,7 +142,7 @@
   .mobile-menu .sb-logout { margin: 8px 20px 16px; width: calc(100% - 40px); }
 
   /* ══ MAIN ══ */
-  .main { flex: 1; overflow-y: scroll; -webkit-overflow-scrolling: touch; will-change: scroll-position; touch-action: pan-y; overscroll-behavior: contain; }
+  .main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .section { display: none; }
   .section.active { display: block; }
 
@@ -482,8 +482,7 @@
 
   /* ══ RESPONSIVE ══ */
   @media (max-width: 768px) {
-    .app.ready { flex-direction: column; height: 100vh; height: 100dvh; }
-    .main { height: 0; min-height: 0; flex: 1 1 0; }
+    .app.ready { flex-direction: column; }
     .sidebar { display: none; }
     .mobile-header { display: flex; }
     .mobile-menu { display: block; }
@@ -1054,7 +1053,8 @@ function goToRitual(){
   var base = 'https://hellomarmaroph.github.io/marmaroph-members-app/';
   var ritualUrl = base + (r ? r.html : 'marmaroph-ritual-mindful-eating.html');
   if (memberData.memberId) ritualUrl += '?memberId=' + memberData.memberId;
-  window.location.href = ritualUrl;
+  postToParent({ type: 'navigate', url: ritualUrl });
+  setTimeout(function(){ window.open(ritualUrl, '_top'); }, 300);
 }
 function closeRitualEmbed(){
   var embed = document.getElementById('ritualEmbed');
