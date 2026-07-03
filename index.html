@@ -1053,7 +1053,7 @@ function goToRitual(){
   var base = 'https://hellomarmaroph.github.io/marmaroph-members-app/';
   var ritualUrl = base + (r ? r.html : 'marmaroph-ritual-mindful-eating.html');
   if (memberData.memberId) ritualUrl += '?memberId=' + memberData.memberId;
-  window.open(ritualUrl, '_blank');
+  window.location.href = ritualUrl;
 }
 function closeRitualEmbed(){
   var embed = document.getElementById('ritualEmbed');
