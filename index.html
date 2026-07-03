@@ -968,7 +968,7 @@
     </div>
 
     <!-- ═══ RITUAL EMBED ═══ -->
-    <div id="ritualEmbed" style="display:none;position:absolute;top:0;left:0;width:100%;height:100vh;z-index:50;background:var(--bg)">
+    <div id="ritualEmbed" style="display:none;position:absolute;top:0;left:0;width:100%;min-height:100%;z-index:50;background:var(--bg)">
       <div style="position:sticky;top:0;z-index:51;display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--em2);border-bottom:1px solid rgba(159,214,235,0.15)">
         <button onclick="closeRitualEmbed()" style="background:none;border:none;color:var(--sky);font-size:14px;cursor:pointer;font-family:var(--fb);font-weight:400;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.background='rgba(159,214,235,0.1)'" onmouseout="this.style.background='none'">&#8592; Back to Dashboard</button>
         <span style="font-family:var(--fh);font-size:15px;font-weight:500;color:var(--sky);letter-spacing:0.5px" id="ritualEmbedTitle">Mindful Eating</span>
@@ -1054,12 +1054,12 @@ function goToRitual(){
   if (memberData.memberId) ritualUrl += '?memberId=' + memberData.memberId;
   var embed = document.getElementById('ritualEmbed');
   var frame = document.getElementById('ritualEmbedFrame');
-  var scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-  embed.style.top = scrollY + 'px';
-  embed.style.height = window.innerHeight + 'px';
+  embed.style.top = '0';
+  embed.style.height = '100%';
   frame.src = ritualUrl;
   embed.style.display = 'block';
   document.body.style.overflow = 'hidden';
+  postToParent({ type: 'ritualOpen' });
 }
 function closeRitualEmbed(){
   var embed = document.getElementById('ritualEmbed');
@@ -1067,6 +1067,8 @@ function closeRitualEmbed(){
   embed.style.display = 'none';
   document.body.style.overflow = '';
   document.getElementById('ritualEmbedFrame').src = '';
+  postToParent({ type: 'ritualClose' });
+  sendHeight();
 }
 
 var RITUALS = {
