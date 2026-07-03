@@ -485,7 +485,7 @@
     html, body { overflow: hidden; }
     .app { height: 100vh; height: 100dvh; }
     .app.ready { flex-direction: column; }
-    .main { min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .main { min-height: 0; overflow-y: auto; }
     .sidebar { display: none; }
     .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
@@ -1430,10 +1430,11 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
     setTimeout(sendHeight, 1000);
     setTimeout(sendHeight, 3000);
   }
-  setTimeout(showApp, 1500);
-  window.addEventListener('load', function() { setTimeout(showApp, 500); });
+  setTimeout(showApp, 800);
+  if (document.readyState === 'complete') showApp();
+  else window.addEventListener('load', function() { showApp(); });
   document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'visible') setTimeout(showApp, 200);
+    if (document.visibilityState === 'visible') showApp();
   });
 })();
 </script>
