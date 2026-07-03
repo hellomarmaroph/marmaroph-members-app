@@ -48,7 +48,7 @@
     background: var(--em2); z-index: 9999;
     transition: opacity 0.6s;
   }
-  .loading.hide { opacity: 0; pointer-events: none; }
+  .loading.hide { opacity: 0; pointer-events: none; display: none; }
   .loading-brand {
     font-family: var(--fh); font-size: 28px; font-weight: 300;
     color: var(--sky); letter-spacing: 4px;
@@ -484,8 +484,8 @@
   @media (max-width: 768px) {
     html, body { height: auto !important; overflow: visible !important; }
     .app, .app.ready { height: auto !important; display: block !important; }
-    .mobile-header { position: sticky; top: 0; z-index: 100; }
-    .main { overflow: visible !important; height: auto !important; flex: none !important; }
+    .mobile-header { position: relative; top: auto; z-index: 100; }
+    .main { overflow: visible !important; height: auto !important; flex: none !important; -webkit-overflow-scrolling: auto !important; }
     .sidebar { display: none; }
     .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
