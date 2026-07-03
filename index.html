@@ -482,9 +482,12 @@
 
   /* ══ RESPONSIVE ══ */
   @media (max-width: 768px) {
+    html, body { overflow: hidden; }
+    .app { height: 100vh; height: 100dvh; }
     .app.ready { flex-direction: column; }
+    .main { min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .sidebar { display: none; }
-    .mobile-header { display: flex; }
+    .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
     .home-rituals, .dark-rituals-content { padding: 0 16px 20px; }
     .pillar-hero { padding: 24px 16px 20px; }
@@ -985,7 +988,12 @@ var memberData = {};
 
 function postToParent(msg) { if (window.parent && window.parent !== window) window.parent.postMessage(msg, '*'); }
 var ritualIsOpen = false;
-function sendHeight() { if (ritualIsOpen) return; postToParent({ type: 'membersHeight', height: document.documentElement.scrollHeight }); }
+var isMobile = window.innerWidth <= 768;
+function sendHeight() {
+  if (ritualIsOpen) return;
+  if (isMobile) return;
+  postToParent({ type: 'membersHeight', height: document.documentElement.scrollHeight });
+}
 
 window.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'memberData') { memberData = e.data; initApp(); }
@@ -1427,8 +1435,6 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
   document.addEventListener('visibilitychange', function() {
     if (document.visibilityState === 'visible') setTimeout(showApp, 200);
   });
-  // Keep sending height periodically in case content changes
-  setInterval(sendHeight, 2000);
 })();
 </script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
