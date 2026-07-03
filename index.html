@@ -1409,7 +1409,7 @@ var now=new Date();var monthLabel=months[now.getMonth()]+' '+now.getFullYear();
 document.getElementById('homeMonth').textContent=monthLabel;
 document.getElementById('ritualsMonth').textContent=monthLabel;
 
-// Force rendering on mobile Safari inside iframes
+// Force show + resize on mobile (even if memberData hasn't arrived from Wix)
 (function(){
   var shown = false;
   function showApp() {
@@ -1417,39 +1417,18 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
     shown = true;
     document.getElementById('loading').classList.add('hide');
     document.getElementById('app').classList.add('ready');
+    sendHeight();
+    setTimeout(sendHeight, 300);
+    setTimeout(sendHeight, 1000);
+    setTimeout(sendHeight, 3000);
   }
-  // Strategy 1: show after 1.5s regardless
   setTimeout(showApp, 1500);
-  // Strategy 2: force layout/paint immediately on load
-  if (document.readyState === 'complete') {
-    setTimeout(showApp, 300);
-  } else {
-    window.addEventListener('load', function() { setTimeout(showApp, 300); });
-  }
-  // Strategy 3: force repaint to wake up mobile Safari iframe rendering
-  function forceRepaint() {
-    document.body.style.transform = 'translateZ(0)';
-    document.body.offsetHeight;
-    requestAnimationFrame(function() {
-      document.body.style.transform = '';
-    });
-  }
-  setTimeout(forceRepaint, 100);
-  setTimeout(forceRepaint, 500);
-  setTimeout(forceRepaint, 1000);
-  // Strategy 4: visibility change (when tab/iframe becomes visible)
+  window.addEventListener('load', function() { setTimeout(showApp, 500); });
   document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'visible') { forceRepaint(); setTimeout(showApp, 200); }
+    if (document.visibilityState === 'visible') setTimeout(showApp, 200);
   });
-  // Strategy 5: IntersectionObserver to detect when iframe enters viewport
-  if (window.IntersectionObserver) {
-    var obs = new IntersectionObserver(function(entries) {
-      if (entries[0] && entries[0].isIntersecting) { forceRepaint(); setTimeout(showApp, 200); obs.disconnect(); }
-    }, { threshold: 0.1 });
-    obs.observe(document.documentElement);
-  }
-  // Strategy 6: request parent to scroll to trigger paint
-  try { window.parent.postMessage({ type: 'wakeUp' }, '*'); } catch(e) {}
+  // Keep sending height periodically in case content changes
+  setInterval(sendHeight, 2000);
 })();
 </script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
