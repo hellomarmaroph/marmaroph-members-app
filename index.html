@@ -988,9 +988,19 @@ var memberData = {};
 
 function postToParent(msg) { if (window.parent && window.parent !== window) window.parent.postMessage(msg, '*'); }
 var ritualIsOpen = false;
+var lastSentHeight = 0;
+var heightTimer = null;
 function sendHeight() {
   if (ritualIsOpen) return;
-  postToParent({ type: 'membersHeight', height: document.documentElement.scrollHeight });
+  if (heightTimer) return;
+  heightTimer = setTimeout(function() {
+    heightTimer = null;
+    var h = document.documentElement.scrollHeight;
+    if (h > lastSentHeight) {
+      lastSentHeight = h;
+      postToParent({ type: 'membersHeight', height: h });
+    }
+  }, 300);
 }
 
 window.addEventListener('message', function(e) {
@@ -1433,17 +1443,13 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
   window.addEventListener('focus', function() { sendHeight(); });
   window.addEventListener('pageshow', function() { sendHeight(); });
 
-  // Send height immediately and keep synced
+  // Send height once content is ready, then let ResizeObserver handle changes
   sendHeight();
-  setTimeout(sendHeight, 100);
-  setTimeout(sendHeight, 300);
-  setTimeout(sendHeight, 600);
   setTimeout(sendHeight, 1000);
-  setTimeout(sendHeight, 2000);
-  setTimeout(sendHeight, 4000);
-  // ResizeObserver keeps height synced as content changes
+  setTimeout(sendHeight, 3000);
   if (window.ResizeObserver) {
-    new ResizeObserver(function() { sendHeight(); }).observe(document.body);
+    var ro = new ResizeObserver(function() { sendHeight(); });
+    ro.observe(document.body);
   }
 })();
 </script>
