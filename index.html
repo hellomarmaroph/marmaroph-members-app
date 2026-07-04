@@ -522,12 +522,8 @@
 
   .floating-flower, .mascot-float { transform: translateZ(0); }
 
-  /* iOS iframe fix: make BODY the scroll container, no nested overflow */
-  .ios-device { height: 100vh !important; overflow: hidden !important; }
-  .ios-device body { height: 100vh !important; overflow-y: scroll !important; -webkit-overflow-scrolling: touch !important; }
-  .ios-device .app, .ios-device .app.ready { height: auto !important; overflow: visible !important; }
+  /* iOS iframe fix: remove nested scroll container, let iframe scroll natively */
   .ios-device .main { overflow: visible !important; height: auto !important; flex: none !important; }
-  .ios-device .sidebar { position: sticky; top: 0; align-self: flex-start; }
 </style>
 <script>if(/iPhone|iPad|iPod/i.test(navigator.userAgent))document.documentElement.classList.add('ios-device');</script>
 </head>
