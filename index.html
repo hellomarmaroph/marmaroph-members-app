@@ -482,10 +482,11 @@
 
   /* ══ RESPONSIVE ══ */
   @media (max-width: 768px) {
-    html, body { height: 100% !important; overflow: hidden !important; }
-    .app, .app.ready { height: 100% !important; display: flex !important; flex-direction: column !important; }
+    html { height: 100% !important; overflow: hidden !important; }
+    body { height: 100% !important; overflow: hidden !important; position: fixed !important; width: 100% !important; top: 0; left: 0; }
+    .app, .app.ready { position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; display: flex !important; flex-direction: column !important; }
     .mobile-header { position: relative; top: auto; z-index: 100; flex-shrink: 0; }
-    .main { overflow-y: auto !important; height: 100% !important; flex: 1 1 auto !important; -webkit-overflow-scrolling: touch !important; }
+    .main { overflow-y: scroll !important; flex: 1 !important; min-height: 0 !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior: contain !important; }
     .sidebar { display: none; }
     .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
@@ -1044,7 +1045,7 @@ function loadDashboard() {
   fetch(API+'/memberDashboard?memberId='+memberData.memberId).then(function(r){return r.json()}).then(function(d) {
     if(d.profile){document.getElementById('profileFirst').value=d.profile.firstName||'';document.getElementById('profileLast').value=d.profile.lastName||'';document.getElementById('profileEmail').value=d.profile.email||memberData.loginEmail||'';document.getElementById('profilePhone').value=d.profile.phone||'';}
     if(d.address){document.getElementById('addrName').value=d.address.name||'';document.getElementById('addrStreet').value=d.address.street||'';document.getElementById('addrCity').value=d.address.city||'';document.getElementById('addrState').value=d.address.state||'';document.getElementById('addrZip').value=d.address.zip||'';}
-    if(d.progress){var p=d.progress;if(p.currentRitual){var name=formatRitualName(p.currentRitual);document.getElementById('homeCurrentName').textContent=name;document.getElementById('ritualsCurrentName').textContent=name;document.getElementById('subRitual').textContent=name;document.getElementById('ritualEmbedTitle').textContent=name;memberData.currentRitual=p.currentRitual;}memberData.completedRituals=p.completedRituals||[];var comp=memberData.completedRituals.length;document.getElementById('subCompleted').textContent=comp+' rituals';['home','rituals'].forEach(function(px){document.getElementById(px+'ProgressLabel').textContent=comp+' OF 11 RITUALS';document.getElementById(px+'ProgressFill').style.width=Math.max(5,(comp/11)*100)+'%';});if(p.cycleStartDate){var dt=new Date(p.cycleStartDate);document.getElementById('subStart').textContent=dt.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}if(!p.subscriptionActive){document.getElementById('subBadge').innerHTML='<span class="badge" style="background:rgba(192,57,43,0.08);color:#922b20">Inactive</span>';document.getElementById('subStatus').textContent='Inactive';}unlockRitualCards(p.currentRitual, p.completedRituals||[]);}
+    if(d.progress){var p=d.progress;if(p.currentRitual&&p.subscriptionActive){var name=formatRitualName(p.currentRitual);document.getElementById('homeCurrentName').textContent=name;document.getElementById('ritualsCurrentName').textContent=name;document.getElementById('subRitual').textContent=name;document.getElementById('ritualEmbedTitle').textContent=name;memberData.currentRitual=p.currentRitual;}memberData.completedRituals=p.completedRituals||[];var comp=memberData.completedRituals.length;document.getElementById('subCompleted').textContent=comp+' rituals';['home','rituals'].forEach(function(px){document.getElementById(px+'ProgressLabel').textContent=comp+' OF 11 RITUALS';document.getElementById(px+'ProgressFill').style.width=Math.max(5,(comp/11)*100)+'%';});if(p.cycleStartDate){var dt=new Date(p.cycleStartDate);document.getElementById('subStart').textContent=dt.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}if(!p.subscriptionActive){document.getElementById('subBadge').innerHTML='<span class="badge" style="background:rgba(192,57,43,0.08);color:#922b20">Inactive</span>';document.getElementById('subStatus').textContent='Inactive';lockAllRituals();}else{unlockRitualCards(p.currentRitual, p.completedRituals||[]);}}
     if(d.orders&&d.orders.length>0){var html='';d.orders.forEach(function(o){var date=o.date?new Date(o.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';html+='<tr style="border-bottom:0.5px solid rgba(4,65,71,0.04)"><td style="padding:8px 10px;font-weight:300">'+date+'</td><td style="padding:8px 10px;font-weight:300">'+(o.ritual||'')+'</td><td style="padding:8px 10px;font-weight:300">$'+(o.amount||0).toFixed(2)+'</td><td style="padding:8px 10px"><span class="badge badge-active">'+(o.status||'pending')+'</span></td></tr>';});document.getElementById('ordersTbody').innerHTML=html;}else{document.getElementById('ordersTbody').innerHTML='<tr><td colspan="4" style="padding:20px;text-align:center;color:var(--muted);font-weight:300;font-size:12px">No orders yet</td></tr>';}
     sendHeight();
   }).catch(function(err){console.error('Dashboard load error:',err);});
@@ -1066,7 +1067,8 @@ function navigate(sec,el){
 
 function cmTab(tab,btn){document.querySelectorAll('.cm-panel').forEach(function(p){p.classList.remove('active');});document.getElementById('cm-'+tab).classList.add('active');document.querySelectorAll('.cm-tab-btn').forEach(function(b){b.classList.remove('active');});if(btn)btn.classList.add('active');}
 function goToRitual(){
-  var slug = memberData.currentRitual || 'mindful-eating';
+  var slug = memberData.currentRitual;
+  if (!slug) { showToast('Please subscribe to a ritual first.'); return; }
   var r = RITUALS[slug];
   var base = 'https://hellomarmaroph.github.io/marmaroph-members-app/';
   var ritualUrl = base + (r ? r.html : 'marmaroph-ritual-mindful-eating.html');
@@ -1174,6 +1176,32 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
         }
       }
     });
+  });
+}
+
+function lockAllRituals() {
+  memberData.currentRitual = null;
+  var homeCard = document.getElementById('homeCurrentCard');
+  if (homeCard) {
+    homeCard.classList.remove('current');
+    homeCard.classList.add('locked');
+    homeCard.onclick = function() { selectRitual('mindful-eating'); };
+    homeCard.style.cursor = 'pointer';
+    var right = homeCard.querySelector('.ritual-right');
+    if (right) right.innerHTML = '<span class="status-tag status-locked">LOCKED</span>';
+  }
+  document.querySelectorAll('.ritual-card-light, .ritual-card-dark').forEach(function(card) {
+    if (!card.classList.contains('locked')) {
+      card.classList.remove('current', 'completed');
+      card.classList.add('locked');
+      card.style.cursor = 'pointer';
+      var h3 = card.querySelector('h3');
+      var slug = h3 ? Object.keys(RITUALS).find(function(k) { return RITUALS[k].name === h3.textContent; }) : null;
+      if (slug) card.onclick = function() { selectRitual(slug); };
+      var r = card.querySelector('.ritual-right');
+      var isDark = card.classList.contains('ritual-card-dark');
+      if (r) r.innerHTML = '<span class="status-tag '+(isDark?'dark-status-locked':'status-locked')+'">LOCKED</span>';
+    }
   });
 }
 
