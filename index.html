@@ -1129,7 +1129,8 @@ function showInstallPrompt() {
       + '<button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:4px">✕</button>';
   } else {
     banner.innerHTML = '<div style="width:44px;height:44px;min-width:44px;border-radius:12px;background:#0a6b72;display:flex;align-items:center;justify-content:center;font-family:Cormorant Garamond,serif;font-size:18px;color:#e9dcb8;font-weight:500">M</div>'
-      + '<div style="flex:1"><div style="font-size:13px;font-weight:500;color:#e8f4f2;margin-bottom:2px">Add Marmaroph to Home Screen</div><div style="font-size:11px;color:rgba(255,255,255,.5);font-weight:300">Tap <span style="font-size:15px;vertical-align:middle">⎋</span> then <strong>"Add to Home Screen"</strong></div></div>'
+      + '<div style="flex:1"><div style="font-size:13px;font-weight:500;color:#e8f4f2;margin-bottom:2px">Add Marmaroph to Home Screen</div><div style="font-size:11px;color:rgba(255,255,255,.5);font-weight:300">Open your sanctuary with one tap</div></div>'
+      + '<button onclick="showIOSSteps()" style="padding:8px 16px;background:#e9dcb8;color:#044147;border:none;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">INSTALL</button>'
       + '<button onclick="dismissInstall()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:4px">✕</button>';
   }
   document.body.appendChild(banner);
@@ -1140,6 +1141,26 @@ function doInstall() {
     deferredInstallPrompt.prompt();
     deferredInstallPrompt.userChoice.then(function() { dismissInstall(); });
   }
+}
+
+function showIOSSteps() {
+  dismissInstall();
+  var overlay = document.createElement('div');
+  overlay.id = 'iosSteps';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;animation:fadeIn .3s ease';
+  overlay.innerHTML = '<div style="max-width:320px;text-align:center">'
+    + '<div style="font-family:Cormorant Garamond,serif;font-size:24px;color:#e9dcb8;margin-bottom:24px">Install Marmaroph</div>'
+    + '<div style="display:flex;flex-direction:column;gap:20px;margin-bottom:30px">'
+    + '<div style="display:flex;align-items:center;gap:14px;text-align:left"><div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:#0a6b72;display:flex;align-items:center;justify-content:center;color:#e9dcb8;font-weight:600;font-size:14px">1</div><div style="color:#fff;font-size:13px;line-height:1.4">Tap the <strong>Share</strong> button <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin:0 2px"><path d="M12 2l4 4h-3v8h-2V6H8l4-4z" fill="#e9dcb8"/><path d="M4 14v6h16v-6h-2v4H6v-4H4z" fill="#e9dcb8"/></svg> at the bottom of Safari</div></div>'
+    + '<div style="display:flex;align-items:center;gap:14px;text-align:left"><div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:#0a6b72;display:flex;align-items:center;justify-content:center;color:#e9dcb8;font-weight:600;font-size:14px">2</div><div style="color:#fff;font-size:13px;line-height:1.4">Scroll down and tap <strong>"Add to Home Screen"</strong></div></div>'
+    + '<div style="display:flex;align-items:center;gap:14px;text-align:left"><div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:#0a6b72;display:flex;align-items:center;justify-content:center;color:#e9dcb8;font-weight:600;font-size:14px">3</div><div style="color:#fff;font-size:13px;line-height:1.4">Tap <strong>"Add"</strong> in the top right corner</div></div>'
+    + '</div>'
+    + '<button onclick="document.getElementById(\'iosSteps\').remove()" style="padding:10px 28px;background:#e9dcb8;color:#044147;border:none;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer">GOT IT</button>'
+    + '</div>';
+  var s = document.createElement('style');
+  s.textContent = '@keyframes fadeIn{from{opacity:0}to{opacity:1}}';
+  document.head.appendChild(s);
+  document.body.appendChild(overlay);
 }
 
 function dismissInstall() {
