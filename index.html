@@ -984,7 +984,8 @@
 var API = 'https://www.marmaroph.com/_functions';
 var memberData = {};
 
-function postToParent(msg) { if (window.parent && window.parent !== window) window.parent.postMessage(msg, '*'); }
+var isInIframe = (window.parent && window.parent !== window);
+function postToParent(msg) { if (isInIframe) window.parent.postMessage(msg, '*'); }
 var ritualIsOpen = false;
 var lastSentHeight = 0;
 var heightTimer = null;
@@ -1006,6 +1007,30 @@ function sendHeight() {
 window.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'memberData') { memberData = e.data; initApp(); }
 });
+
+// When loaded directly (not in iframe), read member data from URL hash
+(function() {
+  if (window.location.hash && window.location.hash.length > 1) {
+    try {
+      var params = new URLSearchParams(window.location.hash.substring(1));
+      if (params.get('memberId')) {
+        memberData = {
+          type: 'memberData',
+          memberId: params.get('memberId') || '',
+          loginEmail: params.get('loginEmail') || '',
+          firstName: params.get('firstName') || '',
+          lastName: params.get('lastName') || '',
+          nickname: params.get('nickname') || '',
+          photo: params.get('photo') || '',
+          slug: params.get('slug') || '',
+          autoOpenRitual: params.get('autoOpenRitual') || '',
+          checkoutSuccess: params.get('checkoutSuccess') || ''
+        };
+        initApp();
+      }
+    } catch(e) {}
+  }
+})();
 
 function initApp() {
   var m = memberData;
@@ -1406,7 +1431,7 @@ function uploadAvatar(input){
   reader.readAsDataURL(file);
 }
 
-function doLogout(){postToParent({type:'logout'});}
+function doLogout(){if(isInIframe){postToParent({type:'logout'});}else{window.location.href='https://www.marmaroph.com/';}}
 
 function saveProfile(){var btn=document.getElementById('profileSaveBtn');btn.textContent='Saving...';fetch(API+'/updateProfile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:memberData.memberId,firstName:document.getElementById('profileFirst').value,lastName:document.getElementById('profileLast').value,phone:document.getElementById('profilePhone').value})}).then(function(){btn.textContent='Save changes';var msg=document.getElementById('profileMsg');msg.style.display='inline';setTimeout(function(){msg.style.display='none';},2500);}).catch(function(){btn.textContent='Save changes';});}
 
