@@ -482,11 +482,8 @@
 
   /* ══ RESPONSIVE ══ */
   @media (max-width: 768px) {
-    html { height: 100vh !important; overflow: hidden !important; }
-    body { height: 100vh !important; overflow: hidden !important; margin: 0 !important; }
-    .app, .app.ready { display: flex !important; flex-direction: column !important; height: 100vh !important; overflow: hidden !important; }
-    .mobile-header { flex-shrink: 0; z-index: 100; }
-    .main { flex: 1 1 0% !important; min-height: 0 !important; overflow-y: scroll !important; -webkit-overflow-scrolling: touch !important; }
+    .app, .app.ready { flex-direction: column !important; }
+    .mobile-header { position: sticky; top: 0; z-index: 100; }
     .sidebar { display: none; }
     .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
@@ -524,7 +521,14 @@
   }
 
   .floating-flower, .mascot-float { transform: translateZ(0); }
+
+  /* iOS iframe fix: remove nested scroll containers so the parent page scrolls */
+  .ios-device, .ios-device body { height: auto !important; overflow: visible !important; }
+  .ios-device .app, .ios-device .app.ready { height: auto !important; overflow: visible !important; }
+  .ios-device .main { overflow: visible !important; height: auto !important; flex: none !important; }
+  .ios-device .sidebar { position: sticky; top: 0; align-self: flex-start; }
 </style>
+<script>if(/iPhone|iPad|iPod/i.test(navigator.userAgent))document.documentElement.classList.add('ios-device');</script>
 </head>
 <body>
 
@@ -992,7 +996,6 @@ var lastSentHeight = 0;
 var heightTimer = null;
 var isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 function sendHeight() {
-  if (isMobileDevice) return;
   if (ritualIsOpen) return;
   if (heightTimer) return;
   heightTimer = setTimeout(function() {
@@ -1479,18 +1482,6 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
   if (window.ResizeObserver) {
     var ro = new ResizeObserver(function() { sendHeight(); });
     ro.observe(document.body);
-  }
-
-  // iOS iframe scroll fix — prevent overscroll bounce at edges of .main
-  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    var scrollEl = document.getElementById('mainArea');
-    scrollEl.addEventListener('touchstart', function(e) {
-      // Nudge away from edges so iOS allows the scroll gesture
-      var top = scrollEl.scrollTop;
-      var max = scrollEl.scrollHeight - scrollEl.clientHeight;
-      if (top <= 0) scrollEl.scrollTop = 1;
-      else if (top >= max) scrollEl.scrollTop = max - 1;
-    }, { passive: true });
   }
 })();
 </script>
