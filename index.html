@@ -522,8 +522,9 @@
 
   .floating-flower, .mascot-float { transform: translateZ(0); }
 
-  /* iOS iframe fix: remove nested scroll containers so the parent page scrolls */
-  .ios-device, .ios-device body { height: auto !important; overflow: visible !important; }
+  /* iOS iframe fix: make BODY the scroll container, no nested overflow */
+  .ios-device { height: 100vh !important; overflow: hidden !important; }
+  .ios-device body { height: 100vh !important; overflow-y: scroll !important; -webkit-overflow-scrolling: touch !important; }
   .ios-device .app, .ios-device .app.ready { height: auto !important; overflow: visible !important; }
   .ios-device .main { overflow: visible !important; height: auto !important; flex: none !important; }
   .ios-device .sidebar { position: sticky; top: 0; align-self: flex-start; }
@@ -996,6 +997,7 @@ var lastSentHeight = 0;
 var heightTimer = null;
 var isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 function sendHeight() {
+  if (isMobileDevice) return;
   if (ritualIsOpen) return;
   if (heightTimer) return;
   heightTimer = setTimeout(function() {
