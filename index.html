@@ -1026,6 +1026,7 @@ window.addEventListener('message', function(e) {
           autoOpenRitual: params.get('autoOpenRitual') || '',
           checkoutSuccess: params.get('checkoutSuccess') || ''
         };
+        window.history.replaceState(null, '', window.location.pathname);
         initApp();
       }
     } catch(e) {}
