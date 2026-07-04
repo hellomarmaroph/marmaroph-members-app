@@ -482,10 +482,11 @@
 
   /* ══ RESPONSIVE ══ */
   @media (max-width: 768px) {
-    html, body { height: auto !important; overflow: visible !important; position: static !important; width: 100% !important; }
-    .app, .app.ready { position: static !important; display: block !important; height: auto !important; overflow: visible !important; }
-    .mobile-header { position: sticky; top: 0; z-index: 100; }
-    .main { overflow: visible !important; height: auto !important; flex: none !important; }
+    html { height: 100% !important; overflow: hidden !important; }
+    body { height: 100% !important; overflow: hidden !important; margin: 0 !important; }
+    .app, .app.ready { display: flex !important; flex-direction: column !important; height: 100% !important; overflow: hidden !important; }
+    .mobile-header { flex-shrink: 0; z-index: 100; }
+    .main { flex: 1 1 0% !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
     .sidebar { display: none; }
     .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
@@ -991,6 +992,7 @@ var lastSentHeight = 0;
 var heightTimer = null;
 var isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 function sendHeight() {
+  if (isMobileDevice) return;
   if (ritualIsOpen) return;
   if (heightTimer) return;
   heightTimer = setTimeout(function() {
@@ -1477,6 +1479,29 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
   if (window.ResizeObserver) {
     var ro = new ResizeObserver(function() { sendHeight(); });
     ro.observe(document.body);
+  }
+
+  // iOS iframe scroll fix — manually handle touch scrolling on .main
+  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    var scrollEl = document.getElementById('mainArea');
+    var touchY = 0;
+    document.body.addEventListener('touchstart', function(e) {
+      touchY = e.touches[0].clientY;
+    }, { passive: true });
+    document.body.addEventListener('touchmove', function(e) {
+      var dy = touchY - e.touches[0].clientY;
+      touchY = e.touches[0].clientY;
+      var top = scrollEl.scrollTop;
+      var max = scrollEl.scrollHeight - scrollEl.clientHeight;
+      if (max <= 0) return;
+      // Clamp scroll to prevent rubber-band at edges
+      if ((top <= 0 && dy < 0) || (top >= max && dy > 0)) {
+        e.preventDefault();
+        return;
+      }
+      scrollEl.scrollTop += dy;
+      e.preventDefault();
+    }, { passive: false });
   }
 })();
 </script>
