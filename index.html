@@ -1005,11 +1005,24 @@ function sendHeight() {
 }
 
 window.addEventListener('message', function(e) {
-  if (e.data && e.data.type === 'memberData') { memberData = e.data; initApp(); }
+  if (e.data && e.data.type === 'memberData') { memberData = e.data; saveMemberData(); initApp(); }
 });
 
-// When loaded directly (not in iframe), read member data from URL hash
+function saveMemberData() {
+  try { localStorage.setItem('marmaroph_member', JSON.stringify(memberData)); } catch(e) {}
+}
+
+function loadSavedMember() {
+  try {
+    var saved = localStorage.getItem('marmaroph_member');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return null;
+}
+
+// When loaded directly (not in iframe), read member data from URL hash, localStorage, or show login prompt
 (function() {
+  // 1. Check URL hash (from Wix redirect)
   if (window.location.hash && window.location.hash.length > 1) {
     try {
       var params = new URLSearchParams(window.location.hash.substring(1));
@@ -1027,11 +1040,32 @@ window.addEventListener('message', function(e) {
           checkoutSuccess: params.get('checkoutSuccess') || ''
         };
         window.history.replaceState(null, '', window.location.pathname);
+        saveMemberData();
         initApp();
+        return;
       }
     } catch(e) {}
   }
+  // 2. Check localStorage (returning PWA user)
+  if (!isInIframe) {
+    var saved = loadSavedMember();
+    if (saved && saved.memberId) {
+      memberData = saved;
+      initApp();
+      return;
+    }
+    // 3. No data — show login prompt (only outside iframe)
+    var loader = document.getElementById('loading');
+    if (loader) {
+      loader.innerHTML = '<div style="text-align:center;padding:40px 20px"><div style="font-family:Cormorant Garamond,serif;font-size:22px;color:#e9dcb8;margin-bottom:8px;letter-spacing:2px">MARMAROPH</div><p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:24px;letter-spacing:2px">THE HOME SANCTUARY CLUB</p><p style="font-size:14px;color:rgba(255,255,255,.8);margin-bottom:24px;font-weight:300">Please log in to access your sanctuary</p><a href="https://www.marmaroph.com/members-area" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#0a6b72,#044147);color:#e8f4f2;border-radius:24px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px">LOG IN</a></div>';
+    }
+  }
 })();
+
+// Register service worker for PWA
+if ('serviceWorker' in navigator && !isInIframe) {
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
 
 function initApp() {
   var m = memberData;
@@ -1432,7 +1466,7 @@ function uploadAvatar(input){
   reader.readAsDataURL(file);
 }
 
-function doLogout(){if(isInIframe){postToParent({type:'logout'});}else{window.location.href='https://www.marmaroph.com/';}}
+function doLogout(){try{localStorage.removeItem('marmaroph_member');}catch(e){}if(isInIframe){postToParent({type:'logout'});}else{window.location.href='https://www.marmaroph.com/';}}
 
 function saveProfile(){var btn=document.getElementById('profileSaveBtn');btn.textContent='Saving...';fetch(API+'/updateProfile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:memberData.memberId,firstName:document.getElementById('profileFirst').value,lastName:document.getElementById('profileLast').value,phone:document.getElementById('profilePhone').value})}).then(function(){btn.textContent='Save changes';var msg=document.getElementById('profileMsg');msg.style.display='inline';setTimeout(function(){msg.style.display='none';},2500);}).catch(function(){btn.textContent='Save changes';});}
 
