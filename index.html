@@ -1185,6 +1185,7 @@ function loadDashboard() {
     applyDashboard(d);
   }).catch(function(err){
     console.error('Dashboard load error:', err);
+    showToast('API connection issue — using cached data');
     try {
       var cached = localStorage.getItem('marmaroph_dashboard');
       if (cached) { applyDashboard(JSON.parse(cached)); }
@@ -1209,7 +1210,7 @@ function navigate(sec,el){
 function cmTab(tab,btn){document.querySelectorAll('.cm-panel').forEach(function(p){p.classList.remove('active');});document.getElementById('cm-'+tab).classList.add('active');document.querySelectorAll('.cm-tab-btn').forEach(function(b){b.classList.remove('active');});if(btn)btn.classList.add('active');}
 function goToRitual(){
   var slug = memberData.currentRitual;
-  if (!slug) { showToast('Please subscribe to a ritual first.'); return; }
+  if (!slug) { showToast('No ritual found for member: ' + (memberData.loginEmail || memberData.memberId || 'unknown') + '. Please visit marmaroph.com/members-area on this device first.'); return; }
   var r = RITUALS[slug];
   var base = 'https://hellomarmaroph.github.io/marmaroph-members-app/';
   var ritualUrl = base + (r ? r.html : 'marmaroph-ritual-mindful-eating.html');
