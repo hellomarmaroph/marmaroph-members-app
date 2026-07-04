@@ -482,11 +482,11 @@
 
   /* ══ RESPONSIVE ══ */
   @media (max-width: 768px) {
-    html { height: 100% !important; overflow: hidden !important; }
-    body { height: 100% !important; overflow: hidden !important; margin: 0 !important; }
+    html { height: 100% !important; overflow: hidden !important; touch-action: none !important; }
+    body { height: 100% !important; overflow: hidden !important; margin: 0 !important; touch-action: none !important; }
     .app, .app.ready { display: flex !important; flex-direction: column !important; height: 100% !important; overflow: hidden !important; }
     .mobile-header { flex-shrink: 0; z-index: 100; }
-    .main { flex: 1 1 0% !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
+    .main { flex: 1 1 0% !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; touch-action: pan-y !important; }
     .sidebar { display: none; }
     .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
@@ -1493,12 +1493,11 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
       touchY = e.touches[0].clientY;
       var top = scrollEl.scrollTop;
       var max = scrollEl.scrollHeight - scrollEl.clientHeight;
+      // Always prevent default to stop iOS parent-page bounce
+      e.preventDefault();
       if (max <= 0) return;
-      // Clamp scroll to prevent rubber-band at edges
-      if ((top <= 0 && dy < 0) || (top >= max && dy > 0)) {
-        e.preventDefault();
-        return;
-      }
+      // Clamp scroll at edges
+      if ((top <= 0 && dy < 0) || (top >= max && dy > 0)) return;
       scrollEl.scrollTop += dy;
       e.preventDefault();
     }, { passive: false });
