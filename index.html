@@ -990,6 +990,7 @@ var lastSentHeight = 0;
 var heightTimer = null;
 var isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 function sendHeight() {
+  if (isMobileDevice) return;
   if (ritualIsOpen) return;
   if (heightTimer) return;
   heightTimer = setTimeout(function() {
@@ -1476,21 +1477,6 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
   if (window.ResizeObserver) {
     var ro = new ResizeObserver(function() { sendHeight(); });
     ro.observe(document.body);
-  }
-
-  // iOS: forward touch scroll gestures to the parent Wix page
-  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    var _ty = 0;
-    document.addEventListener('touchstart', function(e) {
-      _ty = e.touches[0].clientY;
-    }, { passive: true });
-    document.addEventListener('touchmove', function(e) {
-      var dy = _ty - e.touches[0].clientY;
-      _ty = e.touches[0].clientY;
-      if (Math.abs(dy) > 0) {
-        postToParent({ type: 'iframeScroll', dy: dy });
-      }
-    }, { passive: true });
   }
 })();
 </script>
