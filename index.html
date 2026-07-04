@@ -522,10 +522,18 @@
 
   .floating-flower, .mascot-float { transform: translateZ(0); }
 
-  /* iOS iframe fix: remove nested scroll container, let iframe scroll natively */
+  /* iOS iframe fix: body is the scroll container, no nested overflow divs */
+  .ios-device body { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; overscroll-behavior-y: contain !important; }
+  .ios-device .app, .ios-device .app.ready { height: auto !important; }
   .ios-device .main { overflow: visible !important; height: auto !important; flex: none !important; }
 </style>
-<script>if(/iPhone|iPad|iPod/i.test(navigator.userAgent))document.documentElement.classList.add('ios-device');</script>
+<script>
+if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){
+  document.documentElement.classList.add('ios-device');
+  // Lock body to exact pixel height so iOS address bar changes don't reset scroll
+  document.body.style.height=window.innerHeight+'px';
+}
+</script>
 </head>
 <body>
 
