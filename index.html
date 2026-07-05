@@ -1090,7 +1090,12 @@ function loadSavedMember() {
     // 3. No data — show login prompt (only outside iframe)
     var loader = document.getElementById('loading');
     if (loader) {
-      loader.innerHTML = '<div style="text-align:center;padding:40px 20px"><div style="font-family:Cormorant Garamond,serif;font-size:22px;color:#e9dcb8;margin-bottom:8px;letter-spacing:2px">MARMAROPH</div><p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:24px;letter-spacing:2px">THE HOME SANCTUARY CLUB</p><p style="font-size:14px;color:rgba(255,255,255,.8);margin-bottom:24px;font-weight:300">Please log in to access your sanctuary</p><a href="https://www.marmaroph.com/members-area" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#0a6b72,#044147);color:#e8f4f2;border-radius:24px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px">LOG IN</a></div>';
+      var logoSrc = document.querySelector('.loading-logo') ? document.querySelector('.loading-logo').src : '';
+      loader.innerHTML = '<div style="text-align:center;padding:40px 20px">'
+        + (logoSrc ? '<img src="'+logoSrc+'" alt="Marmaroph" style="width:140px;margin-bottom:24px">' : '<div style="font-family:Cormorant Garamond,serif;font-size:22px;color:#044147;margin-bottom:8px;letter-spacing:2px">MARMAROPH</div>')
+        + '<p style="font-size:11px;color:#8a9a9c;margin-bottom:24px;letter-spacing:2px">THE HOME SANCTUARY CLUB</p>'
+        + '<p style="font-size:14px;color:#2a2a2a;margin-bottom:24px;font-weight:300">Please log in to access your sanctuary</p>'
+        + '<a href="https://www.marmaroph.com/members-area" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#0a6b72,#044147);color:#e8f4f2;border-radius:24px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px">LOG IN</a></div>';
     }
   }
 })();
