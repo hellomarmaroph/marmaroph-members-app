@@ -15,6 +15,22 @@ self.addEventListener('activate', function(e) {
   );
 });
 
+self.addEventListener('notificationclick', function(e) {
+  e.notification.close();
+  e.waitUntil(
+    clients.matchAll({type: 'window'}).then(function(list) {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].url.indexOf('marmaroph-members-app') !== -1 && 'focus' in list[i]) {
+          return list[i].focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow('./index.html');
+      }
+    })
+  );
+});
+
 self.addEventListener('fetch', function(e) {
   e.respondWith(
     fetch(e.request).then(function(res) {
