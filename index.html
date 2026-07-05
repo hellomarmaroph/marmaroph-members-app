@@ -1095,9 +1095,15 @@ function loadSavedMember() {
   }
 })();
 
-// Register service worker for PWA
+// Register service worker for PWA — force update check and auto-reload on new version
 if ('serviceWorker' in navigator && !isInIframe) {
-  navigator.serviceWorker.register('sw.js').catch(function(){});
+  var refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function() {
+    if (!refreshing) { refreshing = true; window.location.reload(); }
+  });
+  navigator.serviceWorker.register('sw.js').then(function(reg) {
+    reg.update();
+  }).catch(function(){});
 }
 
 function initApp() {
@@ -1864,6 +1870,14 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
   }
 })();
 </script>
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
+<script>
+if('serviceWorker' in navigator){
+  var refreshing=false;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(!refreshing){refreshing=true;window.location.reload();}
+  });
+  navigator.serviceWorker.register('sw.js').then(function(reg){reg.update();}).catch(function(){});
+}
+</script>
 </body>
 </html>
