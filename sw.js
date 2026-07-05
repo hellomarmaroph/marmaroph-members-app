@@ -1,7 +1,13 @@
-var CACHE = 'marmaroph-v8';
+var CACHE = 'marmaroph-v9';
 
 self.addEventListener('install', function(e) {
-  self.skipWaiting();
+  e.waitUntil(
+    caches.keys().then(function(names) {
+      return Promise.all(
+        names.map(function(n) { return caches.delete(n); })
+      );
+    }).then(function() { return self.skipWaiting(); })
+  );
 });
 
 self.addEventListener('activate', function(e) {
@@ -32,6 +38,14 @@ self.addEventListener('notificationclick', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).catch(function() {
+        return caches.match(e.request);
+      })
+    );
+    return;
+  }
   e.respondWith(
     fetch(e.request).then(function(res) {
       if (res.ok) {
