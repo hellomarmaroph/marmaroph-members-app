@@ -10,6 +10,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Marmaroph">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-startup-image" href="splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@200;300;400;500;600&display=swap');
 
@@ -1312,17 +1322,17 @@ function closeRitualEmbed(){
 }
 
 var RITUALS = {
-  'mindful-eating': { name:'Mindful Eating', desc:'Transform your relationship with food through 30 days of mindful nourishment practices.', pillars:['nourishment','regulate'], html:'marmaroph-ritual-mindful-eating.html' },
-  'energised-mornings': { name:'Energised Mornings', desc:'Design mornings that energise body and mind with movement and intention.', pillars:['movement','purpose'], html:'marmaroph-ritual-energised-mornings.html' },
-  'sanctuary-protection': { name:'Sanctuary Protection', desc:'Create boundaries that protect your peace and regulate your nervous system.', pillars:['regulate'], html:'marmaroph-ritual-sanctuary-protection.html' },
-  'im-enough': { name:'I\'m Enough', desc:'Reclaim your self-worth from the inside out through daily affirmations and reflection.', pillars:['purpose'], html:'marmaroph-ritual-im-enough.html' },
-  'sacred-connection': { name:'Sacred Connection with Partner', desc:'Strengthen and deepen the bond with your partner through intentional practices of presence, communication, and shared rituals.', pillars:['connection'], html:'marmaroph-ritual-sacred-connection.html' },
-  'kindred-bonds': { name:'Kindred Bonds™', desc:'Nurture the relationships that shape your world — friends, family, and colleagues. Build deeper trust, meaningful conversations, and a circle of support through intentional connection.', pillars:['connection'], html:'marmaroph-ritual-kindred-bonds.html' },
-  'quiet-abundance': { name:'Quiet Abundance', desc:'Wealth is not a destination you reach. It is a quiet structure you build — one intentional month at a time — underneath the life you are designing.', pillars:['purpose','regulate'], html:'marmaroph-ritual-quiet-abundance.html' },
-  'bloom-in-gratitude': { name:'Bloom in Gratitude™', desc:'Just as a flower blooms with care, your mind flourishes when nourished with gratitude. Unplug, color with intention, reflect on life\'s blessings, and create moments of calm.', pillars:['purpose','regulate'], html:'marmaroph-ritual-bloom-in-gratitude.html' },
-  'new-beginnings': { name:'The New Beginnings Ritual™', desc:'Your journey into motherhood begins with caring for yourself. Embrace this transformative time with nourishing rituals for body, mind, and the life growing within you.', pillars:['nourishment','regulate'], html:'marmaroph-ritual-new-beginnings.html' },
-  'nurtured-mother': { name:'The Nurtured Mother Ritual™', desc:'As you care for your baby, remember that you deserve care too. Restore your energy, reclaim moments of calm, and build a foundation of self-love in your new chapter.', pillars:['nourishment','regulate','connection'], html:'marmaroph-ritual-nurtured-mother.html' },
-  'healing-heart': { name:'The Healing Heart Ritual™', desc:'Healing takes time, and every small act of self-care is a step forward. Gently rebuild your sense of self, release what no longer serves you, and open your heart to new possibilities.', pillars:['regulate','purpose'], html:'marmaroph-ritual-healing-heart.html' }
+  'mindful-eating': { name:'Mindful Eating', desc:'Transform your relationship with food through 30 days of mindful nourishment practices.', pillars:['nourishment','regulate'], html:'marmaroph-ritual-mindful-eating.html', icon:'<img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>' },
+  'energised-mornings': { name:'Energised Mornings', desc:'Design mornings that energise body and mind with movement and intention.', pillars:['movement','purpose'], html:'marmaroph-ritual-energised-mornings.html', icon:'&#9728;' },
+  'sanctuary-protection': { name:'Sanctuary Protection', desc:'Create boundaries that protect your peace and regulate your nervous system.', pillars:['regulate'], html:'marmaroph-ritual-sanctuary-protection.html', icon:'&#128737;' },
+  'im-enough': { name:'I\'m Enough', desc:'Reclaim your self-worth from the inside out through daily affirmations and reflection.', pillars:['purpose'], html:'marmaroph-ritual-im-enough.html', icon:'&#128150;' },
+  'sacred-connection': { name:'Sacred Connection with Partner', desc:'Strengthen and deepen the bond with your partner through intentional practices of presence, communication, and shared rituals.', pillars:['connection'], html:'marmaroph-ritual-sacred-connection.html', icon:'&#128145;' },
+  'kindred-bonds': { name:'Kindred Bonds™', desc:'Nurture the relationships that shape your world — friends, family, and colleagues. Build deeper trust, meaningful conversations, and a circle of support through intentional connection.', pillars:['connection'], html:'marmaroph-ritual-kindred-bonds.html', icon:'&#129309;' },
+  'quiet-abundance': { name:'Quiet Abundance', desc:'Wealth is not a destination you reach. It is a quiet structure you build — one intentional month at a time — underneath the life you are designing.', pillars:['purpose','regulate'], html:'marmaroph-ritual-quiet-abundance.html', icon:'&#128176;' },
+  'bloom-in-gratitude': { name:'Bloom in Gratitude™', desc:'Just as a flower blooms with care, your mind flourishes when nourished with gratitude. Unplug, color with intention, reflect on life\'s blessings, and create moments of calm.', pillars:['purpose','regulate'], html:'marmaroph-ritual-bloom-in-gratitude.html', icon:'&#127804;' },
+  'new-beginnings': { name:'The New Beginnings Ritual™', desc:'Your journey into motherhood begins with caring for yourself. Embrace this transformative time with nourishing rituals for body, mind, and the life growing within you.', pillars:['nourishment','regulate'], html:'marmaroph-ritual-new-beginnings.html', icon:'&#129328;' },
+  'nurtured-mother': { name:'The Nurtured Mother Ritual™', desc:'As you care for your baby, remember that you deserve care too. Restore your energy, reclaim moments of calm, and build a foundation of self-love in your new chapter.', pillars:['nourishment','regulate','connection'], html:'marmaroph-ritual-nurtured-mother.html', icon:'&#128105;&#8205;&#127868;' },
+  'healing-heart': { name:'The Healing Heart Ritual™', desc:'Healing takes time, and every small act of self-care is a step forward. Gently rebuild your sense of self, release what no longer serves you, and open your heart to new possibilities.', pillars:['regulate','purpose'], html:'marmaroph-ritual-healing-heart.html', icon:'&#128148;' }
 };
 var selectedRitualSlug = '';
 
@@ -1369,48 +1379,60 @@ function startCheckout() {
 function unlockRitualCards(currentRitual, unlockedRituals) {
   var allSlugs = Object.keys(RITUALS);
   var unlocked = (unlockedRituals || []).concat(currentRitual ? [currentRitual] : []);
-  allSlugs.forEach(function(slug) {
-    var r = RITUALS[slug];
-    if (!r) return;
-    var isUnlocked = unlocked.indexOf(slug) !== -1;
-    var isCurrent = slug === currentRitual;
-    document.querySelectorAll('.ritual-card-light, .ritual-card-dark').forEach(function(card) {
+  var cr = currentRitual ? RITUALS[currentRitual] : null;
+
+  if (cr) {
+    var pillarsHtml = cr.pillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
+    var hasImg = cr.icon.indexOf('<img') !== -1;
+    var iconStyle = hasImg ? 'overflow:hidden;padding:0' : '';
+
+    var homeCard = document.getElementById('homeCurrentCard');
+    if (homeCard) {
+      homeCard.querySelector('.ritual-icon').innerHTML = cr.icon;
+      if (iconStyle) homeCard.querySelector('.ritual-icon').setAttribute('style', iconStyle);
+      document.getElementById('homeCurrentName').textContent = cr.name;
+      document.getElementById('homeCurrentDesc').textContent = cr.desc;
+      document.getElementById('homeCurrentPillars').innerHTML = pillarsHtml;
+    }
+
+    var darkCards = document.querySelectorAll('#sec-rituals .ritual-card-dark.current');
+    darkCards.forEach(function(dc) {
+      dc.querySelector('.ritual-icon').innerHTML = cr.icon;
+      if (iconStyle) dc.querySelector('.ritual-icon').setAttribute('style', iconStyle);
+      var h3 = dc.querySelector('h3'); if (h3) h3.textContent = cr.name;
+      var desc = dc.querySelector('.ritual-desc'); if (desc) desc.textContent = cr.desc;
+      var pils = dc.querySelector('.ritual-pillars'); if (pils) pils.innerHTML = pillarsHtml;
+    });
+  }
+
+  ['homeLockedList','ritualsLockedList'].forEach(function(listId) {
+    var list = document.getElementById(listId);
+    if (!list) return;
+    var cards = list.querySelectorAll('.ritual-card-light, .ritual-card-dark');
+    cards.forEach(function(card) {
       var h3 = card.querySelector('h3');
-      if (!h3 || h3.textContent !== r.name) return;
-      if (isCurrent) {
-        card.classList.remove('locked');
-        card.classList.add('current');
-        card.onclick = null;
-        card.style.cursor = 'default';
-        var right = card.querySelector('.ritual-right');
-        if (right) {
-          var isDark = card.classList.contains('ritual-card-dark');
-          right.innerHTML = '<span class="status-tag '+(isDark?'dark-status-current':'status-current')+'">CURRENT</span>' +
-            '<button class="'+(isDark?'btn-glow':'btn-teal')+'" onclick="goToRitual()">BEGIN &#8594;</button>';
-        }
-      } else if (isUnlocked) {
+      if (!h3) return;
+      var slug = allSlugs.find(function(k){ return RITUALS[k].name === h3.textContent; });
+      if (!slug) return;
+
+      if (slug === currentRitual) {
+        card.style.display = 'none';
+      } else if (unlocked.indexOf(slug) !== -1) {
         card.classList.remove('locked');
         card.classList.add('completed');
         card.onclick = null;
         card.style.cursor = 'default';
-        var right2 = card.querySelector('.ritual-right');
-        if (right2) {
-          var isDark2 = card.classList.contains('ritual-card-dark');
-          right2.innerHTML = '<span class="status-tag '+(isDark2?'dark-status-current':'status-current')+'" style="background:rgba(110,200,155,0.1);color:#1a7a42">COMPLETED</span>';
+        card.style.display = '';
+        var right = card.querySelector('.ritual-right');
+        if (right) {
+          var isDark = card.classList.contains('ritual-card-dark');
+          right.innerHTML = '<span class="status-tag '+(isDark?'dark-status-current':'status-current')+'" style="background:rgba(110,200,155,0.1);color:#1a7a42">COMPLETED</span>';
         }
+      } else {
+        card.style.display = '';
       }
     });
   });
-  if (currentRitual) {
-    document.querySelectorAll('.ritual-card-light, .ritual-card-dark').forEach(function(card) {
-      var h3 = card.querySelector('h3');
-      if (!h3 || !RITUALS[currentRitual] || h3.textContent !== RITUALS[currentRitual].name) return;
-      var parent = card.parentNode;
-      if (parent && parent.firstElementChild !== card) {
-        parent.insertBefore(card, parent.firstElementChild);
-      }
-    });
-  }
 }
 
 function lockAllRituals() {
