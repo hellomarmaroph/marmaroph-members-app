@@ -592,30 +592,30 @@
           <svg class="pillar-wheel-svg" viewBox="0 0 200 200" id="pillarWheel">
             <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(4,65,71,0.04)" stroke-width="8"/>
           </svg>
-          <div class="pillar-legend-row">
+          <div class="pillar-legend-row" id="pillarLegend">
             <div class="pillar-legend-item">
               <div class="pillar-legend-dot" style="background:#6ec89b"></div>
-              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" style="width:65%;background:linear-gradient(90deg,rgba(110,200,155,0.3),#6ec89b)"></div></div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-nourishment" style="width:0%;background:linear-gradient(90deg,rgba(110,200,155,0.3),#6ec89b)"></div></div>
               <div class="pillar-legend-label">Nourish</div>
             </div>
             <div class="pillar-legend-item">
               <div class="pillar-legend-dot" style="background:#b08fd4"></div>
-              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" style="width:40%;background:linear-gradient(90deg,rgba(176,143,212,0.3),#b08fd4)"></div></div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-purpose" style="width:0%;background:linear-gradient(90deg,rgba(176,143,212,0.3),#b08fd4)"></div></div>
               <div class="pillar-legend-label">Purpose</div>
             </div>
             <div class="pillar-legend-item">
               <div class="pillar-legend-dot" style="background:#8bb8c9"></div>
-              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" style="width:10%;background:linear-gradient(90deg,rgba(139,184,201,0.3),#8bb8c9)"></div></div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-regulate" style="width:0%;background:linear-gradient(90deg,rgba(139,184,201,0.3),#8bb8c9)"></div></div>
               <div class="pillar-legend-label">Regulate</div>
             </div>
             <div class="pillar-legend-item">
               <div class="pillar-legend-dot" style="background:#e8a86d"></div>
-              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" style="width:0%;background:linear-gradient(90deg,rgba(232,168,109,0.3),#e8a86d)"></div></div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-movement" style="width:0%;background:linear-gradient(90deg,rgba(232,168,109,0.3),#e8a86d)"></div></div>
               <div class="pillar-legend-label">Movement</div>
             </div>
             <div class="pillar-legend-item">
               <div class="pillar-legend-dot" style="background:#d4849a"></div>
-              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" style="width:0%;background:linear-gradient(90deg,rgba(212,132,154,0.3),#d4849a)"></div></div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-connection" style="width:0%;background:linear-gradient(90deg,rgba(212,132,154,0.3),#d4849a)"></div></div>
               <div class="pillar-legend-label">Connection</div>
             </div>
           </div>
@@ -1246,7 +1246,7 @@ function scheduleRitualReminder() {
 function applyDashboard(d) {
     if(d.profile){document.getElementById('profileFirst').value=d.profile.firstName||'';document.getElementById('profileLast').value=d.profile.lastName||'';document.getElementById('profileEmail').value=memberData.loginEmail||d.profile.email||'';document.getElementById('profilePhone').value=d.profile.phone||'';}
     if(d.address){document.getElementById('addrName').value=d.address.name||'';document.getElementById('addrStreet').value=d.address.street||'';document.getElementById('addrCity').value=d.address.city||'';document.getElementById('addrState').value=d.address.state||'';document.getElementById('addrZip').value=d.address.zip||'';}
-    if(d.progress){var p=d.progress;if(p.currentRitual&&p.subscriptionActive){var name=formatRitualName(p.currentRitual);document.getElementById('homeCurrentName').textContent=name;document.getElementById('ritualsCurrentName').textContent=name;document.getElementById('subRitual').textContent=name;document.getElementById('ritualEmbedTitle').textContent=name;memberData.currentRitual=p.currentRitual;}memberData.completedRituals=p.completedRituals||[];var comp=memberData.completedRituals.length;document.getElementById('subCompleted').textContent=comp+' rituals';['home','rituals'].forEach(function(px){document.getElementById(px+'ProgressLabel').textContent=comp+' OF 11 RITUALS';document.getElementById(px+'ProgressFill').style.width=Math.max(5,(comp/11)*100)+'%';});if(p.cycleStartDate){var dt=new Date(p.cycleStartDate);document.getElementById('subStart').textContent=dt.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}if(!p.subscriptionActive){document.getElementById('subBadge').innerHTML='<span class="badge" style="background:rgba(192,57,43,0.08);color:#922b20">Inactive</span>';document.getElementById('subStatus').textContent='Inactive';lockAllRituals();}else{unlockRitualCards(p.currentRitual, p.completedRituals||[]);}}
+    if(d.progress){var p=d.progress;if(p.currentRitual&&p.subscriptionActive){var name=formatRitualName(p.currentRitual);document.getElementById('homeCurrentName').textContent=name;document.getElementById('ritualsCurrentName').textContent=name;document.getElementById('subRitual').textContent=name;document.getElementById('ritualEmbedTitle').textContent=name;memberData.currentRitual=p.currentRitual;}memberData.completedRituals=p.completedRituals||[];var comp=memberData.completedRituals.length;document.getElementById('subCompleted').textContent=comp+' rituals';['home','rituals'].forEach(function(px){document.getElementById(px+'ProgressLabel').textContent=comp+' OF 11 RITUALS';document.getElementById(px+'ProgressFill').style.width=Math.max(5,(comp/11)*100)+'%';});if(p.cycleStartDate){var dt=new Date(p.cycleStartDate);document.getElementById('subStart').textContent=dt.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}if(!p.subscriptionActive){document.getElementById('subBadge').innerHTML='<span class="badge" style="background:rgba(192,57,43,0.08);color:#922b20">Inactive</span>';document.getElementById('subStatus').textContent='Inactive';lockAllRituals();}else{unlockRitualCards(p.currentRitual, p.completedRituals||[]);}if(p.pillarScores){drawPillarWheel(p.pillarScores);}}
     if(d.orders&&d.orders.length>0){var html='';d.orders.forEach(function(o){var date=o.date?new Date(o.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';html+='<tr style="border-bottom:0.5px solid rgba(4,65,71,0.04)"><td style="padding:8px 10px;font-weight:300">'+date+'</td><td style="padding:8px 10px;font-weight:300">'+(o.ritual||'')+'</td><td style="padding:8px 10px;font-weight:300">$'+(o.amount||0).toFixed(2)+'</td><td style="padding:8px 10px"><span class="badge badge-active">'+(o.status||'pending')+'</span></td></tr>';});document.getElementById('ordersTbody').innerHTML=html;}else{document.getElementById('ordersTbody').innerHTML='<tr><td colspan="4" style="padding:20px;text-align:center;color:var(--muted);font-weight:300;font-size:12px">No orders yet</td></tr>';}
     sendHeight();
 }
@@ -1401,6 +1401,16 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
       }
     });
   });
+  if (currentRitual) {
+    document.querySelectorAll('.ritual-card-light, .ritual-card-dark').forEach(function(card) {
+      var h3 = card.querySelector('h3');
+      if (!h3 || !RITUALS[currentRitual] || h3.textContent !== RITUALS[currentRitual].name) return;
+      var parent = card.parentNode;
+      if (parent && parent.firstElementChild !== card) {
+        parent.insertBefore(card, parent.firstElementChild);
+      }
+    });
+  }
 }
 
 function lockAllRituals() {
@@ -1657,9 +1667,13 @@ document.getElementById('menuBtn').addEventListener('click',function(){document.
 })();
 
 // Pillar wheel (thin elegant arcs)
-(function(){
+var PILLAR_COLORS = {nourishment:'#6ec89b',purpose:'#b08fd4',regulate:'#8bb8c9',movement:'#e8a86d',connection:'#d4849a'};
+var PILLAR_ORDER = ['nourishment','purpose','regulate','movement','connection'];
+
+function drawPillarWheel(scores) {
   var svg=document.getElementById('pillarWheel');if(!svg)return;
-  var pillars=[{pct:65,color:'#6ec89b'},{pct:40,color:'#b08fd4'},{pct:10,color:'#8bb8c9'},{pct:0,color:'#e8a86d'},{pct:0,color:'#d4849a'}];
+  while(svg.childNodes.length>1) svg.removeChild(svg.lastChild);
+  var pillars=PILLAR_ORDER.map(function(k){return{pct:Math.min(100,(scores[k]||0)),color:PILLAR_COLORS[k]};});
   var R=80,C=2*Math.PI*R,segLen=C/5,gap=6,offset=-C/4;
   pillars.forEach(function(p,i){
     var filled=((p.pct/100)*segLen);if(filled<1&&p.pct>0)filled=2;
@@ -1672,7 +1686,12 @@ document.getElementById('menuBtn').addEventListener('click',function(){document.
     svg.appendChild(bgArc);
     if(filled>0){var arc=document.createElementNS('http://www.w3.org/2000/svg','circle');arc.setAttribute('cx','100');arc.setAttribute('cy','100');arc.setAttribute('r',String(R));arc.setAttribute('fill','none');arc.setAttribute('stroke',p.color);arc.setAttribute('stroke-width','8');arc.setAttribute('stroke-dasharray',filled+' '+(C-filled));arc.setAttribute('stroke-dashoffset',String(-dashStart));arc.setAttribute('stroke-linecap','round');arc.style.filter='drop-shadow(0 0 3px '+p.color+')';svg.appendChild(arc);}
   });
-})();
+  PILLAR_ORDER.forEach(function(k){
+    var bar=document.getElementById('plBar-'+k);
+    if(bar) bar.style.width=Math.min(100,(scores[k]||0))+'%';
+  });
+}
+drawPillarWheel({nourishment:0,purpose:0,regulate:0,movement:0,connection:0});
 
 var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var now=new Date();var monthLabel=months[now.getMonth()]+' '+now.getFullYear();
