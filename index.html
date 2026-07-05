@@ -205,6 +205,51 @@
   }
   .glass-teal::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(159,214,235,0.3),transparent); }
 
+  /* ══ TOP RITUAL SPOTLIGHT ══ */
+  .ritual-spotlight { display:none; position:relative; z-index:5; padding:0 32px 20px; }
+  .ritual-spotlight.active { display:block; }
+  .ritual-spotlight-card {
+    background:rgba(255,255,255,0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(110,200,155,0.2); border-radius:16px; padding:16px 20px;
+    display:flex; align-items:center; gap:14px; position:relative; overflow:hidden;
+    box-shadow:0 4px 20px rgba(4,65,71,0.06); cursor:pointer; transition:transform 0.2s;
+  }
+  .ritual-spotlight-card:hover { transform:translateY(-1px); }
+  .ritual-spotlight-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(110,200,155,0.25),transparent); }
+  .ritual-spotlight-icon { width:48px; height:48px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:22px; background:rgba(110,200,155,0.08); border:1.5px solid rgba(110,200,155,0.2); }
+  .ritual-spotlight-info { flex:1; min-width:0; }
+  .ritual-spotlight-label { font-family:var(--fb); font-size:9px; font-weight:300; text-transform:uppercase; letter-spacing:1.5px; color:var(--sky); margin-bottom:2px; }
+  .ritual-spotlight-name { font-family:var(--fh); font-size:16px; font-weight:500; color:var(--em2); }
+  .ritual-spotlight-pillars { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+  .ritual-spotlight .btn-teal { font-size:11px; padding:8px 18px; flex-shrink:0; }
+
+  /* ══ REFERRAL PROGRAM ══ */
+  .referral-card {
+    background:linear-gradient(135deg,rgba(110,200,155,0.08),rgba(159,214,235,0.06));
+    border:1px solid rgba(110,200,155,0.15); border-radius:16px; padding:24px;
+    text-align:center; position:relative; overflow:hidden;
+  }
+  .referral-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(110,200,155,0.2),transparent); }
+  .referral-title { font-family:var(--fh); font-size:18px; font-weight:500; color:var(--em2); margin-bottom:6px; }
+  .referral-desc { font-family:var(--fb); font-size:13px; font-weight:300; color:var(--muted); line-height:1.6; margin-bottom:16px; }
+  .referral-perks { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
+  .referral-perk { background:rgba(255,255,255,0.6); border:1px solid rgba(4,65,71,0.06); border-radius:12px; padding:12px 14px; flex:1; min-width:120px; max-width:180px; }
+  .referral-perk-icon { font-size:22px; margin-bottom:6px; }
+  .referral-perk-label { font-family:var(--fh); font-size:12px; font-weight:500; color:var(--em2); }
+  .referral-perk-desc { font-family:var(--fb); font-size:10px; font-weight:300; color:var(--muted); margin-top:2px; }
+  .referral-code-box { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.7); border:1px solid rgba(4,65,71,0.08); border-radius:10px; padding:10px 14px; margin:0 auto; max-width:340px; }
+  .referral-code-box input { flex:1; border:none; background:transparent; font-family:var(--fb); font-size:13px; color:var(--em2); font-weight:400; letter-spacing:0.5px; outline:none; }
+  .referral-code-box button { font-family:var(--fh); font-size:11px; font-weight:500; color:var(--sky); background:rgba(159,214,235,0.1); border:1px solid rgba(159,214,235,0.2); border-radius:8px; padding:6px 14px; cursor:pointer; transition:all 0.2s; }
+  .referral-code-box button:hover { background:rgba(159,214,235,0.2); }
+  .referral-share-btns { display:flex; gap:8px; justify-content:center; margin-top:14px; }
+  .referral-share-btn { font-family:var(--fb); font-size:11px; font-weight:300; color:var(--em); background:rgba(255,255,255,0.5); border:1px solid rgba(4,65,71,0.06); border-radius:8px; padding:8px 14px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:5px; }
+  .referral-share-btn:hover { background:rgba(159,214,235,0.1); }
+  .referral-stats { display:flex; gap:20px; justify-content:center; margin-top:16px; }
+  .referral-stat { text-align:center; }
+  .referral-stat-num { font-family:var(--fh); font-size:20px; font-weight:500; color:var(--em2); }
+  .referral-stat-label { font-family:var(--fb); font-size:10px; font-weight:300; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .buddy-match-tag { display:inline-flex; align-items:center; gap:4px; background:rgba(176,143,212,0.1); color:#7c5da6; border:1px solid rgba(176,143,212,0.2); border-radius:20px; padding:4px 10px; font-family:var(--fb); font-size:10px; font-weight:400; }
+
   /* ══ HOME RITUALS (white/light bg) ══ */
   .home-rituals { position: relative; z-index: 4; padding: 0 32px 28px; }
 
@@ -493,6 +538,13 @@
     .sidebar { display: none; }
     .mobile-header { display: flex; flex-shrink: 0; }
     .mobile-menu { display: block; }
+    .ritual-spotlight { padding: 0 16px 14px; }
+    .ritual-spotlight-card { padding: 12px 14px; gap: 10px; }
+    .ritual-spotlight-icon { width: 40px; height: 40px; }
+    .ritual-spotlight-name { font-size: 14px; }
+    .referral-perks { flex-direction: column; align-items: center; }
+    .referral-perk { max-width: 100%; min-width: 0; }
+    .referral-share-btns { flex-direction: column; align-items: stretch; }
     .home-rituals, .dark-rituals-content { padding: 0 16px 20px; }
     .pillar-hero { padding: 24px 16px 20px; }
     .content-area { padding: 20px 16px; }
@@ -595,89 +647,19 @@
         <img class="mascot-float mascot-marmi" src="https://static.wixstatic.com/media/00228e_fde9eef4bdf04cf09bb1052868f02a47~mv2.png/v1/fill/w_240,h_240,al_c,q_85/marmi.png" alt="Marmi" loading="lazy"/>
         <img class="mascot-float mascot-lumi" src="https://static.wixstatic.com/media/00228e_eb8388fa248f46eab7cb5f940f009b52~mv2.png" alt="Lumi" loading="lazy"/>
 
-        <!-- Rituals Dashboard (white/glass on Home) -->
-        <div class="home-rituals">
-          <div class="home-rituals-header">
-            <div class="hr-mascot" id="homeMascot"><img src="https://static.wixstatic.com/media/00228e_52d89c9ee5954a2d852ed2737e4b21fe~mv2.png" alt="Sanctuary" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
-            <div class="hr-title">Your Ritual Journey</div>
-            <div class="hr-subtitle">HOME SANCTUARY CLUB</div>
-            <div class="hr-progress">
-              <div class="hr-progress-labels"><span>JUST STARTING</span><span id="homeProgressLabel">0 OF 11 RITUALS</span></div>
-              <div class="hr-progress-bar"><div class="hr-progress-fill" id="homeProgressFill" style="width:10%"></div></div>
-            </div>
-          </div>
-
-          <div class="hr-month" id="homeMonth"></div>
-
-          <div class="hr-section-title"><span>&#10022;</span> Your Current Ritual</div>
-          <div class="ritual-card-light current" id="homeCurrentCard">
-            <div class="ritual-icon" style="overflow:hidden;padding:0"><img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
-            <div class="ritual-info">
-              <h3 id="homeCurrentName">Mindful Eating</h3>
-              <div class="ritual-pillars" id="homeCurrentPillars">
+        <!-- Current Ritual Spotlight (shown only when unlocked) -->
+        <div class="ritual-spotlight" id="ritualSpotlight">
+          <div class="ritual-spotlight-card" onclick="goToRitual()">
+            <div class="ritual-spotlight-icon" id="spotlightIcon" style="overflow:hidden;padding:0"><img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
+            <div class="ritual-spotlight-info">
+              <div class="ritual-spotlight-label">Your Current Ritual</div>
+              <div class="ritual-spotlight-name" id="spotlightName">Mindful Eating</div>
+              <div class="ritual-spotlight-pillars" id="spotlightPillars">
                 <span class="ptag ptag-nourishment">NOURISHMENT</span>
                 <span class="ptag ptag-regulate">REGULATE</span>
               </div>
-              <div class="ritual-desc" id="homeCurrentDesc">Transform your relationship with food through 30 days of mindful nourishment practices.</div>
             </div>
-            <div class="ritual-right">
-              <span class="status-tag status-current">CURRENT</span>
-              <button class="btn-teal" onclick="goToRitual()">BEGIN &#8594;</button>
-            </div>
-          </div>
-
-          <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 12px;letter-spacing:0.3px">Next Rituals</div>
-          <div id="homeLockedList">
-            <div class="ritual-card-light locked" onclick="selectRitual('energised-mornings')">
-              <div class="ritual-icon">&#9728;</div>
-              <div class="ritual-info"><h3>Energised Mornings</h3><div class="ritual-pillars"><span class="ptag ptag-movement">MOVEMENT</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Design mornings that energise body and mind.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('sanctuary-protection')">
-              <div class="ritual-icon">&#128737;</div>
-              <div class="ritual-info"><h3>Sanctuary Protection</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Create boundaries that protect your peace.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('im-enough')">
-              <div class="ritual-icon">&#128150;</div>
-              <div class="ritual-info"><h3>I'm Enough</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Reclaim your self-worth from the inside out.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('sacred-connection')">
-              <div class="ritual-icon">&#128145;</div>
-              <div class="ritual-info"><h3>Sacred Connection with Partner</h3><div class="ritual-pillars"><span class="ptag ptag-connection">CONNECTION</span></div><div class="ritual-desc">Strengthen and deepen the bond with your partner through intentional presence.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('kindred-bonds')">
-              <div class="ritual-icon">&#129309;</div>
-              <div class="ritual-info"><h3>Kindred Bonds&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-connection">CONNECTION</span></div><div class="ritual-desc">Nurture the relationships that shape your world — friends, family, and colleagues.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('quiet-abundance')">
-              <div class="ritual-icon">&#128176;</div>
-              <div class="ritual-info"><h3>Quiet Abundance</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Build a quiet structure of wealth — one intentional month at a time.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('bloom-in-gratitude')">
-              <div class="ritual-icon">&#127804;</div>
-              <div class="ritual-info"><h3>Bloom in Gratitude&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Your mind flourishes when nourished with gratitude. Unplug, color with intention, and reflect.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('new-beginnings')">
-              <div class="ritual-icon">&#129328;</div>
-              <div class="ritual-info"><h3>The New Beginnings Ritual&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-nourishment">NOURISHMENT</span><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Your journey into motherhood begins with caring for yourself.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('nurtured-mother')">
-              <div class="ritual-icon">&#128105;&#8205;&#127868;</div>
-              <div class="ritual-info"><h3>The Nurtured Mother Ritual&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-nourishment">NOURISHMENT</span><span class="ptag ptag-regulate">REGULATE</span><span class="ptag ptag-connection">CONNECTION</span></div><div class="ritual-desc">As you care for your baby, remember that you deserve care too.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
-            <div class="ritual-card-light locked" onclick="selectRitual('healing-heart')">
-              <div class="ritual-icon">&#128148;</div>
-              <div class="ritual-info"><h3>The Healing Heart Ritual&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Healing takes time, and every small act of self-care is a step forward.</div></div>
-              <div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div>
-            </div>
+            <button class="btn-teal" onclick="event.stopPropagation();goToRitual()">BEGIN &#8594;</button>
           </div>
         </div>
 
@@ -743,6 +725,49 @@
           </div>
         </div>
 
+        <!-- Rituals Dashboard (white/glass on Home) -->
+        <div class="home-rituals">
+          <div class="home-rituals-header">
+            <div class="hr-mascot" id="homeMascot"><img src="https://static.wixstatic.com/media/00228e_52d89c9ee5954a2d852ed2737e4b21fe~mv2.png" alt="Sanctuary" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
+            <div class="hr-title">Your Ritual Journey</div>
+            <div class="hr-subtitle">HOME SANCTUARY CLUB</div>
+            <div class="hr-progress">
+              <div class="hr-progress-labels"><span>JUST STARTING</span><span id="homeProgressLabel">0 OF 11 RITUALS</span></div>
+              <div class="hr-progress-bar"><div class="hr-progress-fill" id="homeProgressFill" style="width:10%"></div></div>
+            </div>
+          </div>
+          <div class="hr-month" id="homeMonth"></div>
+          <div class="hr-section-title"><span>&#10022;</span> Your Current Ritual</div>
+          <div class="ritual-card-light current" id="homeCurrentCard">
+            <div class="ritual-icon" style="overflow:hidden;padding:0"><img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
+            <div class="ritual-info">
+              <h3 id="homeCurrentName">Mindful Eating</h3>
+              <div class="ritual-pillars" id="homeCurrentPillars">
+                <span class="ptag ptag-nourishment">NOURISHMENT</span>
+                <span class="ptag ptag-regulate">REGULATE</span>
+              </div>
+              <div class="ritual-desc" id="homeCurrentDesc">Transform your relationship with food through 30 days of mindful nourishment practices.</div>
+            </div>
+            <div class="ritual-right">
+              <span class="status-tag status-current">CURRENT</span>
+              <button class="btn-teal" onclick="goToRitual()">BEGIN &#8594;</button>
+            </div>
+          </div>
+          <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 12px;letter-spacing:0.3px">Next Rituals</div>
+          <div id="homeLockedList">
+            <div class="ritual-card-light locked" onclick="selectRitual('energised-mornings')"><div class="ritual-icon">&#9728;</div><div class="ritual-info"><h3>Energised Mornings</h3><div class="ritual-pillars"><span class="ptag ptag-movement">MOVEMENT</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Design mornings that energise body and mind.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('sanctuary-protection')"><div class="ritual-icon">&#128737;</div><div class="ritual-info"><h3>Sanctuary Protection</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Create boundaries that protect your peace.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('im-enough')"><div class="ritual-icon">&#128150;</div><div class="ritual-info"><h3>I'm Enough</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Reclaim your self-worth from the inside out.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('sacred-connection')"><div class="ritual-icon">&#128145;</div><div class="ritual-info"><h3>Sacred Connection with Partner</h3><div class="ritual-pillars"><span class="ptag ptag-connection">CONNECTION</span></div><div class="ritual-desc">Strengthen and deepen the bond with your partner through intentional presence.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('kindred-bonds')"><div class="ritual-icon">&#129309;</div><div class="ritual-info"><h3>Kindred Bonds&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-connection">CONNECTION</span></div><div class="ritual-desc">Nurture the relationships that shape your world — friends, family, and colleagues.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('quiet-abundance')"><div class="ritual-icon">&#128176;</div><div class="ritual-info"><h3>Quiet Abundance</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Build a quiet structure of wealth — one intentional month at a time.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('bloom-in-gratitude')"><div class="ritual-icon">&#127804;</div><div class="ritual-info"><h3>Bloom in Gratitude&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Your mind flourishes when nourished with gratitude. Unplug, color with intention, and reflect.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('new-beginnings')"><div class="ritual-icon">&#129328;</div><div class="ritual-info"><h3>The New Beginnings Ritual&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-nourishment">NOURISHMENT</span><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Your journey into motherhood begins with caring for yourself.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('nurtured-mother')"><div class="ritual-icon">&#128105;&#8205;&#127868;</div><div class="ritual-info"><h3>The Nurtured Mother Ritual&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-nourishment">NOURISHMENT</span><span class="ptag ptag-regulate">REGULATE</span><span class="ptag ptag-connection">CONNECTION</span></div><div class="ritual-desc">As you care for your baby, remember that you deserve care too.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+            <div class="ritual-card-light locked" onclick="selectRitual('healing-heart')"><div class="ritual-icon">&#128148;</div><div class="ritual-info"><h3>The Healing Heart Ritual&#8482;</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Healing takes time, and every small act of self-care is a step forward.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
+          </div>
+        </div>
+
         <!-- Sub, Journey, Community, Gift -->
         <div class="content-area">
           <div class="grid-2" style="margin-bottom:0">
@@ -792,6 +817,47 @@
               <div class="gift-node"><div class="gift-node-info"><div class="gift-node-month">Month 10</div></div></div>
               <div class="gift-node"><div class="gift-node-info"><div class="gift-node-month">Month 11</div></div></div>
               <div class="gift-node milestone"><div class="gift-node-info"><div class="gift-node-month">Month 12</div><div class="gift-node-title">&#10024; 1 Night Free Sanctuary Retreat</div><div class="gift-node-desc">A full night wellness retreat experience &#8212; our gift to you for one year of transformation</div></div><span class="gift-node-tag gift-tag-locked">9 months left</span></div>
+            </div>
+          </div>
+
+          <!-- Referral Program -->
+          <div class="card" style="margin-top:14px;padding:0;overflow:hidden">
+            <div class="referral-card">
+              <div style="font-size:28px;margin-bottom:8px">&#127873;</div>
+              <div class="referral-title">Give a Month, Get a Month</div>
+              <div class="referral-desc">Invite a friend to join Marmaroph. When they subscribe, you <strong>both</strong> get your next month free — and you can become ritual buddies.</div>
+              <div class="referral-perks">
+                <div class="referral-perk">
+                  <div class="referral-perk-icon">&#127775;</div>
+                  <div class="referral-perk-label">You get</div>
+                  <div class="referral-perk-desc">1 month free on your subscription</div>
+                </div>
+                <div class="referral-perk">
+                  <div class="referral-perk-icon">&#128150;</div>
+                  <div class="referral-perk-label">They get</div>
+                  <div class="referral-perk-desc">1 month free to start their journey</div>
+                </div>
+                <div class="referral-perk">
+                  <div class="referral-perk-icon">&#129309;</div>
+                  <div class="referral-perk-label">Together</div>
+                  <div class="referral-perk-desc">Get matched as ritual buddies</div>
+                </div>
+              </div>
+              <div class="referral-code-box">
+                <input type="text" id="referralCode" readonly value="" placeholder="Loading your code..."/>
+                <button onclick="copyReferralCode()">Copy</button>
+              </div>
+              <div class="referral-share-btns">
+                <button class="referral-share-btn" onclick="shareReferral('whatsapp')">&#128172; WhatsApp</button>
+                <button class="referral-share-btn" onclick="shareReferral('email')">&#9993; Email</button>
+                <button class="referral-share-btn" onclick="shareReferral('copy')">&#128279; Copy Link</button>
+              </div>
+              <div class="referral-stats" id="referralStats" style="display:none">
+                <div class="referral-stat"><div class="referral-stat-num" id="refSent">0</div><div class="referral-stat-label">Invited</div></div>
+                <div class="referral-stat"><div class="referral-stat-num" id="refJoined">0</div><div class="referral-stat-label">Joined</div></div>
+                <div class="referral-stat"><div class="referral-stat-num" id="refEarned">0</div><div class="referral-stat-label">Months Earned</div></div>
+              </div>
+              <div style="margin-top:14px"><span class="buddy-match-tag">&#129309; Ritual buddy matching included</span></div>
             </div>
           </div>
         </div>
@@ -1385,6 +1451,7 @@ function applyDashboard(d) {
     if(d.address){document.getElementById('addrName').value=d.address.name||'';document.getElementById('addrStreet').value=d.address.street||'';document.getElementById('addrCity').value=d.address.city||'';document.getElementById('addrState').value=d.address.state||'';document.getElementById('addrZip').value=d.address.zip||'';}
     if(d.progress){var p=d.progress;if(p.currentRitual&&p.subscriptionActive){var name=formatRitualName(p.currentRitual);document.getElementById('homeCurrentName').textContent=name;document.getElementById('ritualsCurrentName').textContent=name;document.getElementById('subRitual').textContent=name;document.getElementById('ritualEmbedTitle').textContent=name;memberData.currentRitual=p.currentRitual;}memberData.completedRituals=p.completedRituals||[];var comp=memberData.completedRituals.length;document.getElementById('subCompleted').textContent=comp+' rituals';['home','rituals'].forEach(function(px){document.getElementById(px+'ProgressLabel').textContent=comp+' OF 11 RITUALS';document.getElementById(px+'ProgressFill').style.width=Math.max(5,(comp/11)*100)+'%';});if(p.cycleStartDate){var dt=new Date(p.cycleStartDate);document.getElementById('subStart').textContent=dt.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}if(!p.subscriptionActive){document.getElementById('subBadge').innerHTML='<span class="badge" style="background:rgba(192,57,43,0.08);color:#922b20">Inactive</span>';document.getElementById('subStatus').textContent='Inactive';lockAllRituals();}else{unlockRitualCards(p.currentRitual, p.completedRituals||[]);}if(p.pillarScores){drawPillarWheel(p.pillarScores);}}
     if(d.orders&&d.orders.length>0){var html='';d.orders.forEach(function(o){var date=o.date?new Date(o.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';html+='<tr style="border-bottom:0.5px solid rgba(4,65,71,0.04)"><td style="padding:8px 10px;font-weight:300">'+date+'</td><td style="padding:8px 10px;font-weight:300">'+(o.ritual||'')+'</td><td style="padding:8px 10px;font-weight:300">$'+(o.amount||0).toFixed(2)+'</td><td style="padding:8px 10px"><span class="badge badge-active">'+(o.status||'pending')+'</span></td></tr>';});document.getElementById('ordersTbody').innerHTML=html;}else{document.getElementById('ordersTbody').innerHTML='<tr><td colspan="4" style="padding:20px;text-align:center;color:var(--muted);font-weight:300;font-size:12px">No orders yet</td></tr>';}
+    initReferral();
     sendHeight();
 }
 
@@ -1513,6 +1580,15 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
     var hasImg = cr.icon.indexOf('<img') !== -1;
     var iconStyle = hasImg ? 'overflow:hidden;padding:0' : '';
 
+    var spotlight = document.getElementById('ritualSpotlight');
+    if (spotlight) {
+      spotlight.classList.add('active');
+      var sIcon = document.getElementById('spotlightIcon');
+      if (sIcon) { sIcon.innerHTML = cr.icon; if (iconStyle) sIcon.setAttribute('style', iconStyle); }
+      document.getElementById('spotlightName').textContent = cr.name;
+      document.getElementById('spotlightPillars').innerHTML = pillarsHtml;
+    }
+
     var homeCard = document.getElementById('homeCurrentCard');
     if (homeCard) {
       homeCard.querySelector('.ritual-icon').innerHTML = cr.icon;
@@ -1564,6 +1640,8 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
 
 function lockAllRituals() {
   memberData.currentRitual = null;
+  var spotlight = document.getElementById('ritualSpotlight');
+  if (spotlight) spotlight.classList.remove('active');
   var homeCard = document.getElementById('homeCurrentCard');
   if (homeCard) {
     homeCard.classList.remove('current');
@@ -1801,6 +1879,43 @@ function saveAddress(){var btn=document.getElementById('addrSaveBtn');btn.textCo
 function openPortal(){var btn=document.getElementById('portalBtn');btn.textContent='Loading...';fetch(API+'/createPortalSession',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:memberData.memberId})}).then(function(r){return r.json()}).then(function(d){btn.textContent='Manage subscription on Stripe';if(d.url)window.top.location.href=d.url;}).catch(function(){btn.textContent='Manage subscription on Stripe';});}
 
 function submitPost(){var input=document.getElementById('cmPostInput');var text=input.value.trim();if(!text)return;fetch(API+'/communityPost',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:memberData.memberId,memberName:(memberData.firstName||'')+' '+(memberData.lastName||'').charAt(0)+'.',text:text,ritual:'',dayNumber:0})}).then(function(){input.value='';}).catch(function(err){console.error(err);});}
+
+function initReferral() {
+  var mid = memberData.memberId || '';
+  if (!mid) return;
+  var code = 'MARMA-' + mid.substring(0,6).toUpperCase();
+  var el = document.getElementById('referralCode');
+  if (el) el.value = code;
+  fetch(API+'/referralStats?memberId='+mid).then(function(r){return r.json();}).then(function(d){
+    if (d && (d.invited || d.joined || d.monthsEarned)) {
+      document.getElementById('referralStats').style.display = 'flex';
+      document.getElementById('refSent').textContent = d.invited || 0;
+      document.getElementById('refJoined').textContent = d.joined || 0;
+      document.getElementById('refEarned').textContent = d.monthsEarned || 0;
+    }
+  }).catch(function(){});
+}
+
+function copyReferralCode() {
+  var el = document.getElementById('referralCode');
+  if (!el || !el.value) return;
+  navigator.clipboard.writeText(el.value).then(function(){showToast('Referral code copied!');}).catch(function(){
+    el.select(); document.execCommand('copy'); showToast('Referral code copied!');
+  });
+}
+
+function shareReferral(method) {
+  var code = (document.getElementById('referralCode') || {}).value || '';
+  var link = 'https://www.marmaroph.com/join?ref=' + encodeURIComponent(code);
+  var msg = 'Join me on Marmaroph — a monthly ritual for becoming your best self. Use my code ' + code + ' and we both get our first month free + get matched as ritual buddies! ' + link;
+  if (method === 'whatsapp') {
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  } else if (method === 'email') {
+    window.open('mailto:?subject=' + encodeURIComponent('Join me on Marmaroph — first month free!') + '&body=' + encodeURIComponent(msg), '_blank');
+  } else {
+    navigator.clipboard.writeText(link).then(function(){showToast('Referral link copied!');}).catch(function(){showToast('Link: ' + link);});
+  }
+}
 
 document.getElementById('menuBtn').addEventListener('click',function(){document.getElementById('mobileMenu').classList.toggle('open');});
 
