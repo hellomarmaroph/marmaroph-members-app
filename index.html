@@ -605,6 +605,7 @@
       <div class="sb-item" onclick="navigate('addresses',this)"><span class="sb-icon">&#9906;</span> Addresses</div>
       <div class="sb-item" onclick="navigate('payments',this)"><span class="sb-icon">&#9645;</span> Payments</div>
       <div class="sb-item" onclick="navigate('subscription',this)"><span class="sb-icon">&#9733;</span> Subscription</div>
+      <div class="sb-item" onclick="navigate('referral',this)"><span class="sb-icon">&#127873;</span> Refer a Friend <span class="sb-badge">new</span></div>
       <div class="sb-logout" onclick="doLogout()">&#8594; Log out</div>
     </div>
   </div>
@@ -629,6 +630,7 @@
       <div class="sb-item" onclick="navigate('addresses',this)"><span class="sb-icon">&#9906;</span> Addresses</div>
       <div class="sb-item" onclick="navigate('payments',this)"><span class="sb-icon">&#9645;</span> Payments</div>
       <div class="sb-item" onclick="navigate('subscription',this)"><span class="sb-icon">&#9733;</span> Subscription</div>
+      <div class="sb-item" onclick="navigate('referral',this)"><span class="sb-icon">&#127873;</span> Refer a Friend <span class="sb-badge">new</span></div>
       <div class="sb-logout" onclick="doLogout()" style="margin-top:12px">&#8594; Log out</div>
     </nav>
   </div>
@@ -1064,6 +1066,79 @@
           <div><div style="font-family:var(--fh);font-size:17px;font-weight:500;color:var(--em2)">Home Wellness Sanctuary Club</div><div style="font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-top:2px">$29 / month &#8212; 30-day guided rituals with daily lessons and community</div><div style="margin-top:5px" id="subBadge"><span class="badge badge-active">Active</span></div></div>
         </div>
         <div class="card"><div class="card-t">Details</div><div class="grid-2"><div><div class="form-label">Status</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subStatus">Active</div></div><div><div class="form-label">Current ritual</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subRitual">Mindful Eating</div></div><div><div class="form-label">Cycle started</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subStart">&#8212;</div></div><div><div class="form-label">Completed</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subCompleted">0 rituals</div></div></div><button class="btn-sky" onclick="openPortal()" id="portalBtn">Manage subscription on Stripe</button><div style="font-size:11px;color:var(--muted);margin-top:6px;font-weight:300;font-style:italic">Update payment method, view invoices, or manage your subscription.</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ REFERRAL PROGRAM ═══ -->
+    <div class="section" id="sec-referral">
+      <div class="content-area">
+        <div class="sec-title"><span style="font-size:16px;opacity:0.6">&#127873;</span> Refer a Friend</div>
+        <div class="sec-sub">Share the journey. Earn free months together.</div>
+
+        <div class="referral-card" style="margin-bottom:16px">
+          <div style="font-size:36px;margin-bottom:10px">&#127873;</div>
+          <div class="referral-title">Give a Month, Get a Month</div>
+          <div class="referral-desc">Invite a friend to join Marmaroph. When they subscribe, you <strong>both</strong> get your next month free — and you can become ritual buddies.</div>
+          <div class="referral-perks">
+            <div class="referral-perk">
+              <div class="referral-perk-icon">&#127775;</div>
+              <div class="referral-perk-label">You get</div>
+              <div class="referral-perk-desc">1 month free on your subscription</div>
+            </div>
+            <div class="referral-perk">
+              <div class="referral-perk-icon">&#128150;</div>
+              <div class="referral-perk-label">They get</div>
+              <div class="referral-perk-desc">1 month free to start their journey</div>
+            </div>
+            <div class="referral-perk">
+              <div class="referral-perk-icon">&#129309;</div>
+              <div class="referral-perk-label">Together</div>
+              <div class="referral-perk-desc">Get matched as ritual buddies</div>
+            </div>
+          </div>
+          <div class="referral-code-box">
+            <input type="text" id="referralCode2" readonly value="" placeholder="Loading your code..."/>
+            <button onclick="copyReferralCode2()">Copy</button>
+          </div>
+          <div class="referral-share-btns">
+            <button class="referral-share-btn" onclick="shareReferral('whatsapp')">&#128172; WhatsApp</button>
+            <button class="referral-share-btn" onclick="shareReferral('email')">&#9993; Email</button>
+            <button class="referral-share-btn" onclick="shareReferral('copy')">&#128279; Copy Link</button>
+          </div>
+          <div style="margin-top:14px"><span class="buddy-match-tag">&#129309; Ritual buddy matching included</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-t">How It Works</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:#1a7a42;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">1</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Share your referral code</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Send your unique code or link to a friend via WhatsApp, email, or any way you like</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:#1a7a42;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">2</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">They subscribe using your code</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Your friend enters your code at checkout and starts their first ritual</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:#1a7a42;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">3</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">You both get a free month</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Your next month is credited automatically. Their first month is free too</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(176,143,212,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:#7c5da6;flex-shrink:0;border:1px solid rgba(176,143,212,0.15)">&#129309;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Become ritual buddies</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Get matched to do the same ritual together — hold each other accountable and celebrate wins</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="card-t">Your Referrals</div>
+          <div class="referral-stats" id="referralStats2" style="display:flex;justify-content:space-around;padding:8px 0">
+            <div class="referral-stat"><div class="referral-stat-num" id="refSent2">0</div><div class="referral-stat-label">Invited</div></div>
+            <div class="referral-stat"><div class="referral-stat-num" id="refJoined2">0</div><div class="referral-stat-label">Joined</div></div>
+            <div class="referral-stat"><div class="referral-stat-num" id="refEarned2">0</div><div class="referral-stat-label">Months Earned</div></div>
+          </div>
+          <div style="text-align:center;font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-top:8px">No limit on referrals — the more friends join, the more free months you earn!</div>
+        </div>
       </div>
     </div>
 
@@ -1884,20 +1959,30 @@ function initReferral() {
   var mid = memberData.memberId || '';
   if (!mid) return;
   var code = 'MARMA-' + mid.substring(0,6).toUpperCase();
-  var el = document.getElementById('referralCode');
-  if (el) el.value = code;
+  ['referralCode','referralCode2'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = code; });
   fetch(API+'/referralStats?memberId='+mid).then(function(r){return r.json();}).then(function(d){
     if (d && (d.invited || d.joined || d.monthsEarned)) {
-      document.getElementById('referralStats').style.display = 'flex';
-      document.getElementById('refSent').textContent = d.invited || 0;
-      document.getElementById('refJoined').textContent = d.joined || 0;
-      document.getElementById('refEarned').textContent = d.monthsEarned || 0;
+      ['','2'].forEach(function(sx){
+        var stats = document.getElementById('referralStats'+sx);
+        if (stats) stats.style.display = 'flex';
+        var s = document.getElementById('refSent'+sx); if(s) s.textContent = d.invited || 0;
+        var j = document.getElementById('refJoined'+sx); if(j) j.textContent = d.joined || 0;
+        var e = document.getElementById('refEarned'+sx); if(e) e.textContent = d.monthsEarned || 0;
+      });
     }
   }).catch(function(){});
 }
 
 function copyReferralCode() {
-  var el = document.getElementById('referralCode');
+  var code = (document.getElementById('referralCode') || document.getElementById('referralCode2') || {}).value || '';
+  if (!code) return;
+  navigator.clipboard.writeText(code).then(function(){showToast('Referral code copied!');}).catch(function(){
+    showToast('Referral code copied!');
+  });
+}
+
+function copyReferralCode2() {
+  var el = document.getElementById('referralCode2');
   if (!el || !el.value) return;
   navigator.clipboard.writeText(el.value).then(function(){showToast('Referral code copied!');}).catch(function(){
     el.select(); document.execCommand('copy'); showToast('Referral code copied!');
