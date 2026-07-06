@@ -1225,12 +1225,25 @@ function loadSavedMember() {
       }
     } catch(e) {}
   }
-  // 2. Check localStorage (returning PWA user)
+  // 2. Check localStorage (returning PWA user) — verify membership is still valid
   if (!isInIframe) {
     var saved = loadSavedMember();
     if (saved && saved.memberId) {
       memberData = saved;
-      initApp();
+      fetch(API+'/memberDashboard?memberId='+saved.memberId)
+        .then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()})
+        .then(function(d){
+          if(!d.progress){
+            localStorage.removeItem('marmaroph_member');
+            localStorage.removeItem('marmaroph_dashboard');
+            window.location.reload();
+            return;
+          }
+          initApp();
+        })
+        .catch(function(){
+          initApp();
+        });
       return;
     }
     // 3. No data — show login prompt (only outside iframe)
@@ -1252,7 +1265,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=21').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=22').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2097,7 +2110,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=21').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=22').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
