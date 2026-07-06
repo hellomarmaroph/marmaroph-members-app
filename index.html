@@ -1252,7 +1252,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=19').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=20').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -1578,7 +1578,7 @@ function goToRitual(){
   var slug = memberData.currentRitual;
   if (!slug) { showToast('No ritual found for member: ' + (memberData.loginEmail || memberData.memberId || 'unknown') + '. Please visit marmaroph.com/members-area on this device first.'); return; }
   var r = RITUALS[slug];
-  var base = 'https://hellomarmaroph.github.io/marmaroph-members-app/';
+  var base = 'https://app.marmaroph.com/';
   var ritualUrl = base + (r ? r.html : 'marmaroph-ritual-mindful-eating.html');
   var params = [];
   if (memberData.memberId) params.push('memberId=' + memberData.memberId);
@@ -2097,7 +2097,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=19').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=20').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>

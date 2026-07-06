@@ -347,6 +347,15 @@
     background: #ffffff;
   }
 
+  .custom-toggle.active .toggle-switch {
+    background: #044147;
+  }
+
+  .custom-toggle.active .toggle-switch::after {
+    transform: translateX(20px);
+    background: #ffffff;
+  }
+
   /* Product description */
   .product-desc {
     padding: 18px;
@@ -758,6 +767,7 @@
 <div class="content-wrap">
 
   <div class="header">
+    <img src="icon-512.png" alt="Marmaroph" style="width:72px;height:72px;border-radius:16px;margin-bottom:12px;">
     <h1>Your Sanctuary Awaits</h1>
     <div class="subtitle">Complete your ritual experience</div>
   </div>
@@ -846,11 +856,11 @@
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Full name</label>
-        <input class="form-input" type="text" id="shipName" placeholder="Your full name"/>
+        <input class="form-input" type="text" id="shipName" placeholder="Your full name" autocomplete="name" inputmode="text"/>
       </div>
       <div class="form-group">
         <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="shipEmail" placeholder="your@email.com"/>
+        <input class="form-input" type="email" id="shipEmail" placeholder="your@email.com" autocomplete="email" inputmode="email"/>
       </div>
     </div>
 
@@ -897,7 +907,7 @@
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">WhatsApp number <span style="font-weight:300;color:rgba(4,65,71,0.4)">(optional)</span></label>
-        <input class="form-input" type="tel" id="whatsappNumber" placeholder="+1 555 123 4567"/>
+        <input class="form-input" type="tel" id="whatsappNumber" placeholder="+1 555 123 4567" autocomplete="tel" inputmode="tel"/>
       </div>
       <div class="form-group">
         <label class="form-label">How did you find us?</label>
