@@ -1539,6 +1539,7 @@ function populateSummary() {
 }
 
 var memberData = null;
+var urlMemberId = urlParams.get('memberId') || '';
 
 function submitAndCheckout() {
   var btn = document.querySelector('.btn-checkout');
@@ -1546,7 +1547,7 @@ function submitAndCheckout() {
   btn.disabled = true;
 
   var email = selections.shipEmail || (memberData && memberData.loginEmail) || '';
-  var memberId = (memberData && memberData.memberId) || '';
+  var memberId = urlMemberId || (memberData && memberData.memberId) || email || ('guest-' + Date.now());
 
   if (!email) {
     alert('Please enter your email address.');
@@ -1631,6 +1632,19 @@ window.addEventListener('load', function() {
   buildCelestialBg();
   if (!configLoaded) {
     loadRitualConfig();
+  }
+  if (urlMemberId) {
+    fetch(WIX_API + '/memberDashboard?memberId=' + encodeURIComponent(urlMemberId))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.profile) {
+          memberData = { memberId: urlMemberId, loginEmail: data.profile.email, firstName: data.profile.firstName, lastName: data.profile.lastName };
+          var emailField = document.getElementById('shipEmail');
+          if (emailField && !emailField.value && data.profile.email) emailField.value = data.profile.email;
+          var nameField = document.getElementById('shipName');
+          if (nameField && !nameField.value && data.profile.firstName) nameField.value = (data.profile.firstName + ' ' + (data.profile.lastName || '')).trim();
+        }
+      }).catch(function() {});
   }
 });
 
