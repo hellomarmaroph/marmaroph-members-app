@@ -1265,7 +1265,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=22').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=23').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -1640,30 +1640,9 @@ function selectRitual(slug) {
 
 function startCheckout() {
   if (!selectedRitualSlug) return;
-  var btn = document.getElementById('checkoutBtn');
-  btn.textContent = 'Loading...';
-  btn.disabled = true;
-  fetch(API + '/createCheckoutSession', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      memberId: memberData.memberId,
-      email: memberData.loginEmail || '',
-      ritual: selectedRitualSlug
-    })
-  }).then(function(r) { return r.json(); })
-    .then(function(d) {
-      btn.textContent = 'Subscribe & Start Ritual';
-      btn.disabled = false;
-      if (d.url) {
-        window.location.href = d.url;
-      }
-    })
-    .catch(function(err) {
-      console.error('Checkout error:', err);
-      btn.textContent = 'Subscribe & Start Ritual';
-      btn.disabled = false;
-    });
+  var url = 'checkout.html?ritual=' + encodeURIComponent(selectedRitualSlug);
+  if (memberData.memberId) url += '&memberId=' + encodeURIComponent(memberData.memberId);
+  window.location.href = url;
 }
 
 function unlockRitualCards(currentRitual, unlockedRituals) {
@@ -2110,7 +2089,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=22').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=23').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
