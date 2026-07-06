@@ -1643,7 +1643,7 @@ function startCheckout() {
       btn.textContent = 'Subscribe & Start Ritual';
       btn.disabled = false;
       if (d.url) {
-        window.top.location.href = d.url;
+        window.location.href = d.url;
       }
     })
     .catch(function(err) {

@@ -1600,14 +1600,17 @@ function submitAndCheckout() {
       body: JSON.stringify({
         memberId: memberId,
         email: email,
-        ritual: selections.ritual
+        ritual: selections.ritual,
+        addProduct: selections.addProduct,
+        anchorObject: selections.anchorObject,
+        anchorPrice: selections.anchorPrice
       })
     });
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
     if (data.url) {
-      window.top.location.href = data.url;
+      window.location.href = data.url;
     } else {
       alert('Could not create checkout session. Please try again.');
       btn.textContent = 'Proceed to Payment';
