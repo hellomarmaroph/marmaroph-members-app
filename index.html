@@ -1284,6 +1284,27 @@ window.addEventListener('message', function(e) {
 
 function saveMemberData() {
   try { localStorage.setItem('marmaroph_member', JSON.stringify(memberData)); } catch(e) {}
+  updateManifestStartUrl();
+}
+
+function updateManifestStartUrl() {
+  if (!memberData.memberId) return;
+  var params = new URLSearchParams({
+    memberId: memberData.memberId,
+    loginEmail: memberData.loginEmail || '',
+    firstName: memberData.firstName || '',
+    lastName: memberData.lastName || '',
+    nickname: memberData.nickname || '',
+    photo: memberData.photo || '',
+    slug: memberData.slug || ''
+  });
+  fetch('manifest.json').then(function(r){return r.json()}).then(function(m) {
+    m.start_url = './index.html#' + params.toString();
+    var blob = new Blob([JSON.stringify(m)], {type: 'application/json'});
+    var url = URL.createObjectURL(blob);
+    var link = document.querySelector('link[rel="manifest"]');
+    if (link) { link.href = url; }
+  }).catch(function(){});
 }
 
 function loadSavedMember() {
@@ -1342,9 +1363,10 @@ function loadSavedMember() {
         });
       return;
     }
-    // 3. No data — standalone PWA auto-redirects to Wix to re-authenticate
+    // 3. No data — show login prompt (standalone PWA auto-redirects once to re-authenticate)
     var isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-    if (isStandalone) {
+    if (isStandalone && !sessionStorage.getItem('marmaroph_login_attempted')) {
+      sessionStorage.setItem('marmaroph_login_attempted', '1');
       window.location.href = 'https://www.marmaroph.com/members-area';
       return;
     }
