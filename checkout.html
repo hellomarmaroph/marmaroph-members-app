@@ -1612,9 +1612,20 @@ function submitAndCheckout() {
         memberId: memberId,
         email: email,
         ritual: selections.ritual,
+        ritualName: selections.ritualName || '',
         addProduct: selections.addProduct,
         anchorObject: selections.anchorObject,
-        anchorPrice: selections.anchorPrice
+        anchorPrice: selections.anchorPrice,
+        shipName: selections.shipName || '',
+        birthDate: selections.birthDate || '',
+        clientCountry: selections.clientCountry || '',
+        whatsappNumber: selections.whatsappNumber || '',
+        isGift: selections.isGift || false,
+        giftEmail: selections.giftEmail || '',
+        giftName: selections.giftName || '',
+        giftMessage: selections.giftMessage || '',
+        collectionName: selections.collectionName || '',
+        customText: selections.customText || ''
       })
     });
   })
