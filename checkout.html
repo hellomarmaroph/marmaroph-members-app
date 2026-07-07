@@ -1596,52 +1596,52 @@ function submitAndCheckout() {
     referralSource: selections.referralSource
   };
 
-  // Save selections, then create Stripe checkout
+  // Save selections (non-blocking — don't let this prevent checkout)
   fetch(WIX_API + '/saveCheckoutSelections', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
-  })
-  .then(function(r) { return r.json(); })
-  .then(function() {
-    // Create Stripe checkout session
-    return fetch(WIX_API + '/createCheckoutSession', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        memberId: memberId,
-        email: email,
-        ritual: selections.ritual,
-        ritualName: selections.ritualName || '',
-        addProduct: selections.addProduct,
-        anchorObject: selections.anchorObject,
-        anchorPrice: selections.anchorPrice,
-        shipName: selections.shipName || '',
-        birthDate: selections.birthDate || '',
-        clientCountry: selections.clientCountry || '',
-        whatsappNumber: selections.whatsappNumber || '',
-        isGift: selections.isGift || false,
-        giftEmail: selections.giftEmail || '',
-        giftName: selections.giftName || '',
-        giftMessage: selections.giftMessage || '',
-        collectionName: selections.collectionName || '',
-        customText: selections.customText || ''
-      })
-    });
+  }).catch(function(e) { console.warn('Save selections failed:', e); });
+
+  // Create Stripe checkout session
+  fetch(WIX_API + '/createCheckoutSession', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      memberId: memberId,
+      email: email,
+      ritual: selections.ritual,
+      ritualName: selections.ritualName || '',
+      addProduct: selections.addProduct,
+      anchorObject: selections.anchorObject,
+      anchorPrice: selections.anchorPrice,
+      shipName: selections.shipName || '',
+      birthDate: selections.birthDate || '',
+      clientCountry: selections.clientCountry || '',
+      whatsappNumber: selections.whatsappNumber || '',
+      isGift: selections.isGift || false,
+      giftEmail: selections.giftEmail || '',
+      giftName: selections.giftName || '',
+      giftMessage: selections.giftMessage || '',
+      collectionName: selections.collectionName || '',
+      customText: selections.customText || ''
+    })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
     if (data.url) {
       window.location.href = data.url;
     } else {
-      alert('Could not create checkout session. Please try again.');
+      var errMsg = data.error || 'Unknown error creating checkout session.';
+      console.error('Checkout error:', errMsg);
+      alert('Checkout error: ' + errMsg);
       btn.textContent = 'Proceed to Payment';
       btn.disabled = false;
     }
   })
   .catch(function(err) {
     console.error('Checkout error:', err);
-    alert('Something went wrong. Please try again.');
+    alert('Connection error. Please check your internet and try again.');
     btn.textContent = 'Proceed to Payment';
     btn.disabled = false;
   });
