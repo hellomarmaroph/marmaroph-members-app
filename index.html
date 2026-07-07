@@ -609,6 +609,8 @@
       <div class="sb-item" onclick="navigate('payments',this)"><span class="sb-icon">&#9645;</span> Payments</div>
       <div class="sb-item" onclick="navigate('subscription',this)"><span class="sb-icon">&#9733;</span> Subscription</div>
       <div class="sb-item" onclick="navigate('referral',this)"><span class="sb-icon">&#127873;</span> Refer a Friend <span class="sb-badge">new</span></div>
+      <div class="sb-item" onclick="navigate('guide',this)"><span class="sb-icon">&#128218;</span> How to Use</div>
+      <div class="sb-item" onclick="promptDownloadApp()"><span class="sb-icon">&#11015;</span> Download App</div>
       <div class="sb-logout" onclick="doLogout()">&#8594; Log out</div>
     </div>
   </div>
@@ -634,6 +636,8 @@
       <div class="sb-item" onclick="navigate('payments',this)"><span class="sb-icon">&#9645;</span> Payments</div>
       <div class="sb-item" onclick="navigate('subscription',this)"><span class="sb-icon">&#9733;</span> Subscription</div>
       <div class="sb-item" onclick="navigate('referral',this)"><span class="sb-icon">&#127873;</span> Refer a Friend <span class="sb-badge">new</span></div>
+      <div class="sb-item" onclick="navigate('guide',this)"><span class="sb-icon">&#128218;</span> How to Use</div>
+      <div class="sb-item" onclick="promptDownloadApp()"><span class="sb-icon">&#11015;</span> Download App</div>
       <div class="sb-logout" onclick="doLogout()" style="margin-top:12px">&#8594; Log out</div>
     </nav>
   </div>
@@ -760,7 +764,8 @@
               <button class="btn-teal" onclick="goToRitual()">BEGIN &#8594;</button>
             </div>
           </div>
-          <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 12px;letter-spacing:0.3px">Next Rituals</div>
+          <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 6px;letter-spacing:0.3px">Next Rituals</div>
+          <div style="font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:14px;line-height:1.5">Each ritual is designed to start on the 1st of the month. Choose a ritual below and pick the month you'd like to begin.</div>
           <div id="homeLockedList">
             <div class="ritual-card-light locked" onclick="selectRitual('energised-mornings')"><div class="ritual-icon">&#9728;</div><div class="ritual-info"><h3>Energised Mornings</h3><div class="ritual-pillars"><span class="ptag ptag-movement">MOVEMENT</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Design mornings that energise body and mind.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
             <div class="ritual-card-light locked" onclick="selectRitual('sanctuary-protection')"><div class="ritual-icon">&#128737;</div><div class="ritual-info"><h3>Sanctuary Protection</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Create boundaries that protect your peace.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
@@ -903,7 +908,8 @@
             <div class="ritual-right"><span class="status-tag dark-status-current">CURRENT</span><button class="btn-glow" onclick="goToRitual()">BEGIN &#8594;</button></div>
           </div>
 
-          <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:rgba(187,217,215,0.5);margin:24px 0 12px;letter-spacing:0.3px">Next Rituals</div>
+          <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:rgba(187,217,215,0.5);margin:24px 0 6px;letter-spacing:0.3px">Next Rituals</div>
+          <div style="font-size:11px;color:rgba(187,217,215,0.4);font-weight:300;font-style:italic;margin-bottom:14px;line-height:1.5">Each ritual is designed to start on the 1st of the month. Choose a ritual below and pick the month you'd like to begin.</div>
           <div id="ritualsLockedList">
             <div class="ritual-card-dark locked" onclick="selectRitual('energised-mornings')"><div class="ritual-icon">&#9728;</div><div class="ritual-info"><h3>Energised Mornings</h3><div class="ritual-pillars"><span class="ptag ptag-movement">MOVEMENT</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Design mornings that energise body and mind.</div></div><div class="ritual-right"><span class="status-tag dark-status-locked">LOCKED</span></div></div>
             <div class="ritual-card-dark locked" onclick="selectRitual('sanctuary-protection')"><div class="ritual-icon">&#128737;</div><div class="ritual-info"><h3>Sanctuary Protection</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Create boundaries that protect your peace.</div></div><div class="ritual-right"><span class="status-tag dark-status-locked">LOCKED</span></div></div>
@@ -1053,6 +1059,11 @@
           <div class="checkout-ritual-name" id="checkoutRitualName"></div>
           <div class="checkout-ritual-desc" id="checkoutRitualDesc"></div>
           <div class="checkout-price">$29<span> / month</span></div>
+          <div style="margin:16px 0 8px">
+            <div style="font-size:11px;font-weight:500;color:var(--em2);letter-spacing:0.5px;margin-bottom:6px">CHOOSE YOUR START MONTH</div>
+            <div style="font-size:10px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:8px">Rituals begin on the 1st of each month</div>
+            <select id="startMonthSelect" style="width:100%;padding:10px 14px;border:1px solid rgba(4,65,71,0.12);border-radius:10px;font-family:var(--fb);font-size:13px;font-weight:300;color:var(--text);background:#fff;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%228%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1%201l5%205%205-5%22%20stroke%3D%22%23999%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E');background-repeat:no-repeat;background-position:right 12px center"></select>
+          </div>
           <ul class="checkout-features">
             <li>30-day guided ritual with daily lessons</li>
             <li>Access to your ritual's community circle</li>
@@ -1143,6 +1154,90 @@
             <div class="referral-stat"><div class="referral-stat-num" id="refEarned2">0</div><div class="referral-stat-label">Months Earned</div></div>
           </div>
           <div style="text-align:center;font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-top:8px">No limit on referrals — the more friends join, the more free months you earn!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="section" id="sec-guide">
+      <div class="content-area">
+        <div class="sec-title"><span style="font-size:16px;opacity:0.6">&#128218;</span> How to Use the App</div>
+        <div class="sec-sub">Your step-by-step guide to your Marmaroph sanctuary.</div>
+
+        <div class="card">
+          <div class="card-t">Getting Started</div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:1px solid rgba(159,214,235,0.2)">1</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Log in from the website</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Go to <strong>marmaroph.com</strong> and log into your account. You'll be redirected to this members app automatically.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:1px solid rgba(159,214,235,0.2)">2</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Choose a ritual</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Browse the available rituals in <strong>Home</strong> or <strong>My Rituals</strong>. Tap any locked ritual to learn more and subscribe. Not sure which one? Use <strong>Choose Your Next Ritual</strong> to take the quiz.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:1px solid rgba(159,214,235,0.2)">3</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Subscribe and pick your start month</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Each ritual starts on the <strong>1st of the month</strong>. Choose the month you'd like to begin and complete your subscription ($29/month).</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:1px solid rgba(159,214,235,0.2)">4</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Begin your ritual</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Once subscribed, your ritual card will say <strong>CURRENT</strong>. Tap <strong>"Begin Ritual"</strong> (or "Continue Ritual" if you've already started) to open your daily practice.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="card-t">Inside Your Ritual (e.g. Mindful Eating)</div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">&#127793;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Welcome page</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Read the introduction to understand the philosophy behind the ritual. Scroll down to learn the science and meet the experts. Then tap <strong>"Begin Today's Ritual"</strong>.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">&#128197;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Daily home screen</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">This is your daily hub. You'll see your <strong>current day</strong> (e.g. Day 3 of 30), today's lesson, and a button to start the day's practice. Each day has a new lesson, reflection, or activity.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">&#9998;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Daily lessons</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Read through the day's content at your own pace. Some days include <strong>interactive tools</strong> (like the Ritual Space Analyser or the Fridge Check) and <strong>journal prompts</strong> for reflection. Complete each lesson to unlock the next day.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">&#127775;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Completing a day</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">After finishing the lesson, tap <strong>"Complete Day"</strong> at the bottom. Your progress is saved and the next day's content becomes available. You can revisit past days anytime.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(110,200,155,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(110,200,155,0.15)">&#128736;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Tools and resources</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Some rituals include special tools you can use anytime. For Mindful Eating, you'll find the <strong>Ritual Space Analyser</strong>, <strong>Fridge Check</strong>, and <strong>Habit Tracker</strong> in the tools section.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="card-t">Install the App on Your Phone</div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(176,143,212,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(176,143,212,0.15)">&#128241;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">iPhone (Safari)</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px;line-height:1.6">1. Open <strong>app.marmaroph.com</strong> in Safari<br>2. Tap the <strong>Share</strong> button (square with arrow) at the bottom<br>3. Scroll down and tap <strong>"Add to Home Screen"</strong><br>4. Tap <strong>"Add"</strong><br>5. Open the app from your home screen &mdash; it will log you in automatically</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(176,143,212,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid rgba(176,143,212,0.15)">&#129302;</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--em2)">Android (Chrome)</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px;line-height:1.6">1. Open <strong>app.marmaroph.com</strong> in Chrome<br>2. Tap the <strong>menu</strong> (three dots) at the top right<br>3. Tap <strong>"Install app"</strong> or <strong>"Add to Home Screen"</strong><br>4. Open the app from your home screen</div></div>
+            </div>
+          </div>
+          <div style="margin-top:14px;text-align:center">
+            <button class="btn-sky" onclick="promptDownloadApp()" style="font-size:11px;padding:8px 20px">Download App Now</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="card-t">Tips</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.5">
+            <div style="display:flex;gap:8px"><span style="flex-shrink:0">&#10022;</span><span>Open the app at the same time each day to build your ritual habit.</span></div>
+            <div style="display:flex;gap:8px"><span style="flex-shrink:0">&#10022;</span><span>You don't need to finish the entire lesson in one sitting &mdash; your progress is saved.</span></div>
+            <div style="display:flex;gap:8px"><span style="flex-shrink:0">&#10022;</span><span>Use the <strong>journal prompts</strong> &mdash; writing makes the practice stick.</span></div>
+            <div style="display:flex;gap:8px"><span style="flex-shrink:0">&#10022;</span><span>After completing a ritual, you can choose a new one from the Rituals page.</span></div>
+            <div style="display:flex;gap:8px"><span style="flex-shrink:0">&#10022;</span><span>Need help? Reach out through the Community section or email us.</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1247,7 +1342,12 @@ function loadSavedMember() {
         });
       return;
     }
-    // 3. No data — show login prompt (only outside iframe)
+    // 3. No data — standalone PWA auto-redirects to Wix to re-authenticate
+    var isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    if (isStandalone) {
+      window.location.href = 'https://www.marmaroph.com/members-area';
+      return;
+    }
     var loader = document.getElementById('loading');
     if (loader) {
       var logoSrc = document.querySelector('.loading-logo') ? document.querySelector('.loading-logo').src : '';
@@ -1382,6 +1482,60 @@ function dismissInstall() {
   var b = document.getElementById('installBanner');
   if (b) b.remove();
   try { localStorage.setItem('marmaroph_install_dismissed', '1'); } catch(e) {}
+}
+
+function promptDownloadApp() {
+  var isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if (isStandalone) {
+    showToast('You are already using the app!');
+    return;
+  }
+  var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  if (isIOS) {
+    showIOSSteps();
+    return;
+  }
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(function(choice) {
+      if (choice.outcome === 'accepted') showToast('App installed!');
+      deferredInstallPrompt = null;
+    });
+    return;
+  }
+  var isAndroid = /Android/.test(navigator.userAgent);
+  if (isAndroid) {
+    window.open('https://app.marmaroph.com', '_blank');
+    showToast('Open in Chrome and tap "Add to Home Screen" from the menu');
+    return;
+  }
+  var overlay = document.createElement('div');
+  overlay.id = 'desktopInstallSteps';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;animation:fadeIn .3s ease';
+  var isChrome = /Chrome/.test(navigator.userAgent) && !/Edg/.test(navigator.userAgent);
+  var isEdge = /Edg/.test(navigator.userAgent);
+  var steps = '';
+  if (isChrome) {
+    steps = '<div style="color:#fff;font-size:13px;line-height:1.6;text-align:left;margin-bottom:24px">'
+      + '<p style="margin:0 0 12px"><strong>1.</strong> Open <a href="https://app.marmaroph.com" target="_blank" style="color:#e9dcb8;text-decoration:underline">app.marmaroph.com</a> in Chrome</p>'
+      + '<p style="margin:0 0 12px"><strong>2.</strong> Click the install icon in the address bar (or Menu &#8594; "Install Marmaroph")</p>'
+      + '<p style="margin:0"><strong>3.</strong> Click <strong>"Install"</strong></p></div>';
+  } else if (isEdge) {
+    steps = '<div style="color:#fff;font-size:13px;line-height:1.6;text-align:left;margin-bottom:24px">'
+      + '<p style="margin:0 0 12px"><strong>1.</strong> Open <a href="https://app.marmaroph.com" target="_blank" style="color:#e9dcb8;text-decoration:underline">app.marmaroph.com</a> in Edge</p>'
+      + '<p style="margin:0 0 12px"><strong>2.</strong> Click Menu (...) &#8594; "Apps" &#8594; "Install this site as an app"</p>'
+      + '<p style="margin:0"><strong>3.</strong> Click <strong>"Install"</strong></p></div>';
+  } else {
+    steps = '<div style="color:#fff;font-size:13px;line-height:1.6;text-align:left;margin-bottom:24px">'
+      + '<p style="margin:0 0 12px">For the best experience, open <a href="https://app.marmaroph.com" target="_blank" style="color:#e9dcb8;text-decoration:underline">app.marmaroph.com</a> in <strong>Chrome</strong> or <strong>Edge</strong> and install from there.</p>'
+      + '<p style="margin:0">On mobile, open the link on your phone to add it to your home screen.</p></div>';
+  }
+  overlay.innerHTML = '<div style="max-width:360px;text-align:center">'
+    + '<div style="font-family:Cormorant Garamond,serif;font-size:24px;color:#e9dcb8;margin-bottom:24px">Download the App</div>'
+    + steps
+    + '<button onclick="document.getElementById(\'desktopInstallSteps\').remove()" style="padding:10px 28px;background:#e9dcb8;color:#044147;border:none;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer">GOT IT</button>'
+    + '</div>';
+  document.body.appendChild(overlay);
 }
 
 function showNotificationPrompt() {
@@ -1642,16 +1796,38 @@ function selectRitual(slug) {
   selectedRitualSlug = slug;
   document.getElementById('checkoutRitualName').textContent = r.name;
   document.getElementById('checkoutRitualDesc').textContent = r.desc;
+  populateStartMonths();
   document.getElementById('checkoutCard').style.display = 'block';
   navigate('subscription');
   document.getElementById('mainArea').scrollTop = 0;
   setTimeout(sendHeight, 100);
 }
 
+function populateStartMonths() {
+  var sel = document.getElementById('startMonthSelect');
+  if (!sel) return;
+  sel.innerHTML = '';
+  var now = new Date();
+  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var startOffset = now.getDate() <= 5 ? 0 : 1;
+  for (var i = 0; i < 6; i++) {
+    var d = new Date(now.getFullYear(), now.getMonth() + startOffset + i, 1);
+    var val = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    var label = monthNames[d.getMonth()] + ' ' + d.getFullYear();
+    if (i === 0 && startOffset === 0) label += ' (starts now)';
+    var opt = document.createElement('option');
+    opt.value = val;
+    opt.textContent = label;
+    sel.appendChild(opt);
+  }
+}
+
 function startCheckout() {
   if (!selectedRitualSlug) return;
   var url = 'checkout.html?ritual=' + encodeURIComponent(selectedRitualSlug);
   if (memberData.memberId) url += '&memberId=' + encodeURIComponent(memberData.memberId);
+  var sel = document.getElementById('startMonthSelect');
+  if (sel && sel.value) url += '&startMonth=' + encodeURIComponent(sel.value);
   window.location.href = url;
 }
 
