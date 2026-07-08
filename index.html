@@ -1700,7 +1700,9 @@ function doAuth() {
     var saved = loadSavedMember();
     if (saved && saved.memberId) {
       memberData = saved;
-      fetch(API+'/memberDashboard?memberId='+saved.memberId)
+      var dashUrl = API+'/memberDashboard?memberId='+encodeURIComponent(saved.memberId);
+      if (saved.loginEmail) dashUrl += '&email='+encodeURIComponent(saved.loginEmail);
+      fetch(dashUrl)
         .then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()})
         .then(function(d){
           if(!d.progress || (d.progress && !d.progress.subscriptionActive)){
@@ -2065,7 +2067,8 @@ function applyDashboard(d) {
 var _dashRetries = 0;
 function loadDashboard() {
   if (!memberData.memberId) return;
-  fetch(API+'/memberDashboard?memberId='+memberData.memberId).then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()}).then(function(d) {
+  var dUrl=API+'/memberDashboard?memberId='+encodeURIComponent(memberData.memberId);if(memberData.loginEmail)dUrl+='&email='+encodeURIComponent(memberData.loginEmail);
+  fetch(dUrl).then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()}).then(function(d) {
     // Webhook race condition: user returned from Stripe but webhook hasn't created the record yet
     if (!d.progress && memberData.checkoutSuccess && _dashRetries < 5) {
       _dashRetries++;
