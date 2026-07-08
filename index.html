@@ -1279,7 +1279,25 @@ function sendHeight() {
 }
 
 window.addEventListener('message', function(e) {
-  if (e.data && e.data.type === 'memberData') { memberData = e.data; saveMemberData(); initApp(); }
+  if (e.data && e.data.type === 'memberData') {
+    // On desktop/iPad in iframe: break out and load directly at app.marmaroph.com
+    if (isInIframe && !(/iPhone|iPod|Android/i.test(navigator.userAgent) && window.innerWidth <= 768)) {
+      var params = new URLSearchParams();
+      if (e.data.memberId) params.set('memberId', e.data.memberId);
+      if (e.data.loginEmail) params.set('loginEmail', e.data.loginEmail);
+      if (e.data.firstName) params.set('firstName', e.data.firstName);
+      if (e.data.lastName) params.set('lastName', e.data.lastName);
+      if (e.data.nickname) params.set('nickname', e.data.nickname);
+      if (e.data.photo) params.set('photo', e.data.photo);
+      if (e.data.slug) params.set('slug', e.data.slug);
+      if (e.data.autoOpenRitual) params.set('autoOpenRitual', e.data.autoOpenRitual);
+      if (e.data.checkoutSuccess) params.set('checkoutSuccess', e.data.checkoutSuccess);
+      if (e.data.checkoutRitual) params.set('checkoutRitual', e.data.checkoutRitual);
+      window.top.location.href = 'https://app.marmaroph.com/index.html#' + params.toString();
+      return;
+    }
+    memberData = e.data; saveMemberData(); initApp();
+  }
 });
 
 function saveMemberData() {
@@ -1388,7 +1406,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=28').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=29').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2297,7 +2315,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=28').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=29').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
