@@ -1315,6 +1315,126 @@ function loadSavedMember() {
   return null;
 }
 
+// Social login — replace these with your OAuth client IDs
+var GOOGLE_CLIENT_ID = '84961513844-omr1dmgc2426i1prjjkuugur0ffqk710.apps.googleusercontent.com';
+var MICROSOFT_CLIENT_ID = '';
+var APPLE_CLIENT_ID = '';
+var APPLE_REDIRECT_URI = 'https://app.marmaroph.com';
+
+function loadOAuthScript(src, cb) {
+  if (document.querySelector('script[src="'+src+'"]')) { cb(); return; }
+  var s = document.createElement('script'); s.src = src; s.async = true; s.onload = cb;
+  s.onerror = function() { showSocialError('Could not load login provider. Please try again.'); };
+  document.head.appendChild(s);
+}
+
+function handleSocialResult(data) {
+  memberData = {
+    type: 'memberData',
+    memberId: data.memberId,
+    loginEmail: data.loginEmail || '',
+    firstName: data.firstName || '',
+    lastName: data.lastName || '',
+    nickname: data.nickname || '',
+    photo: data.photo || '',
+    slug: data.slug || ''
+  };
+  saveMemberData();
+  initApp();
+}
+
+function showSocialError(msg) {
+  var errEl = document.getElementById('authError');
+  if (errEl) errEl.textContent = msg;
+}
+
+function setSocialLoading(provider, on) {
+  var btn = document.getElementById('btn-' + provider);
+  if (!btn) return;
+  btn.disabled = on; btn.style.opacity = on ? '0.6' : '1';
+}
+
+function callSocialBackend(provider, token, extra) {
+  var body = { provider: provider, token: token };
+  if (extra) { for (var k in extra) body[k] = extra[k]; }
+  return fetch(API + '/socialLogin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+  .then(function(res) {
+    setSocialLoading(provider, false);
+    if (!res.ok || res.data.error) { showSocialError(res.data.error || 'Login failed.'); return; }
+    handleSocialResult(res.data);
+  })
+  .catch(function() {
+    setSocialLoading(provider, false);
+    showSocialError('Connection error. Please try again.');
+  });
+}
+
+// ── Google Sign-In ──
+function doGoogleLogin() {
+  if (!GOOGLE_CLIENT_ID) { showSocialError('Google login not configured yet.'); return; }
+  setSocialLoading('google', true);
+  if (typeof google !== 'undefined' && google.accounts) { triggerGoogle(); }
+  else { loadOAuthScript('https://accounts.google.com/gsi/client.js', triggerGoogle); }
+}
+function triggerGoogle() {
+  try {
+    var client = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: 'email profile',
+      callback: function(resp) {
+        if (resp.error) { setSocialLoading('google', false); return; }
+        callSocialBackend('google', resp.access_token);
+      }
+    });
+    client.requestAccessToken();
+  } catch(e) { setSocialLoading('google', false); showSocialError('Could not open Google login.'); }
+}
+
+// ── Apple Sign-In ──
+function doAppleLogin() {
+  if (!APPLE_CLIENT_ID) { showSocialError('Apple login not configured yet.'); return; }
+  setSocialLoading('apple', true);
+  if (typeof AppleID !== 'undefined') { triggerApple(); }
+  else { loadOAuthScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js', triggerApple); }
+}
+function triggerApple() {
+  try {
+    AppleID.auth.init({ clientId: APPLE_CLIENT_ID, scope: 'name email', redirectURI: APPLE_REDIRECT_URI, usePopup: true });
+    AppleID.auth.signIn().then(function(data) {
+      var user = data.user || {};
+      var name = user.name || {};
+      callSocialBackend('apple', data.authorization.id_token, {
+        email: user.email || '', firstName: name.firstName || '', lastName: name.lastName || ''
+      });
+    }).catch(function() { setSocialLoading('apple', false); });
+  } catch(e) { setSocialLoading('apple', false); showSocialError('Could not open Apple login.'); }
+}
+
+// ── Microsoft Sign-In ──
+function doMicrosoftLogin() {
+  if (!MICROSOFT_CLIENT_ID) { showSocialError('Microsoft login not configured yet.'); return; }
+  setSocialLoading('microsoft', true);
+  if (typeof msal !== 'undefined') { triggerMicrosoft(); }
+  else { loadOAuthScript('https://alcdn.msauth.net/browser/2.38.3/js/msal-browser-2.38.3.js', function(){ setTimeout(triggerMicrosoft, 50); }); }
+}
+function triggerMicrosoft() {
+  try {
+    var app = new msal.PublicClientApplication({
+      auth: { clientId: MICROSOFT_CLIENT_ID, authority: 'https://login.microsoftonline.com/common', redirectUri: window.location.origin }
+    });
+    app.initialize().then(function() {
+      return app.loginPopup({ scopes: ['User.Read'] });
+    }).then(function(resp) {
+      callSocialBackend('microsoft', resp.accessToken);
+    }).catch(function() { setSocialLoading('microsoft', false); });
+  } catch(e) { setSocialLoading('microsoft', false); showSocialError('Could not open Microsoft login.'); }
+}
+
 var authMode = 'login';
 function showLoginScreen() {
   var loader = document.getElementById('loading');
@@ -1339,6 +1459,10 @@ function showLoginScreen() {
     + '<div id="authError" style="min-height:20px;margin-bottom:12px;font-size:12px;color:#c0392b;font-family:Montserrat,sans-serif"></div>'
     + '<button id="authBtn" onclick="doAuth()" style="width:100%;padding:14px;background:linear-gradient(135deg,#0a6b72,#044147);color:#fff;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer">LOG IN</button>'
     + '<p id="forgotLink" style="margin-top:16px;font-size:11px"><a href="https://www.marmaroph.com/members-area" target="_blank" style="color:#8a9a9c;text-decoration:none;font-family:Montserrat,sans-serif">Forgot password?</a></p>'
+    + '<div style="display:flex;align-items:center;gap:12px;margin:24px 0 20px"><div style="flex:1;height:1px;background:rgba(4,65,71,0.12)"></div><span style="font-family:Montserrat,sans-serif;font-size:10px;color:#8a9a9c;letter-spacing:1.5px">OR</span><div style="flex:1;height:1px;background:rgba(4,65,71,0.12)"></div></div>'
+    + '<button id="btn-google" onclick="doGoogleLogin()" style="width:100%;padding:11px 16px;background:#fff;border:1px solid rgba(0,0,0,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:500;color:#2a2a2a;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#FBBC05" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>'
+    + '<button id="btn-apple" onclick="doAppleLogin()" style="width:100%;padding:11px 16px;background:#000;border:1px solid #000;border-radius:10px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px"><svg width="14" height="17" viewBox="0 0 14 17" fill="#fff"><path d="M10.3 0c-1 .05-2.2.67-2.9 1.51-.6.73-1.2 1.82-1 2.87 1.1.03 2.2-.58 2.9-1.43.6-.8 1.1-1.9 1-2.95zM13.4 12.05c-.3.76-.5 1.1-.9 1.77-.6.94-1.5 2.11-2.5 2.12-1.2.01-1.5-.77-3.1-.76-1.6.01-1.9.78-3.1.76-1.1-.01-1.9-1.05-2.5-1.99C-.6 11.33-1.1 8.44-.2 6.46c.7-1.4 1.8-2.22 3.1-2.22 1.2 0 1.9.77 2.8.77.9 0 1.5-.78 2.8-.78 1.1 0 2.1.61 2.8 1.49-2.5 1.35-2.1 4.87.1 5.8z"/></svg>Continue with Apple</button>'
+    + '<button id="btn-microsoft" onclick="doMicrosoftLogin()" style="width:100%;padding:11px 16px;background:#fff;border:1px solid rgba(0,0,0,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:500;color:#2a2a2a;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px"><svg width="18" height="18" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>Continue with Microsoft</button>'
     + '</div>';
   authMode = 'login';
 }
@@ -1472,7 +1596,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=31').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=32').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2382,7 +2506,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=31').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=32').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
