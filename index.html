@@ -1259,6 +1259,11 @@ var API = 'https://www.marmaroph.com/_functions';
 var memberData = {};
 
 var isInIframe = (window.parent && window.parent !== window);
+// On desktop/iPad in iframe: break out immediately and load at app.marmaroph.com
+var isPhone = /iPhone|iPod/i.test(navigator.userAgent) || (/Android/i.test(navigator.userAgent) && window.innerWidth <= 768);
+if (isInIframe && !isPhone) {
+  window.top.location.href = 'https://app.marmaroph.com/index.html';
+}
 function postToParent(msg) { if (isInIframe) window.parent.postMessage(msg, '*'); }
 var ritualIsOpen = false;
 var lastSentHeight = 0;
@@ -1406,7 +1411,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=29').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=30').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2315,7 +2320,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=29').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=30').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
