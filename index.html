@@ -1404,7 +1404,7 @@ function doGoogleLogin() {
   showSocialError('');
   var url = 'https://accounts.google.com/o/oauth2/v2/auth'
     + '?client_id=' + encodeURIComponent(GOOGLE_CLIENT_ID)
-    + '&redirect_uri=' + encodeURIComponent(window.location.origin + '/')
+    + '&redirect_uri=' + encodeURIComponent(window.location.origin)
     + '&response_type=token'
     + '&scope=email%20profile'
     + '&prompt=select_account';
@@ -1600,7 +1600,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=33').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=34').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2510,7 +2510,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=33').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=34').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
