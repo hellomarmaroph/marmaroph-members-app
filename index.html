@@ -1321,13 +1321,6 @@ var MICROSOFT_CLIENT_ID = '';
 var APPLE_CLIENT_ID = '';
 var APPLE_REDIRECT_URI = 'https://app.marmaroph.com';
 
-function loadOAuthScript(src, cb) {
-  if (document.querySelector('script[src="'+src+'"]')) { cb(); return; }
-  var s = document.createElement('script'); s.src = src; s.async = true; s.onload = cb;
-  s.onerror = function() { showSocialError('Could not load login provider. Please try again.'); };
-  document.head.appendChild(s);
-}
-
 function handleSocialResult(data) {
   memberData = {
     type: 'memberData',
@@ -1374,65 +1367,76 @@ function callSocialBackend(provider, token, extra) {
   });
 }
 
-// ── Google Sign-In ──
+// OAuth popup helper — no external scripts needed
+function oauthPopup(url, provider) {
+  var w = 500, h = 600;
+  var left = (screen.width - w) / 2, top = (screen.height - h) / 2;
+  var popup = window.open(url, provider + 'Login', 'width='+w+',height='+h+',left='+left+',top='+top+',menubar=no,toolbar=no');
+  if (!popup) { showSocialError('Popup blocked. Please allow popups for this site.'); setSocialLoading(provider, false); return; }
+  var redirectOrigin = window.location.origin;
+  var timer = setInterval(function() {
+    try {
+      if (!popup || popup.closed) { clearInterval(timer); setSocialLoading(provider, false); return; }
+      var loc = popup.location.href;
+      if (loc && loc.indexOf(redirectOrigin) === 0) {
+        clearInterval(timer);
+        popup.close();
+        var hash = loc.split('#')[1];
+        if (!hash) { showSocialError('Login failed. Please try again.'); setSocialLoading(provider, false); return; }
+        var params = {};
+        hash.split('&').forEach(function(pair) { var kv = pair.split('='); params[kv[0]] = decodeURIComponent(kv[1] || ''); });
+        if (params.access_token) {
+          callSocialBackend(provider, params.access_token);
+        } else if (params.error) {
+          showSocialError('Login cancelled.'); setSocialLoading(provider, false);
+        } else {
+          showSocialError('Login failed. Please try again.'); setSocialLoading(provider, false);
+        }
+      }
+    } catch(e) { /* cross-origin — popup still on provider's page */ }
+  }, 400);
+}
+
+// ── Google Sign-In (direct OAuth popup) ──
 function doGoogleLogin() {
   if (!GOOGLE_CLIENT_ID) { showSocialError('Google login not configured yet.'); return; }
   setSocialLoading('google', true);
-  if (typeof google !== 'undefined' && google.accounts) { triggerGoogle(); }
-  else { loadOAuthScript('https://accounts.google.com/gsi/client.js', triggerGoogle); }
-}
-function triggerGoogle() {
-  try {
-    var client = google.accounts.oauth2.initTokenClient({
-      client_id: GOOGLE_CLIENT_ID,
-      scope: 'email profile',
-      callback: function(resp) {
-        if (resp.error) { setSocialLoading('google', false); return; }
-        callSocialBackend('google', resp.access_token);
-      }
-    });
-    client.requestAccessToken();
-  } catch(e) { setSocialLoading('google', false); showSocialError('Could not open Google login.'); }
+  showSocialError('');
+  var url = 'https://accounts.google.com/o/oauth2/v2/auth'
+    + '?client_id=' + encodeURIComponent(GOOGLE_CLIENT_ID)
+    + '&redirect_uri=' + encodeURIComponent(window.location.origin + '/')
+    + '&response_type=token'
+    + '&scope=email%20profile'
+    + '&prompt=select_account';
+  oauthPopup(url, 'google');
 }
 
-// ── Apple Sign-In ──
+// ── Apple Sign-In (direct OAuth popup) ──
 function doAppleLogin() {
   if (!APPLE_CLIENT_ID) { showSocialError('Apple login not configured yet.'); return; }
   setSocialLoading('apple', true);
-  if (typeof AppleID !== 'undefined') { triggerApple(); }
-  else { loadOAuthScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js', triggerApple); }
-}
-function triggerApple() {
-  try {
-    AppleID.auth.init({ clientId: APPLE_CLIENT_ID, scope: 'name email', redirectURI: APPLE_REDIRECT_URI, usePopup: true });
-    AppleID.auth.signIn().then(function(data) {
-      var user = data.user || {};
-      var name = user.name || {};
-      callSocialBackend('apple', data.authorization.id_token, {
-        email: user.email || '', firstName: name.firstName || '', lastName: name.lastName || ''
-      });
-    }).catch(function() { setSocialLoading('apple', false); });
-  } catch(e) { setSocialLoading('apple', false); showSocialError('Could not open Apple login.'); }
+  showSocialError('');
+  var url = 'https://appleid.apple.com/auth/authorize'
+    + '?client_id=' + encodeURIComponent(APPLE_CLIENT_ID)
+    + '&redirect_uri=' + encodeURIComponent(APPLE_REDIRECT_URI + '/')
+    + '&response_type=code%20id_token'
+    + '&scope=name%20email'
+    + '&response_mode=fragment';
+  oauthPopup(url, 'apple');
 }
 
-// ── Microsoft Sign-In ──
+// ── Microsoft Sign-In (direct OAuth popup) ──
 function doMicrosoftLogin() {
   if (!MICROSOFT_CLIENT_ID) { showSocialError('Microsoft login not configured yet.'); return; }
   setSocialLoading('microsoft', true);
-  if (typeof msal !== 'undefined') { triggerMicrosoft(); }
-  else { loadOAuthScript('https://alcdn.msauth.net/browser/2.38.3/js/msal-browser-2.38.3.js', function(){ setTimeout(triggerMicrosoft, 50); }); }
-}
-function triggerMicrosoft() {
-  try {
-    var app = new msal.PublicClientApplication({
-      auth: { clientId: MICROSOFT_CLIENT_ID, authority: 'https://login.microsoftonline.com/common', redirectUri: window.location.origin }
-    });
-    app.initialize().then(function() {
-      return app.loginPopup({ scopes: ['User.Read'] });
-    }).then(function(resp) {
-      callSocialBackend('microsoft', resp.accessToken);
-    }).catch(function() { setSocialLoading('microsoft', false); });
-  } catch(e) { setSocialLoading('microsoft', false); showSocialError('Could not open Microsoft login.'); }
+  showSocialError('');
+  var url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
+    + '?client_id=' + encodeURIComponent(MICROSOFT_CLIENT_ID)
+    + '&redirect_uri=' + encodeURIComponent(window.location.origin + '/')
+    + '&response_type=token'
+    + '&scope=User.Read%20email%20profile'
+    + '&prompt=select_account';
+  oauthPopup(url, 'microsoft');
 }
 
 var authMode = 'login';
@@ -1596,7 +1600,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=32').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=33').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2506,7 +2510,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=32').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=33').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
