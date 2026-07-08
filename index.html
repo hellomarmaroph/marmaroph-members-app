@@ -1705,11 +1705,10 @@ function doAuth() {
       fetch(dashUrl)
         .then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()})
         .then(function(d){
-          if(!d.progress || (d.progress && !d.progress.subscriptionActive)){
-            window.location.href = 'https://www.marmaroph.com/discover-your-home-ritual-quiz';
-            return;
-          }
           initApp();
+          if(!d.progress || (d.progress && !d.progress.subscriptionActive)){
+            setTimeout(function(){ showSubscribeBanner(); }, 600);
+          }
         })
         .catch(function(){
           initApp();
@@ -2075,11 +2074,10 @@ function loadDashboard() {
       setTimeout(loadDashboard, 2000);
       return;
     }
-    // No subscription — redirect to ritual quiz so they can choose + subscribe
+    // No subscription — show subscribe banner instead of redirecting
     if (!d.progress || (d.progress && !d.progress.subscriptionActive)) {
       if (!memberData.checkoutSuccess) {
-        window.location.href = 'https://www.marmaroph.com/discover-your-home-ritual-quiz';
-        return;
+        setTimeout(function(){ showSubscribeBanner(); }, 600);
       }
     }
     _dashRetries = 0;
@@ -2302,6 +2300,18 @@ function lockAllRituals() {
       if (r) r.innerHTML = '<span class="status-tag '+(isDark?'dark-status-locked':'status-locked')+'">LOCKED</span>';
     }
   });
+}
+
+function showSubscribeBanner() {
+  var existing = document.getElementById('subscribeBanner');
+  if (existing) return;
+  var banner = document.createElement('div');
+  banner.id = 'subscribeBanner';
+  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9000;background:linear-gradient(135deg,#033039,#044147);padding:20px 24px;text-align:center;box-shadow:0 -4px 24px rgba(0,0,0,0.3);border-top:1px solid rgba(159,214,235,0.15)';
+  banner.innerHTML = '<p style="font-family:Cormorant Garamond,serif;font-size:20px;color:#fff;margin-bottom:6px;font-weight:400">Discover Your Ritual</p>'
+    + '<p style="font-family:Montserrat,sans-serif;font-size:11px;color:rgba(159,214,235,0.6);margin-bottom:16px;font-weight:300">Take the quiz to find your perfect ritual and unlock your sanctuary</p>'
+    + '<a href="https://www.marmaroph.com/discover-your-home-ritual-quiz" style="display:inline-block;padding:12px 32px;background:#bbd9d7;color:#044147;border-radius:12px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-decoration:none">TAKE THE QUIZ</a>';
+  document.body.appendChild(banner);
 }
 
 function showToast(msg) {
