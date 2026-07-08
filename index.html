@@ -1259,11 +1259,6 @@ var API = 'https://www.marmaroph.com/_functions';
 var memberData = {};
 
 var isInIframe = (window.parent && window.parent !== window);
-// On desktop/iPad in iframe: break out immediately and load at app.marmaroph.com
-var isPhone = /iPhone|iPod/i.test(navigator.userAgent) || (/Android/i.test(navigator.userAgent) && window.innerWidth <= 768);
-if (isInIframe && !isPhone) {
-  window.top.location.href = 'https://app.marmaroph.com/index.html';
-}
 function postToParent(msg) { if (isInIframe) window.parent.postMessage(msg, '*'); }
 var ritualIsOpen = false;
 var lastSentHeight = 0;
@@ -1284,25 +1279,7 @@ function sendHeight() {
 }
 
 window.addEventListener('message', function(e) {
-  if (e.data && e.data.type === 'memberData') {
-    // On desktop/iPad in iframe: break out and load directly at app.marmaroph.com
-    if (isInIframe && !(/iPhone|iPod|Android/i.test(navigator.userAgent) && window.innerWidth <= 768)) {
-      var params = new URLSearchParams();
-      if (e.data.memberId) params.set('memberId', e.data.memberId);
-      if (e.data.loginEmail) params.set('loginEmail', e.data.loginEmail);
-      if (e.data.firstName) params.set('firstName', e.data.firstName);
-      if (e.data.lastName) params.set('lastName', e.data.lastName);
-      if (e.data.nickname) params.set('nickname', e.data.nickname);
-      if (e.data.photo) params.set('photo', e.data.photo);
-      if (e.data.slug) params.set('slug', e.data.slug);
-      if (e.data.autoOpenRitual) params.set('autoOpenRitual', e.data.autoOpenRitual);
-      if (e.data.checkoutSuccess) params.set('checkoutSuccess', e.data.checkoutSuccess);
-      if (e.data.checkoutRitual) params.set('checkoutRitual', e.data.checkoutRitual);
-      window.top.location.href = 'https://app.marmaroph.com/index.html#' + params.toString();
-      return;
-    }
-    memberData = e.data; saveMemberData(); initApp();
-  }
+  if (e.data && e.data.type === 'memberData') { memberData = e.data; saveMemberData(); initApp(); }
 });
 
 function saveMemberData() {
@@ -1338,7 +1315,105 @@ function loadSavedMember() {
   return null;
 }
 
-// When loaded directly (not in iframe), read member data from URL hash, localStorage, or show login prompt
+var authMode = 'login';
+function showLoginScreen() {
+  var loader = document.getElementById('loading');
+  if (!loader) return;
+  var logoEl = document.querySelector('.loading-logo');
+  var logoSrc = logoEl ? logoEl.src : '';
+  loader.classList.remove('hide');
+  loader.innerHTML = '<div style="max-width:380px;margin:0 auto;padding:40px 20px;text-align:center">'
+    + (logoSrc ? '<img src="'+logoSrc+'" alt="Marmaroph" style="width:120px;margin-bottom:16px">' : '<div style="font-family:Cormorant Garamond,serif;font-size:24px;color:#044147;margin-bottom:8px;letter-spacing:2px">MARMAROPH</div>')
+    + '<p style="font-size:10px;color:#8a9a9c;margin-bottom:32px;letter-spacing:2.5px;font-family:Montserrat,sans-serif">THE HOME SANCTUARY CLUB</p>'
+    + '<div style="display:flex;margin-bottom:24px;border-radius:12px;overflow:hidden;border:1px solid rgba(4,65,71,0.15)">'
+    + '<button onclick="showAuthTab(\'login\')" id="tabLogin" style="flex:1;padding:10px;font-family:Montserrat,sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;border:none;cursor:pointer;background:#044147;color:#fff;transition:all 0.2s">LOG IN</button>'
+    + '<button onclick="showAuthTab(\'signup\')" id="tabSignup" style="flex:1;padding:10px;font-family:Montserrat,sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;border:none;cursor:pointer;background:transparent;color:#044147;transition:all 0.2s">SIGN UP</button>'
+    + '</div>'
+    + '<div id="signupFields" style="display:none">'
+    + '<div style="display:flex;gap:10px;margin-bottom:12px">'
+    + '<input id="authFirstName" type="text" placeholder="First name" style="flex:1;padding:12px 16px;border:1px solid rgba(4,65,71,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;color:#2a2a2a;outline:none;background:#fff;box-sizing:border-box" onfocus="this.style.borderColor=\'#0a6b72\'" onblur="this.style.borderColor=\'rgba(4,65,71,0.15)\'">'
+    + '<input id="authLastName" type="text" placeholder="Last name" style="flex:1;padding:12px 16px;border:1px solid rgba(4,65,71,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;color:#2a2a2a;outline:none;background:#fff;box-sizing:border-box" onfocus="this.style.borderColor=\'#0a6b72\'" onblur="this.style.borderColor=\'rgba(4,65,71,0.15)\'">'
+    + '</div></div>'
+    + '<input id="authEmail" type="email" placeholder="Email address" style="width:100%;padding:12px 16px;border:1px solid rgba(4,65,71,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;color:#2a2a2a;outline:none;background:#fff;margin-bottom:12px;box-sizing:border-box" onfocus="this.style.borderColor=\'#0a6b72\'" onblur="this.style.borderColor=\'rgba(4,65,71,0.15)\'">'
+    + '<input id="authPassword" type="password" placeholder="Password" style="width:100%;padding:12px 16px;border:1px solid rgba(4,65,71,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:13px;color:#2a2a2a;outline:none;background:#fff;margin-bottom:6px;box-sizing:border-box" onfocus="this.style.borderColor=\'#0a6b72\'" onblur="this.style.borderColor=\'rgba(4,65,71,0.15)\'" onkeypress="if(event.key===\'Enter\')doAuth()">'
+    + '<div id="authError" style="min-height:20px;margin-bottom:12px;font-size:12px;color:#c0392b;font-family:Montserrat,sans-serif"></div>'
+    + '<button id="authBtn" onclick="doAuth()" style="width:100%;padding:14px;background:linear-gradient(135deg,#0a6b72,#044147);color:#fff;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer">LOG IN</button>'
+    + '<p id="forgotLink" style="margin-top:16px;font-size:11px"><a href="https://www.marmaroph.com/members-area" target="_blank" style="color:#8a9a9c;text-decoration:none;font-family:Montserrat,sans-serif">Forgot password?</a></p>'
+    + '</div>';
+  authMode = 'login';
+}
+
+function showAuthTab(mode) {
+  authMode = mode;
+  var tl = document.getElementById('tabLogin');
+  var ts = document.getElementById('tabSignup');
+  var sf = document.getElementById('signupFields');
+  var btn = document.getElementById('authBtn');
+  var fl = document.getElementById('forgotLink');
+  var err = document.getElementById('authError');
+  if (err) err.textContent = '';
+  if (mode === 'signup') {
+    ts.style.background = '#044147'; ts.style.color = '#fff';
+    tl.style.background = 'transparent'; tl.style.color = '#044147';
+    sf.style.display = 'block';
+    btn.textContent = 'CREATE ACCOUNT';
+    if (fl) fl.style.display = 'none';
+  } else {
+    tl.style.background = '#044147'; tl.style.color = '#fff';
+    ts.style.background = 'transparent'; ts.style.color = '#044147';
+    sf.style.display = 'none';
+    btn.textContent = 'LOG IN';
+    if (fl) fl.style.display = '';
+  }
+}
+
+function doAuth() {
+  var email = document.getElementById('authEmail').value.trim();
+  var password = document.getElementById('authPassword').value;
+  var errEl = document.getElementById('authError');
+  var btn = document.getElementById('authBtn');
+  if (!email || !password) { errEl.textContent = 'Please enter your email and password.'; return; }
+  if (authMode === 'signup' && password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  btn.textContent = authMode === 'login' ? 'Logging in...' : 'Creating account...';
+  errEl.textContent = '';
+  var endpoint = authMode === 'login' ? '/loginMember' : '/registerMember';
+  var body = { email: email, password: password };
+  if (authMode === 'signup') {
+    body.firstName = (document.getElementById('authFirstName').value || '').trim();
+    body.lastName = (document.getElementById('authLastName').value || '').trim();
+  }
+  fetch(API + endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      if (!res.ok || res.data.error) {
+        errEl.textContent = res.data.error || 'Authentication failed. Please try again.';
+        btn.disabled = false; btn.style.opacity = '1';
+        btn.textContent = authMode === 'login' ? 'LOG IN' : 'CREATE ACCOUNT';
+        return;
+      }
+      memberData = {
+        type: 'memberData',
+        memberId: res.data.memberId,
+        loginEmail: res.data.loginEmail || email,
+        firstName: res.data.firstName || '',
+        lastName: res.data.lastName || '',
+        nickname: res.data.nickname || '',
+        photo: res.data.photo || '',
+        slug: res.data.slug || ''
+      };
+      saveMemberData();
+      initApp();
+    })
+    .catch(function() {
+      errEl.textContent = 'Connection error. Please check your internet and try again.';
+      btn.disabled = false; btn.style.opacity = '1';
+      btn.textContent = authMode === 'login' ? 'LOG IN' : 'CREATE ACCOUNT';
+    });
+}
+
+// When loaded directly (not in iframe), read member data from URL hash, localStorage, or show login
 (function() {
   // 1. Check URL hash (from Wix redirect)
   if (window.location.hash && window.location.hash.length > 1) {
@@ -1386,22 +1461,8 @@ function loadSavedMember() {
         });
       return;
     }
-    // 3. No data — show login prompt (standalone PWA auto-redirects once to re-authenticate)
-    var isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-    if (isStandalone && !sessionStorage.getItem('marmaroph_login_attempted')) {
-      sessionStorage.setItem('marmaroph_login_attempted', '1');
-      window.location.href = 'https://www.marmaroph.com/members-area';
-      return;
-    }
-    var loader = document.getElementById('loading');
-    if (loader) {
-      var logoSrc = document.querySelector('.loading-logo') ? document.querySelector('.loading-logo').src : '';
-      loader.innerHTML = '<div style="text-align:center;padding:40px 20px">'
-        + (logoSrc ? '<img src="'+logoSrc+'" alt="Marmaroph" style="width:140px;margin-bottom:24px">' : '<div style="font-family:Cormorant Garamond,serif;font-size:22px;color:#044147;margin-bottom:8px;letter-spacing:2px">MARMAROPH</div>')
-        + '<p style="font-size:11px;color:#8a9a9c;margin-bottom:24px;letter-spacing:2px">THE HOME SANCTUARY CLUB</p>'
-        + '<p style="font-size:14px;color:#2a2a2a;margin-bottom:24px;font-weight:300">Please log in to access your sanctuary</p>'
-        + '<a href="https://www.marmaroph.com/members-area" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#0a6b72,#044147);color:#e8f4f2;border-radius:24px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px">LOG IN</a></div>';
-    }
+    // 3. No data — show in-app login/signup
+    showLoginScreen();
   }
 })();
 
@@ -1411,7 +1472,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=30').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=31').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2184,7 +2245,7 @@ function uploadAvatar(input){
   reader.readAsDataURL(file);
 }
 
-function doLogout(){try{localStorage.removeItem('marmaroph_member');}catch(e){}if(isInIframe){postToParent({type:'logout'});}else{window.location.href='https://www.marmaroph.com/';}}
+function doLogout(){try{localStorage.removeItem('marmaroph_member');localStorage.removeItem('marmaroph_dashboard');}catch(e){}if(isInIframe){postToParent({type:'logout'});}else{window.location.reload();}}
 
 function saveProfile(){var btn=document.getElementById('profileSaveBtn');btn.textContent='Saving...';fetch(API+'/updateProfile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:memberData.memberId,firstName:document.getElementById('profileFirst').value,lastName:document.getElementById('profileLast').value,phone:document.getElementById('profilePhone').value})}).then(function(){btn.textContent='Save changes';var msg=document.getElementById('profileMsg');msg.style.display='inline';setTimeout(function(){msg.style.display='none';},2500);}).catch(function(){btn.textContent='Save changes';});}
 
@@ -2291,6 +2352,7 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
   var shown = false;
   function showApp() {
     if (shown) return;
+    if (!memberData.memberId) return;
     shown = true;
     document.getElementById('loading').classList.add('hide');
     document.getElementById('app').classList.add('ready');
@@ -2320,7 +2382,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=30').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=31').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
