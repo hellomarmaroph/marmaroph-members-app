@@ -1660,6 +1660,7 @@ function doAuth() {
   var qp = new URLSearchParams(window.location.search);
   if (qp.get('checkout') === 'success') {
     var saved = loadSavedMember();
+    var checkoutEmail = qp.get('email') || '';
     if (saved && saved.memberId) {
       memberData = saved;
       memberData.checkoutSuccess = 'true';
@@ -1669,6 +1670,10 @@ function doAuth() {
       initApp();
       return;
     }
+    // New customer from Stripe — not logged in yet, show welcome screen
+    window.history.replaceState(null, '', window.location.pathname);
+    showPostCheckoutWelcome(checkoutEmail, qp.get('ritual') || '');
+    return;
   }
   // 1. Check URL hash (from Wix redirect)
   if (window.location.hash && window.location.hash.length > 1) {
@@ -2313,6 +2318,30 @@ function showSubscribeBanner() {
     + '<p style="font-family:Cormorant Garamond,serif;font-size:28px;color:#fff;margin-bottom:12px;font-weight:400;line-height:1.3">You’re not subscribed yet</p>'
     + '<p style="font-family:Montserrat,sans-serif;font-size:13px;color:rgba(159,214,235,0.6);margin-bottom:32px;font-weight:300;line-height:1.6">Find your ritual and subscribe to unlock your sanctuary</p>'
     + '<a href="https://www.marmaroph.com/discover-your-home-ritual-quiz" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-decoration:none">FIND MY RITUAL</a>'
+    + '</div>';
+  document.body.appendChild(overlay);
+}
+
+function showPostCheckoutWelcome(email, ritual) {
+  var loading = document.getElementById('loading');
+  if (loading) loading.style.display = 'none';
+  var overlay = document.createElement('div');
+  overlay.id = 'postCheckoutWelcome';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:linear-gradient(135deg,#022a30 0%,#044147 40%,#033a3f 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px';
+  var isGmail = email && email.toLowerCase().indexOf('gmail.com') !== -1;
+  var isGoogleEmail = isGmail || (email && (email.toLowerCase().indexOf('googlemail.com') !== -1));
+  var signInHint = isGoogleEmail
+    ? '<button onclick="document.getElementById(\'postCheckoutWelcome\').remove();showLoginScreen();" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer">SIGN IN WITH GOOGLE</button>'
+    : '<button onclick="document.getElementById(\'postCheckoutWelcome\').remove();showLoginScreen();" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer">CREATE YOUR ACCOUNT</button>';
+  var emailNote = email
+    ? '<p style="font-family:Montserrat,sans-serif;font-size:12px;color:rgba(159,214,235,0.45);margin-top:20px;font-weight:300">Use <strong style="color:rgba(159,214,235,0.7)">' + email + '</strong> to sign in</p>'
+    : '';
+  overlay.innerHTML = '<div style="max-width:380px">'
+    + '<div style="font-size:48px;margin-bottom:20px">&#x1F389;</div>'
+    + '<p style="font-family:Cormorant Garamond,serif;font-size:28px;color:#fff;margin-bottom:12px;font-weight:400;line-height:1.3">Welcome to Marmaroph!</p>'
+    + '<p style="font-family:Montserrat,sans-serif;font-size:13px;color:rgba(159,214,235,0.6);margin-bottom:32px;font-weight:300;line-height:1.6">Your subscription is active. ' + (isGoogleEmail ? 'Sign in with Google to access your ritual.' : 'Create your account to access your ritual.') + '</p>'
+    + signInHint
+    + emailNote
     + '</div>';
   document.body.appendChild(overlay);
 }
