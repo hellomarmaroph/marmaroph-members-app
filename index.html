@@ -2040,7 +2040,7 @@ function scheduleRitualReminder() {
     var ritualName = memberData.currentRitual ? formatRitualName(memberData.currentRitual) : 'your ritual';
     var messages = [
       'Your sanctuary awaits — time for ' + ritualName + '.',
-      'Ready for today’s ' + ritualName + ' practice?',
+      'Ready for today\'s ' + ritualName + ' practice?',
       'A moment of wellness is waiting for you.',
       'Your daily ' + ritualName + ' ritual is ready to begin.'
     ];
@@ -2312,14 +2312,18 @@ function showSubscribeBanner() {
   if (existing) return;
   var overlay = document.createElement('div');
   overlay.id = 'subscribeBanner';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:9000;background:linear-gradient(135deg,#022a30 0%,#044147 40%,#033a3f 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px';
-  overlay.innerHTML = '<div style="max-width:380px">'
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:9000;background:linear-gradient(175deg,#011a1e 0%,#022a30 15%,#033039 30%,#044147 55%,#065158 80%,#0a7a84 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;overflow:hidden';
+  overlay.innerHTML = '<canvas id="subscribeCosmos" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>'
+    + '<img src="https://static.wixstatic.com/media/00228e_22eff6136de2418a96dbf2b074ae2586~mv2.png/v1/fill/w_500,h_500,al_c,q_85/flowers.png" alt="" style="position:absolute;top:-30px;right:-40px;width:220px;opacity:0.2;transform:scaleX(-1);pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.3))" loading="lazy"/>'
+    + '<img src="https://static.wixstatic.com/media/00228e_0911417b663942e6984eb073e505406b~mv2.png/v1/fill/w_500,h_500,al_c,q_85/orchids.png" alt="" style="position:absolute;bottom:-30px;left:-40px;width:240px;opacity:0.15;pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.3))" loading="lazy"/>'
+    + '<div style="position:relative;z-index:2;max-width:380px">'
     + '<div style="font-size:48px;margin-bottom:20px">&#x2728;</div>'
-    + '<p style="font-family:Cormorant Garamond,serif;font-size:28px;color:#fff;margin-bottom:12px;font-weight:400;line-height:1.3">You’re not subscribed yet</p>'
+    + '<p style="font-family:Cormorant Garamond,serif;font-size:28px;color:#fff;margin-bottom:12px;font-weight:400;line-height:1.3">' + "You're not subscribed yet" + '</p>'
     + '<p style="font-family:Montserrat,sans-serif;font-size:13px;color:rgba(159,214,235,0.6);margin-bottom:32px;font-weight:300;line-height:1.6">Find your ritual and subscribe to unlock your sanctuary</p>'
-    + '<a href="https://www.marmaroph.com/discover-your-home-ritual-quiz" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-decoration:none">FIND MY RITUAL</a>'
+    + '<a href="https://www.marmaroph.com/discover-your-home-ritual-quiz" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-decoration:none;box-shadow:0 4px 16px rgba(187,217,215,0.3)">FIND MY RITUAL</a>'
     + '</div>';
   document.body.appendChild(overlay);
+  setTimeout(function() { renderOverlayCosmos('subscribeCosmos'); }, 50);
 }
 
 function showPostCheckoutWelcome(email, ritual) {
@@ -2327,16 +2331,19 @@ function showPostCheckoutWelcome(email, ritual) {
   if (loading) loading.style.display = 'none';
   var overlay = document.createElement('div');
   overlay.id = 'postCheckoutWelcome';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:linear-gradient(135deg,#022a30 0%,#044147 40%,#033a3f 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:linear-gradient(175deg,#011a1e 0%,#022a30 15%,#033039 30%,#044147 55%,#065158 80%,#0a7a84 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;overflow:hidden';
   var isGmail = email && email.toLowerCase().indexOf('gmail.com') !== -1;
   var isGoogleEmail = isGmail || (email && (email.toLowerCase().indexOf('googlemail.com') !== -1));
   var signInHint = isGoogleEmail
-    ? '<button onclick="document.getElementById(\'postCheckoutWelcome\').remove();showLoginScreen();" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer">SIGN IN WITH GOOGLE</button>'
-    : '<button onclick="document.getElementById(\'postCheckoutWelcome\').remove();showLoginScreen();" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer">CREATE YOUR ACCOUNT</button>';
+    ? '<button onclick="document.getElementById(\'postCheckoutWelcome\').remove();showLoginScreen();" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 16px rgba(187,217,215,0.3)">SIGN IN WITH GOOGLE</button>'
+    : '<button onclick="document.getElementById(\'postCheckoutWelcome\').remove();showLoginScreen();" style="display:inline-block;padding:14px 40px;background:#bbd9d7;color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 16px rgba(187,217,215,0.3)">CREATE YOUR ACCOUNT</button>';
   var emailNote = email
     ? '<p style="font-family:Montserrat,sans-serif;font-size:12px;color:rgba(159,214,235,0.45);margin-top:20px;font-weight:300">Use <strong style="color:rgba(159,214,235,0.7)">' + email + '</strong> to sign in</p>'
     : '';
-  overlay.innerHTML = '<div style="max-width:380px">'
+  overlay.innerHTML = '<canvas id="welcomeCosmos" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>'
+    + '<img src="https://static.wixstatic.com/media/00228e_22eff6136de2418a96dbf2b074ae2586~mv2.png/v1/fill/w_500,h_500,al_c,q_85/flowers.png" alt="" style="position:absolute;top:-30px;right:-40px;width:220px;opacity:0.2;transform:scaleX(-1);pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.3))" loading="lazy"/>'
+    + '<img src="https://static.wixstatic.com/media/00228e_0911417b663942e6984eb073e505406b~mv2.png/v1/fill/w_500,h_500,al_c,q_85/orchids.png" alt="" style="position:absolute;bottom:-30px;left:-40px;width:240px;opacity:0.15;pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.3))" loading="lazy"/>'
+    + '<div style="position:relative;z-index:2;max-width:380px">'
     + '<div style="font-size:48px;margin-bottom:20px">&#x1F389;</div>'
     + '<p style="font-family:Cormorant Garamond,serif;font-size:28px;color:#fff;margin-bottom:12px;font-weight:400;line-height:1.3">Welcome to Marmaroph!</p>'
     + '<p style="font-family:Montserrat,sans-serif;font-size:13px;color:rgba(159,214,235,0.6);margin-bottom:32px;font-weight:300;line-height:1.6">Your subscription is active. ' + (isGoogleEmail ? 'Sign in with Google to access your ritual.' : 'Create your account to access your ritual.') + '</p>'
@@ -2344,6 +2351,33 @@ function showPostCheckoutWelcome(email, ritual) {
     + emailNote
     + '</div>';
   document.body.appendChild(overlay);
+  setTimeout(function() { renderOverlayCosmos('welcomeCosmos'); }, 50);
+}
+
+function renderOverlayCosmos(canvasId) {
+  var c = document.getElementById(canvasId);
+  if (!c) return;
+  var dpr = window.devicePixelRatio || 1;
+  c.width = c.offsetWidth * dpr;
+  c.height = c.offsetHeight * dpr;
+  var ctx = c.getContext('2d');
+  ctx.scale(dpr, dpr);
+  var w = c.offsetWidth, h = c.offsetHeight;
+  var stars = [];
+  for (var i = 0; i < 80; i++) stars.push({x:Math.random()*w,y:Math.random()*h,r:0.5+Math.random()*1.5,base:0.1+Math.random()*0.4,speed:1.5+Math.random()*3});
+  var cons = [[[w*0.12,h*0.1],[w*0.2,h*0.06],[w*0.26,h*0.13],[w*0.2,h*0.2],[w*0.12,h*0.1]],[[w*0.72,h*0.18],[w*0.8,h*0.13],[w*0.86,h*0.2],[w*0.78,h*0.26],[w*0.72,h*0.18]],[[w*0.08,h*0.7],[w*0.16,h*0.65],[w*0.2,h*0.72]],[[w*0.62,h*0.82],[w*0.7,h*0.78],[w*0.76,h*0.84],[w*0.67,h*0.89]]];
+  var planets = [{x:w*0.85,y:h*0.1,r:8,color:'rgba(196,163,90,0.4)',glow:'rgba(196,163,90,0.08)'},{x:w*0.12,y:h*0.5,r:5,color:'rgba(159,214,235,0.45)',glow:'rgba(159,214,235,0.08)'},{x:w*0.9,y:h*0.75,r:6,color:'rgba(187,217,215,0.4)',glow:'rgba(187,217,215,0.08)'}];
+  var moon = {x:w*0.9,y:h*0.08,r:18};
+  function draw(t){
+    ctx.clearRect(0,0,w,h);
+    var mg=ctx.createRadialGradient(moon.x,moon.y,moon.r*0.5,moon.x,moon.y,moon.r*4);mg.addColorStop(0,'rgba(196,163,90,0.08)');mg.addColorStop(1,'transparent');ctx.fillStyle=mg;ctx.beginPath();ctx.arc(moon.x,moon.y,moon.r*4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(196,163,90,0.25)';ctx.beginPath();ctx.arc(moon.x,moon.y,moon.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(4,65,71,0.9)';ctx.beginPath();ctx.arc(moon.x+moon.r*0.35,moon.y-moon.r*0.15,moon.r*0.85,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(159,214,235,0.08)';ctx.lineWidth=0.8;cons.forEach(function(pts){ctx.beginPath();for(var j=0;j<pts.length;j++){if(j===0)ctx.moveTo(pts[j][0],pts[j][1]);else ctx.lineTo(pts[j][0],pts[j][1]);}ctx.stroke();pts.forEach(function(p){ctx.fillStyle='rgba(159,214,235,0.3)';ctx.beginPath();ctx.arc(p[0],p[1],1.5,0,Math.PI*2);ctx.fill();});});
+    planets.forEach(function(p){var pg=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*3);pg.addColorStop(0,p.glow);pg.addColorStop(1,'transparent');ctx.fillStyle=pg;ctx.beginPath();ctx.arc(p.x,p.y,p.r*3,0,Math.PI*2);ctx.fill();ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});
+    stars.forEach(function(s){var a=s.base+Math.sin(t/1000*s.speed)*0.3;ctx.fillStyle='rgba(255,255,255,'+Math.max(0,Math.min(1,a))+')';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});
+    if(document.getElementById(canvasId))requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
 }
 
 function showToast(msg) {
