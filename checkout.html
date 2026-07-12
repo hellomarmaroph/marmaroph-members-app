@@ -1667,6 +1667,11 @@ window.addEventListener('load', function() {
         }
       }).catch(function() {});
   }
+  var urlWa = urlParams.get('whatsapp');
+  if (urlWa) {
+    var waField = document.getElementById('whatsappNumber');
+    if (waField && !waField.value) waField.value = urlWa;
+  }
 });
 
 window.addEventListener('message', function(event) {

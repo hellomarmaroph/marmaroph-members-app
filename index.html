@@ -1064,6 +1064,11 @@
             <div style="font-size:10px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:8px">Rituals begin on the 1st of each month</div>
             <select id="startMonthSelect" style="width:100%;padding:10px 14px;border:1px solid rgba(4,65,71,0.12);border-radius:10px;font-family:var(--fb);font-size:13px;font-weight:300;color:var(--text);background:#fff;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%228%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1%201l5%205%205-5%22%20stroke%3D%22%23999%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E');background-repeat:no-repeat;background-position:right 12px center"></select>
           </div>
+          <div style="margin:12px 0 8px">
+            <div style="font-size:11px;font-weight:500;color:var(--em2);letter-spacing:0.5px;margin-bottom:6px">WHATSAPP NUMBER <span style="font-weight:300;color:var(--muted)">(optional)</span></div>
+            <div style="font-size:10px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:8px">Join your ritual cohort on WhatsApp</div>
+            <input type="tel" id="checkoutWhatsapp" placeholder="+44 7700 123456" style="width:100%;padding:10px 14px;border:1px solid rgba(4,65,71,0.12);border-radius:10px;font-family:var(--fb);font-size:13px;font-weight:300;color:var(--text);background:#fff;outline:none;box-sizing:border-box" inputmode="tel"/>
+          </div>
           <ul class="checkout-features">
             <li>30-day guided ritual with daily lessons</li>
             <li>Access to your ritual's community circle</li>
@@ -1707,15 +1712,19 @@ function doAuth() {
       memberData = saved;
       var dashUrl = API+'/memberDashboard?memberId='+encodeURIComponent(saved.memberId);
       if (saved.loginEmail) dashUrl += '&email='+encodeURIComponent(saved.loginEmail);
-      fetch(dashUrl)
+      var ctrl = new AbortController();
+      var tm = setTimeout(function(){ ctrl.abort(); }, 10000);
+      fetch(dashUrl, {signal: ctrl.signal})
         .then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()})
         .then(function(d){
+          clearTimeout(tm);
           initApp();
           if(!d.progress || (d.progress && !d.progress.subscriptionActive)){
             setTimeout(function(){ showSubscribeBanner(); }, 600);
           }
         })
         .catch(function(){
+          clearTimeout(tm);
           initApp();
         });
       return;
@@ -1731,7 +1740,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=35').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=42').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2200,6 +2209,8 @@ function startCheckout() {
   if (memberData.memberId) url += '&memberId=' + encodeURIComponent(memberData.memberId);
   var sel = document.getElementById('startMonthSelect');
   if (sel && sel.value) url += '&startMonth=' + encodeURIComponent(sel.value);
+  var wa = document.getElementById('checkoutWhatsapp');
+  if (wa && wa.value.trim()) url += '&whatsapp=' + encodeURIComponent(wa.value.trim());
   window.location.href = url;
 }
 
@@ -2721,7 +2732,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=35').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=42').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
