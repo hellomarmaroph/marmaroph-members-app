@@ -442,6 +442,25 @@ h2{font-weight:300;font-size:24px;line-height:1.3;text-align:center;position:rel
 .mc-day.done{color:var(--gold);background:rgba(233,184,78,.12);border:1px solid rgba(233,184,78,.25)}
 .mc-day.today{box-shadow:0 0 0 2px var(--sky);color:var(--sky);font-weight:700}
 .mc-day.event{color:var(--gold);font-weight:700;font-size:20px}
+.notif-panel{margin-top:18px}
+.notif-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(233,220,184,.1);border-radius:12px}
+.notif-toggle-row label{font-family:Montserrat,sans-serif;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.notif-switch{position:relative;width:44px;height:24px;flex-shrink:0}
+.notif-switch input{opacity:0;width:0;height:0}
+.notif-slider{position:absolute;inset:0;background:rgba(255,255,255,.12);border-radius:24px;cursor:pointer;transition:background .3s}
+.notif-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:transform .3s}
+.notif-switch input:checked+.notif-slider{background:var(--sky)}
+.notif-switch input:checked+.notif-slider:before{transform:translateX(20px)}
+.notif-opts{margin-top:10px;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(233,220,184,.1);border-radius:12px;display:none}
+.notif-opts.open{display:block}
+.notif-time-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.notif-time-row label{font-family:Montserrat,sans-serif;font-size:11px;color:rgba(255,255,255,.7);flex-shrink:0}
+.notif-time-row input[type=time]{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(233,220,184,.12);border-radius:8px;color:#fff;padding:8px 10px;font-size:13px;font-family:inherit}
+.notif-check{display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer}
+.notif-check input{accent-color:var(--sky);width:16px;height:16px;flex-shrink:0}
+.notif-check span{font-family:Montserrat,sans-serif;font-size:11.5px;color:rgba(255,255,255,.75);line-height:1.4}
+.notif-saved{font-family:Montserrat,sans-serif;font-size:10px;color:var(--gold);text-align:center;margin-top:8px;opacity:0;transition:opacity .4s}
+.notif-saved.show{opacity:1}
 .diag-opt{display:block;width:100%;text-align:left;padding:12px 14px;margin-top:8px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(233,220,184,.12);color:rgba(255,255,255,.8);font-size:12px;line-height:1.5;cursor:pointer;transition:all .2s;font-family:'Cormorant Garamond',serif}
 .diag-opt:hover{border-color:var(--gold);background:rgba(233,184,78,.06)}
 .diag-opt.selected{border-color:var(--gold);background:rgba(233,184,78,.1);color:var(--gold)}
@@ -807,6 +826,22 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     <img class="flower-inline fl-right" data-img="ORCHID" style="width:100px;opacity:.6;animation-delay:-10s" alt="">
 
     <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
+    <div class="glass rise" style="padding:22px 20px;margin-top:8px;border:1px solid rgba(159,214,235,.15)">
+      <div class="rule-label" style="margin-bottom:12px"><span class="eyebrow">Our philosophy</span></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;text-align:center;margin-bottom:16px">You are not broken. There is nothing to fix.</p>
+      <div style="font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.8);text-align:left">
+        <p style="margin-bottom:12px">This ritual exists because paying attention to what you eat, and how, can make today feel better. Not a future version of today. Today.</p>
+        <p style="margin-bottom:12px">We are not selling you a transformation. We are not promising a new body, a new metabolism, or a new you. You were complete before you opened this page. Nothing here is urgent. Nothing here is mandatory. You will not lose anything by skipping a day, or by leaving entirely.</p>
+        <p style="margin-bottom:12px">No food is poison. The dose, the context, and how you feel when you eat it are what matter. Restriction creates anxiety. Balance creates freedom. The science supports this: Dr. Kristin Neff's research on self-compassion shows that treating yourself with kindness, not discipline, leads to lasting behavioral change. Tribole and Resch's work on intuitive eating confirms that learning to listen to your body outperforms every diet ever studied.</p>
+        <p style="margin-bottom:12px">You do not need another supplement. You do not need a perfect morning routine. You do not need to track every macro. You need to sit down, eat something real, and notice how it makes you feel.</p>
+        <p style="margin-bottom:0">That is the entire program.</p>
+      </div>
+      <div style="margin-top:16px;padding:12px 14px;background:rgba(233,220,184,.06);border:1px solid rgba(233,220,184,.12);border-radius:10px;text-align:center">
+        <p style="font-size:11px;line-height:1.7;color:rgba(255,255,255,.55);font-style:italic">Everything in this ritual is grounded in peer-reviewed research. We cite our sources not to impress you, but because you deserve to verify anything we say.</p>
+      </div>
+    </div>
+
+    <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
     <div class="glass rise" style="padding:22px 20px;margin-top:8px">
       <div class="rule-label" style="margin-bottom:10px"><span class="eyebrow">How to Practice</span></div>
       <div class="intro-ico" style="font-size:22px;text-align:center;margin-bottom:10px">🕯</div>
@@ -956,6 +991,27 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       </div>
       <p class="body-copy" style="font-size:10.5px;text-align:center;margin-top:8px;opacity:.7">The ritual begins on the 1st. All 30 days run within your chosen month.</p>
     </div>
+
+    <div class="notif-panel rise" id="notifPanel">
+      <div class="rule-label" style="margin-bottom:6px"><span class="eyebrow">Daily reminders</span></div>
+      <div class="notif-toggle-row">
+        <label>Enable notifications</label>
+        <div class="notif-switch"><input type="checkbox" id="notifToggle" onchange="toggleNotif()"><span class="notif-slider"></span></div>
+      </div>
+      <div class="notif-opts" id="notifOpts">
+        <div class="notif-time-row">
+          <label>Remind me at</label>
+          <input type="time" id="notifTime" value="08:00" onchange="saveNotifPrefs()">
+        </div>
+        <div style="font-family:Montserrat,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:6px">What to receive</div>
+        <label class="notif-check"><input type="checkbox" id="notifDaily" checked onchange="saveNotifPrefs()"><span>Daily lesson reminder</span></label>
+        <label class="notif-check"><input type="checkbox" id="notifMeal" checked onchange="saveNotifPrefs()"><span>Meal prep reminder</span></label>
+        <label class="notif-check"><input type="checkbox" id="notifMotivation" checked onchange="saveNotifPrefs()"><span>Motivational nudge</span></label>
+        <label class="notif-check"><input type="checkbox" id="notifCheckin" onchange="saveNotifPrefs()"><span>Weekly check-in</span></label>
+        <p class="notif-saved" id="notifSaved">Preferences saved</p>
+      </div>
+    </div>
+
     <div id="waitGate" class="rise" style="display:none;text-align:center;margin-top:14px">
       <div class="glass-card" style="padding:16px 18px">
         <p class="body-copy" style="font-size:12px;margin:0"><span style="color:var(--gold)">✦</span> Your ritual begins on <strong id="gateDate" style="color:var(--gold)"></strong></p>
@@ -1391,6 +1447,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <div id="lqOpts"></div>
       <div class="lq-why" id="lqWhy"></div>
       <div class="lesson-action"><div class="la-t">Today, at your table</div><p id="lcAction"></p></div>
+      <div id="lcRemember" style="margin-top:18px;padding:14px 16px;background:rgba(159,214,235,.05);border-top:1px solid rgba(159,214,235,.1);border-radius:0 0 14px 14px"></div>
     </div>
 
     <!-- Old Mindset vs New Mindset -->
@@ -2236,7 +2293,7 @@ var CURRICULUM=[
 {c:"Activate",t:"A Calorie Is Information, Not Just Heat",b:"200 calories of almonds and 200 calories of soda have identical energy on paper but radically different effects on your hormones, gut bacteria, inflammation, and satiety. The calorie model ignores what food tells your body to do.",b2:"Almonds provide fiber that feeds gut bacteria, healthy fats that slow absorption, protein that triggers GLP-1, and magnesium that supports insulin sensitivity. Soda delivers pure fructose that overwhelms the liver, spikes insulin, feeds harmful bacteria, and produces zero satiety. Dr. Robert Lustig has demonstrated that the metabolic fates of different calories are so different that the calorie-is-a-calorie model is scientifically obsolete.",a:"Compare two 200-calorie options you might eat today. Ask yourself: what will each one tell my hormones, gut, and brain to do? Choose the one that sends better information.",q:"Why is the calorie-in-calorie-out model incomplete?",o:["Because calories do not exist","Because foods with identical calories have vastly different hormonal, metabolic, and inflammatory effects","Because you cannot accurately count calories"],k:1,w:"Stop counting calories and start reading the message. Every bite is an instruction to your body — make it a good one."},
 {c:"Mindset",t:"Old Mindset vs New Mindset",b:"The old mindset says food is about restriction, willpower, and guilt. The new mindset says food is about understanding — when you know what food does inside your body, you naturally choose differently without forcing yourself.",b2:"Behavioral research shows that knowledge-based dietary changes last longer than willpower-based ones. A study in Health Psychology Review (2018) found that autonomous motivation (choosing because you understand why) predicted long-term adherence, while controlled motivation (forcing yourself through rules) predicted dropout and rebound. Understanding replaces willpower.",a:"Write down one food rule you have followed out of guilt or restriction. Then rewrite it as a choice based on what you now know about inflammation, GLP-1, or gut health.",q:"What makes the new mindset more sustainable than the old one?",o:["It allows you to eat anything you want with no limits","It replaces willpower and guilt with understanding and informed choice","It requires stricter rules and more discipline"],k:1,w:"When you understand why, you do not need willpower. Knowledge is the most sustainable diet there is."},
 {c:"Mindset",t:"Food Is Information, Not Restriction",b:"Every meal you eat sends thousands of chemical signals to your genes, hormones, and gut bacteria. You are not restricting bad food — you are choosing which instructions to send to your body.",b2:"The field of nutrigenomics studies how food components interact with gene expression. Polyphenols in olive oil activate SIRT1 genes that reduce inflammation. Omega-3 fatty acids modulate NF-kB, the master inflammatory switch. Fiber produces butyrate, which strengthens gut barrier integrity. Every food choice is literally programming your biology.",a:"At your next meal, before eating, pause and ask: what message am I sending my body right now? Choose one thing on your plate that sends an anti-inflammatory message.",q:"What does it mean to say food is information?",o:["Food contains data files your body reads like a computer","Food components directly influence gene expression, hormone levels, and gut bacteria composition","Food labels contain information you should read"],k:1,w:"You are not on a diet. You are programming your biology with every meal. Choose your code wisely."},
-{c:"Mindset",t:"The Dose Makes the Poison",b:"Paracelsus, the father of toxicology, taught that nothing is inherently toxic — the dose determines the harm. A square of dark chocolate is medicine for your gut bacteria. An entire bar daily becomes inflammatory. Context and quantity change everything.",b2:"This principle applies to almost every food debate. Red wine polyphenols benefit the gut microbiome at one glass, but alcohol damages the liver at three. Dark chocolate has antioxidant properties in small doses but drives insulin resistance in large amounts. Even water is lethal at extreme doses. Absolutism about food is scientifically unfounded.",a:"Think of one food you have completely banned from your life. Ask yourself: is there a small dose where this food might be neutral or even enjoyable without harm? Give yourself permission for that dose.",q:"What did Paracelsus mean by the dose makes the poison?",o:["All food is poisonous and should be avoided","No substance is inherently toxic or safe — the amount consumed determines the effect","You should take medicine with every meal"],k:1,w:"Rigidity is not health. The ability to enjoy a small portion without guilt or binge is the real sign of a healed relationship with food."},
+{c:"Mindset",t:"Nothing Is Poison. Nothing Is Medicine. It Is Always the Dose.",b:"Paracelsus, the father of toxicology, taught that nothing is inherently toxic and nothing is inherently safe. The dose determines the effect. A square of dark chocolate feeds your gut bacteria. An entire bar daily becomes inflammatory. Context, quantity, and how your body feels when you eat it change everything. This is the opposite of what the wellness industry tells you. They need you to believe that certain foods are evil and others are magic, because fear and hope are what sell supplements, cleanses, and meal plans. The science says something quieter: pay attention to the dose, eat real food, and stop feeling guilty.",b2:"This principle dismantles every food war. Red wine polyphenols benefit the gut microbiome at one glass, but alcohol damages the liver at three. Dark chocolate has antioxidant properties in small doses but drives insulin resistance in large amounts. Even water is lethal at extreme doses. Absolutism about food is scientifically unfounded. Dr. Kristin Neff's research at UT Austin shows that guilt and self-criticism around eating actually increase binge behavior, while self-compassion reduces it. Tribole and Resch's 25 years of clinical data on intuitive eating confirm that people who stop labeling foods as good or bad eat more balanced diets than those who follow strict rules. The restriction itself creates the imbalance. Balance is not the absence of enjoyment. It is the presence of attention.",a:"Think of one food you have completely banned from your life. Ask yourself: is there a small dose where this food might be neutral or even enjoyable without harm? Give yourself permission for that dose today. Notice how it feels to eat it without guilt.",q:"What did Paracelsus mean by the dose makes the poison?",o:["All food is poisonous and should be avoided","No substance is inherently toxic or safe, the amount and context determine the effect","You should take medicine with every meal"],k:1,w:"Rigidity is not health. The ability to enjoy a small portion without guilt is the real sign of a healed relationship with food. You do not need to be perfect. You need to be present."},
 {c:"Mindset",t:"Eating Slowly IS Digestion",b:"It takes approximately 20 minutes for satiety hormones like GLP-1, PYY, and CCK to reach your brain after food enters your stomach. If you eat a meal in 7 minutes, you have bypassed your entire satiety system.",b2:"The cephalic phase of digestion begins before food reaches the stomach — chewing, tasting, and smelling activate vagal signals that prepare digestive enzymes. Rapid eating skips this phase, leading to incomplete digestion, bloating, and overconsumption. A 2018 study in BMJ Open found that slow eating was significantly associated with lower BMI and smaller waist circumference in 60,000 participants.",a:"Set a timer for 20 minutes at your next meal. Put your fork down between bites. Try to make the meal last the full 20 minutes.",q:"How long does it take for satiety signals to reach your brain?",o:["2 to 5 minutes","About 20 minutes","Over 60 minutes"],k:1,w:"Speed is the enemy of satiety. The slower you eat, the less you need to eat before feeling genuinely satisfied."},
 {c:"Mindset",t:"Stress Eats With You",b:"When cortisol is elevated, your body diverts blood away from your digestive system toward your muscles and brain. Eating while stressed means food sits in a sluggish gut, fermenting instead of digesting properly.",b2:"The sympathetic nervous system (fight-or-flight) and the parasympathetic system (rest-and-digest) cannot operate at full capacity simultaneously. Cortisol also increases ghrelin (hunger hormone) while reducing leptin sensitivity, creating a biological drive toward high-calorie comfort food. This is not weakness — it is physiology. Managing stress IS managing digestion.",a:"Before your next meal, take 30 seconds to transition: close your eyes, take three deep breaths, relax your shoulders. Eat only when you feel your body shift into calm.",q:"What happens to digestion when you eat while stressed?",o:["Digestion speeds up because your body needs energy fast","Blood diverts away from the gut, slowing digestion and increasing fermentation","Stress has no effect on how food is processed"],k:1,w:"The best meal in the world cannot nourish you if your body is in survival mode. Calm is the first ingredient of every good meal."},
 {c:"Mindset",t:"Cravings Are Messages, Not Commands",b:"A craving for chocolate might mean you need magnesium. A craving for bread might signal low serotonin. Cravings are your body speaking in a crude language — the goal is to translate the message, not blindly obey or rigidly deny it.",b2:"Neurotransmitter pathways link nutrient deficiencies to specific cravings. Low magnesium triggers chocolate cravings. Low tryptophan (serotonin precursor) drives carb cravings. Chronic dieters show heightened activity in the reward centers of the brain when exposed to food cues, making cravings feel more intense. Adequate protein, fat, and micronutrient intake reduces craving intensity at the biological level.",a:"The next time a craving hits, pause and ask: what might my body actually need? Try addressing the possible underlying need first — magnesium-rich food for chocolate cravings, protein for carb cravings.",q:"What do food cravings often indicate?",o:["That you have no willpower","A possible nutrient deficiency or neurochemical need your body is trying to communicate","That the food is calling to you spiritually"],k:1,w:"Listen to the craving without obeying it literally. Your body is trying to tell you something — learn its language."},
@@ -3337,6 +3394,18 @@ function renderMeditation(){
 }
 
 /* ================= lesson + interactive quiz ================= */
+var REMEMBER_LINES=[
+  {text:"Your body already knows what it needs. This ritual is just helping you hear it.",cite:"Tribole & Resch, Intuitive Eating, 4th ed."},
+  {text:"No food is poison. The dose, the context, and how you feel when you eat it are what matter.",cite:"Paracelsus, foundational principle of toxicology"},
+  {text:"Self-compassion, not self-discipline, is what predicts lasting change in eating behavior.",cite:"Dr. Kristin Neff, Self-Compassion: The Proven Power of Being Kind to Yourself"},
+  {text:"You were complete before you opened this page. Nothing here is urgent.",cite:""},
+  {text:"Restriction creates anxiety. Balance creates freedom. The research is clear on this.",cite:"Bacon & Aphramor, Weight Science: Evaluating the Evidence for a Paradigm Shift, 2011"},
+  {text:"You do not need to be perfect at this. You need to be present for it.",cite:"Dr. Jon Kabat-Zinn, Wherever You Go, There You Are"},
+  {text:"The goal is not a perfect diet. The goal is a meal you actually enjoyed, sitting down.",cite:""},
+  {text:"Guilt about food causes more metabolic damage than the food itself. Let it go.",cite:"Dickson-Spillmann et al., Appetite, 2011"},
+  {text:"Meditation is not a requirement. It is a tool. Use it if it helps. Skip it if it does not.",cite:""},
+  {text:"This practice exists because you deserve to feel good today, not because something is wrong with you.",cite:""}
+];
 function renderLesson(){
   var idx=(dayIndex()-1)%30;
   var L=CURRICULUM[idx];
@@ -3384,6 +3453,9 @@ function renderLesson(){
   renderRecipes(idx);
   renderMindset(idx);
   renderMealPrep(idx);
+  var rl=REMEMBER_LINES[idx%REMEMBER_LINES.length];
+  var remEl=document.getElementById('lcRemember');
+  if(remEl&&rl){remEl.innerHTML='<p style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:15px;line-height:1.6;color:rgba(255,255,255,.6);text-align:center;margin:0">'+rl.text+'</p>'+(rl.cite?'<p style="font-size:9px;color:rgba(255,255,255,.3);text-align:center;margin-top:6px">'+rl.cite+'</p>':'');}
 }
 
 var MINDSET_PAIRS=[
@@ -4179,6 +4251,78 @@ function startNextRitual(){
     sky.appendChild(s);
   }
 })();
+var NOTIF_KEY='marmaroph_notif_mindful';
+function loadNotifPrefs(){
+  var p=load(NOTIF_KEY,{enabled:false,time:'08:00',daily:true,meal:true,motivation:true,checkin:false});
+  var tog=document.getElementById('notifToggle');
+  var opts=document.getElementById('notifOpts');
+  if(tog)tog.checked=p.enabled;
+  if(opts)opts.classList.toggle('open',p.enabled);
+  var t=document.getElementById('notifTime');if(t)t.value=p.time||'08:00';
+  var d=document.getElementById('notifDaily');if(d)d.checked=p.daily!==false;
+  var m=document.getElementById('notifMeal');if(m)m.checked=p.meal!==false;
+  var mo=document.getElementById('notifMotivation');if(mo)mo.checked=p.motivation!==false;
+  var c=document.getElementById('notifCheckin');if(c)c.checked=!!p.checkin;
+}
+function toggleNotif(){
+  var tog=document.getElementById('notifToggle');
+  var opts=document.getElementById('notifOpts');
+  if(!tog)return;
+  if(tog.checked&&window.Notification&&Notification.permission==='default'){
+    Notification.requestPermission().then(function(perm){
+      if(perm!=='granted'){tog.checked=false;if(opts)opts.classList.remove('open');saveNotifPrefs();return;}
+      if(opts)opts.classList.add('open');
+      saveNotifPrefs();scheduleNotif();
+    });
+    return;
+  }
+  if(tog.checked&&window.Notification&&Notification.permission==='denied'){
+    tog.checked=false;
+    alert('Notifications are blocked for this site. Please enable them in your browser settings.');
+    return;
+  }
+  if(opts)opts.classList.toggle('open',tog.checked);
+  saveNotifPrefs();
+  if(tog.checked)scheduleNotif();
+}
+function saveNotifPrefs(){
+  var p={
+    enabled:!!document.getElementById('notifToggle').checked,
+    time:(document.getElementById('notifTime')||{}).value||'08:00',
+    daily:!!(document.getElementById('notifDaily')||{}).checked,
+    meal:!!(document.getElementById('notifMeal')||{}).checked,
+    motivation:!!(document.getElementById('notifMotivation')||{}).checked,
+    checkin:!!(document.getElementById('notifCheckin')||{}).checked
+  };
+  store(NOTIF_KEY,p);
+  var msg=document.getElementById('notifSaved');
+  if(msg){msg.classList.add('show');setTimeout(function(){msg.classList.remove('show')},1800);}
+  if(p.enabled)scheduleNotif();
+}
+function scheduleNotif(){
+  if(!('serviceWorker' in navigator)||!window.Notification||Notification.permission!=='granted')return;
+  var p=load(NOTIF_KEY,{});
+  if(!p.enabled)return;
+  if(window._notifTimer)clearTimeout(window._notifTimer);
+  var parts=(p.time||'08:00').split(':');
+  var h=parseInt(parts[0]),m=parseInt(parts[1]||0);
+  var now=new Date();
+  var target=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);
+  if(target<=now)target.setDate(target.getDate()+1);
+  var delay=target-now;
+  window._notifTimer=setTimeout(function(){
+    var msgs=[];
+    if(p.daily)msgs.push('Time for today\'s mindful eating lesson.');
+    if(p.meal)msgs.push('Check today\'s meal plan and prep your ingredients.');
+    if(p.motivation)msgs.push('Every meal is a chance to nourish your body with intention.');
+    if(p.checkin&&now.getDay()===0)msgs.push('Weekly check-in: how has your eating changed this week?');
+    var body=msgs.length?msgs[Math.floor(Math.random()*msgs.length)]:'Your daily ritual awaits.';
+    navigator.serviceWorker.ready.then(function(reg){
+      reg.showNotification('Marmaroph Mindful Eating',{body:body,icon:'https://app.marmaroph.com/icon-192.png',badge:'https://app.marmaroph.com/icon-192.png',tag:'marmaroph-daily'});
+    });
+    scheduleNotif();
+  },delay);
+}
 function joinChallenge(){
   var mSel=document.getElementById('pickMonth');
   var ySel=document.getElementById('pickYear');
@@ -4234,6 +4378,8 @@ function renderWelcome(){
   document.getElementById('wPctLabel').textContent=pct+'%';
   setTimeout(function(){document.getElementById('wFill').style.width=pct+'%'},150);
   initMonthPicker();
+  loadNotifPrefs();
+  if(state.joined)scheduleNotif();
   if(state.joined&&!isBeforeRitual()){
     document.getElementById('joinBtn').textContent='Begin your ritual →';
     document.getElementById('monthPicker').style.display='none';
