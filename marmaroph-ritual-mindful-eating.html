@@ -443,10 +443,10 @@ h2{font-weight:300;font-size:24px;line-height:1.3;text-align:center;position:rel
 .mc-day.today{box-shadow:0 0 0 2px var(--sky);color:var(--sky);font-weight:700}
 .mc-day.event{color:var(--gold);font-weight:700;font-size:20px}
 .notif-panel{margin-top:18px}
-.notif-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(233,220,184,.1);border-radius:12px}
-.notif-toggle-row label{font-family:Montserrat,sans-serif;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.8)}
-.notif-switch{position:relative;width:44px;height:24px;flex-shrink:0}
-.notif-switch input{opacity:0;width:0;height:0}
+.notif-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(233,220,184,.1);border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.notif-toggle-row span{font-family:Montserrat,sans-serif;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.notif-switch{position:relative;width:44px;height:24px;flex-shrink:0;cursor:pointer;display:inline-block}
+.notif-switch input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;z-index:2;margin:0}
 .notif-slider{position:absolute;inset:0;background:rgba(255,255,255,.12);border-radius:24px;cursor:pointer;transition:background .3s}
 .notif-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:transform .3s}
 .notif-switch input:checked+.notif-slider{background:var(--sky)}
@@ -828,16 +828,16 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
     <div class="glass rise" style="padding:22px 20px;margin-top:8px;border:1px solid rgba(159,214,235,.15)">
       <div class="rule-label" style="margin-bottom:12px"><span class="eyebrow">Our philosophy</span></div>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;text-align:center;margin-bottom:16px">You are not broken. There is nothing to fix.</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;text-align:center;margin-bottom:16px">You are not broken. You are just not listening yet.</p>
       <div style="font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.8);text-align:left">
-        <p style="margin-bottom:12px">This ritual exists because paying attention to what you eat, and how, can make today feel better. Not a future version of today. Today.</p>
-        <p style="margin-bottom:12px">We are not selling you a transformation. We are not promising a new body, a new metabolism, or a new you. You were complete before you opened this page. Nothing here is urgent. Nothing here is mandatory. You will not lose anything by skipping a day, or by leaving entirely.</p>
-        <p style="margin-bottom:12px">No food is poison. The dose, the context, and how you feel when you eat it are what matter. Restriction creates anxiety. Balance creates freedom. The science supports this: Dr. Kristin Neff's research on self-compassion shows that treating yourself with kindness, not discipline, leads to lasting behavioral change. Tribole and Resch's work on intuitive eating confirms that learning to listen to your body outperforms every diet ever studied.</p>
-        <p style="margin-bottom:12px">You do not need another supplement. You do not need a perfect morning routine. You do not need to track every macro. You need to sit down, eat something real, and notice how it makes you feel.</p>
-        <p style="margin-bottom:0">That is the entire program.</p>
+        <p style="margin-bottom:12px">This ritual exists because paying attention to what you eat, and how, can make today feel better. Not a future version of today. Today. But it only works if you show up. Consistently. Not perfectly, but regularly.</p>
+        <p style="margin-bottom:12px">We are not here to guilt you or pressure you. The wellness industry already does enough of that with its supplements, cleanses, and miracle diets. But we are also not going to pretend this is optional entertainment. Building a new relationship with food takes practice, the same way learning any skill does. The research is clear: habits form through repetition, not motivation. Dr. BJ Fogg's work at Stanford shows that small, consistent actions reshape behavior more effectively than any dramatic overhaul.</p>
+        <p style="margin-bottom:12px">Here is what the science actually says about food: ultra-processed products, refined sugar, industrial seed oils, and alcohol are not neutral. They drive chronic inflammation, disrupt your gut microbiome, and rewire your brain's reward system. This is not opinion. This is published, peer-reviewed research from Dr. Robert Lustig at UCSF, Dr. Carlos Jaramillo, and the NOVA food classification studies. The goal is not to scare you. The goal is to give you the information so you can gradually, at your own pace, replace these with real food. Not overnight. Not with restriction or guilt. Through understanding.</p>
+        <p style="margin-bottom:12px">You do not need another supplement. You do not need to track every macro. You need to reconnect with your body, learn to hear what it is actually asking for, and sit down to eat something real. That process takes 30 days of showing up. Not perfectly. But showing up.</p>
+        <p style="margin-bottom:0">This is the opposite of a diet. It is an education. And education changes you from the inside, permanently.</p>
       </div>
       <div style="margin-top:16px;padding:12px 14px;background:rgba(233,220,184,.06);border:1px solid rgba(233,220,184,.12);border-radius:10px;text-align:center">
-        <p style="font-size:11px;line-height:1.7;color:rgba(255,255,255,.55);font-style:italic">Everything in this ritual is grounded in peer-reviewed research. We cite our sources not to impress you, but because you deserve to verify anything we say.</p>
+        <p style="font-size:11px;line-height:1.7;color:rgba(255,255,255,.55);font-style:italic">Everything in this ritual is grounded in peer-reviewed research. We cite our sources because you deserve to verify anything we say.</p>
       </div>
     </div>
 
@@ -994,9 +994,9 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
 
     <div class="notif-panel rise" id="notifPanel">
       <div class="rule-label" style="margin-bottom:6px"><span class="eyebrow">Daily reminders</span></div>
-      <div class="notif-toggle-row">
-        <label>Enable notifications</label>
-        <div class="notif-switch"><input type="checkbox" id="notifToggle" onchange="toggleNotif()"><span class="notif-slider"></span></div>
+      <div class="notif-toggle-row" onclick="var t=document.getElementById('notifToggle');t.checked=!t.checked;toggleNotif()">
+        <span>Enable notifications</span>
+        <div class="notif-switch"><input type="checkbox" id="notifToggle"><span class="notif-slider"></span></div>
       </div>
       <div class="notif-opts" id="notifOpts">
         <div class="notif-time-row">
@@ -2293,7 +2293,7 @@ var CURRICULUM=[
 {c:"Activate",t:"A Calorie Is Information, Not Just Heat",b:"200 calories of almonds and 200 calories of soda have identical energy on paper but radically different effects on your hormones, gut bacteria, inflammation, and satiety. The calorie model ignores what food tells your body to do.",b2:"Almonds provide fiber that feeds gut bacteria, healthy fats that slow absorption, protein that triggers GLP-1, and magnesium that supports insulin sensitivity. Soda delivers pure fructose that overwhelms the liver, spikes insulin, feeds harmful bacteria, and produces zero satiety. Dr. Robert Lustig has demonstrated that the metabolic fates of different calories are so different that the calorie-is-a-calorie model is scientifically obsolete.",a:"Compare two 200-calorie options you might eat today. Ask yourself: what will each one tell my hormones, gut, and brain to do? Choose the one that sends better information.",q:"Why is the calorie-in-calorie-out model incomplete?",o:["Because calories do not exist","Because foods with identical calories have vastly different hormonal, metabolic, and inflammatory effects","Because you cannot accurately count calories"],k:1,w:"Stop counting calories and start reading the message. Every bite is an instruction to your body — make it a good one."},
 {c:"Mindset",t:"Old Mindset vs New Mindset",b:"The old mindset says food is about restriction, willpower, and guilt. The new mindset says food is about understanding — when you know what food does inside your body, you naturally choose differently without forcing yourself.",b2:"Behavioral research shows that knowledge-based dietary changes last longer than willpower-based ones. A study in Health Psychology Review (2018) found that autonomous motivation (choosing because you understand why) predicted long-term adherence, while controlled motivation (forcing yourself through rules) predicted dropout and rebound. Understanding replaces willpower.",a:"Write down one food rule you have followed out of guilt or restriction. Then rewrite it as a choice based on what you now know about inflammation, GLP-1, or gut health.",q:"What makes the new mindset more sustainable than the old one?",o:["It allows you to eat anything you want with no limits","It replaces willpower and guilt with understanding and informed choice","It requires stricter rules and more discipline"],k:1,w:"When you understand why, you do not need willpower. Knowledge is the most sustainable diet there is."},
 {c:"Mindset",t:"Food Is Information, Not Restriction",b:"Every meal you eat sends thousands of chemical signals to your genes, hormones, and gut bacteria. You are not restricting bad food — you are choosing which instructions to send to your body.",b2:"The field of nutrigenomics studies how food components interact with gene expression. Polyphenols in olive oil activate SIRT1 genes that reduce inflammation. Omega-3 fatty acids modulate NF-kB, the master inflammatory switch. Fiber produces butyrate, which strengthens gut barrier integrity. Every food choice is literally programming your biology.",a:"At your next meal, before eating, pause and ask: what message am I sending my body right now? Choose one thing on your plate that sends an anti-inflammatory message.",q:"What does it mean to say food is information?",o:["Food contains data files your body reads like a computer","Food components directly influence gene expression, hormone levels, and gut bacteria composition","Food labels contain information you should read"],k:1,w:"You are not on a diet. You are programming your biology with every meal. Choose your code wisely."},
-{c:"Mindset",t:"Nothing Is Poison. Nothing Is Medicine. It Is Always the Dose.",b:"Paracelsus, the father of toxicology, taught that nothing is inherently toxic and nothing is inherently safe. The dose determines the effect. A square of dark chocolate feeds your gut bacteria. An entire bar daily becomes inflammatory. Context, quantity, and how your body feels when you eat it change everything. This is the opposite of what the wellness industry tells you. They need you to believe that certain foods are evil and others are magic, because fear and hope are what sell supplements, cleanses, and meal plans. The science says something quieter: pay attention to the dose, eat real food, and stop feeling guilty.",b2:"This principle dismantles every food war. Red wine polyphenols benefit the gut microbiome at one glass, but alcohol damages the liver at three. Dark chocolate has antioxidant properties in small doses but drives insulin resistance in large amounts. Even water is lethal at extreme doses. Absolutism about food is scientifically unfounded. Dr. Kristin Neff's research at UT Austin shows that guilt and self-criticism around eating actually increase binge behavior, while self-compassion reduces it. Tribole and Resch's 25 years of clinical data on intuitive eating confirm that people who stop labeling foods as good or bad eat more balanced diets than those who follow strict rules. The restriction itself creates the imbalance. Balance is not the absence of enjoyment. It is the presence of attention.",a:"Think of one food you have completely banned from your life. Ask yourself: is there a small dose where this food might be neutral or even enjoyable without harm? Give yourself permission for that dose today. Notice how it feels to eat it without guilt.",q:"What did Paracelsus mean by the dose makes the poison?",o:["All food is poisonous and should be avoided","No substance is inherently toxic or safe, the amount and context determine the effect","You should take medicine with every meal"],k:1,w:"Rigidity is not health. The ability to enjoy a small portion without guilt is the real sign of a healed relationship with food. You do not need to be perfect. You need to be present."},
+{c:"Mindset",t:"Change Through Understanding, Not Through Rules",b:"Some things genuinely harm your body: ultra-processed foods, refined sugar in excess, industrial seed oils, alcohol. The science on this is not ambiguous. But the way to remove them from your life is not through guilt, restriction, or fear. It is through understanding. When you learn what these substances actually do inside your cells, the desire to consume them fades on its own. You do not need willpower to avoid something you no longer want.",b2:"Dr. Robert Lustig at UCSF has documented how chronic fructose consumption drives fatty liver disease through the same metabolic pathway as alcohol. The NOVA food classification studies show that ultra-processed foods are engineered to override your satiety signals, making you eat 500 more calories per day without realizing it. Industrial seed oils oxidize under heat, creating compounds that damage cell membranes. This is not about labeling food as good or evil. It is about giving you enough information that you naturally start choosing differently. Tribole and Resch's 25 years of clinical data show that when people understand what food does inside their bodies, they make better choices than when they follow rules. The shift is gradual. You do not throw everything out tomorrow. You learn, you notice, you replace one thing at a time. That is how lasting change works.",a:"Open your pantry and read the ingredient list on one product you eat regularly. Look for added sugars (anything ending in -ose, any syrup), seed oils (canola, soybean, sunflower), or ingredients you cannot pronounce. You are not throwing it away today. You are just seeing it clearly.",q:"What is the most effective way to change eating habits long-term?",o:["Strict rules and willpower","Understanding what food does inside your body, then choosing differently over time","Eliminating all processed food immediately"],k:1,w:"Information changes you from the inside. Rules change you until you get tired of following them. Learn first. The choices follow."},
 {c:"Mindset",t:"Eating Slowly IS Digestion",b:"It takes approximately 20 minutes for satiety hormones like GLP-1, PYY, and CCK to reach your brain after food enters your stomach. If you eat a meal in 7 minutes, you have bypassed your entire satiety system.",b2:"The cephalic phase of digestion begins before food reaches the stomach — chewing, tasting, and smelling activate vagal signals that prepare digestive enzymes. Rapid eating skips this phase, leading to incomplete digestion, bloating, and overconsumption. A 2018 study in BMJ Open found that slow eating was significantly associated with lower BMI and smaller waist circumference in 60,000 participants.",a:"Set a timer for 20 minutes at your next meal. Put your fork down between bites. Try to make the meal last the full 20 minutes.",q:"How long does it take for satiety signals to reach your brain?",o:["2 to 5 minutes","About 20 minutes","Over 60 minutes"],k:1,w:"Speed is the enemy of satiety. The slower you eat, the less you need to eat before feeling genuinely satisfied."},
 {c:"Mindset",t:"Stress Eats With You",b:"When cortisol is elevated, your body diverts blood away from your digestive system toward your muscles and brain. Eating while stressed means food sits in a sluggish gut, fermenting instead of digesting properly.",b2:"The sympathetic nervous system (fight-or-flight) and the parasympathetic system (rest-and-digest) cannot operate at full capacity simultaneously. Cortisol also increases ghrelin (hunger hormone) while reducing leptin sensitivity, creating a biological drive toward high-calorie comfort food. This is not weakness — it is physiology. Managing stress IS managing digestion.",a:"Before your next meal, take 30 seconds to transition: close your eyes, take three deep breaths, relax your shoulders. Eat only when you feel your body shift into calm.",q:"What happens to digestion when you eat while stressed?",o:["Digestion speeds up because your body needs energy fast","Blood diverts away from the gut, slowing digestion and increasing fermentation","Stress has no effect on how food is processed"],k:1,w:"The best meal in the world cannot nourish you if your body is in survival mode. Calm is the first ingredient of every good meal."},
 {c:"Mindset",t:"Cravings Are Messages, Not Commands",b:"A craving for chocolate might mean you need magnesium. A craving for bread might signal low serotonin. Cravings are your body speaking in a crude language — the goal is to translate the message, not blindly obey or rigidly deny it.",b2:"Neurotransmitter pathways link nutrient deficiencies to specific cravings. Low magnesium triggers chocolate cravings. Low tryptophan (serotonin precursor) drives carb cravings. Chronic dieters show heightened activity in the reward centers of the brain when exposed to food cues, making cravings feel more intense. Adequate protein, fat, and micronutrient intake reduces craving intensity at the biological level.",a:"The next time a craving hits, pause and ask: what might my body actually need? Try addressing the possible underlying need first — magnesium-rich food for chocolate cravings, protein for carb cravings.",q:"What do food cravings often indicate?",o:["That you have no willpower","A possible nutrient deficiency or neurochemical need your body is trying to communicate","That the food is calling to you spiritually"],k:1,w:"Listen to the craving without obeying it literally. Your body is trying to tell you something — learn its language."},
@@ -3395,16 +3395,16 @@ function renderMeditation(){
 
 /* ================= lesson + interactive quiz ================= */
 var REMEMBER_LINES=[
-  {text:"Your body already knows what it needs. This ritual is just helping you hear it.",cite:"Tribole & Resch, Intuitive Eating, 4th ed."},
-  {text:"No food is poison. The dose, the context, and how you feel when you eat it are what matter.",cite:"Paracelsus, foundational principle of toxicology"},
-  {text:"Self-compassion, not self-discipline, is what predicts lasting change in eating behavior.",cite:"Dr. Kristin Neff, Self-Compassion: The Proven Power of Being Kind to Yourself"},
-  {text:"You were complete before you opened this page. Nothing here is urgent.",cite:""},
-  {text:"Restriction creates anxiety. Balance creates freedom. The research is clear on this.",cite:"Bacon & Aphramor, Weight Science: Evaluating the Evidence for a Paradigm Shift, 2011"},
-  {text:"You do not need to be perfect at this. You need to be present for it.",cite:"Dr. Jon Kabat-Zinn, Wherever You Go, There You Are"},
-  {text:"The goal is not a perfect diet. The goal is a meal you actually enjoyed, sitting down.",cite:""},
-  {text:"Guilt about food causes more metabolic damage than the food itself. Let it go.",cite:"Dickson-Spillmann et al., Appetite, 2011"},
-  {text:"Meditation is not a requirement. It is a tool. Use it if it helps. Skip it if it does not.",cite:""},
-  {text:"This practice exists because you deserve to feel good today, not because something is wrong with you.",cite:""}
+  {text:"Your body already knows what it needs. This ritual is helping you hear it again.",cite:"Tribole & Resch, Intuitive Eating, 4th ed."},
+  {text:"Ultra-processed food is not real food. The more you learn, the less you will want it. That shift happens through understanding, not willpower.",cite:"Monteiro et al., NOVA Food Classification, Public Health Nutrition, 2018"},
+  {text:"Self-compassion predicts lasting change. But compassion without consistency is just a nice idea.",cite:"Dr. Kristin Neff, Self-Compassion, 2011"},
+  {text:"You do not need to be perfect at this. But you do need to keep showing up.",cite:"Dr. BJ Fogg, Tiny Habits, Stanford Behavior Design Lab"},
+  {text:"The goal is not restriction. It is education. Once you understand what food does inside your body, the choices make themselves.",cite:"Dr. Robert Lustig, Metabolical, 2021"},
+  {text:"Small, consistent actions reshape behavior more effectively than dramatic overhauls. Day by day.",cite:"James Clear, Atomic Habits, 2018"},
+  {text:"Guilt does not change eating habits. Information does. Keep learning, keep practicing.",cite:""},
+  {text:"Meditation is not a requirement. It is a tool for being present. Use it if it helps you sit down and eat without rushing.",cite:""},
+  {text:"Every meal is a chance to practice. Not to perform. Just to practice.",cite:""},
+  {text:"The women who finish these 30 days are not more disciplined. They just kept showing up.",cite:""}
 ];
 function renderLesson(){
   var idx=(dayIndex()-1)%30;
@@ -4268,22 +4268,18 @@ function toggleNotif(){
   var tog=document.getElementById('notifToggle');
   var opts=document.getElementById('notifOpts');
   if(!tog)return;
-  if(tog.checked&&window.Notification&&Notification.permission==='default'){
-    Notification.requestPermission().then(function(perm){
-      if(perm!=='granted'){tog.checked=false;if(opts)opts.classList.remove('open');saveNotifPrefs();return;}
-      if(opts)opts.classList.add('open');
-      saveNotifPrefs();scheduleNotif();
-    });
-    return;
-  }
-  if(tog.checked&&window.Notification&&Notification.permission==='denied'){
-    tog.checked=false;
-    alert('Notifications are blocked for this site. Please enable them in your browser settings.');
-    return;
-  }
   if(opts)opts.classList.toggle('open',tog.checked);
   saveNotifPrefs();
-  if(tog.checked)scheduleNotif();
+  if(!tog.checked)return;
+  if(window.Notification&&Notification.permission==='denied'){
+    alert('Notifications are blocked for this site. Please enable them in your browser settings.');
+  }else if(window.Notification&&Notification.permission==='default'){
+    Notification.requestPermission().then(function(perm){
+      if(perm==='granted')scheduleNotif();
+    });
+  }else{
+    scheduleNotif();
+  }
 }
 function saveNotifPrefs(){
   var p={
