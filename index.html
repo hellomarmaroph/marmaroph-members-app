@@ -1740,7 +1740,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=50').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=51').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2231,8 +2231,9 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
   var completed = unlockedRituals || [];
   var unlocked = completed.concat(currentRitual ? [currentRitual] : []);
 
+  var currentDone = currentRitual && (completed.indexOf(currentRitual) !== -1 || (memberData.currentDay && memberData.currentDay >= 30));
   var displayRitual = currentRitual;
-  if (currentRitual && completed.indexOf(currentRitual) !== -1) {
+  if (currentDone) {
     var availableOrder = ['mindful-eating','energised-mornings','sanctuary-protection','im-enough','sacred-connection','kindred-bonds','quiet-abundance','bloom-in-gratitude','new-beginnings','nurtured-mother','healing-heart'];
     for (var i = 0; i < availableOrder.length; i++) {
       if (completed.indexOf(availableOrder[i]) === -1 && availableOrder[i] !== currentRitual) {
@@ -2246,12 +2247,15 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
   var cr = displayRitual ? RITUALS[displayRitual] : null;
 
   if (cr) {
+    document.getElementById('ritualsCurrentName').textContent = cr.name;
+    document.getElementById('subRitual').textContent = cr.name;
+    document.getElementById('ritualEmbedTitle').textContent = cr.name;
     var pillarsHtml = cr.pillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
     var hasImg = cr.icon.indexOf('<img') !== -1;
     var iconStyle = hasImg ? 'overflow:hidden;padding:0' : '';
 
     var isCompleted = completed.indexOf(displayRitual) !== -1;
-    var btnLabel = isCompleted ? 'START RITUAL &#8594;' : (memberData.currentDay && memberData.currentDay > 1) ? 'CONTINUE RITUAL &#8594;' : 'BEGIN RITUAL &#8594;';
+    var btnLabel = isCompleted ? 'START RITUAL &#8594;' : (displayRitual === currentRitual && memberData.currentDay && memberData.currentDay > 1) ? 'CONTINUE RITUAL &#8594;' : 'BEGIN RITUAL &#8594;';
 
     var spotlight = document.getElementById('ritualSpotlight');
     if (spotlight) {
@@ -2792,7 +2796,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=50').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=51').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
