@@ -1740,7 +1740,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=49').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=50').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2133,7 +2133,7 @@ function autoOpenRitualIfNeeded(d) {
 }
 
 function goToRitual(){
-  var slug = memberData.currentRitual;
+  var slug = displayRitualSlug || memberData.currentRitual;
   if (!slug) { showToast('No ritual found for member: ' + (memberData.loginEmail || memberData.memberId || 'unknown') + '. Please visit marmaroph.com/members-area on this device first.'); return; }
   var r = RITUALS[slug];
   var base = 'https://app.marmaroph.com/';
@@ -2170,6 +2170,7 @@ var RITUALS = {
   'healing-heart': { name:'The Healing Heart Ritual™', desc:'Healing takes time, and every small act of self-care is a step forward. Gently rebuild your sense of self, release what no longer serves you, and open your heart to new possibilities.', pillars:['regulate','purpose'], html:'marmaroph-ritual-healing-heart.html', icon:'&#128148;' }
 };
 var selectedRitualSlug = '';
+var displayRitualSlug = '';
 
 function selectRitual(slug) {
   var r = RITUALS[slug];
@@ -2227,15 +2228,30 @@ function startCheckout() {
 
 function unlockRitualCards(currentRitual, unlockedRituals) {
   var allSlugs = Object.keys(RITUALS);
-  var unlocked = (unlockedRituals || []).concat(currentRitual ? [currentRitual] : []);
-  var cr = currentRitual ? RITUALS[currentRitual] : null;
+  var completed = unlockedRituals || [];
+  var unlocked = completed.concat(currentRitual ? [currentRitual] : []);
+
+  var displayRitual = currentRitual;
+  if (currentRitual && completed.indexOf(currentRitual) !== -1) {
+    var availableOrder = ['mindful-eating','energised-mornings','sanctuary-protection','im-enough','sacred-connection','kindred-bonds','quiet-abundance','bloom-in-gratitude','new-beginnings','nurtured-mother','healing-heart'];
+    for (var i = 0; i < availableOrder.length; i++) {
+      if (completed.indexOf(availableOrder[i]) === -1 && availableOrder[i] !== currentRitual) {
+        displayRitual = availableOrder[i];
+        break;
+      }
+    }
+  }
+
+  displayRitualSlug = displayRitual;
+  var cr = displayRitual ? RITUALS[displayRitual] : null;
 
   if (cr) {
     var pillarsHtml = cr.pillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
     var hasImg = cr.icon.indexOf('<img') !== -1;
     var iconStyle = hasImg ? 'overflow:hidden;padding:0' : '';
 
-    var btnLabel = (memberData.currentDay && memberData.currentDay > 1) ? 'CONTINUE RITUAL &#8594;' : 'BEGIN RITUAL &#8594;';
+    var isCompleted = completed.indexOf(displayRitual) !== -1;
+    var btnLabel = isCompleted ? 'START RITUAL &#8594;' : (memberData.currentDay && memberData.currentDay > 1) ? 'CONTINUE RITUAL &#8594;' : 'BEGIN RITUAL &#8594;';
 
     var spotlight = document.getElementById('ritualSpotlight');
     if (spotlight) {
@@ -2282,9 +2298,9 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
       if (!slug) return;
 
       var availableRituals = ['mindful-eating','energised-mornings'];
-      if (slug === currentRitual) {
+      if (slug === displayRitual) {
         card.style.display = 'none';
-      } else if (unlocked.indexOf(slug) !== -1) {
+      } else if (completed.indexOf(slug) !== -1) {
         card.classList.remove('locked');
         card.classList.add('completed');
         card.onclick = null;
@@ -2309,6 +2325,29 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
       }
     });
   });
+
+  calcPillarScores(completed);
+}
+
+function calcPillarScores(completed) {
+  if (!completed || !completed.length) return;
+  var scores = {nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
+  var pillarMax = {nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
+  var allSlugs = Object.keys(RITUALS);
+  allSlugs.forEach(function(slug) {
+    var r = RITUALS[slug];
+    r.pillars.forEach(function(p) { pillarMax[p] = (pillarMax[p]||0) + 1; });
+  });
+  completed.forEach(function(slug) {
+    var r = RITUALS[slug];
+    if (!r) return;
+    r.pillars.forEach(function(p) { scores[p] = (scores[p]||0) + 1; });
+  });
+  var pctScores = {};
+  PILLAR_ORDER.forEach(function(p) {
+    pctScores[p] = pillarMax[p] > 0 ? Math.round((scores[p] / pillarMax[p]) * 100) : 0;
+  });
+  drawPillarWheel(pctScores);
 }
 
 function lockAllRituals() {
@@ -2753,7 +2792,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=49').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=50').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
