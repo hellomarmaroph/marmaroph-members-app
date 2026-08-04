@@ -4229,13 +4229,21 @@ function quizDone(){
   document.getElementById('qrPillar').textContent=r.pillar;
   document.getElementById('quizBody').style.display='none';
   document.getElementById('quizResult').style.display='block';
+  var params=new URLSearchParams(window.location.search);
+  var mid=params.get('memberId');
+  if(mid){
+    fetch('https://www.marmaroph.com/_functions/submitRitualQuiz',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({memberId:mid,ritualSlug:'mindful-eating',feedback:'',wantToLearn:'',nextRitual:NEXT_RITUAL.slug})
+    }).catch(function(){});
+  }
 }
 function startNextRitual(){
   var params=new URLSearchParams(window.location.search);
   var mid=params.get('memberId');
-  var url='https://app.marmaroph.com/'+NEXT_RITUAL.slug.replace(/[^a-z0-9-]/g,'')+'.html';
-  if(!mid){url='https://app.marmaroph.com/marmaroph-ritual-energised-mornings.html';}
-  else{url='https://app.marmaroph.com/marmaroph-ritual-energised-mornings.html?memberId='+encodeURIComponent(mid);}
+  var url='https://app.marmaroph.com/marmaroph-ritual-energised-mornings.html';
+  if(mid)url+='?memberId='+encodeURIComponent(mid);
   window.location.href=url;
 }
 
