@@ -1740,7 +1740,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=51').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=52').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2077,6 +2077,47 @@ function applyDashboard(d) {
     sendHeight();
 }
 
+var RITUAL_LS_KEYS = {
+  'mindful-eating': 'marmaroph_mindful_eating',
+  'energised-mornings': 'marmaroph_morning_energy'
+};
+var RITUAL_ORDER = ['mindful-eating','energised-mornings','sanctuary-protection','im-enough','sacred-connection','kindred-bonds','quiet-abundance','bloom-in-gratitude','new-beginnings','nurtured-mother','healing-heart'];
+
+function buildLocalProgress() {
+  var completed = [];
+  var current = null;
+  var currentDay = 0;
+  for (var i = 0; i < RITUAL_ORDER.length; i++) {
+    var slug = RITUAL_ORDER[i];
+    var lsKey = RITUAL_LS_KEYS[slug];
+    if (!lsKey) continue;
+    try {
+      var raw = localStorage.getItem(lsKey);
+      if (!raw) continue;
+      var st = JSON.parse(raw);
+      if (!st.days || !st.days.length) continue;
+      var sd = st.startDate ? new Date(st.startDate) : null;
+      if (st.ritualYear && st.ritualMonth !== null && st.ritualMonth !== undefined) sd = new Date(st.ritualYear, st.ritualMonth, 1);
+      var now = new Date(); now.setHours(0,0,0,0);
+      var dayNum = 1;
+      if (sd) { sd.setHours(0,0,0,0); dayNum = Math.min(30, Math.max(1, Math.round((now - sd) / 86400000) + 1)); }
+      if (dayNum >= 30 || st.days.length >= 25) {
+        completed.push(slug);
+      } else {
+        current = slug;
+        currentDay = dayNum;
+      }
+    } catch(e) {}
+  }
+  if (!current && completed.length > 0) {
+    for (var j = 0; j < RITUAL_ORDER.length; j++) {
+      if (completed.indexOf(RITUAL_ORDER[j]) === -1) { current = RITUAL_ORDER[j]; break; }
+    }
+  }
+  if (!current && completed.length === 0) return null;
+  return { subscriptionActive: true, currentRitual: current || completed[completed.length - 1], completedRituals: completed, currentDay: currentDay, cycleStartDate: null };
+}
+
 var _dashRetries = 0;
 function loadDashboard() {
   if (!memberData.memberId) return;
@@ -2087,6 +2128,10 @@ function loadDashboard() {
       _dashRetries++;
       setTimeout(loadDashboard, 2000);
       return;
+    }
+    if (!d.progress) {
+      var localProgress = buildLocalProgress();
+      if (localProgress) { d.progress = localProgress; }
     }
     // No subscription — show subscribe banner instead of redirecting
     if (!d.progress || (d.progress && !d.progress.subscriptionActive)) {
@@ -2796,7 +2841,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=51').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=52').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
