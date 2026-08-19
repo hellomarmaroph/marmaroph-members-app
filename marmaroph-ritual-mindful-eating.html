@@ -2561,7 +2561,18 @@ function daysUntilStart(){
 function weekIndex(){return Math.min(4,Math.ceil(dayIndex()/7))}
 function doneCount(){return state.days.length}
 function isMarkedToday(){return state.days.indexOf(todayStr())>-1}
-function markToday(){if(!state.startDate)state.startDate=todayStr();if(!isMarkedToday())state.days.push(todayStr());store(KEY,state)}
+function markToday(){if(!state.startDate)state.startDate=todayStr();if(!isMarkedToday())state.days.push(todayStr());store(KEY,state);syncToBackend()}
+function syncToBackend(){
+  try{
+    var mid=(new URLSearchParams(window.location.search)).get('memberId');
+    if(!mid)return;
+    var di=dayIndex(),dc=doneCount(),done=di>=30||dc>=25;
+    fetch('https://www.marmaroph.com/_functions/syncProgress',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({memberId:mid,ritual:'mindful-eating',currentDay:di,daysCompleted:dc,isCompleted:done})
+    }).catch(function(){});
+  }catch(e){}
+}
 function streak(){
   var s=0,d=new Date();
   for(var i=0;i<30;i++){

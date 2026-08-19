@@ -1484,11 +1484,13 @@ function showLoginScreen() {
     + '<input id="authEmail" type="email" placeholder="Email address" style="width:100%;padding:11px 14px;border:1px solid rgba(159,214,235,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:12px;color:#fff;outline:none;background:rgba(255,255,255,0.06);margin-bottom:10px;box-sizing:border-box" onfocus="this.style.borderColor=\'rgba(159,214,235,0.4)\'" onblur="this.style.borderColor=\'rgba(159,214,235,0.15)\'">'
     + '<input id="authPassword" type="password" placeholder="Password" style="width:100%;padding:11px 14px;border:1px solid rgba(159,214,235,0.15);border-radius:10px;font-family:Montserrat,sans-serif;font-size:12px;color:#fff;outline:none;background:rgba(255,255,255,0.06);margin-bottom:6px;box-sizing:border-box" onfocus="this.style.borderColor=\'rgba(159,214,235,0.4)\'" onblur="this.style.borderColor=\'rgba(159,214,235,0.15)\'" onkeypress="if(event.key===\'Enter\')doAuth()">'
     + '<div id="authError" style="min-height:18px;margin-bottom:10px;font-size:11px;color:#e8a86d;font-family:Montserrat,sans-serif"></div>'
-    + '<button id="authBtn" onclick="doAuth()" style="width:100%;padding:13px;background:#bbd9d7;color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;cursor:pointer;box-shadow:0 4px 16px rgba(187,217,215,0.3)">LOG IN</button>'
+    + '<button id="authBtn" onclick="doAuth()" style="width:100%;padding:13px;background:linear-gradient(135deg,#bbd9d7 0%,#9fd6eb 100%);color:#044147;border:none;border-radius:12px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;cursor:pointer;box-shadow:0 4px 16px rgba(159,214,235,0.3),0 0 24px rgba(159,214,235,0.1)">LOG IN</button>'
     + '<p id="forgotLink" style="margin-top:14px;font-size:10px"><a href="https://www.marmaroph.com/members-area" target="_blank" style="color:rgba(159,214,235,0.45);text-decoration:none;font-family:Montserrat,sans-serif">Forgot password?</a></p>'
     + '<div style="display:flex;align-items:center;gap:12px;margin:20px 0 18px"><div style="flex:1;height:1px;background:rgba(159,214,235,0.1)"></div><span style="font-family:Montserrat,sans-serif;font-size:9px;color:rgba(159,214,235,0.35);letter-spacing:2px">OR</span><div style="flex:1;height:1px;background:rgba(159,214,235,0.1)"></div></div>'
-    + '<button id="btn-google" onclick="doGoogleLogin()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(159,214,235,0.12);border-radius:10px;font-family:Montserrat,sans-serif;font-size:11px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.2s" onmouseenter="this.style.background=\'rgba(255,255,255,0.12)\'" onmouseleave="this.style.background=\'rgba(255,255,255,0.08)\'"><svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#FBBC05" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>'
-    + '</div></div>';
+    + '<button id="btn-google" onclick="doGoogleLogin()" style="width:100%;padding:10px 14px;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,rgba(159,214,235,0.12) 100%);border:1px solid rgba(159,214,235,0.18);border-radius:10px;font-family:Montserrat,sans-serif;font-size:11px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s" onmouseenter="this.style.background=\'linear-gradient(135deg,rgba(255,255,255,0.15) 0%,rgba(159,214,235,0.18) 100%)\'" onmouseleave="this.style.background=\'linear-gradient(135deg,rgba(255,255,255,0.1) 0%,rgba(159,214,235,0.12) 100%)\'"><svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#FBBC05" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>'
+    + '</div>'
+    + '<p style="margin-top:20px;font-size:10px;color:rgba(159,214,235,0.4);font-family:Montserrat,sans-serif;line-height:1.7;text-align:center;max-width:320px;margin-left:auto;margin-right:auto">If you used your Google email at checkout, tap <strong style="color:rgba(159,214,235,0.65)">Continue with Google</strong>. If you used a different email, tap <strong style="color:rgba(159,214,235,0.65)">Sign Up</strong> with the same email you entered at checkout and create a password.</p>'
+    + '</div>';
   authMode = 'login';
   // Render cosmos on the login canvas
   setTimeout(renderLoginCosmos, 50);
@@ -2095,27 +2097,43 @@ function buildLocalProgress() {
   var completed = [];
   var current = null;
   var currentDay = 0;
+  // First pass: find which rituals have ANY localStorage data
+  var hasData = {};
   for (var i = 0; i < RITUAL_ORDER.length; i++) {
     var slug = RITUAL_ORDER[i];
     var lsKey = RITUAL_LS_KEYS[slug];
     if (!lsKey) continue;
     try {
       var raw = localStorage.getItem(lsKey);
-      if (!raw) continue;
-      var st = JSON.parse(raw);
-      if (!st.days || !st.days.length) continue;
-      var sd = st.startDate ? new Date(st.startDate) : null;
-      if (st.ritualYear && st.ritualMonth !== null && st.ritualMonth !== undefined) sd = new Date(st.ritualYear, st.ritualMonth, 1);
-      var now = new Date(); now.setHours(0,0,0,0);
-      var dayNum = 1;
-      if (sd) { sd.setHours(0,0,0,0); dayNum = Math.min(30, Math.max(1, Math.round((now - sd) / 86400000) + 1)); }
-      if (dayNum >= 30 || st.days.length >= 25) {
-        completed.push(slug);
-      } else {
-        current = slug;
-        currentDay = dayNum;
-      }
+      if (raw) { var st = JSON.parse(raw); if (st.days && st.days.length) hasData[slug] = st; }
     } catch(e) {}
+  }
+  // If a later ritual has data, all earlier rituals with LS keys must be completed
+  var latestWithData = -1;
+  for (var i = 0; i < RITUAL_ORDER.length; i++) {
+    if (hasData[RITUAL_ORDER[i]]) latestWithData = i;
+  }
+  for (var i = 0; i < RITUAL_ORDER.length; i++) {
+    var slug = RITUAL_ORDER[i];
+    var lsKey = RITUAL_LS_KEYS[slug];
+    if (!lsKey) continue;
+    var st = hasData[slug];
+    if (!st) {
+      // No data but an earlier ritual than the latest → infer completed
+      if (i < latestWithData) completed.push(slug);
+      continue;
+    }
+    var sd = st.startDate ? new Date(st.startDate) : null;
+    if (st.ritualYear && st.ritualMonth !== null && st.ritualMonth !== undefined) sd = new Date(st.ritualYear, st.ritualMonth, 1);
+    var now = new Date(); now.setHours(0,0,0,0);
+    var dayNum = 1;
+    if (sd) { sd.setHours(0,0,0,0); dayNum = Math.min(30, Math.max(1, Math.round((now - sd) / 86400000) + 1)); }
+    if (i < latestWithData || dayNum >= 30 || st.days.length >= 25) {
+      completed.push(slug);
+    } else {
+      current = slug;
+      currentDay = dayNum;
+    }
   }
   if (!current && completed.length > 0) {
     for (var j = 0; j < RITUAL_ORDER.length; j++) {
@@ -2155,6 +2173,25 @@ function loadDashboard() {
           d.progress.currentDay = localProgress.currentDay || 0;
         }
       }
+      // Extra safeguard: if EM localStorage exists, ME must be completed
+      try {
+        var emRaw = localStorage.getItem('marmaroph_morning_energy');
+        if (emRaw) {
+          var emSt = JSON.parse(emRaw);
+          if (emSt && emSt.days && emSt.days.length > 0) {
+            var comp = d.progress.completedRituals || [];
+            if (comp.indexOf('mindful-eating') === -1) comp.push('mindful-eating');
+            d.progress.completedRituals = comp;
+            if (d.progress.currentRitual === 'mindful-eating') {
+              d.progress.currentRitual = 'energised-mornings';
+              var emSd = emSt.startDate ? new Date(emSt.startDate) : null;
+              if (emSt.ritualYear && emSt.ritualMonth !== null) emSd = new Date(emSt.ritualYear, emSt.ritualMonth, 1);
+              var enow = new Date(); enow.setHours(0,0,0,0);
+              if (emSd) { emSd.setHours(0,0,0,0); d.progress.currentDay = Math.min(30, Math.max(1, Math.round((enow - emSd) / 86400000) + 1)); }
+            }
+          }
+        }
+      } catch(e) {}
     }
     // No subscription — show subscribe banner instead of redirecting
     if (!d.progress || (d.progress && !d.progress.subscriptionActive)) {
@@ -2193,11 +2230,8 @@ function navigate(sec,el){
 
 function cmTab(tab,btn){document.querySelectorAll('.cm-panel').forEach(function(p){p.classList.remove('active');});document.getElementById('cm-'+tab).classList.add('active');document.querySelectorAll('.cm-tab-btn').forEach(function(b){b.classList.remove('active');});if(btn)btn.classList.add('active');}
 function autoOpenRitualIfNeeded(d) {
-  if (!d || !d.progress) return;
-  var p = d.progress;
-  if (p.currentRitual && p.subscriptionActive && p.currentDay > 1) {
-    setTimeout(function() { goToRitual(); }, 600);
-  }
+  // Dashboard always shows first — user taps BEGIN/CONTINUE to open the ritual
+  return;
 }
 
 function goToRitual(){
@@ -2360,6 +2394,7 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
   }
 
   // Build completed rituals sections
+  try {
   var completedHtml = { home: '', rituals: '' };
   completed.forEach(function(slug) {
     var r = RITUALS[slug];
@@ -2373,13 +2408,14 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
   var ritualsCompWrap = document.getElementById('ritualsCompletedWrap');
   if (completedHtml.home) {
     document.getElementById('homeCompletedList').innerHTML = completedHtml.home;
-    homeCompWrap.style.display = '';
+    if (homeCompWrap) homeCompWrap.style.display = '';
     document.getElementById('ritualsCompletedList').innerHTML = completedHtml.rituals;
-    ritualsCompWrap.style.display = '';
+    if (ritualsCompWrap) ritualsCompWrap.style.display = '';
   } else {
-    homeCompWrap.style.display = 'none';
-    ritualsCompWrap.style.display = 'none';
+    if (homeCompWrap) homeCompWrap.style.display = 'none';
+    if (ritualsCompWrap) ritualsCompWrap.style.display = 'none';
   }
+  } catch(e) { console.warn('Completed section error:', e); }
 
   ['homeLockedList','ritualsLockedList'].forEach(function(listId) {
     var list = document.getElementById(listId);
