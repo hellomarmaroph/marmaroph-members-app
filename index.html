@@ -764,6 +764,10 @@
               <button class="btn-teal" onclick="goToRitual()">BEGIN &#8594;</button>
             </div>
           </div>
+          <div id="homeCompletedWrap" style="display:none">
+            <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 6px;letter-spacing:0.3px">Completed Rituals</div>
+            <div id="homeCompletedList"></div>
+          </div>
           <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 6px;letter-spacing:0.3px">Next Rituals</div>
           <div style="font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:14px;line-height:1.5">Each ritual is designed to start on the 1st of the month. Choose a ritual below and pick the month you'd like to begin.</div>
           <div id="homeLockedList">
@@ -908,6 +912,10 @@
             <div class="ritual-right"><span class="status-tag dark-status-current">CURRENT</span><button class="btn-glow" onclick="goToRitual()">BEGIN &#8594;</button></div>
           </div>
 
+          <div id="ritualsCompletedWrap" style="display:none">
+            <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:rgba(187,217,215,0.5);margin:24px 0 6px;letter-spacing:0.3px">Completed Rituals</div>
+            <div id="ritualsCompletedList"></div>
+          </div>
           <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:rgba(187,217,215,0.5);margin:24px 0 6px;letter-spacing:0.3px">Next Rituals</div>
           <div style="font-size:11px;color:rgba(187,217,215,0.4);font-weight:300;font-style:italic;margin-bottom:14px;line-height:1.5">Each ritual is designed to start on the 1st of the month. Choose a ritual below and pick the month you'd like to begin.</div>
           <div id="ritualsLockedList">
@@ -2132,6 +2140,21 @@ function loadDashboard() {
     if (!d.progress) {
       var localProgress = buildLocalProgress();
       if (localProgress) { d.progress = localProgress; }
+    } else {
+      // Merge local completion into backend data
+      var localProgress = buildLocalProgress();
+      if (localProgress) {
+        var merged = d.progress.completedRituals || [];
+        localProgress.completedRituals.forEach(function(slug) {
+          if (merged.indexOf(slug) === -1) merged.push(slug);
+        });
+        d.progress.completedRituals = merged;
+        // If backend currentRitual is actually completed locally, advance
+        if (d.progress.currentRitual && merged.indexOf(d.progress.currentRitual) !== -1) {
+          d.progress.currentRitual = localProgress.currentRitual || d.progress.currentRitual;
+          d.progress.currentDay = localProgress.currentDay || 0;
+        }
+      }
     }
     // No subscription — show subscribe banner instead of redirecting
     if (!d.progress || (d.progress && !d.progress.subscriptionActive)) {
@@ -2336,6 +2359,28 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
     });
   }
 
+  // Build completed rituals sections
+  var completedHtml = { home: '', rituals: '' };
+  completed.forEach(function(slug) {
+    var r = RITUALS[slug];
+    if (!r || slug === displayRitual) return;
+    var pillarsHtml2 = r.pillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
+    completedHtml.home += '<div class="ritual-card-light" style="cursor:default"><div class="ritual-icon">'+r.icon+'</div><div class="ritual-info"><h3>'+r.name+'</h3><div class="ritual-pillars">'+pillarsHtml2+'</div><div class="ritual-desc">'+r.desc+'</div></div><div class="ritual-right"><span class="status-tag status-current" style="background:rgba(110,200,155,0.1);color:#1a7a42">COMPLETED</span></div></div>';
+    completedHtml.rituals += '<div class="ritual-card-dark" style="cursor:default"><div class="ritual-icon">'+r.icon+'</div><div class="ritual-info"><h3>'+r.name+'</h3><div class="ritual-pillars">'+pillarsHtml2+'</div><div class="ritual-desc">'+r.desc+'</div></div><div class="ritual-right"><span class="status-tag dark-status-current" style="background:rgba(110,200,155,0.1);color:#6ec89b">COMPLETED</span></div></div>';
+  });
+
+  var homeCompWrap = document.getElementById('homeCompletedWrap');
+  var ritualsCompWrap = document.getElementById('ritualsCompletedWrap');
+  if (completedHtml.home) {
+    document.getElementById('homeCompletedList').innerHTML = completedHtml.home;
+    homeCompWrap.style.display = '';
+    document.getElementById('ritualsCompletedList').innerHTML = completedHtml.rituals;
+    ritualsCompWrap.style.display = '';
+  } else {
+    homeCompWrap.style.display = 'none';
+    ritualsCompWrap.style.display = 'none';
+  }
+
   ['homeLockedList','ritualsLockedList'].forEach(function(listId) {
     var list = document.getElementById(listId);
     if (!list) return;
@@ -2347,19 +2392,8 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
       if (!slug) return;
 
       var availableRituals = ['mindful-eating','energised-mornings'];
-      if (slug === displayRitual) {
+      if (slug === displayRitual || completed.indexOf(slug) !== -1) {
         card.style.display = 'none';
-      } else if (completed.indexOf(slug) !== -1) {
-        card.classList.remove('locked');
-        card.classList.add('completed');
-        card.onclick = null;
-        card.style.cursor = 'default';
-        card.style.display = '';
-        var right = card.querySelector('.ritual-right');
-        if (right) {
-          var isDark = card.classList.contains('ritual-card-dark');
-          right.innerHTML = '<span class="status-tag '+(isDark?'dark-status-current':'status-current')+'" style="background:rgba(110,200,155,0.1);color:#1a7a42">COMPLETED</span>';
-        }
       } else if (memberData.subscriptionActive && availableRituals.indexOf(slug) !== -1) {
         card.classList.remove('locked');
         card.style.display = '';
