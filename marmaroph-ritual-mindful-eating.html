@@ -1098,6 +1098,21 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       </div>
     </div>
 
+    <!-- Day picker — browse any day's content -->
+    <div style="margin:10px 18px 0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4)">Browse days</span>
+        <button id="dayPickerReset" onclick="resetViewDay()" style="display:none;font-size:9px;letter-spacing:.1em;background:rgba(159,214,235,.1);border:1px solid rgba(159,214,235,.2);color:var(--sky);padding:4px 10px;border-radius:10px;cursor:pointer">Back to today</button>
+      </div>
+      <div id="dayPickerStrip" style="display:flex;gap:4px;overflow-x:auto;padding:4px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none"></div>
+    </div>
+    <style>#dayPickerStrip::-webkit-scrollbar{display:none}.dp-day{min-width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .2s;flex-shrink:0}.dp-day.done{color:var(--gold);background:rgba(233,184,78,.1);border-color:rgba(233,184,78,.2)}.dp-day.today{box-shadow:0 0 0 2px var(--sky);color:var(--sky);font-weight:700}.dp-day.viewing{background:rgba(159,214,235,.15);border-color:rgba(159,214,235,.4);color:#fff;font-weight:700}.dp-day.missed{color:rgba(255,255,255,.25);border-style:dashed}</style>
+
+    <!-- Viewing other day notice -->
+    <div id="viewDayNotice" style="display:none;margin:0 18px 6px;padding:10px 14px;background:rgba(233,220,184,.08);border:1px solid rgba(233,220,184,.15);border-radius:12px;text-align:center">
+      <p style="font-size:11px;color:var(--gold);margin:0">You are viewing <b id="viewDayLabel">Day X</b>'s content. This day was not completed, so it will not be marked as done.</p>
+    </div>
+
     <div class="btn-row rise" style="margin-top:12px;padding-top:6px">
       <button class="btn btn-primary" id="beginBtn" onclick="startRitual()">Begin today's ritual</button>
     </div>
@@ -2541,12 +2556,66 @@ function ritualStartDate(){
   if(state.startDate)return new Date(state.startDate);
   return null;
 }
-function dayIndex(){
+var _viewDay=null; // override for browsing other days
+function realDayIndex(){
   var sd=ritualStartDate();if(!sd)return 1;
   var now=new Date();now.setHours(0,0,0,0);sd.setHours(0,0,0,0);
   if(now<sd)return 0;
   var ms=now.getTime()-sd.getTime();
   return Math.min(30,Math.max(1,Math.round(ms/86400000)+1));
+}
+function dayIndex(){
+  return _viewDay!==null?_viewDay:realDayIndex();
+}
+function setViewDay(d){
+  _viewDay=d;
+  var real=realDayIndex();
+  var notice=document.getElementById('viewDayNotice');
+  var resetBtn=document.getElementById('dayPickerReset');
+  var beginBtn=document.getElementById('beginBtn');
+  if(d!==real){
+    if(notice){notice.style.display='block';document.getElementById('viewDayLabel').textContent='Day '+d;}
+    if(resetBtn)resetBtn.style.display='';
+    if(beginBtn){beginBtn.textContent='View Day '+d+'\'s ritual';beginBtn.onclick=function(){startRitual()};}
+  }else{
+    resetViewDay();return;
+  }
+  renderHome();renderDayPicker();
+}
+function resetViewDay(){
+  _viewDay=null;
+  var notice=document.getElementById('viewDayNotice');if(notice)notice.style.display='none';
+  var resetBtn=document.getElementById('dayPickerReset');if(resetBtn)resetBtn.style.display='none';
+  var beginBtn=document.getElementById('beginBtn');
+  if(beginBtn){beginBtn.textContent="Begin today's ritual";beginBtn.onclick=function(){startRitual()};}
+  renderHome();renderDayPicker();
+}
+function isViewingOtherDay(){return _viewDay!==null&&_viewDay!==realDayIndex();}
+function renderDayPicker(){
+  var strip=document.getElementById('dayPickerStrip');if(!strip)return;
+  strip.innerHTML='';
+  var real=realDayIndex();
+  var doneSet={};
+  state.days.forEach(function(ds){
+    var sd=ritualStartDate();if(!sd)return;
+    var d=new Date(ds);d.setHours(0,0,0,0);sd.setHours(0,0,0,0);
+    var diff=Math.round((d-sd)/86400000)+1;
+    if(diff>=1&&diff<=30)doneSet[diff]=true;
+  });
+  for(var i=1;i<=30;i++){
+    var el=document.createElement('div');
+    el.className='dp-day';
+    el.textContent=i;
+    if(doneSet[i])el.classList.add('done');
+    if(i===real)el.classList.add('today');
+    if(_viewDay===i)el.classList.add('viewing');
+    if(i<real&&!doneSet[i])el.classList.add('missed');
+    (function(day){el.onclick=function(){setViewDay(day)};})(i);
+    strip.appendChild(el);
+  }
+  // Scroll to current view or today
+  var target=_viewDay||real;
+  if(target>5){var scrollTo=(target-3)*38;strip.scrollLeft=scrollTo;}
 }
 function isBeforeRitual(){
   var sd=ritualStartDate();if(!sd)return false;
@@ -2561,7 +2630,10 @@ function daysUntilStart(){
 function weekIndex(){return Math.min(4,Math.ceil(dayIndex()/7))}
 function doneCount(){return state.days.length}
 function isMarkedToday(){return state.days.indexOf(todayStr())>-1}
-function markToday(){if(!state.startDate)state.startDate=todayStr();if(!isMarkedToday())state.days.push(todayStr());store(KEY,state);syncToBackend()}
+function markToday(){
+  if(isViewingOtherDay())return; // don't mark when browsing other days
+  if(!state.startDate)state.startDate=todayStr();if(!isMarkedToday())state.days.push(todayStr());store(KEY,state);syncToBackend();
+}
 function syncToBackend(){
   try{
     var mid=(new URLSearchParams(window.location.search)).get('memberId');
@@ -2691,12 +2763,22 @@ function showDone(quote){
   go('s-done');
 }
 function quickMark(){
+  if(isViewingOtherDay()){showToast('You are browsing Day '+_viewDay+'. Go back to today to mark it complete.');return;}
   markToday();sndComplete();
   showDone('"Showing up, even briefly,<br>is the whole practice."');
 }
 function completeRitual(){
+  if(isViewingOtherDay()){showToast('You are browsing Day '+_viewDay+'. Go back to today to mark it complete.');return;}
   markToday();sndComplete();
   showDone('"You did not just eat.<br>You returned home."');
+}
+
+/* ── toast ── */
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(233,220,184,.95);color:#044147;padding:12px 20px;border-radius:14px;font-size:12px;font-weight:500;z-index:99999;max-width:300px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:fadeIn .3s';
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},3000);
 }
 
 /* ================= home ================= */
@@ -2751,11 +2833,16 @@ function renderHome(){
     document.getElementById('beginBtn').textContent='Ritual starts '+MONTH_NAMES[state.ritualMonth]+' 1st ('+daysUntilStart()+' days)';
     document.getElementById('beginBtn').disabled=true;
     document.getElementById('beginBtn').style.opacity='.5';
+  }else if(isViewingOtherDay()){
+    document.getElementById('beginBtn').textContent='View Day '+_viewDay+"'s ritual";
+    document.getElementById('beginBtn').disabled=false;
+    document.getElementById('beginBtn').style.opacity='1';
   }else{
     document.getElementById('beginBtn').textContent="Begin today's ritual";
     document.getElementById('beginBtn').disabled=false;
     document.getElementById('beginBtn').style.opacity='1';
   }
+  renderDayPicker();
   /* quiz lock */
   var qc=document.getElementById('quizCard'),qs=document.getElementById('quizSub');
   if(dc>=27){qc.classList.remove('locked');qs.textContent='A short quiz to sense where your practice goes next.'}
