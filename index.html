@@ -2143,8 +2143,10 @@ function buildLocalProgress() {
     }
   }
   if (!current && completed.length > 0) {
-    for (var j = 0; j < RITUAL_ORDER.length; j++) {
-      if (completed.indexOf(RITUAL_ORDER[j]) === -1) { current = RITUAL_ORDER[j]; break; }
+    // Only advance to rituals that have built pages
+    var builtOrder = Object.keys(RITUAL_LS_KEYS);
+    for (var j = 0; j < builtOrder.length; j++) {
+      if (completed.indexOf(builtOrder[j]) === -1) { current = builtOrder[j]; break; }
     }
   }
   if (!current && completed.length === 0) return null;
@@ -2343,13 +2345,17 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
   var currentDone = currentRitual && (completed.indexOf(currentRitual) !== -1 || (memberData.currentDay && memberData.currentDay >= 30));
   var displayRitual = currentRitual;
   if (currentDone) {
-    var availableOrder = ['mindful-eating','energised-mornings','sanctuary-protection','im-enough','sacred-connection','kindred-bonds','quiet-abundance','bloom-in-gratitude','new-beginnings','nurtured-mother','healing-heart'];
+    // Only advance to rituals that have built pages (entries in RITUAL_LS_KEYS)
+    var builtRituals = Object.keys(RITUAL_LS_KEYS);
+    var availableOrder = ['mindful-eating','energised-mornings'];
     for (var i = 0; i < availableOrder.length; i++) {
       if (completed.indexOf(availableOrder[i]) === -1 && availableOrder[i] !== currentRitual) {
         displayRitual = availableOrder[i];
         break;
       }
     }
+    // If all built rituals are done, keep showing the current one
+    if (displayRitual === currentRitual) displayRitual = currentRitual;
   }
 
   displayRitualSlug = displayRitual;
@@ -2460,10 +2466,12 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
 function calcPillarScores(completed) {
   if (!completed || !completed.length) return;
   var scores = {nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
+  // Only count available/built rituals for the max denominator
+  var builtSlugs = Object.keys(RITUAL_LS_KEYS);
   var pillarMax = {nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
-  var allSlugs = Object.keys(RITUALS);
-  allSlugs.forEach(function(slug) {
+  builtSlugs.forEach(function(slug) {
     var r = RITUALS[slug];
+    if (!r) return;
     r.pillars.forEach(function(p) { pillarMax[p] = (pillarMax[p]||0) + 1; });
   });
   completed.forEach(function(slug) {
