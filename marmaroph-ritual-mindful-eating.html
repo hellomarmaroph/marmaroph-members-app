@@ -17,11 +17,14 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{font-family:'Montserrat',sans-serif;background:transparent;color:#fff;display:flex;justify-content:center}
-#splashLoader{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#044147 0%,#033a40 45%,#02272b 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease}
+#splashLoader{position:fixed;inset:0;z-index:9999;background:#02272b;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
 #splashLoader.hide{opacity:0;pointer-events:none}
-.splash-brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:400;color:var(--gold);letter-spacing:.12em;margin-bottom:8px}
-.splash-sub{font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.4)}
-.splash-ring{width:36px;height:36px;border:2px solid rgba(233,220,184,.15);border-top-color:var(--gold);border-radius:50%;margin-top:24px;animation:splash-spin .8s linear infinite}
+.sl-bg{position:absolute;inset:0;background:url('https://static.wixstatic.com/media/00228e_32919d9b8ed1461aa6b41af2ea4a093c~mv2.jpg/v1/fill/w_750,h_1400,al_c,q_85/00228e_32919d9b8ed1461aa6b41af2ea4a093c~mv2.jpg') center/cover no-repeat;opacity:.75}
+.sl-veil{position:absolute;inset:0;background:rgba(2,39,43,.35);z-index:1}
+.sl-inner{position:relative;z-index:2;text-align:center;padding:0 24px;width:100%}
+.splash-brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:400;font-style:italic;color:#fff;margin-bottom:6px;text-shadow:0 2px 20px rgba(2,39,43,.7)}
+.splash-sub{font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.6);text-shadow:0 1px 8px rgba(2,39,43,.6)}
+.splash-ring{width:28px;height:28px;border:2px solid rgba(233,220,184,.2);border-top-color:var(--gold);border-radius:50%;margin:16px auto 0;animation:splash-spin .9s linear infinite}
 @keyframes splash-spin{to{transform:rotate(360deg)}}
 [data-img]{opacity:0;transition:opacity .4s ease}
 [data-img].loaded{opacity:1}
@@ -724,11 +727,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
 </style>
 </head>
 <body>
-<div id="splashLoader">
-  <div class="splash-brand">Marmaroph</div>
-  <div class="splash-sub">Home &amp; Living</div>
-  <div class="splash-ring"></div>
-</div>
+<div id="splashLoader"><div class="sl-bg"></div><div class="sl-veil"></div><div class="sl-inner"><div class="splash-brand">Marmaroph</div><div class="splash-sub">Mindful Eating Ritual</div><div class="splash-ring"></div></div></div>
 <div class="app">
 
   <a id="backToSanctuary" href="https://app.marmaroph.com" style="position:absolute;top:14px;right:14px;z-index:200;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:rgba(4,65,71,0.85);border:1px solid rgba(159,214,235,0.3);color:#9fd6eb;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.5px;text-decoration:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">&#8592; My Sanctuary</a>
