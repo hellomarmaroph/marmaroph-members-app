@@ -1106,7 +1106,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       </div>
       <div id="dayPickerStrip" style="display:flex;gap:4px;overflow-x:auto;padding:4px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none"></div>
     </div>
-    <style>#dayPickerStrip::-webkit-scrollbar{display:none}.dp-day{min-width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .2s;flex-shrink:0}.dp-day.done{color:var(--gold);background:rgba(233,184,78,.1);border-color:rgba(233,184,78,.2)}.dp-day.today{box-shadow:0 0 0 2px var(--sky);color:var(--sky);font-weight:700}.dp-day.viewing{background:rgba(159,214,235,.15);border-color:rgba(159,214,235,.4);color:#fff;font-weight:700}.dp-day.missed{color:rgba(255,255,255,.25);border-style:dashed}</style>
+    <style>#dayPickerStrip::-webkit-scrollbar{display:none}.dp-day{min-width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .2s;flex-shrink:0}.dp-day.done{color:var(--gold);background:rgba(233,184,78,.1);border-color:rgba(233,184,78,.2)}.dp-day.today{box-shadow:0 0 0 2px var(--sky);color:var(--sky);font-weight:700}.dp-day.viewing{background:rgba(159,214,235,.15);border-color:rgba(159,214,235,.4);color:#fff;font-weight:700}.dp-day.missed{color:rgba(233,160,100,.7);border:1px dashed rgba(233,160,100,.35);background:rgba(233,160,100,.08)}.dp-day.future{color:rgba(255,255,255,.15);border-color:rgba(255,255,255,.04);pointer-events:none;opacity:.4}</style>
 
     <!-- Viewing other day notice -->
     <div id="viewDayNotice" style="display:none;margin:0 18px 6px;padding:10px 14px;background:rgba(233,220,184,.08);border:1px solid rgba(233,220,184,.15);border-radius:12px;text-align:center">
@@ -2610,7 +2610,8 @@ function renderDayPicker(){
     if(i===real)el.classList.add('today');
     if(_viewDay===i)el.classList.add('viewing');
     if(i<real&&!doneSet[i])el.classList.add('missed');
-    (function(day){el.onclick=function(){setViewDay(day)};})(i);
+    if(i>real)el.classList.add('future');
+    (function(day){el.onclick=function(){if(day>realDayIndex())return;setViewDay(day);};})(i);
     strip.appendChild(el);
   }
   // Scroll to current view or today

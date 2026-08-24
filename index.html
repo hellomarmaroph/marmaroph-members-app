@@ -1784,6 +1784,13 @@ function initApp() {
   }
   setTimeout(sendHeight, 500);
 
+  // Handle ?go= deep-link (e.g. from ritual quiz redirect)
+  var _goParam = new URLSearchParams(window.location.search).get('go');
+  if (_goParam) {
+    window.history.replaceState(null, '', window.location.pathname);
+    setTimeout(function(){ navigate(_goParam); }, 600);
+  }
+
   // Show install prompt on mobile (not in iframe, not already installed)
   if (!isInIframe && !window.matchMedia('(display-mode: standalone)').matches && !navigator.standalone) {
     try { localStorage.removeItem('marmaroph_install_dismissed'); } catch(e) {}
