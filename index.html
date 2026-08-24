@@ -2460,28 +2460,41 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
     });
   });
 
-  calcPillarScores(completed);
+  calcPillarScores(completed, displayRitual);
 }
 
-function calcPillarScores(completed) {
-  if (!completed || !completed.length) return;
-  var scores = {nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
-  // Only count available/built rituals for the max denominator
+function calcPillarScores(completed, currentRitualSlug) {
   var builtSlugs = Object.keys(RITUAL_LS_KEYS);
-  var pillarMax = {nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
+  // Calculate progress for each built ritual from localStorage
+  var ritualProgress = {};
+  builtSlugs.forEach(function(slug) {
+    var lsKey = RITUAL_LS_KEYS[slug];
+    try {
+      var raw = localStorage.getItem(lsKey);
+      if (raw) {
+        var st = JSON.parse(raw);
+        var daysLogged = (st.days && st.days.length) || 0;
+        ritualProgress[slug] = Math.min(1, daysLogged / 30);
+      } else {
+        ritualProgress[slug] = 0;
+      }
+    } catch(e) { ritualProgress[slug] = 0; }
+  });
+  // Each pillar's score = average progress of built rituals that feed it
+  var pillarScores = {};
+  var pillarCounts = {};
+  PILLAR_ORDER.forEach(function(p) { pillarScores[p] = 0; pillarCounts[p] = 0; });
   builtSlugs.forEach(function(slug) {
     var r = RITUALS[slug];
     if (!r) return;
-    r.pillars.forEach(function(p) { pillarMax[p] = (pillarMax[p]||0) + 1; });
-  });
-  completed.forEach(function(slug) {
-    var r = RITUALS[slug];
-    if (!r) return;
-    r.pillars.forEach(function(p) { scores[p] = (scores[p]||0) + 1; });
+    r.pillars.forEach(function(p) {
+      pillarScores[p] += ritualProgress[slug] || 0;
+      pillarCounts[p]++;
+    });
   });
   var pctScores = {};
   PILLAR_ORDER.forEach(function(p) {
-    pctScores[p] = pillarMax[p] > 0 ? Math.round((scores[p] / pillarMax[p]) * 100) : 0;
+    pctScores[p] = pillarCounts[p] > 0 ? Math.round((pillarScores[p] / pillarCounts[p]) * 100) : 0;
   });
   drawPillarWheel(pctScores);
 }
