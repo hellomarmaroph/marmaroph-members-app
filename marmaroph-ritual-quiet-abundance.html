@@ -32,7 +32,6 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:13px 24px;border-radius:12px;font-size:12px;font-weight:600;letter-spacing:.06em;cursor:pointer;border:none;transition:.25s;font-family:'Montserrat',sans-serif}
 .btn-primary{background:linear-gradient(135deg,#d4b366 0%,#c9a84c 40%,#9a7038 80%,#b08848 100%);color:#fff;box-shadow:0 4px 24px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.15) inset}
 .btn-ghost{background:transparent;color:var(--gold);border:1px solid var(--glass-border)}
-.btn-full{width:calc(100% - 36px);margin:0 18px;display:flex;justify-content:center}
 .sun-cal-wrap{display:flex;justify-content:center;padding:6px 0}
 .sun-cal-wrap canvas{cursor:default}
 .stage-head{display:flex;align-items:center;justify-content:space-between;padding:56px 18px 10px;position:relative;z-index:5}
@@ -95,12 +94,6 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .expense-date{font-size:9px;color:rgba(255,255,255,.25);margin-left:8px}
 .sav-bar-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin:6px 0}
 .sav-bar{height:100%;background:linear-gradient(90deg,var(--sky),var(--gold));border-radius:4px;transition:width .5s}
-.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px;margin:10px 0}
-.hub-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:18px 14px;text-align:left;cursor:pointer;transition:.25s;display:flex;flex-direction:column;gap:6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.hub-card:active{background:rgba(255,255,255,.1);transform:scale(.97)}
-.hc-ico{font-size:24px;line-height:1}
-.hc-title{font-size:12px;font-weight:600;color:#fff}
-.hc-sub{font-size:10px;color:rgba(255,255,255,.4);line-height:1.5}
 .countdown-box{text-align:center;padding:20px 18px}
 .cd-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:#fff}
 .cd-unit{font-size:10px;letter-spacing:.3em;color:rgba(255,255,255,.35)}
@@ -136,18 +129,24 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .deco-fig svg{overflow:visible}
 @keyframes shimmer{0%,100%{opacity:.4}50%{opacity:1}}
 .shimmer{animation:shimmer 3s ease-in-out infinite}
-/* goal cards */
-.goal-card{background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:16px;padding:16px;margin:8px 0;position:relative;overflow:hidden}
-.goal-card.active{border-color:var(--gold)}
-.goal-card.locked{opacity:.4;pointer-events:none}
-.goal-card.completed{border-color:rgba(107,159,212,.3)}
-.goal-tag{font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--sky);margin-bottom:4px}
-.goal-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:6px}
-.goal-desc{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6}
-/* finance tool tabs */
-.ft-tabs{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px}
-.ft-tab{padding:8px 14px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);cursor:pointer;white-space:nowrap;transition:.2s}
-.ft-tab.on{background:rgba(212,179,102,.12);border-color:var(--gold);color:var(--gold)}
+/* Finance overlay */
+#finOverlay{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.23,1,.32,1);overflow:hidden}
+#finOverlay canvas{position:absolute;inset:0;z-index:0}
+#finOverlay .fo-scroll{position:relative;z-index:1;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 80px}
+.fo-head{display:flex;align-items:center;justify-content:space-between;padding:52px 18px 12px;position:relative;z-index:2}
+.fo-head span{font-size:13px;font-weight:600;color:#fff}
+.fo-close{width:32px;height:32px;background:rgba(255,255,255,.06);border:1px solid var(--glass-border);border-radius:50%;cursor:pointer;color:rgba(255,255,255,.6);font-size:16px;display:flex;align-items:center;justify-content:center;border:1px solid var(--glass-border)}
+/* goal timeline */
+.goal-tl{position:relative;padding-left:28px;margin:0 18px}
+.goal-tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:3px;border-radius:2px;background:linear-gradient(180deg,var(--gold),var(--sky),rgba(255,255,255,.08))}
+.gt-node{position:relative;margin-bottom:16px}
+.gt-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy)}
+.gt-dot.done{background:var(--gold);border-color:var(--gold)}
+.gt-dot.active{background:rgba(212,179,102,.3);border-color:var(--gold);box-shadow:0 0 10px rgba(212,179,102,.3)}
+.gt-name{font-size:13px;font-weight:600;color:#fff}
+.gt-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+.gt-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:6px;overflow:hidden}
+.gt-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--sky));border-radius:3px;transition:width .5s}
 footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.12);text-align:center;padding:18px 0;margin-top:10px}
 </style>
 </head>
@@ -172,13 +171,9 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <svg width="140" height="220" viewBox="0 0 140 220" fill="none">
       <circle cx="70" cy="55" r="46" stroke="rgba(212,179,102,.22)" stroke-width=".5"/>
       <circle cx="70" cy="55" r="54" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <circle cx="70" cy="55" r="62" stroke="rgba(212,179,102,.06)" stroke-width=".3"/>
-      <line x1="20" y1="55" x2="120" y2="55" stroke="rgba(212,179,102,.06)" stroke-width=".3"/>
-      <line x1="70" y1="5" x2="70" y2="105" stroke="rgba(212,179,102,.06)" stroke-width=".3"/>
       <ellipse cx="70" cy="42" rx="9" ry="11" stroke="var(--gold)" stroke-width=".8" fill="none"/>
       <path d="M61 39 Q53 50 50 66 Q48 78 52 88" stroke="var(--gold)" stroke-width=".6" fill="none"/>
       <path d="M79 39 Q87 50 90 66 Q92 78 88 88" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M63 37 Q56 46 54 60 Q52 72 56 82" stroke="rgba(212,179,102,.35)" stroke-width=".5" fill="none"/>
       <path d="M64 53 Q63 66 62 80 Q61 90 63 98" stroke="var(--gold)" stroke-width=".7" fill="none"/>
       <path d="M76 53 Q77 66 78 80 Q79 90 77 98" stroke="var(--gold)" stroke-width=".7" fill="none"/>
       <path d="M63 98 Q60 112 56 128 Q52 144 46 158 Q40 170 36 178" stroke="var(--gold)" stroke-width=".7" fill="none"/>
@@ -186,14 +181,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
       <path d="M36 178 Q28 190 22 200 Q30 195 40 192 Q48 190 55 194 Q60 198 66 205" stroke="var(--gold)" stroke-width=".6" fill="none"/>
       <path d="M74 178 Q80 190 84 200 Q78 195 70 192 Q64 190 60 194" stroke="var(--gold)" stroke-width=".6" fill="none"/>
       <path d="M60 105 Q63 108 66 105 Q69 108 72 105 Q75 108 78 105" stroke="rgba(212,179,102,.25)" stroke-width=".4" fill="none"/>
-      <path d="M58 118 Q61 121 64 118 Q67 121 70 118 Q73 121 76 118 Q79 121 82 118" stroke="rgba(212,179,102,.2)" stroke-width=".4" fill="none"/>
-      <line x1="70" y1="31" x2="70" y2="15" stroke="rgba(212,179,102,.18)" stroke-width=".3"/>
-      <line x1="83" y1="34" x2="92" y2="22" stroke="rgba(212,179,102,.12)" stroke-width=".3"/>
-      <line x1="57" y1="34" x2="48" y2="22" stroke="rgba(212,179,102,.12)" stroke-width=".3"/>
       <circle cx="110" cy="28" r="1.2" fill="rgba(212,179,102,.5)" class="shimmer"/>
       <circle cx="28" cy="22" r="1" fill="rgba(212,179,102,.4)" class="shimmer" style="animation-delay:.7s"/>
-      <circle cx="100" cy="75" r=".8" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1.4s"/>
-      <circle cx="35" cy="95" r=".6" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:2.1s"/>
     </svg>
   </div>
 
@@ -208,45 +197,26 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🏠</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S1 · Space</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Set your Abundance Corner. Cleared, purposeful, visible.</p></div></div>
     <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🪔</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S2 · Symbolism</div><p style="font-size:12px;color:rgba(255,255,255,.5)">The Abundance Bowl. Your physical anchor.</p></div></div>
     <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🧘</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S3 · Grounding</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Money mindset meditations + breathing.</p></div></div>
-    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">📖</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S4 · Sense</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Financial lessons, mindset shifts + mindful tracking.</p></div></div>
+    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">📖</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S4 · Sense</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Financial lessons, mindset shifts + finance tool.</p></div></div>
     <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🌿</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S5 · Seed</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Mark the day. The Quiet Abundance Dinner awaits.</p></div></div>
   </div>
 
   <!-- Lion figure -->
   <div class="deco-fig" style="margin-top:10px">
     <svg width="160" height="120" viewBox="0 0 160 120" fill="none">
-      <!-- mane circle -->
       <circle cx="60" cy="50" r="30" stroke="rgba(212,179,102,.15)" stroke-width=".5"/>
-      <circle cx="60" cy="50" r="36" stroke="rgba(212,179,102,.08)" stroke-width=".3"/>
-      <!-- head -->
       <ellipse cx="60" cy="50" rx="14" ry="12" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <!-- eyes -->
       <circle cx="54" cy="48" r="1.5" fill="rgba(212,179,102,.5)"/>
       <circle cx="66" cy="48" r="1.5" fill="rgba(212,179,102,.5)"/>
-      <!-- nose -->
       <path d="M58 52 Q60 54 62 52" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <!-- mane rays -->
       <line x1="60" y1="18" x2="60" y2="8" stroke="rgba(212,179,102,.2)" stroke-width=".4"/>
       <line x1="75" y1="22" x2="82" y2="14" stroke="rgba(212,179,102,.18)" stroke-width=".4"/>
       <line x1="45" y1="22" x2="38" y2="14" stroke="rgba(212,179,102,.18)" stroke-width=".4"/>
-      <line x1="85" y1="35" x2="94" y2="30" stroke="rgba(212,179,102,.15)" stroke-width=".4"/>
-      <line x1="35" y1="35" x2="26" y2="30" stroke="rgba(212,179,102,.15)" stroke-width=".4"/>
-      <line x1="88" y1="50" x2="96" y2="50" stroke="rgba(212,179,102,.12)" stroke-width=".3"/>
-      <line x1="32" y1="50" x2="24" y2="50" stroke="rgba(212,179,102,.12)" stroke-width=".3"/>
-      <line x1="85" y1="65" x2="92" y2="72" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <line x1="35" y1="65" x2="28" y2="72" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <!-- body reclining -->
       <path d="M74 55 Q85 58 100 60 Q115 62 130 60 Q140 58 145 55" stroke="var(--gold)" stroke-width=".6" fill="none"/>
       <path d="M74 62 Q85 66 100 68 Q115 70 130 68 Q140 66 145 63" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- tail -->
       <path d="M145 55 Q150 48 152 42 Q154 38 150 36" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <!-- paws -->
-      <path d="M85 68 Q84 78 82 85 Q80 90 78 92" stroke="rgba(212,179,102,.4)" stroke-width=".5" fill="none"/>
-      <path d="M110 70 Q110 80 108 87 Q106 92 104 94" stroke="rgba(212,179,102,.4)" stroke-width=".5" fill="none"/>
-      <!-- stars -->
       <circle cx="10" cy="15" r="1" fill="rgba(212,179,102,.4)" class="shimmer"/>
       <circle cx="150" cy="20" r=".8" fill="rgba(212,179,102,.35)" class="shimmer" style="animation-delay:1s"/>
-      <circle cx="120" cy="10" r=".6" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:2s"/>
     </svg>
   </div>
 
@@ -298,20 +268,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div id="analyzerSection" style="display:none">
     <div class="sec-title" style="font-size:22px;margin-top:18px">Abundance Corner Analyzer</div>
     <div class="sec-title-sub">rate your financial sanctuary</div>
-
-    <!-- Moon figure -->
-    <div class="deco-fig" style="opacity:.5">
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="24" stroke="rgba(212,179,102,.25)" stroke-width=".5"/>
-        <circle cx="40" cy="40" r="30" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-        <path d="M50 24 Q36 30 32 44 Q30 54 36 62 Q42 68 54 66 Q48 72 38 70 Q26 66 22 54 Q18 40 24 28 Q30 18 42 16 Q52 16 56 22 Q54 22 50 24Z" fill="rgba(212,179,102,.08)" stroke="rgba(212,179,102,.2)" stroke-width=".5"/>
-        <circle cx="60" cy="18" r=".8" fill="rgba(212,179,102,.4)" class="shimmer"/>
-        <circle cx="15" cy="30" r=".6" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1s"/>
-        <circle cx="65" cy="55" r=".5" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:2s"/>
-      </svg>
-    </div>
-
-    <p class="body-copy" style="margin-bottom:14px;font-size:12px">Before the ritual begins, assess the space where you will sit with your finances. A calm space creates a calm practice.</p>
+    <p class="body-copy" style="margin-bottom:14px;font-size:12px">Before the ritual begins, assess the space where you will sit with your finances.</p>
     <div class="diag-wrap" id="diagWrap">
       <div class="diag-q"><div class="diag-label">1. Do you have a dedicated spot for financial work?</div><div class="diag-opts"><div class="diag-opt" onclick="dSel(this,0,0)">No, I do finances anywhere</div><div class="diag-opt" onclick="dSel(this,0,1)">Sort of. The kitchen table or couch.</div><div class="diag-opt" onclick="dSel(this,0,2)">Yes, I have a specific place</div></div></div>
       <div class="diag-q"><div class="diag-label">2. How does your financial space feel?</div><div class="diag-opts"><div class="diag-opt" onclick="dSel(this,1,0)">Cluttered or stressful</div><div class="diag-opt" onclick="dSel(this,1,1)">Neutral. Functional but not calming.</div><div class="diag-opt" onclick="dSel(this,1,2)">Calm, clean, and intentional</div></div></div>
@@ -335,16 +292,13 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="eyebrow" style="margin-bottom:4px">Quiet Abundance Ritual</div>
     <div class="hello">Hi, beautiful</div>
   </div>
-
-  <!-- SUN CALENDAR (bigger) -->
   <div class="sun-cal-wrap"><canvas id="sunCal" width="380" height="380"></canvas></div>
   <div style="text-align:center;margin-top:-6px">
     <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3)" id="homeChip">PATH B</div>
   </div>
-
   <div style="padding:12px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(1)">Begin today's ritual</button></div>
 
-  <!-- MONTH CALENDAR below sun -->
+  <!-- MONTH CALENDAR -->
   <div class="sec-title" style="font-size:18px;margin-top:18px">Your Month</div>
   <div class="month-cal">
     <div class="mc-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
@@ -366,40 +320,6 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7" id="rd1Text"></div>
   </div>
 
-  <!-- Constellation lion deco -->
-  <div class="deco-fig" style="margin-top:10px">
-    <svg width="120" height="80" viewBox="0 0 120 80" fill="none">
-      <!-- sleeping lion constellation -->
-      <circle cx="25" cy="35" r="10" stroke="rgba(212,179,102,.18)" stroke-width=".4"/>
-      <path d="M35 38 Q50 40 65 42 Q80 44 95 40" stroke="rgba(212,179,102,.2)" stroke-width=".4" fill="none"/>
-      <path d="M95 40 Q100 35 105 38" stroke="rgba(212,179,102,.15)" stroke-width=".4" fill="none"/>
-      <circle cx="25" cy="35" r="2" fill="rgba(212,179,102,.3)"/>
-      <circle cx="35" cy="38" r="1.5" fill="rgba(212,179,102,.25)"/>
-      <circle cx="50" cy="40" r="1.2" fill="rgba(212,179,102,.2)"/>
-      <circle cx="65" cy="42" r="1.5" fill="rgba(212,179,102,.25)"/>
-      <circle cx="80" cy="44" r="1.2" fill="rgba(212,179,102,.2)"/>
-      <circle cx="95" cy="40" r="1.5" fill="rgba(212,179,102,.25)"/>
-      <circle cx="105" cy="38" r="1" fill="rgba(212,179,102,.2)"/>
-      <!-- paws -->
-      <circle cx="40" cy="55" r="1" fill="rgba(212,179,102,.15)"/>
-      <circle cx="75" cy="56" r="1" fill="rgba(212,179,102,.15)"/>
-      <line x1="35" y1="38" x2="40" y2="55" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <line x1="65" y1="42" x2="75" y2="56" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <!-- stars around -->
-      <circle cx="8" cy="15" r=".8" fill="rgba(212,179,102,.4)" class="shimmer"/>
-      <circle cx="110" cy="12" r=".6" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1.2s"/>
-      <circle cx="55" cy="10" r=".5" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:2.4s"/>
-    </svg>
-  </div>
-
-  <div class="sec-title" style="font-size:20px;margin-top:10px">Sanctuary Tools</div>
-  <div class="hub-grid">
-    <div class="hub-card" onclick="openTool('finance')"><div class="hc-ico">💰</div><div class="hc-title">My Finances</div><div class="hc-sub">Peace Fund, goals + tracker</div></div>
-    <div class="hub-card" onclick="openTool('learn')"><div class="hc-ico">📖</div><div class="hc-title">Learning Hub</div><div class="hc-sub">Financial education</div></div>
-    <div class="hub-card" onclick="openTool('mindsets')"><div class="hc-ico">🧠</div><div class="hc-title">Mindset Shifts</div><div class="hc-sub">Old vs new money beliefs</div></div>
-    <div class="hub-card" onclick="goStep(5)"><div class="hc-ico">🍽</div><div class="hc-title">The Dinner</div><div class="hc-sub">Day 30 gathering</div></div>
-  </div>
-
   <div class="wa-card">
     <div class="wa-title">Your ritual sisters</div>
     <div class="wa-body">You are not doing this alone. Join the women who started the Quiet Abundance ritual this month.</div>
@@ -418,18 +338,16 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <p class="body-copy" style="margin-top:10px">A ritual without a space is just a habit that fades. Before you can change your relationship with money, you need a physical place where that relationship lives.</p>
   <div class="sec-title" style="font-size:18px;margin-top:20px">Set up your corner</div>
   <div style="padding:0 18px">
-    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Choose a spot. Desk, shelf, or table corner.</div><div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">Somewhere you can sit undisturbed for 10 minutes.</div></div></div>
-    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Clear everything that does not belong.</div><div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">This space is only for your abundance practice.</div></div></div>
-    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Add one intentional element.</div><div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">A candle, a plant, your Abundance Bowl. Something that signals calm.</div></div></div>
-    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Sit in it for two minutes right now.</div><div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">Notice how it feels. This is where your practice lives.</div></div></div>
+    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Choose a spot. Desk, shelf, or table corner.</div></div></div>
+    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Clear everything that does not belong.</div></div></div>
+    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Add one intentional element. A candle, a plant, your Abundance Bowl.</div></div></div>
+    <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Sit in it for two minutes right now.</div></div></div>
   </div>
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(2)">Space is set. Continue.</button></div>
   <footer>Marmaroph</footer>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- STEP 2 — SYMBOLISM                                 -->
-<!-- ═══════════════════════════════════════════════════ -->
+<!-- STEP 2 — SYMBOLISM -->
 <section class="screen" id="s-r2">
   <div class="stage-head"><span class="back-link" onclick="goStep(1)">← Space</span><span class="stage-count">2 / 5</span></div>
   <div class="rule-label"><span class="eyebrow">S2 · SYMBOLISM</span></div>
@@ -437,10 +355,9 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="sec-title-sub">your physical anchor</div>
   <div class="bowl-circle">🪔</div>
   <div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft);text-align:center;margin-bottom:8px">THE ABUNDANCE BOWL</div>
-  <p class="body-copy" style="margin-top:6px">A beautiful bowl placed in your Abundance Corner. Each day, you place something in it that represents what you are grateful for financially. A coin, a note, a small object. It becomes a physical record of your growing relationship with abundance.</p>
+  <p class="body-copy" style="margin-top:6px">A beautiful bowl placed in your Abundance Corner. Each day, you place something in it that represents what you are grateful for financially.</p>
   <div class="glass-card" style="margin-top:14px">
     <div class="eyebrow" style="text-align:left;margin-bottom:8px">Today's offering</div>
-    <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px">What are you placing in your bowl today? Name one thing you are grateful for financially, no matter how small.</p>
     <textarea class="refl-ta" id="bowlOffering" rows="2" placeholder="A roof over my head..."></textarea>
     <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="saveBowl()">Place it in the bowl ✦</button>
     <p style="font-size:11px;color:var(--gold);text-align:center;margin-top:6px;display:none" id="bowlMsg">✦ Placed with intention.</p>
@@ -449,28 +366,13 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <footer>Marmaroph</footer>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- STEP 3 — GROUNDING                                 -->
-<!-- ═══════════════════════════════════════════════════ -->
+<!-- STEP 3 — GROUNDING -->
 <section class="screen" id="s-r3">
   <div class="stage-head"><span class="back-link" onclick="goStep(2)">← Symbolism</span><span class="stage-count">3 / 5</span></div>
   <div class="rule-label"><span class="eyebrow">S3 · GROUNDING</span></div>
   <div class="sec-title">Money Mindset Reset</div>
   <div class="sec-title-sub">breathe before you count</div>
-
-  <!-- Planet figure -->
-  <div class="deco-fig" style="opacity:.5">
-    <svg width="100" height="70" viewBox="0 0 100 70" fill="none">
-      <circle cx="50" cy="35" r="16" stroke="rgba(212,179,102,.2)" stroke-width=".5" fill="rgba(212,179,102,.03)"/>
-      <ellipse cx="50" cy="35" rx="30" ry="8" stroke="rgba(212,179,102,.15)" stroke-width=".4" fill="none" transform="rotate(-15 50 35)"/>
-      <circle cx="50" cy="35" r="22" stroke="rgba(212,179,102,.06)" stroke-width=".3"/>
-      <circle cx="82" cy="22" r=".8" fill="rgba(212,179,102,.4)" class="shimmer"/>
-      <circle cx="18" cy="48" r=".6" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1.5s"/>
-    </svg>
-  </div>
-
-  <p class="body-copy" style="margin-top:6px">Before you open a single number, ground your nervous system. Money decisions made from anxiety compound the problem. Decisions made from calm compound your wealth.</p>
-
+  <p class="body-copy" style="margin-top:6px">Before you open a single number, ground your nervous system. Money decisions made from anxiety compound the problem.</p>
   <div class="glass-card" style="text-align:center;margin-top:14px">
     <div class="eyebrow" style="margin-bottom:10px">4 · 7 · 8 Breathing</div>
     <div style="width:88px;height:88px;border-radius:50%;border:2px solid var(--sky);background:rgba(107,159,212,.08);display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;transition:transform .5s" id="bRing" onclick="startBreath()">
@@ -478,24 +380,16 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
     <p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:8px">3 cycles · vagus nerve activation</p>
   </div>
-
   <div class="sec-title" style="font-size:18px;margin-top:20px">Today's affirmation</div>
   <div class="glass-card">
-    <p style="font-size:14px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.75;text-align:center" id="todayAff">"Money has never been your enemy. It has been a language you were never taught."</p>
+    <p style="font-size:14px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.75;text-align:center" id="todayAff">"Money has never been your enemy."</p>
   </div>
-
-  <div class="sec-title" style="font-size:18px;margin-top:20px">Mindset shift of the day</div>
-  <div class="mindset-pair" id="mindsetPair">
-    <div class="mp-side mp-old"><div class="mp-label">Old pattern</div><span id="mpOld">Saving is punishment for spending too much.</span></div>
-    <div class="mp-side mp-new"><div class="mp-label">New practice</div><span id="mpNew">Saving is a gift I give my future self every single day.</span></div>
-  </div>
-
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(4)">Grounded. Continue.</button></div>
   <footer>Marmaroph</footer>
 </section>
 
 <!-- ═══════════════════════════════════════════════════ -->
-<!-- STEP 4 — SENSE                                     -->
+<!-- STEP 4 — SENSE (dynamic lesson + ONE mindset)      -->
 <!-- ═══════════════════════════════════════════════════ -->
 <section class="screen" id="s-r4">
   <div class="stage-head"><span class="back-link" onclick="goStep(3)">← Grounding</span><span class="stage-count">4 / 5</span></div>
@@ -503,28 +397,12 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="sec-title">Financial Awareness</div>
   <div class="sec-title-sub">learn · shift · track</div>
 
-  <!-- Koi figure -->
-  <div class="deco-fig" style="opacity:.5">
-    <svg width="90" height="80" viewBox="0 0 90 80" fill="none">
-      <path d="M45 8 Q50 20 48 32 Q46 44 45 55 Q44 65 42 72" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M45 8 Q40 20 42 32 Q44 44 45 55 Q46 65 48 72" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <ellipse cx="45" cy="12" rx="5" ry="4" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <circle cx="42" cy="10" r=".8" fill="rgba(212,179,102,.4)"/>
-      <circle cx="48" cy="10" r=".8" fill="rgba(212,179,102,.4)"/>
-      <path d="M40 28 Q42 31 44 28 Q46 31 48 28 Q50 31 52 28" stroke="rgba(212,179,102,.2)" stroke-width=".3" fill="none"/>
-      <path d="M42 72 Q38 76 34 78" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <path d="M48 72 Q52 76 56 78" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <circle cx="15" cy="20" r="1" fill="rgba(212,179,102,.15)"/>
-      <circle cx="75" cy="35" r=".8" fill="rgba(212,179,102,.1)"/>
-    </svg>
-  </div>
-
   <div class="sec-title" style="font-size:18px;margin-top:6px">Today's Lesson</div>
   <div id="todayLesson"></div>
 
-  <div class="sec-title" style="font-size:18px;margin-top:20px">Money Mindset: Old vs New</div>
-  <div class="sec-title-sub">what experts in personal finance teach us</div>
-  <div id="mindsetGrid"></div>
+  <div class="sec-title" style="font-size:18px;margin-top:20px">Today's Mindset Shift</div>
+  <div class="sec-title-sub">old belief vs new truth</div>
+  <div id="todayMindset"></div>
 
   <div class="sec-title" style="font-size:18px;margin-top:20px">Mindful Spending</div>
   <div class="glass-card">
@@ -542,39 +420,35 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div id="expList"></div>
   </div>
 
+  <!-- FINANCE TOOL BUTTON -->
+  <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="openFinance()">💰 Open My Finances</button></div>
+
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(5)">Lesson done. Continue.</button></div>
   <footer>Marmaroph</footer>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- STEP 5 — SEED                                      -->
-<!-- ═══════════════════════════════════════════════════ -->
+<!-- STEP 5 — SEED -->
 <section class="screen" id="s-r5">
   <div class="stage-head"><span class="back-link" onclick="goStep(4)">← Sense</span><span class="stage-count">5 / 5</span></div>
   <div class="rule-label"><span class="eyebrow">S5 · SEED</span></div>
   <div class="sec-title">Let Today Count</div>
   <div class="sec-title-sub">mark your practice</div>
-  <p class="body-copy" style="margin-top:10px">One session, fully arrived at, is enough. Mark the day. Your practice grows in the quiet, one day at a time.</p>
+  <p class="body-copy" style="margin-top:10px">One session, fully arrived at, is enough. Mark the day.</p>
   <div style="padding:14px 18px"><button class="btn btn-primary" style="width:100%" id="markBtn" onclick="markDay()">✦ Mark today's practice complete</button></div>
   <p style="font-size:12px;color:var(--gold);text-align:center;display:none" id="markMsg"></p>
-
   <div class="sec-title" style="font-size:18px;margin-top:20px">The Quiet Abundance Dinner</div>
   <div class="glass-card" style="text-align:center">
     <div class="countdown-box"><div class="cd-num" id="cdNum">-</div><div class="cd-unit">DAYS UNTIL THE DINNER</div></div>
-    <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin:12px 0">A small gathering of women who have spent 30 days in conscious relationship with their resources. Not a workshop. A dinner.</p>
+    <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin:12px 0">A small gathering of women who have spent 30 days in conscious relationship with their resources.</p>
     <button class="btn btn-primary" id="rsvpBtn" onclick="doRSVP()">RSVP for the Dinner</button>
   </div>
-
   <div class="sec-title" style="font-size:18px;margin-top:16px">Your ritual month</div>
   <div class="month-cal"><div class="mc-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="mc-body" id="calSeed"></div></div>
-
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="completeRitual()">Complete today's ritual ✦</button></div>
   <footer>Marmaroph</footer>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- DONE                                               -->
-<!-- ═══════════════════════════════════════════════════ -->
+<!-- DONE -->
 <section class="screen" id="s-done">
   <div class="done-hero"><div class="done-star">✦</div><div class="done-title" id="doneTitle">Day 1 is yours</div><div class="done-day" id="doneDay">DAY 1 OF 30</div></div>
   <div class="done-quote" id="doneQuote">"You did not just look at your money. You returned home."</div>
@@ -583,14 +457,60 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 </section>
 
 <!-- ═══════════════════════════════════════════════════ -->
-<!-- TOOL OVERLAY                                       -->
+<!-- FINANCE TOOL — Full celestial overlay               -->
 <!-- ═══════════════════════════════════════════════════ -->
-<div id="toolOverlay" style="position:fixed;inset:0;z-index:50;background:rgba(8,13,36,.98);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.23,1,.32,1)">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:52px 18px 12px">
-    <span style="font-size:13px;font-weight:600;color:#fff" id="toTitle">Tool</span>
-    <button style="width:32px;height:32px;background:rgba(255,255,255,.06);border:1px solid var(--glass-border);border-radius:50%;cursor:pointer;color:rgba(255,255,255,.6);font-size:16px;display:flex;align-items:center;justify-content:center" onclick="closeTool()">✕</button>
+<div id="finOverlay">
+  <canvas id="finStars"></canvas>
+  <div class="fo-scroll">
+    <div class="fo-head"><span>✦ My Finances</span><button class="fo-close" onclick="closeFinance()">✕</button></div>
+
+    <!-- GOAL AT TOP -->
+    <div style="padding:0 18px" id="finGoalTop"></div>
+
+    <!-- GOAL TIMELINE -->
+    <div class="sec-title" style="font-size:18px;margin-top:14px">Your Journey</div>
+    <div class="sec-title-sub">small steps toward big dreams</div>
+    <div class="goal-tl" id="goalTimeline"></div>
+
+    <!-- ACTUAL FINANCIAL SITUATION -->
+    <div class="sec-title" style="font-size:18px;margin-top:20px">Your Financial Snapshot</div>
+    <div class="sec-title-sub">where you stand today</div>
+    <div style="padding:0 18px">
+      <div class="fgrp"><label class="flbl">Monthly Income ($)</label><input class="finp" type="number" id="fInc" placeholder="How much do you earn?"></div>
+      <div class="fgrp"><label class="flbl">Monthly Expenses ($)</label><input class="finp" type="number" id="fExp" placeholder="Rent, food, bills..."></div>
+      <div class="fgrp"><label class="flbl">Total Savings ($)</label><input class="finp" type="number" id="fSav" placeholder="All savings accounts"></div>
+      <div class="fgrp"><label class="flbl">Assets ($)</label><input class="finp" type="number" id="fAst" placeholder="Property, investments..."></div>
+      <button class="btn btn-ghost" style="width:100%" onclick="saveSnapshot()">Save my snapshot</button>
+      <div id="snapViz" style="margin-top:14px"></div>
+    </div>
+
+    <!-- DAILY TRACKER -->
+    <div class="sec-title" style="font-size:18px;margin-top:20px">Daily Tracker</div>
+    <div class="sec-title-sub">log today's money moment</div>
+    <div style="padding:0 18px">
+      <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end;margin-bottom:10px">
+        <input class="finp" type="text" id="dtDesc" placeholder="Coffee, groceries...">
+        <input class="finp" type="number" id="dtAmt" placeholder="$" style="width:70px">
+        <button class="btn btn-ghost" onclick="addDailyTrack()" style="height:42px;padding:0 12px">+</button>
+      </div>
+      <div id="dailyList"></div>
+    </div>
+
+    <!-- LIFE PROFILE + GOAL SETUP -->
+    <div id="goalSetup" style="padding:0 18px;margin-top:20px">
+      <div class="sec-title" style="font-size:18px;margin-top:0">Set Your Main Goal</div>
+      <div class="sec-title-sub">we will break it into smaller steps</div>
+      <div id="goalSetupForm">
+        <div class="fgrp"><label class="flbl">Your main financial goal</label><input class="finp" type="text" id="gName" placeholder="e.g. Peace Fund, Buy a home, Retire early..."></div>
+        <div class="fgrp"><label class="flbl">Target amount ($)</label><input class="finp" type="number" id="gTarget" placeholder="How much do you need?"></div>
+        <div class="fgrp"><label class="flbl">Are you single or with a partner?</label><select class="finp" id="gpRel"><option value="">Select...</option><option value="single">Single</option><option value="partner">With a partner</option></select></div>
+        <div class="fgrp"><label class="flbl">Do you have children?</label><select class="finp" id="gpKids"><option value="">Select...</option><option value="no">No</option><option value="yes">Yes</option><option value="planning">Planning for children</option></select></div>
+        <button class="btn btn-primary" style="width:100%" onclick="createGoalPlan()">Create my plan ✦</button>
+      </div>
+    </div>
+
+    <footer>Marmaroph Home &amp; Living</footer>
   </div>
-  <div style="flex:1;overflow-y:auto;padding:16px 18px 80px" id="toolPane"></div>
 </div>
 
 <script>
@@ -609,11 +529,10 @@ var S={
   bowl:JSON.parse(ls('qa_bowl')||'[]'),
   income:+ls('qa_inc')||0,
   assets:+ls('qa_ast')||0,
-  pfGoal:+ls('qa_pfg')||0,
-  pfCur:+ls('qa_pfc')||0,
-  pfDone:ls('qa_pfd')==='1',
+  mainGoal:JSON.parse(ls('qa_mg')||'null'),
+  milestones:JSON.parse(ls('qa_mst')||'[]'),
   profile:JSON.parse(ls('qa_prof')||'null'),
-  goals:JSON.parse(ls('qa_gls')||'[]')
+  dailyTrack:JSON.parse(ls('qa_dt')||'[]')
 };
 if(!S.days.length)S.days=new Array(30).fill(false);
 function sv(){
@@ -621,24 +540,25 @@ function sv(){
   ss('qa_me',S.mE);ss('qa_ms',S.mS);ss('qa_ex',JSON.stringify(S.exp));
   ss('qa_rv',S.rsvp?'1':'0');ss('qa_rd1',JSON.stringify(S.rd1));
   ss('qa_bowl',JSON.stringify(S.bowl));ss('qa_inc',S.income);
-  ss('qa_ast',S.assets);ss('qa_pfg',S.pfGoal);ss('qa_pfc',S.pfCur);
-  ss('qa_pfd',S.pfDone?'1':'0');ss('qa_prof',JSON.stringify(S.profile));
-  ss('qa_gls',JSON.stringify(S.goals));
+  ss('qa_ast',S.assets);ss('qa_mg',JSON.stringify(S.mainGoal));
+  ss('qa_mst',JSON.stringify(S.milestones));
+  ss('qa_prof',JSON.stringify(S.profile));
+  ss('qa_dt',JSON.stringify(S.dailyTrack));
 }
 
 /* ── Navigation ── */
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});var el=document.getElementById(id);if(el){el.classList.add('active');el.scrollTop=0}}
 function goHome(){show('s-home');renderHome();drawSunCal();buildCal('calHome')}
-function goStep(n){show('s-r'+n);if(n===4){renderLesson();renderMindsetGrid()}if(n===5){buildCal('calSeed');startTimer()}}
+function goStep(n){show('s-r'+n);if(n===4){renderLesson();renderTodayMindset()}if(n===5){buildCal('calSeed');startTimer()}}
 function completeRitual(){var dn=daysDone();showDone('Day '+dn+' is yours.','You did not just look at your money. You returned home.')}
 function showDone(t,q){var dn=daysDone();document.getElementById('doneTitle').textContent=t;document.getElementById('doneDay').textContent='DAY '+dn+' OF 30';document.getElementById('doneQuote').textContent='"'+q+'"';show('s-done')}
 
-/* ── Quiz ── */
+/* ── Quiz (welcome screen only) ── */
 var qA=[];
 var pD={
-  A:{n:'Debt Freedom',m:'You are not behind. You are starting. Those are different things. This debt does not define your worth or your future. It defines only where you begin.',d:'Your 30 days focus on mapping your debt, choosing your strategy, and building momentum one payment at a time.'},
-  B:{n:'Foundation Builder',m:'Money has never been your enemy. It has been a language you were never taught. Today you begin to learn it. Calmly, at your own pace, from your own home.',d:'Your 30 days focus on building your Peace Fund. From your first month saved to a full 3 to 6 month foundation.'},
-  C:{n:'Wealth in Motion',m:'Every woman who built wealth started with one decision to pay attention. You have built the foundation. Now you grow. Intentionally, informed, and on your own terms.',d:'Your 30 days unlock investing education progressively. Save first, then grow.'}
+  A:{n:'Debt Freedom',m:'You are not behind. You are starting. Those are different things. This debt does not define your worth or your future.',d:'Your 30 days focus on mapping your debt, choosing your strategy, and building momentum one payment at a time.'},
+  B:{n:'Foundation Builder',m:'Money has never been your enemy. It has been a language you were never taught. Today you begin to learn it.',d:'Your 30 days focus on building your Peace Fund. From your first month saved to a full 3 to 6 month foundation.'},
+  C:{n:'Wealth in Motion',m:'Every woman who built wealth started with one decision to pay attention. You have built the foundation. Now you grow.',d:'Your 30 days unlock investing education progressively. Save first, then grow.'}
 };
 function qa(q,v,el){
   qA[q]=v;
@@ -658,7 +578,6 @@ function showQuizResult(){
   document.getElementById('qr-n').textContent=d.n;
   document.getElementById('qr-m').textContent=d.m;
   document.getElementById('qr-d').textContent=d.d;
-  // Show analyzer section
   document.getElementById('analyzerSection').style.display='block';
   document.querySelector('.screen.active').scrollTo({top:document.getElementById('analyzerSection').offsetTop-50,behavior:'smooth'});
 }
@@ -673,15 +592,15 @@ function dSel(el,q,v){
     var score=diagA[0]+diagA[1]+diagA[2];var pct=Math.round(score/6*100);
     document.getElementById('drScore').textContent=pct+'%';
     var body='';
-    if(pct<34)body='Your relationship with your financial space needs attention. This ritual will help you build a calm, intentional place for your money practice. Start small. Even one cleared corner changes everything.';
-    else if(pct<67)body='You have some good foundations. This ritual will help you move from functional to intentional. Creating a space that invites you back instead of one you avoid.';
-    else body='Your abundance corner is already strong. This ritual will deepen your practice and add the tools, lessons, and community that turn a good space into a transformative one.';
+    if(pct<34)body='Your relationship with your financial space needs attention. This ritual will help you build a calm, intentional place for your money practice.';
+    else if(pct<67)body='You have some good foundations. This ritual will help you move from functional to intentional.';
+    else body='Your abundance corner is already strong. This ritual will deepen your practice.';
     document.getElementById('drBody').textContent=body;
     document.getElementById('diagResult').classList.add('show');
   }
 }
 
-/* ── Home rendering ── */
+/* ── Home ── */
 function daysDone(){return S.days.filter(Boolean).length}
 function renderHome(){
   var dn=daysDone();
@@ -698,7 +617,7 @@ function renderHome(){
 function saveRD1(){var a=document.getElementById('rq1').value.trim(),b=document.getElementById('rq2').value.trim(),c=document.getElementById('rq3').value.trim();if(!a&&!b&&!c)return;S.rd1=[a,b,c];sv();renderHome()}
 
 /* ═══════════════════════════════════════════════════ */
-/* SUN CALENDAR — bigger, normal numbers              */
+/* SUN CALENDAR — brighter rays                       */
 /* ═══════════════════════════════════════════════════ */
 var sunAnimId=null;
 function drawSunCal(){
@@ -714,15 +633,11 @@ function drawSunCal(){
 
   function frame(t){
     ctx.clearRect(0,0,size,size);var ts=t*.001;
-    // outer glow
     var grd=ctx.createRadialGradient(cx,cy,35,cx,cy,180);
     grd.addColorStop(0,'rgba(212,179,102,.07)');grd.addColorStop(.5,'rgba(212,179,102,.02)');grd.addColorStop(1,'rgba(212,179,102,0)');
     ctx.fillStyle=grd;ctx.fillRect(0,0,size,size);
-    // orbit rings
-    ctx.beginPath();ctx.arc(cx,cy,155,0,Math.PI*2);ctx.strokeStyle='rgba(212,179,102,.06)';ctx.lineWidth=.5;ctx.stroke();
-    ctx.beginPath();ctx.arc(cx,cy,135,0,Math.PI*2);ctx.strokeStyle='rgba(212,179,102,.04)';ctx.lineWidth=.3;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,155,0,Math.PI*2);ctx.strokeStyle='rgba(212,179,102,.08)';ctx.lineWidth=.5;ctx.stroke();
 
-    // 30 rays
     for(var i=0;i<30;i++){
       var angle=(i/30)*Math.PI*2-Math.PI/2;
       var done=S.days[i],isCurrent=i===dn;
@@ -732,48 +647,44 @@ function drawSunCal(){
       var x2=cx+Math.cos(angle)*outerR,y2=cy+Math.sin(angle)*outerR;
       ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
       if(done){
-        ctx.strokeStyle='rgba(212,179,102,'+(0.6+Math.sin(ts*1.5+i*.3)*.15)+')';ctx.lineWidth=2.8;
-        ctx.shadowColor='rgba(212,179,102,.4)';ctx.shadowBlur=10;
-      }else if(isCurrent){
-        var shimA=Math.sin(ts*3)*.3+.5;
-        ctx.strokeStyle='rgba(212,179,102,'+shimA+')';ctx.lineWidth=2.2;
+        ctx.strokeStyle='rgba(212,179,102,'+(0.75+Math.sin(ts*1.5+i*.3)*.2)+')';ctx.lineWidth=3.5;
         ctx.shadowColor='rgba(212,179,102,.5)';ctx.shadowBlur=14;
+      }else if(isCurrent){
+        var shimA=Math.sin(ts*3)*.35+.6;
+        ctx.strokeStyle='rgba(212,179,102,'+shimA+')';ctx.lineWidth=2.8;
+        ctx.shadowColor='rgba(212,179,102,.6)';ctx.shadowBlur=16;
       }else{
-        ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;ctx.shadowBlur=0;
+        ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1.5;ctx.shadowBlur=0;
       }
       ctx.stroke();ctx.shadowBlur=0;
 
-      // day number at tip
       if(done||isCurrent||i<dn+4){
         var labelR=outerR+(done?12:10);
         var lx=cx+Math.cos(angle)*labelR,ly=cy+Math.sin(angle)*labelR;
         ctx.save();
         ctx.font="500 10px 'Montserrat',sans-serif";
         ctx.textAlign='center';ctx.textBaseline='middle';
-        ctx.fillStyle=done?'rgba(212,179,102,.7)':isCurrent?'rgba(212,179,102,.6)':'rgba(255,255,255,.18)';
+        ctx.fillStyle=done?'rgba(212,179,102,.8)':isCurrent?'rgba(212,179,102,.7)':'rgba(255,255,255,.25)';
         ctx.fillText(i+1,lx,ly);
         ctx.restore();
       }
     }
-    // center sun disc
     var sunGrd=ctx.createRadialGradient(cx,cy,0,cx,cy,44);
-    sunGrd.addColorStop(0,'rgba(212,179,102,.2)');sunGrd.addColorStop(.6,'rgba(212,179,102,.08)');sunGrd.addColorStop(1,'rgba(212,179,102,.02)');
+    sunGrd.addColorStop(0,'rgba(212,179,102,.25)');sunGrd.addColorStop(.6,'rgba(212,179,102,.1)');sunGrd.addColorStop(1,'rgba(212,179,102,.03)');
     ctx.beginPath();ctx.arc(cx,cy,44,0,Math.PI*2);ctx.fillStyle=sunGrd;ctx.fill();
-    ctx.beginPath();ctx.arc(cx,cy,42,0,Math.PI*2);ctx.strokeStyle='rgba(212,179,102,.3)';ctx.lineWidth=1;ctx.stroke();
-    // center number (Montserrat, not serif)
+    ctx.beginPath();ctx.arc(cx,cy,42,0,Math.PI*2);ctx.strokeStyle='rgba(212,179,102,.4)';ctx.lineWidth=1.2;ctx.stroke();
     ctx.font="600 32px 'Montserrat',sans-serif";
     ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle='rgba(212,179,102,.9)';
+    ctx.fillStyle='rgba(212,179,102,.95)';
     ctx.fillText(dn+1,cx,cy-4);
     ctx.font="600 8px 'Montserrat',sans-serif";
-    ctx.fillStyle='rgba(255,255,255,.3)';
+    ctx.fillStyle='rgba(255,255,255,.35)';
     ctx.fillText('OF 30',cx,cy+16);
-    // shimmer particles
     for(var p=0;p<10;p++){
       var pa=ts*.4+p*.628,pr=50+Math.sin(ts*1.8+p)*8;
       var px=cx+Math.cos(pa)*pr,py=cy+Math.sin(pa)*pr;
-      var pA=Math.sin(ts*2.5+p*1.1)*.3+.25;
-      ctx.beginPath();ctx.arc(px,py,1,0,Math.PI*2);
+      var pA=Math.sin(ts*2.5+p*1.1)*.35+.3;
+      ctx.beginPath();ctx.arc(px,py,1.2,0,Math.PI*2);
       ctx.fillStyle='rgba(212,179,102,'+pA+')';ctx.fill();
     }
     sunAnimId=requestAnimationFrame(frame);
@@ -797,10 +708,7 @@ function buildCal(id){
   }
 }
 
-/* ── Checklist ── */
 function toggleCk(el){el.classList.toggle('checked');var dot=el.querySelector('.ck-dot');if(dot)dot.style.color=el.classList.contains('checked')?'#0a0e27':'transparent'}
-
-/* ── Bowl ── */
 function saveBowl(){var t=document.getElementById('bowlOffering').value.trim();if(!t)return;S.bowl.push({t:t,dt:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});sv();document.getElementById('bowlOffering').value='';document.getElementById('bowlMsg').style.display='block'}
 
 /* ── Breathing ── */
@@ -822,84 +730,77 @@ function runCycle(r){
   },4000);
 }
 
-/* ── Affirmations + Mindsets ── */
-var AFFS={A:'You are not behind. You are starting. Those are different things.',B:'Money has never been your enemy. It has been a language you were never taught.',C:'Every woman who built wealth started with one decision to pay attention.'};
+/* ── Lessons (dynamic, changes daily based on quiz) ── */
+var AFFS={A:'You are not behind. You are starting.',B:'Money has never been your enemy. It has been a language you were never taught.',C:'Every woman who built wealth started with one decision to pay attention.'};
 
-var MINDSETS=[
-  {cat:'Spending',old:'I deserve to treat myself.',nw:'I deserve financial peace. Sometimes that means choosing my future self over this moment.',expert:'Ramit Sethi teaches: spend extravagantly on what you love, cut mercilessly on what you don\'t.'},
-  {cat:'Saving',old:'Saving is punishment for spending too much.',nw:'Saving is a gift I give my future self every single day.',expert:'The 50/30/20 rule (Elizabeth Warren): 50% needs, 30% wants, 20% savings. Automate the 20% first.'},
-  {cat:'Debt',old:'I will always have debt. Everyone does.',nw:'Debt is a chapter, not my identity. I can write the next one differently.',expert:'Dave Ramsey\'s debt snowball: pay the smallest balance first. The psychological win matters more than the math.'},
-  {cat:'Earning',old:'I am not good with money.',nw:'I am learning to be good with money. That is different from being bad at it.',expert:'Suze Orman says: people first, then money, then things. Your value is not your salary.'},
-  {cat:'Investing',old:'Investing is for rich people.',nw:'Investing is how ordinary people become financially free. I can start with any amount.',expert:'JL Collins (The Simple Path to Wealth): a single low-cost index fund beats most professional managers over 20 years.'},
-  {cat:'Emergency',old:'If something bad happens, I will figure it out.',nw:'I plan for emergencies before they arrive. That is what the Peace Fund is for.',expert:'Financial planners agree: 3 to 6 months of expenses in an accessible account is the foundation everything else is built on.'},
-  {cat:'Retirement',old:'Retirement is too far away to worry about now.',nw:'Time is my greatest asset. Every year I wait costs me more than I realize.',expert:'A contribution at 25 is worth roughly 4x the same contribution at 45 because of compound interest.'},
-  {cat:'Income',old:'I just need to earn more and my problems will be solved.',nw:'More income without a plan just means more spending. The plan comes first.',expert:'The Richest Man in Babylon: a part of all you earn is yours to keep. Always pay yourself first.'},
-  {cat:'Self-Worth',old:'Money is not spiritual. Wanting more is greedy.',nw:'Financial stability is self-care. Having enough to be generous is deeply spiritual.',expert:'Jen Sincero: money is only as valuable as the energy you give it. Guilt around money keeps it away.'},
-  {cat:'Generational',old:'My family was never good with money. Neither am I.',nw:'I am the generation that learns. My children will inherit knowledge, not patterns.',expert:'Rachel Cruze: breaking generational money patterns starts with naming them out loud. What was never discussed can now be practiced.'},
-  {cat:'Credit',old:'Credit is free money.',nw:'Credit is future money I have not earned yet. I use it only when I can pay it back immediately.',expert:'Average credit card interest is 20%+. Carrying a balance costs more than most investments earn.'},
-  {cat:'Comparison',old:'Everyone else seems to have their finances figured out.',nw:'Most people are performing stability they do not feel. I choose honest progress over the illusion.',expert:'Studies show 78% of workers live paycheck to paycheck. You are not behind. You are in the majority, choosing differently.'}
-];
-
-function renderMindsetGrid(){
-  var c=document.getElementById('mindsetGrid');if(!c)return;
-  var dn=daysDone();
-  // Show 3 mindset pairs based on current day
-  var pairs=[];
-  for(var i=0;i<3;i++){pairs.push(MINDSETS[(dn*3+i)%MINDSETS.length])}
-  c.innerHTML=pairs.map(function(m){
-    return '<div style="margin:10px 18px"><div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);margin-bottom:6px">'+m.cat+'</div>'+
-    '<div class="mindset-pair" style="margin:0"><div class="mp-side mp-old"><div class="mp-label">Old belief</div>'+m.old+'</div><div class="mp-side mp-new"><div class="mp-label">New truth</div>'+m.nw+'</div></div>'+
-    '<div style="background:rgba(107,159,212,.05);border-radius:8px;padding:8px 12px;margin-top:6px"><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:3px">What experts say</div><p style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;font-style:italic">'+m.expert+'</p></div></div>';
-  }).join('');
-}
-
-/* ── Lessons ── */
 var LS={
   A:[
     {t:'Mapping Your Debt',b:'Before you can clear it, you need to see it clearly. List every debt: the name, the balance, the interest rate. Every debt you name loses some of its power over you.',i:'Clarity is not defeat. Seeing what is there is the first act of freedom.',u:0},
-    {t:'Understanding Interest Rates',b:'A 22% credit card rate means you pay $22 for every $100 you owe per year. High-interest debt grows fast when unpaid. This is not a moral failing. It is mathematics. And mathematics can be your friend once you see it.',i:'High-interest debt is the most urgent because mathematics is ruthless.',u:3},
-    {t:'The Snowball Method',b:'Pay the smallest debt first. Once cleared, roll that payment into the next. Psychological wins build momentum. Research shows people who use this method stick with debt repayment 15% longer.',i:'The best debt strategy is the one you will actually do.',u:6},
-    {t:'The Avalanche Method',b:'Pay the highest interest rate debt first. Mathematically optimal. You pay less total interest over time. Choose snowball if you need motivation. Choose avalanche if you are driven by numbers.',i:'If you are driven by numbers over feelings, the Avalanche saves more money.',u:9},
-    {t:'Negotiating Your Rates',b:'Call your credit card company and ask for a lower rate. 70% of people who ask get a reduction. One phone call can save hundreds in interest. Practice the script: "I have been a customer for X years and I would like a rate reduction."',i:'The money you do not pay in interest is money you keep.',u:14},
-    {t:'Your Payoff Timeline',b:'Once you know your total debt and monthly payment capacity, you can calculate your freedom date. A date changes everything. Debt with an end date feels like a project, not a life sentence.',i:'Debt with a date feels like a project, not a life sentence.',u:21}
+    {t:'Understanding Interest Rates',b:'A 22% credit card rate means you pay $22 for every $100 you owe per year. High-interest debt grows fast when unpaid. This is mathematics. And mathematics can be your friend.',i:'High-interest debt is the most urgent because mathematics is ruthless.',u:3},
+    {t:'The Snowball Method',b:'Pay the smallest debt first. Once cleared, roll that payment into the next. Psychological wins build momentum.',i:'The best debt strategy is the one you will actually do.',u:6},
+    {t:'The Avalanche Method',b:'Pay the highest interest rate debt first. Mathematically optimal. You pay less total interest over time.',i:'If numbers motivate you more than feelings, the Avalanche saves more money.',u:9},
+    {t:'Negotiating Your Rates',b:'Call your credit card company and ask for a lower rate. 70% of people who ask get a reduction. One phone call can save hundreds.',i:'The money you do not pay in interest is money you keep.',u:14},
+    {t:'Your Payoff Timeline',b:'Once you know your total debt and monthly payment capacity, you can calculate your freedom date. A date changes everything.',i:'Debt with a date feels like a project, not a life sentence.',u:21}
   ],
   B:[
-    {t:'The Peace Fund',b:'Three to six months of living expenses held in a separate, accessible account. Not invested, not spent. It exists to fund a crisis without borrowing. We call it the Peace Fund because that is what it gives you: peace.',i:'A Peace Fund does not prevent emergencies. It prevents them from becoming debt.',u:0},
-    {t:'Why 3 to 6 Months?',b:'Three months covers most job losses. Six months covers career transitions and health events. Higher instability means aim for 6. Start with one month. Then three. Then six. Each milestone changes how you sleep.',i:'Start with one month. Then three. Then six. Each milestone changes how you sleep at night.',u:3},
-    {t:'Where to Keep It',b:'A high-yield savings account. Not your checking account, not invested. Accessible within 1 to 2 business days. The separation is the point. Keeping it separate from daily spending creates a psychological barrier that protects you.',i:'Keeping it separate creates a psychological barrier. That barrier protects you.',u:6},
-    {t:'Automating Your Savings',b:'Set up an automatic transfer the day after income arrives. You do not save what is left. You spend what remains after saving. Automation removes the decision. Removed decisions cannot be skipped.',i:'Automation removes the decision. Removed decisions cannot be skipped.',u:9},
-    {t:'The 50/30/20 Rule',b:'50% of your income goes to needs (rent, groceries, insurance). 30% goes to wants (dining, hobbies, subscriptions). 20% goes to savings and debt repayment. This is not rigid. It is a compass.',i:'The 50/30/20 rule is a compass, not a cage. Adjust it to your life.',u:14},
-    {t:'When Your Foundation Is Complete',b:'Six months saved does not mean you stop. It means new savings flow toward a named goal: a home, a business, studies, freedom. A complete foundation is not the end. It is the moment it becomes interesting.',i:'A complete foundation is not the end of the practice. It is the moment it becomes interesting.',u:21}
+    {t:'The Peace Fund',b:'Three to six months of living expenses in a separate, accessible account. Not invested, not spent. It exists to fund a crisis without borrowing. We call it the Peace Fund because that is what it gives you: peace.',i:'A Peace Fund does not prevent emergencies. It prevents them from becoming debt.',u:0},
+    {t:'Why 3 to 6 Months?',b:'Three months covers most job losses. Six months covers career transitions and health events. Start with one month. Then three. Then six.',i:'Each milestone changes how you sleep at night.',u:3},
+    {t:'Where to Keep It',b:'A high-yield savings account. Not your checking account, not invested. Accessible within 1 to 2 business days. The separation is the point.',i:'Keeping it separate creates a psychological barrier. That barrier protects you.',u:6},
+    {t:'Automating Your Savings',b:'Set up an automatic transfer the day after income arrives. You do not save what is left. You spend what remains after saving.',i:'Automation removes the decision. Removed decisions cannot be skipped.',u:9},
+    {t:'The 50/30/20 Rule',b:'50% needs, 30% wants, 20% savings and debt repayment. This is not rigid. It is a compass.',i:'The 50/30/20 rule is a compass, not a cage.',u:14},
+    {t:'When Your Foundation Is Complete',b:'Six months saved does not mean you stop. It means new savings flow toward a named goal: a home, a business, studies, freedom.',i:'A complete foundation is not the end. It is the moment it becomes interesting.',u:21}
   ],
   C:[
-    {t:'Why Saving Alone Is Not Enough',b:'If inflation averages 3% and savings earns 0.5%, you lose purchasing power every year money sits still. Saving preserves money. Investing grows it. Both are necessary, in that order.',i:'Saving preserves money. Investing grows it. Both are necessary, in that order.',u:0},
-    {t:'What Is Investing?',b:'Putting money into assets that grow in value over time. The investor accepts some risk in exchange for growth beyond inflation. Investing is not gambling. Gambling is random. Investing is patience paid.',i:'Investing is not gambling. It is patience, paid.',u:3},
-    {t:'Compound Interest: The 8th Wonder',b:'$200 per month at 7% average return starting at 25 becomes roughly $524,000 by 65. Starting at 35: roughly $243,000. The difference is not the money. It is the time. Time is the real asset.',i:'Compound interest rewards starting, not perfection.',u:6},
-    {t:'Index Funds Explained Simply',b:'An index fund holds hundreds of stocks at once. Low fees, automatic diversification. Most professional fund managers do not beat a basic index fund over 20 years. Simplicity wins. Complexity is the finance industry selling you something.',i:'Simplicity wins. Complexity is the finance industry selling you something.',u:9},
-    {t:'Retirement Accounts',b:'A Roth IRA or 401(k) allows investments to grow with tax advantages. Contributing early, even small amounts, multiplies with time. Your employer 401(k) match is free money. Take all of it.',i:'A contribution at 25 is worth roughly 4x the same contribution at 45.',u:14},
-    {t:'How to Start Investing Today',b:'Begin with your employer 401(k) or open a brokerage account. Choose a low-cost index fund. Set up automatic contributions. The right time to start was ten years ago. The second right time is today.',i:'Do not wait until you understand everything. Start, then learn as you go.',u:21}
+    {t:'Why Saving Alone Is Not Enough',b:'If inflation averages 3% and savings earns 0.5%, you lose purchasing power every year money sits still.',i:'Saving preserves money. Investing grows it. Both are necessary, in that order.',u:0},
+    {t:'What Is Investing?',b:'Putting money into assets that grow in value over time. The investor accepts some risk in exchange for growth beyond inflation.',i:'Investing is not gambling. It is patience, paid.',u:3},
+    {t:'Compound Interest: The 8th Wonder',b:'$200/month at 7% average return starting at 25 becomes roughly $524,000 by 65. Starting at 35: roughly $243,000. The difference is time.',i:'Compound interest rewards starting, not perfection.',u:6},
+    {t:'Index Funds Explained Simply',b:'An index fund holds hundreds of stocks at once. Low fees, automatic diversification. Simplicity wins.',i:'Simplicity wins. Complexity is the finance industry selling you something.',u:9},
+    {t:'Retirement Accounts',b:'A Roth IRA or 401(k) allows investments to grow with tax advantages. Your employer 401(k) match is free money. Take all of it.',i:'A contribution at 25 is worth roughly 4x the same contribution at 45.',u:14},
+    {t:'How to Start Investing Today',b:'Begin with your employer 401(k) or open a brokerage account. Choose a low-cost index fund. Set up automatic contributions.',i:'Do not wait until you understand everything. Start, then learn as you go.',u:21}
   ]
 };
 
+var MINDSETS=[
+  {cat:'Spending',old:'I deserve to treat myself.',nw:'I deserve financial peace. Sometimes that means choosing my future self over this moment.',expert:'Ramit Sethi: spend extravagantly on what you love, cut mercilessly on what you don\'t.'},
+  {cat:'Saving',old:'Saving is punishment for spending too much.',nw:'Saving is a gift I give my future self every single day.',expert:'Elizabeth Warren\'s 50/30/20 rule: automate the 20% first.'},
+  {cat:'Debt',old:'I will always have debt. Everyone does.',nw:'Debt is a chapter, not my identity. I can write the next one differently.',expert:'Dave Ramsey: pay the smallest balance first. The psychological win matters more than the math.'},
+  {cat:'Earning',old:'I am not good with money.',nw:'I am learning to be good with money. That is different from being bad at it.',expert:'Suze Orman: people first, then money, then things.'},
+  {cat:'Investing',old:'Investing is for rich people.',nw:'Investing is how ordinary people become financially free.',expert:'JL Collins: a single low-cost index fund beats most professional managers over 20 years.'},
+  {cat:'Emergency',old:'If something bad happens, I will figure it out.',nw:'I plan for emergencies before they arrive. That is what the Peace Fund is for.',expert:'3 to 6 months of expenses in an accessible account is the foundation everything else is built on.'},
+  {cat:'Retirement',old:'Retirement is too far away to worry about now.',nw:'Time is my greatest asset. Every year I wait costs me more than I realize.',expert:'A contribution at 25 is worth roughly 4x the same contribution at 45.'},
+  {cat:'Income',old:'I just need to earn more and problems will be solved.',nw:'More income without a plan just means more spending. The plan comes first.',expert:'The Richest Man in Babylon: a part of all you earn is yours to keep.'},
+  {cat:'Self-Worth',old:'Money is not spiritual. Wanting more is greedy.',nw:'Financial stability is self-care. Having enough to be generous is deeply spiritual.',expert:'Jen Sincero: guilt around money keeps it away.'},
+  {cat:'Generational',old:'My family was never good with money. Neither am I.',nw:'I am the generation that learns. My children will inherit knowledge, not patterns.',expert:'Rachel Cruze: breaking generational money patterns starts with naming them out loud.'},
+  {cat:'Credit',old:'Credit is free money.',nw:'Credit is future money I have not earned yet. I use it only when I can pay it back immediately.',expert:'Average credit card interest is 20%+. Carrying a balance costs more than most investments earn.'},
+  {cat:'Comparison',old:'Everyone else seems to have their finances figured out.',nw:'Most people are performing stability they do not feel. I choose honest progress.',expert:'78% of workers live paycheck to paycheck. You are not behind. You are in the majority, choosing differently.'}
+];
+
 function renderLesson(){
   var c=document.getElementById('todayLesson');if(!c)return;
-  var p=S.path||'B',ls=LS[p]||LS.B,dn=daysDone();
+  var p=S.path||'B',lsList=LS[p]||LS.B,dn=daysDone();
   var l=null,idx=0;
-  for(var i=ls.length-1;i>=0;i--){if(dn>=ls[i].u){l=ls[i];idx=i;break}}
+  for(var i=lsList.length-1;i>=0;i--){if(dn>=lsList[i].u){l=lsList[i];idx=i;break}}
   if(!l){c.innerHTML='<div class="glass-card"><p style="font-size:12px;color:rgba(255,255,255,.5)">Complete the quiz to unlock your first lesson.</p></div>';return}
-  c.innerHTML='<div class="lesson-card"><div class="lc-cat">LESSON '+(idx+1)+' OF '+ls.length+'</div><div class="lc-title">'+l.t+'</div><div class="lc-body">'+l.b+'</div><div class="lc-quote">"'+l.i+'"</div></div>';
+  c.innerHTML='<div class="lesson-card"><div class="lc-cat">LESSON '+(idx+1)+' OF '+lsList.length+'</div><div class="lc-title">'+l.t+'</div><div class="lc-body">'+l.b+'</div><div class="lc-quote">"'+l.i+'"</div></div>';
   document.getElementById('todayAff').textContent='"'+(AFFS[p]||AFFS.B)+'"';
-  var mp=MINDSETS[dn%MINDSETS.length];
-  document.getElementById('mpOld').textContent=mp.old;
-  document.getElementById('mpNew').textContent=mp.nw;
 }
 
-/* ── Expense tracker ── */
-var REFL_QS=['What was this purchase doing for you: comfort, status, or something you genuinely needed?','If this disappeared from your life tomorrow, would you miss the object, or the feeling you bought it for?','Is this something you bought for yourself, or for others to see?','Could your life hold the same quality without it?','What would you rather have: this purchase, or the equivalent saved toward your goal?'];
+/* ONE mindset pair per day (rotating) */
+function renderTodayMindset(){
+  var c=document.getElementById('todayMindset');if(!c)return;
+  var dn=daysDone();
+  var m=MINDSETS[dn%MINDSETS.length];
+  c.innerHTML='<div style="margin:10px 18px"><div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);margin-bottom:6px">'+m.cat+'</div>'+
+    '<div class="mindset-pair" style="margin:0"><div class="mp-side mp-old"><div class="mp-label">Old belief</div>'+m.old+'</div><div class="mp-side mp-new"><div class="mp-label">New truth</div>'+m.nw+'</div></div>'+
+    '<div style="background:rgba(107,159,212,.05);border-radius:8px;padding:8px 12px;margin-top:6px"><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:3px">What experts say</div><p style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;font-style:italic">'+m.expert+'</p></div></div>';
+}
+
+/* ── Expense tracker (Sense page) ── */
+var REFL_QS=['What was this purchase doing for you: comfort, status, or something you genuinely needed?','If this disappeared from your life tomorrow, would you miss it?','Is this something you bought for yourself, or for others to see?','Could your life hold the same quality without it?','What would you rather have: this purchase, or the equivalent saved toward your goal?'];
 var pendExp={d:'',a:0};
 function addExp(){var d=document.getElementById('expDesc'),a=document.getElementById('expAmt');if(!d||!d.value.trim())return;pendExp.d=d.value.trim();pendExp.a=parseFloat(a?a.value:0)||0;document.getElementById('expQ').textContent=REFL_QS[S.exp.length%REFL_QS.length];document.getElementById('expReflect').style.display='block';document.getElementById('expAns').value='';document.getElementById('expAns').focus()}
 function saveExpRefl(){var ans=document.getElementById('expAns').value.trim();if(!ans)return;S.exp.push({d:pendExp.d,a:pendExp.a,ans:ans,dt:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});sv();document.getElementById('expDesc').value='';document.getElementById('expAmt').value='';document.getElementById('expReflect').style.display='none';renderExpList()}
-function renderExpList(){var c=document.getElementById('expList');if(!c)return;c.innerHTML=S.exp.slice().reverse().slice(0,10).map(function(e){return '<div class="expense-row"><div><div class="expense-name">'+e.d+'</div>'+(e.ans?'<div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px;font-style:italic">'+e.ans.substring(0,50)+(e.ans.length>50?'...':'')+'</div>':'')+'</div><div style="text-align:right"><div class="expense-amt">$'+e.a.toLocaleString()+'</div><div class="expense-date">'+e.dt+'</div></div></div>'}).join('')||'<p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:8px">No expenses logged yet.</p>'}
+function renderExpList(){var c=document.getElementById('expList');if(!c)return;c.innerHTML=S.exp.slice().reverse().slice(0,5).map(function(e){return '<div class="expense-row"><div><div class="expense-name">'+e.d+'</div></div><div style="text-align:right"><div class="expense-amt">$'+e.a.toLocaleString()+'</div><div class="expense-date">'+e.dt+'</div></div></div>'}).join('')}
 
 /* ── Mark day ── */
 function markDay(){var dn=daysDone(),ix=Math.min(dn,29);if(S.days[ix])return;S.days[ix]=true;sv();buildCal('calSeed');var btn=document.getElementById('markBtn');btn.textContent='✓ Day '+(ix+1)+' is yours';btn.style.opacity='.65';document.getElementById('markMsg').style.display='block';document.getElementById('markMsg').textContent='✦ Day '+(ix+1)+' marked.'}
@@ -908,186 +809,203 @@ var timerInt=null;
 function startTimer(){var t=document.getElementById('cdNum');if(!t)return;if(timerInt)clearInterval(timerInt);function tick(){var now=new Date(),end=new Date(now.getFullYear(),now.getMonth()+1,0,20,0,0),diff=Math.max(0,end-now),d=Math.floor(diff/86400000);t.textContent=d}tick();timerInt=setInterval(tick,60000)}
 
 /* ═══════════════════════════════════════════════════ */
-/* UNIFIED FINANCE TOOL                                */
+/* FINANCE TOOL with celestial canvas                  */
 /* ═══════════════════════════════════════════════════ */
-function openTool(name){
-  var p=document.getElementById('toolPane'),t=document.getElementById('toTitle');
+var finAnimId=null;
+function openFinance(){
+  document.getElementById('finOverlay').style.transform='translateY(0)';
+  renderFinance();
+  drawFinStars();
+}
+function closeFinance(){
+  document.getElementById('finOverlay').style.transform='translateY(100%)';
+  if(finAnimId){cancelAnimationFrame(finAnimId);finAnimId=null}
+}
 
-  if(name==='finance'){
-    t.textContent='My Finances';
-    var pfPct=S.pfGoal>0?Math.min(S.pfCur/S.pfGoal*100,100).toFixed(1):'0';
-    var mo=S.mE>0?(S.mS/S.mE):0;
-    var html='';
-
-    // Tabs
-    html+='<div class="ft-tabs"><div class="ft-tab on" onclick="ftTab(this,\'peace\')">Peace Fund</div><div class="ft-tab" onclick="ftTab(this,\'track\')">Track</div><div class="ft-tab" onclick="ftTab(this,\'goals\')">Goals</div><div class="ft-tab" onclick="ftTab(this,\'plan\')">My Plan</div></div>';
-
-    // PEACE FUND section
-    html+='<div id="ftPeace">';
-    html+='<div style="text-align:center;margin-bottom:14px"><div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--sky);margin-bottom:6px">YOUR PEACE FUND</div>';
-    html+='<div style="font-family:\'Cormorant Garamond\',serif;font-size:38px;color:var(--gold)">$'+(S.pfCur||0).toLocaleString()+'</div>';
-    if(S.pfGoal>0)html+='<div style="font-size:11px;color:rgba(255,255,255,.35)">of $'+S.pfGoal.toLocaleString()+' goal ('+pfPct+'%)</div>';
-    html+='</div>';
-    html+='<div class="glass-card" style="margin:0;margin-bottom:14px"><div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Why a Peace Fund?</div><p style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.7">Your Peace Fund is 3 to 6 months of living expenses in a separate, accessible account. It is not for investing. It is not for spending. It exists so that when life happens (job loss, car repair, medical bill), you do not have to borrow. The peace it gives you changes everything: how you sleep, how you negotiate, how you make decisions. <strong style="color:var(--gold)">This is your first financial goal. Everything else is built on this foundation.</strong></p></div>';
-    html+='<div class="fgrp"><label class="flbl">Monthly expenses ($)</label><input class="finp" type="number" id="tPfExp" value="'+(S.mE||'')+'" oninput="tPfCalc()"></div>';
-    html+='<div class="fgrp"><label class="flbl">Current Peace Fund ($)</label><input class="finp" type="number" id="tPfCur" value="'+(S.pfCur||'')+'" oninput="tPfCalc()"></div>';
-    if(S.pfGoal>0){
-      html+='<div class="sav-bar-wrap" style="height:10px;margin:10px 0"><div class="sav-bar" style="width:'+pfPct+'%"></div></div>';
-      html+='<div style="display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.25)"><span>$0</span><span>3 mo · $'+(S.mE*3).toLocaleString()+'</span><span>6 mo · $'+(S.mE*6).toLocaleString()+'</span></div>';
-      html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0">';
-      html+='<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:12px 8px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;color:var(--gold)">'+(mo>=1?'✓':'○')+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">1 Month</div></div>';
-      html+='<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:12px 8px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;color:var(--gold)">'+(mo>=3?'✓':'○')+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">3 Months</div></div>';
-      html+='<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:12px 8px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;color:var(--gold)">'+(mo>=6?'✓':'○')+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">6 Months</div></div>';
-      html+='</div>';
-    }
-    html+='<button class="btn btn-ghost" style="width:100%" onclick="tPfSave()">Update Peace Fund</button>';
-    html+='</div>';
-
-    // TRACK section
-    html+='<div id="ftTrack" style="display:none">';
-    html+='<div class="fgrp"><label class="flbl">Monthly Income ($)</label><input class="finp" type="number" id="tInc" value="'+(S.income||'')+'" oninput="tTrackSave()"></div>';
-    html+='<div class="fgrp"><label class="flbl">Monthly Expenses ($)</label><input class="finp" type="number" id="tExp2" value="'+(S.mE||'')+'" oninput="tTrackSave()"></div>';
-    html+='<div class="fgrp"><label class="flbl">Total Savings ($)</label><input class="finp" type="number" id="tSav2" value="'+(S.mS||'')+'" oninput="tTrackSave()"></div>';
-    html+='<div class="fgrp"><label class="flbl">Assets value ($)</label><input class="finp" type="number" id="tAst" value="'+(S.assets||'')+'" oninput="tTrackSave()"></div>';
-    html+='<div id="tTrackViz"></div>';
-    html+='</div>';
-
-    // GOALS section
-    html+='<div id="ftGoals" style="display:none">';
-    if(!S.profile){
-      html+='<div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);margin-bottom:10px">Tell us about your life</div>';
-      html+='<p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px;line-height:1.7">Answer a few questions so we can suggest goals that fit your life stage.</p>';
-      html+='<div class="fgrp"><label class="flbl">Are you single or with a partner?</label><select class="finp" id="gpRel"><option value="">Select...</option><option value="single">Single</option><option value="partner">With a partner</option></select></div>';
-      html+='<div class="fgrp"><label class="flbl">Do you have children?</label><select class="finp" id="gpKids"><option value="">Select...</option><option value="no">No</option><option value="yes">Yes</option><option value="planning">Planning for children</option></select></div>';
-      html+='<div class="fgrp"><label class="flbl">Your age range</label><select class="finp" id="gpAge"><option value="">Select...</option><option value="20s">20s</option><option value="30s">30s</option><option value="40s">40s</option><option value="50s">50+</option></select></div>';
-      html+='<button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Create my plan</button>';
-    }else{
-      html+=renderGoals();
-    }
-    html+='</div>';
-
-    // PLAN section
-    html+='<div id="ftPlan" style="display:none">';
-    html+='<div id="planViz"></div>';
-    html+='</div>';
-
-    p.innerHTML=html;
-    if(S.profile)renderPlanViz();
-    tTrackViz();
-  }else if(name==='learn'){
-    t.textContent='Learning Hub';
-    var path=S.path||'B',lsList=LS[path]||LS.B,dn=daysDone();
-    p.innerHTML='<div class="eyebrow" style="text-align:left;margin-bottom:12px">Path '+(path==='A'?'A: Debt Freedom':path==='B'?'B: Foundation Builder':'C: Wealth in Motion')+'</div>'+
-      lsList.map(function(l,i){var locked=dn<l.u;return '<div class="lesson-card" style="margin:10px 0;'+(locked?'opacity:.3;pointer-events:none':'')+'"><div class="lc-cat">LESSON '+(i+1)+(locked?' · Unlocks day '+l.u:' · Unlocked ✓')+'</div><div class="lc-title">'+l.t+'</div><div class="lc-body">'+l.b+'</div>'+(locked?'':'<div class="lc-quote">"'+l.i+'"</div>')+'</div>'}).join('')+
-      '<div class="glass-card" style="margin:10px 0"><p style="font-size:11px;color:rgba(255,255,255,.4)">✦ Financial education, not financial advice. A licensed advisor helps you choose the path for your situation.</p></div>';
-  }else if(name==='mindsets'){
-    t.textContent='Mindset Shifts';
-    p.innerHTML='<div class="eyebrow" style="text-align:left;margin-bottom:12px">Old beliefs vs New truths</div><p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px;line-height:1.7">Based on the work of leading personal finance educators. Explained simply, designed to shift how you feel about money.</p>'+
-      MINDSETS.map(function(m){return '<div style="margin-bottom:16px"><div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);margin-bottom:6px">'+m.cat+'</div><div class="mindset-pair" style="margin:0"><div class="mp-side mp-old"><div class="mp-label">Old belief</div>'+m.old+'</div><div class="mp-side mp-new"><div class="mp-label">New truth</div>'+m.nw+'</div></div><div style="background:rgba(107,159,212,.05);border-radius:8px;padding:8px 12px;margin-top:6px"><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:3px">Expert insight</div><p style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;font-style:italic">'+m.expert+'</p></div></div>'}).join('');
+function drawFinStars(){
+  var c=document.getElementById('finStars');if(!c)return;
+  var ctx=c.getContext('2d');
+  var W=c.width=window.innerWidth,H=c.height=window.innerHeight*3;
+  c.style.width='100%';c.style.height=H+'px';
+  // Build stars for finance canvas
+  var fStars=[];
+  for(var i=0;i<400;i++){
+    fStars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.8+.2,a:Math.random()*.4+.1,sp:Math.random()*1.5+.5,ph:Math.random()*6.28});
   }
-  document.getElementById('toolOverlay').style.transform='translateY(0)';
-}
-function closeTool(){document.getElementById('toolOverlay').style.transform='translateY(100%)'}
+  // Constellations for finance
+  var fCons=[
+    // Tiger constellation
+    [[.15,.05],[.18,.03],[.22,.04],[.25,.06],[.28,.04],[.32,.05],[.35,.07],[.33,.1],[.3,.12],[.26,.11],[.22,.1],[.18,.08]],
+    // Crown
+    [[.6,.02],[.63,.01],[.66,.025],[.69,.01],[.72,.02]],
+    // Fish
+    [[.8,.08],[.83,.07],[.86,.08],[.88,.1],[.86,.12],[.83,.13],[.8,.12],[.78,.1]]
+  ];
 
-// Finance tool tabs
-function ftTab(el,tab){
-  el.parentNode.querySelectorAll('.ft-tab').forEach(function(t){t.classList.remove('on')});
-  el.classList.add('on');
-  ['ftPeace','ftTrack','ftGoals','ftPlan'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display='none'});
-  var map={peace:'ftPeace',track:'ftTrack',goals:'ftGoals',plan:'ftPlan'};
-  var target=document.getElementById(map[tab]);
-  if(target)target.style.display='block';
-  if(tab==='plan')renderPlanViz();
-  if(tab==='track')tTrackViz();
+  function frame(t){
+    ctx.clearRect(0,0,W,H);var ts=t*.001;
+    // Gradient background
+    var bg=ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#080d24');bg.addColorStop(.3,'#0c1235');bg.addColorStop(.6,'#111a40');bg.addColorStop(1,'#080d24');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    // Stars
+    for(var i=0;i<fStars.length;i++){
+      var s=fStars[i],tw=Math.sin(ts*s.sp+s.ph)*.5+.5;
+      var a=s.a+tw*(1-s.a)*.6;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.28);
+      ctx.fillStyle='rgba(255,255,255,'+a.toFixed(2)+')';ctx.fill();
+      if(s.r>0.6){ctx.beginPath();ctx.arc(s.x,s.y,s.r*3,0,6.28);ctx.fillStyle='rgba(212,179,102,'+(a*.06).toFixed(3)+')';ctx.fill()}
+    }
+    // Constellations
+    for(var ci=0;ci<fCons.length;ci++){
+      var con=fCons[ci],cA=Math.sin(ts*.4+ci*2)*.15+.2;
+      ctx.strokeStyle='rgba(212,179,102,'+cA+')';ctx.lineWidth=.5;ctx.beginPath();
+      for(var j=0;j<con.length;j++){if(j===0)ctx.moveTo(con[j][0]*W,con[j][1]*H);else ctx.lineTo(con[j][0]*W,con[j][1]*H)}
+      ctx.stroke();
+      for(var j=0;j<con.length;j++){ctx.beginPath();ctx.arc(con[j][0]*W,con[j][1]*H,1.5,0,6.28);ctx.fillStyle='rgba(212,179,102,'+(cA+.15)+')';ctx.fill()}
+    }
+    // Shimmer particles
+    for(var p=0;p<30;p++){
+      var px=Math.sin(ts*.2+p*1.1)*.3+.5,py=(p/30)*H;
+      py=(py+ts*8)%H;
+      var pA=Math.sin(ts*2+p*1.5)*.25+.2;
+      ctx.beginPath();ctx.arc(px*W,py,1,0,6.28);ctx.fillStyle='rgba(212,179,102,'+pA+')';ctx.fill();
+    }
+    // Sun glow at top
+    var sg=ctx.createRadialGradient(W*.5,H*.03,0,W*.5,H*.03,80);
+    sg.addColorStop(0,'rgba(212,179,102,.08)');sg.addColorStop(1,'rgba(212,179,102,0)');
+    ctx.fillStyle=sg;ctx.fillRect(0,0,W,H*.1);
+    // Moon
+    var mx=W*.85,my=H*.04;
+    ctx.beginPath();ctx.arc(mx,my,10,0,6.28);ctx.fillStyle='rgba(212,179,102,.06)';ctx.fill();
+    ctx.beginPath();ctx.arc(mx,my,10,0,6.28);ctx.strokeStyle='rgba(212,179,102,.15)';ctx.lineWidth=.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(mx+3,my-1,7.5,0,6.28);ctx.fillStyle='#080d24';ctx.fill();
+
+    finAnimId=requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 }
 
-function tPfCalc(){
-  var exp=parseFloat(document.getElementById('tPfExp').value)||0;
-  S.mE=exp;S.pfGoal=exp*6;sv();
+function renderFinance(){
+  // Fill inputs
+  var fi=document.getElementById('fInc');if(fi)fi.value=S.income||'';
+  var fe=document.getElementById('fExp');if(fe)fe.value=S.mE||'';
+  var fs=document.getElementById('fSav');if(fs)fs.value=S.mS||'';
+  var fa=document.getElementById('fAst');if(fa)fa.value=S.assets||'';
+  renderGoalTop();
+  renderGoalTimeline();
+  renderSnapViz();
+  renderDailyList();
+  // Show/hide goal setup
+  if(S.mainGoal){document.getElementById('goalSetupForm').style.display='none'}
 }
-function tPfSave(){
-  var exp=parseFloat(document.getElementById('tPfExp').value)||0;
-  var cur=parseFloat(document.getElementById('tPfCur').value)||0;
-  S.mE=exp;S.pfCur=cur;S.pfGoal=exp*6;S.mS=cur;
-  if(S.pfGoal>0&&S.pfCur>=S.pfGoal)S.pfDone=true;
-  sv();openTool('finance');
+
+function renderGoalTop(){
+  var c=document.getElementById('finGoalTop');if(!c)return;
+  if(!S.mainGoal){c.innerHTML='<div style="text-align:center;padding:14px 0"><div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--sky)">SET YOUR FIRST GOAL BELOW</div></div>';return}
+  var pct=S.mainGoal.target>0?Math.min((S.mS/S.mainGoal.target)*100,100).toFixed(1):'0';
+  c.innerHTML='<div style="text-align:center;padding:14px 0"><div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--sky);margin-bottom:6px">YOUR GOAL</div>'+
+    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-style:italic;color:var(--gold);margin-bottom:4px">'+S.mainGoal.name+'</div>'+
+    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:36px;color:#fff">$'+(S.mS||0).toLocaleString()+' <span style="font-size:16px;color:rgba(255,255,255,.3)">of $'+S.mainGoal.target.toLocaleString()+'</span></div>'+
+    '<div class="sav-bar-wrap" style="height:10px;margin:10px 0"><div class="sav-bar" style="width:'+pct+'%"></div></div>'+
+    '<div style="font-size:11px;color:rgba(255,255,255,.4)">'+pct+'% complete</div></div>';
 }
-function tTrackSave(){
-  S.income=parseFloat(document.getElementById('tInc').value)||0;
-  S.mE=parseFloat(document.getElementById('tExp2').value)||0;
-  S.mS=parseFloat(document.getElementById('tSav2').value)||0;
-  S.assets=parseFloat(document.getElementById('tAst').value)||0;
-  sv();tTrackViz();
+
+function renderGoalTimeline(){
+  var c=document.getElementById('goalTimeline');if(!c)return;
+  if(!S.milestones.length){c.innerHTML='<div style="padding:10px 0;font-size:12px;color:rgba(255,255,255,.35);text-align:center">Set your goal below to see your journey.</div>';return}
+  c.innerHTML=S.milestones.map(function(m){
+    var pct=m.target>0?Math.min((S.mS/m.target)*100,100):0;
+    var done=pct>=100,active=!done&&pct>0;
+    return '<div class="gt-node"><div class="gt-dot'+(done?' done':active?' active':'')+'"></div>'+
+      '<div class="gt-name">'+(done?'✓ ':'')+m.name+'</div>'+
+      '<div class="gt-sub">$'+m.target.toLocaleString()+'</div>'+
+      '<div class="gt-bar"><div class="gt-fill" style="width:'+pct+'%"></div></div></div>';
+  }).join('');
 }
-function tTrackViz(){
-  var v=document.getElementById('tTrackViz');if(!v)return;
+
+function saveSnapshot(){
+  S.income=parseFloat(document.getElementById('fInc').value)||0;
+  S.mE=parseFloat(document.getElementById('fExp').value)||0;
+  S.mS=parseFloat(document.getElementById('fSav').value)||0;
+  S.assets=parseFloat(document.getElementById('fAst').value)||0;
+  sv();renderSnapViz();renderGoalTop();renderGoalTimeline();
+}
+
+function renderSnapViz(){
+  var v=document.getElementById('snapViz');if(!v)return;
   if(!S.income&&!S.mE){v.innerHTML='';return}
   var surplus=S.income-S.mE;
   var nw=S.mS+S.assets;
   var savRate=S.income>0?((surplus/S.income)*100).toFixed(0):0;
-  v.innerHTML='<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
-    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;color:'+(surplus>=0?'var(--gold)':'rgba(255,80,80,.7)')+'">$'+Math.abs(surplus).toLocaleString()+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">'+(surplus>=0?'Monthly surplus':'Monthly deficit')+'</div></div>'+
-    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;color:var(--gold)">$'+nw.toLocaleString()+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Net worth</div></div>'+
+  v.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
+    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:26px;color:'+(surplus>=0?'var(--gold)':'rgba(255,80,80,.7)')+'">$'+Math.abs(surplus).toLocaleString()+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">'+(surplus>=0?'Monthly surplus':'Monthly deficit')+'</div></div>'+
+    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:26px;color:var(--sky)">'+savRate+'%</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Savings rate</div></div>'+
     '</div>'+
-    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center;margin-top:10px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;color:var(--sky)">'+savRate+'%</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Savings rate</div><p style="font-size:10px;color:rgba(255,255,255,.35);margin-top:4px">'+(savRate>=20?'✦ Great! You are saving 20%+ of your income.':savRate>=10?'Good start. Aim for 20% when possible.':'Try to increase this gradually. Every 1% matters.')+'</p></div>';
+    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center;margin-top:10px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:26px;color:var(--gold)">$'+nw.toLocaleString()+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Net worth</div></div>';
 }
-function saveProfile(){
+
+function createGoalPlan(){
+  var name=document.getElementById('gName').value.trim();
+  var target=parseFloat(document.getElementById('gTarget').value)||0;
   var rel=document.getElementById('gpRel').value;
   var kids=document.getElementById('gpKids').value;
-  var age=document.getElementById('gpAge').value;
-  if(!rel||!kids||!age)return;
-  S.profile={rel:rel,kids:kids,age:age};
-  // Generate goals based on profile
-  S.goals=[{n:'Peace Fund',d:'3 to 6 months of expenses',done:S.pfDone,priority:1}];
-  if(kids==='planning')S.goals.push({n:'Baby Fund',d:'Cover parental leave + first year costs',done:false,priority:2});
-  if(kids==='yes')S.goals.push({n:'Education Fund',d:'Start investing for their future',done:false,priority:3});
-  if(rel==='partner')S.goals.push({n:'Shared Goals Fund',d:'Aligned financial goals with your partner',done:false,priority:2});
-  S.goals.push({n:'Retirement Fund',d:age==='20s'?'Start early. Time is your greatest asset.':age==='30s'?'Maximize contributions now.':'Catch-up contributions available at 50+.',done:false,priority:age==='50s'?1:3});
-  S.goals.push({n:'Freedom Fund',d:'What does financial freedom look like for you?',done:false,priority:4});
-  sv();openTool('finance');
-}
-function renderGoals(){
-  var html='<div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);margin-bottom:10px">Your Goals</div>';
-  S.goals.forEach(function(g,i){
-    var status=g.done?'completed':(i===0||(i>0&&S.goals[i-1].done)?'active':'locked');
-    html+='<div class="goal-card '+status+'"><div class="goal-tag">'+(g.done?'✓ COMPLETED':status==='active'?'✦ CURRENT':'LOCKED')+'</div><div class="goal-name">'+g.n+'</div><div class="goal-desc">'+g.d+'</div></div>';
-  });
-  html+='<div style="margin-top:12px"><div style="font-size:10px;color:rgba(255,255,255,.3);text-align:center">Profile: '+S.profile.rel+' · '+(S.profile.kids==='yes'?'has children':S.profile.kids==='planning'?'planning children':'no children')+' · '+S.profile.age+'</div></div>';
-  return html;
-}
-function renderPlanViz(){
-  var v=document.getElementById('planViz');if(!v)return;
-  if(!S.profile){v.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.5)">Complete the Goals section first to see your plan.</p>';return}
-  var surplus=S.income-S.mE;
-  var html='<div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);margin-bottom:14px">YOUR FINANCIAL PLAN</div>';
-  // Visual timeline
-  html+='<div style="position:relative;padding-left:24px;border-left:2px solid var(--glass-border)">';
-  S.goals.forEach(function(g,i){
-    var active=!g.done&&(i===0||(i>0&&S.goals[i-1].done));
-    html+='<div style="margin-bottom:20px;position:relative"><div style="position:absolute;left:-30px;top:2px;width:14px;height:14px;border-radius:50%;background:'+(g.done?'var(--gold)':active?'rgba(212,179,102,.3)':'rgba(255,255,255,.08)')+';border:2px solid '+(g.done?'var(--gold)':active?'var(--gold)':'rgba(255,255,255,.1)')+'"></div>';
-    html+='<div style="font-size:13px;font-weight:600;color:'+(g.done?'var(--gold)':'#fff')+'">'+g.n+(g.done?' ✓':'')+'</div>';
-    html+='<div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px">'+g.d+'</div>';
-    if(active&&surplus>0&&g.n==='Peace Fund'&&S.pfGoal>0){
-      var remaining=Math.max(0,S.pfGoal-S.pfCur);
-      var months=surplus>0?Math.ceil(remaining/surplus):0;
-      html+='<div style="font-size:11px;color:var(--sky);margin-top:4px">At your current surplus: ~'+months+' months to complete</div>';
-    }
-    html+='</div>';
-  });
-  html+='</div>';
-  // Monthly allocation suggestion
-  if(surplus>0){
-    html+='<div class="glass-card" style="margin:14px 0"><div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Suggested monthly allocation</div>';
-    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:12px;color:rgba(255,255,255,.7)">Peace Fund</span><span style="font-size:12px;font-weight:600;color:var(--gold)">$'+Math.round(surplus*.7).toLocaleString()+'</span></div>';
-    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:12px;color:rgba(255,255,255,.7)">Next Goal</span><span style="font-size:12px;font-weight:600;color:var(--sky)">$'+Math.round(surplus*.2).toLocaleString()+'</span></div>';
-    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0"><span style="font-size:12px;color:rgba(255,255,255,.7)">Joy Fund</span><span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5)">$'+Math.round(surplus*.1).toLocaleString()+'</span></div>';
-    html+='</div>';
+  if(!name||!target)return;
+  S.mainGoal={name:name,target:target};
+  S.profile={rel:rel,kids:kids};
+  // Break into milestones (gradient from small to big)
+  S.milestones=[];
+  if(target<=5000){
+    S.milestones=[
+      {name:'First $500',target:500},
+      {name:'Halfway there',target:Math.round(target/2)},
+      {name:name+' complete',target:target}
+    ];
+  }else if(target<=20000){
+    S.milestones=[
+      {name:'First $1,000',target:1000},
+      {name:'$'+Math.round(target*.25).toLocaleString()+' saved',target:Math.round(target*.25)},
+      {name:'Halfway there',target:Math.round(target/2)},
+      {name:'$'+Math.round(target*.75).toLocaleString()+' saved',target:Math.round(target*.75)},
+      {name:name+' complete',target:target}
+    ];
+  }else{
+    S.milestones=[
+      {name:'First $1,000',target:1000},
+      {name:'$5,000 saved',target:5000},
+      {name:'$'+Math.round(target*.25).toLocaleString(),target:Math.round(target*.25)},
+      {name:'Halfway: $'+Math.round(target/2).toLocaleString(),target:Math.round(target/2)},
+      {name:'$'+Math.round(target*.75).toLocaleString(),target:Math.round(target*.75)},
+      {name:name+' complete',target:target}
+    ];
   }
-  v.innerHTML=html;
+  // Add life-stage goals
+  if(kids==='planning')S.milestones.push({name:'Baby Fund',target:target+10000});
+  if(rel==='partner')S.milestones.push({name:'Shared dream',target:target+15000});
+  sv();
+  document.getElementById('goalSetupForm').style.display='none';
+  renderGoalTop();renderGoalTimeline();
+}
+
+/* ── Daily tracker ── */
+function addDailyTrack(){
+  var d=document.getElementById('dtDesc'),a=document.getElementById('dtAmt');
+  if(!d||!d.value.trim())return;
+  S.dailyTrack.push({d:d.value.trim(),a:parseFloat(a?a.value:0)||0,dt:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});
+  sv();d.value='';a.value='';renderDailyList();
+}
+function renderDailyList(){
+  var c=document.getElementById('dailyList');if(!c)return;
+  var today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  var todayItems=S.dailyTrack.filter(function(e){return e.dt===today});
+  var total=todayItems.reduce(function(s,e){return s+e.a},0);
+  c.innerHTML=(todayItems.length?'<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Today: $'+total.toLocaleString()+'</div>':'')+
+    todayItems.slice().reverse().map(function(e){return '<div class="expense-row"><div class="expense-name">'+e.d+'</div><div class="expense-amt">$'+e.a.toLocaleString()+'</div></div>'}).join('')+
+    (todayItems.length?'':'<p style="font-size:11px;color:rgba(255,255,255,.25);margin-top:6px">No entries today yet.</p>');
 }
 
 /* ═══════════════════════════════════════════════════ */
-/* CELESTIAL CANVAS                                    */
+/* CELESTIAL CANVAS (main background)                  */
 /* ═══════════════════════════════════════════════════ */
 var starPts=[],constellations=[],shimmerPts=[],planets=[];
 function initCelestial(){
@@ -1096,22 +1014,18 @@ function initCelestial(){
     var rgb=tint<.15?'255,220,150':tint<.3?'180,200,255':tint<.45?'255,200,120':'255,255,255';
     starPts.push({x:Math.random(),y:Math.random(),r:bright<.85?(Math.random()*.5+.2):(bright<.95?(Math.random()*.8+.5):(Math.random()*1.4+.8)),rgb:rgb,base:bright<.85?(Math.random()*.25+.05):(Math.random()*.4+.3),speed:Math.random()*1.5+.4,phase:Math.random()*6.28,flash:0,flashChance:bright<.85?.0002:.0008});
   }
-  // Constellations
   var cDefs=[
-    [[.12,.15],[.14,.18],[.17,.2],[.2,.19],[.23,.17],[.25,.14],[.22,.12],[.18,.13],[.15,.14]],
-    [[.7,.08],[.73,.06],[.76,.05],[.79,.06],[.82,.08],[.8,.1],[.75,.11],[.72,.1]],
-    [[.55,.75],[.58,.73],[.62,.74],[.65,.72],[.68,.73],[.72,.71],[.75,.72]],
+    [[.12,.15],[.14,.18],[.17,.2],[.2,.19],[.23,.17],[.25,.14],[.22,.12],[.18,.13]],
+    [[.7,.08],[.73,.06],[.76,.05],[.79,.06],[.82,.08],[.8,.1],[.75,.11]],
+    [[.55,.75],[.58,.73],[.62,.74],[.65,.72],[.68,.73],[.72,.71]],
     [[.85,.45],[.88,.42],[.91,.45]],
     [[.08,.6],[.1,.57],[.12,.6],[.1,.63]],
-    // Lion constellation
-    [[.3,.85],[.33,.82],[.37,.83],[.4,.8],[.43,.82],[.46,.84],[.42,.87]],
-    // Mermaid tail
+    // Tiger constellation
+    [[.3,.85],[.33,.82],[.37,.83],[.4,.8],[.43,.82],[.46,.84],[.42,.87],[.38,.88],[.34,.87]],
     [[.88,.65],[.9,.68],[.92,.72],[.91,.76],[.88,.78],[.85,.76]]
   ];
   for(var c=0;c<cDefs.length;c++){constellations.push({pts:cDefs[c],phase:Math.random()*6.28,speed:.3+Math.random()*.3})}
-  // Shimmer
   for(var s=0;s<80;s++){shimmerPts.push({x:Math.random(),y:Math.random(),r:Math.random()*.4+.2,speed:Math.random()*.3+.1,drift:Math.random()*.0002-.0001,phase:Math.random()*6.28})}
-  // Planets
   planets.push({x:.92,y:.18,r:3.5,ring:true,color:'180,160,120'});
   planets.push({x:.05,y:.38,r:2.5,ring:false,color:'120,160,200'});
   planets.push({x:.5,y:.93,r:2.8,ring:false,color:'200,170,130'});
@@ -1142,7 +1056,7 @@ function drawCelestial(){
     }
     for(var si=0;si<shimmerPts.length;si++){
       var sp=shimmerPts[si];sp.y-=sp.speed*.0003;sp.x+=sp.drift;
-      if(sp.y<-.01){sp.y=1.01;sp.x=Math.random()}if(sp.x<0)sp.x=1;if(sp.x>1)sp.x=0;
+      if(sp.y<-.01){sp.y=1.01;sp.x=Math.random()}
       var sa=Math.sin(ts*2+sp.phase)*.3+.2;ctx.beginPath();ctx.arc(sp.x*W,sp.y*H,sp.r,0,6.28);ctx.fillStyle='rgba(212,179,102,'+sa+')';ctx.fill();
     }
     for(var pi=0;pi<planets.length;pi++){
@@ -1153,7 +1067,7 @@ function drawCelestial(){
       ctx.beginPath();ctx.arc(px,py,pl.r,0,6.28);ctx.fillStyle='rgba('+pl.color+',.5)';ctx.fill();
       if(pl.ring){ctx.beginPath();ctx.ellipse(px,py,pl.r*3,pl.r*.8,-.3,0,6.28);ctx.strokeStyle='rgba('+pl.color+',.2)';ctx.lineWidth=.5;ctx.stroke()}
     }
-    // Moon (crescent) in top right
+    // Moon crescent top right
     var mx=W*.85,my=H*.12;
     ctx.beginPath();ctx.arc(mx,my,8,0,6.28);ctx.fillStyle='rgba(212,179,102,.08)';ctx.fill();
     ctx.beginPath();ctx.arc(mx,my,8,0,6.28);ctx.strokeStyle='rgba(212,179,102,.15)';ctx.lineWidth=.5;ctx.stroke();
