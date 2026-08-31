@@ -126,7 +126,7 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .wa-body{font-size:13px;line-height:1.75;color:rgba(255,255,255,.6);margin-bottom:14px}
 .body-copy{font-size:13px;line-height:1.85;color:rgba(255,255,255,.7);padding:0 18px}
 .deco-art{display:flex;justify-content:center;padding:10px 0;pointer-events:none}
-.deco-art canvas{display:block}
+.deco-art img{display:block;max-width:100%;height:auto;opacity:.55;filter:drop-shadow(0 0 18px rgba(212,179,102,.25))}
 .deco-art.float1{animation:dfloat1 8s ease-in-out infinite}
 .deco-art.float2{animation:dfloat2 10s ease-in-out infinite}
 .deco-art.float3{animation:dfloat3 12s ease-in-out infinite}
@@ -171,7 +171,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   </div>
 
   <!-- Mermaid figure — canvas rendered -->
-  <div class="deco-art float1"><canvas class="deco-canvas" data-fig="mermaid" data-w="280" data-h="420"></canvas></div>
+  <div class="deco-art float1"><img src="img/deco-mermaid.png" alt="" width="260" loading="lazy"></div>
 
   <div class="glass-card" style="margin-top:0">
     <p class="body-copy" style="padding:0;font-style:italic;color:rgba(255,255,255,.65)">✦ She avoids it the way she avoids the pile of mail on the counter. Not from ignorance, but from a relationship with money that was never built on calm.</p>
@@ -189,7 +189,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   </div>
 
   <!-- Tiger figure — canvas rendered -->
-  <div class="deco-art float2" style="margin-top:10px"><canvas class="deco-canvas" data-fig="tiger" data-w="320" data-h="220"></canvas></div>
+  <div class="deco-art float2" style="margin-top:10px"><img src="img/deco-leopard.png" alt="" width="280" loading="lazy"></div>
 
   <!-- QUIZ -->
   <div class="sec-title" style="font-size:22px;margin-top:18px">Your Financial Diagnosis</div>
@@ -292,7 +292,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   </div>
 
   <!-- Koi fish — canvas rendered -->
-  <div class="deco-art float3" style="margin-top:6px"><canvas class="deco-canvas" data-fig="koi" data-w="280" data-h="180"></canvas></div>
+  <div class="deco-art float3" style="margin-top:6px"><img src="img/deco-koi.png" alt="" width="220" loading="lazy"></div>
 
   <div class="wa-card">
     <div class="wa-title">Your ritual sisters</div>
@@ -318,7 +318,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Sit in it for two minutes right now.</div></div></div>
   </div>
   <!-- Sleeping leopard — canvas rendered -->
-  <div class="deco-art float2" style="margin-top:14px"><canvas class="deco-canvas" data-fig="leopard" data-w="300" data-h="180"></canvas></div>
+  <div class="deco-art float2" style="margin-top:14px"><img src="img/deco-leopard.png" alt="" width="260" loading="lazy"></div>
 
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(2)">Space is set. Continue.</button></div>
   <footer>Marmaroph</footer>
@@ -340,7 +340,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <p style="font-size:11px;color:var(--gold);text-align:center;margin-top:6px;display:none" id="bowlMsg">✦ Placed with intention.</p>
   </div>
   <!-- Leopard accent — canvas rendered -->
-  <div class="deco-art float3" style="margin-top:8px"><canvas class="deco-canvas" data-fig="leopard-sm" data-w="220" data-h="110"></canvas></div>
+  <div class="deco-art float3" style="margin-top:8px"><img src="img/deco-leopard.png" alt="" width="180" loading="lazy"></div>
 
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(3)">Offering placed. Continue.</button></div>
   <footer>Marmaroph</footer>
@@ -365,7 +365,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <p style="font-size:14px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.75;text-align:center" id="todayAff">"Money has never been your enemy."</p>
   </div>
   <!-- Koi accent — canvas rendered -->
-  <div class="deco-art float1" style="margin-top:8px"><canvas class="deco-canvas" data-fig="koi-sm" data-w="200" data-h="100"></canvas></div>
+  <div class="deco-art float1" style="margin-top:8px"><img src="img/deco-koi.png" alt="" width="160" loading="lazy"></div>
 
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(4)">Grounded. Continue.</button></div>
   <footer>Marmaroph</footer>
@@ -404,7 +404,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   </div>
 
   <!-- Tiger accent — canvas rendered -->
-  <div class="deco-art float3" style="margin-top:8px"><canvas class="deco-canvas" data-fig="tiger-sm" data-w="220" data-h="110"></canvas></div>
+  <div class="deco-art float3" style="margin-top:8px"><img src="img/deco-leopard.png" alt="" width="180" loading="lazy"></div>
 
   <!-- FINANCE TOOL BUTTON -->
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="openFinance()">💰 Open My Finances</button></div>
@@ -429,7 +429,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <button class="btn btn-primary" id="rsvpBtn" onclick="doRSVP()">RSVP for the Dinner</button>
   </div>
   <!-- Mermaid accent — canvas rendered -->
-  <div class="deco-art float2" style="margin-top:8px"><canvas class="deco-canvas" data-fig="mermaid-sm" data-w="160" data-h="220"></canvas></div>
+  <div class="deco-art float2" style="margin-top:8px"><img src="img/deco-mermaid.png" alt="" width="140" loading="lazy"></div>
 
   <div class="sec-title" style="font-size:18px;margin-top:16px">Your ritual month</div>
   <div class="month-cal"><div class="mc-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="mc-body" id="calSeed"></div></div>
@@ -1067,589 +1067,9 @@ function drawCelestial(){
   window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight});
 }
 
-/* ═══════════════════════════════════════════════════ */
-/* DECORATIVE CANVAS ART — gold line-art figures       */
-/* ═══════════════════════════════════════════════════ */
-function initDecoArt(){
-  document.querySelectorAll('.deco-canvas').forEach(function(c){
-    var fig=c.dataset.fig,w=+c.dataset.w,h=+c.dataset.h;
-    var dpr=window.devicePixelRatio||1;
-    c.width=w*dpr;c.height=h*dpr;
-    c.style.width=w+'px';c.style.height=h+'px';
-    var ctx=c.getContext('2d');ctx.scale(dpr,dpr);
-    // Gold colors
-    var G='rgba(212,179,102,',gold=G+'0.7)',goldB=G+'0.55)',goldD=G+'0.3)',goldF=G+'0.15)';
-    // Helper: stroke with glow
-    function glow(color,blur){ctx.shadowColor=color;ctx.shadowBlur=blur}
-    function noGlow(){ctx.shadowColor='transparent';ctx.shadowBlur=0}
-    // Helper: draw smooth bezier curve
-    function bez(pts,color,lw,gl){
-      ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineCap='round';
-      if(gl){glow(G+'0.4)',gl)}
-      ctx.moveTo(pts[0],pts[1]);
-      for(var i=2;i<pts.length-2;i+=4){ctx.bezierCurveTo(pts[i],pts[i+1],pts[i+2],pts[i+3],pts[i+4]||pts[i+2],pts[i+5]||pts[i+3])}
-      ctx.stroke();noGlow();
-    }
-    // Helper: draw star
-    function star(x,y,r,a){
-      ctx.beginPath();ctx.arc(x,y,r,0,6.28);
-      ctx.fillStyle=G+(a||.5)+')';
-      glow(G+'0.6)',r*6);ctx.fill();noGlow();
-      ctx.beginPath();ctx.arc(x,y,r*.4,0,6.28);ctx.fillStyle=G+'0.9)';ctx.fill();
-    }
-    // Helper: draw constellation line
-    function conLine(x1,y1,x2,y2,a){
-      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
-      ctx.strokeStyle=G+(a||.12)+')';ctx.lineWidth=.5;ctx.stroke();
-    }
-    // Helper: draw halo ring
-    function halo(cx,cy,r,a,dash){
-      ctx.beginPath();ctx.arc(cx,cy,r,0,6.28);
-      ctx.strokeStyle=G+(a||.08)+')';ctx.lineWidth=.5;
-      if(dash){ctx.setLineDash(dash)}ctx.stroke();ctx.setLineDash([]);
-    }
-    // Helper: 5-petal flower
-    function flower(cx,cy,r,a){
-      for(var p=0;p<5;p++){
-        var ang=p*1.2566-1.57;
-        ctx.beginPath();ctx.ellipse(cx+Math.cos(ang)*r*.6,cy+Math.sin(ang)*r*.6,r*.5,r*.25,ang,0,6.28);
-        ctx.strokeStyle=G+(a||.2)+')';ctx.lineWidth=.6;ctx.stroke();
-      }
-      ctx.beginPath();ctx.arc(cx,cy,r*.25,0,6.28);ctx.fillStyle=G+(a||.2)+')';ctx.fill();
-    }
-    // Helper: rosette spot (leopard)
-    function rosette(cx,cy,r){
-      ctx.beginPath();ctx.arc(cx,cy,r,0,6.28);
-      ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.6;ctx.stroke();
-      for(var d=0;d<4;d++){
-        var da=d*1.57+.4;
-        ctx.beginPath();ctx.arc(cx+Math.cos(da)*r*.6,cy+Math.sin(da)*r*.6,r*.2,0,6.28);
-        ctx.fillStyle=G+'0.08)';ctx.fill();
-      }
-    }
-
-    /* ── MERMAID (large, welcome) ── */
-    if(fig==='mermaid'){
-      var cx=w/2,s=w/280; // scale factor
-      // Halos
-      halo(cx,85*s,75*s,.1);halo(cx,85*s,90*s,.06,[3,5]);halo(cx,85*s,105*s,.03);
-      // Head
-      ctx.beginPath();ctx.ellipse(cx,68*s,15*s,18*s,0,0,6.28);
-      ctx.strokeStyle=gold;ctx.lineWidth=1.2;glow(G+'0.3)',8);ctx.stroke();noGlow();
-      // Face details
-      ctx.beginPath();ctx.moveTo(cx-8*s,63*s);ctx.quadraticCurveTo(cx-5*s,60*s,cx-2*s,63*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(cx+2*s,63*s);ctx.quadraticCurveTo(cx+5*s,60*s,cx+8*s,63*s);ctx.stroke();
-      ctx.beginPath();ctx.arc(cx-5*s,62*s,1*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
-      ctx.beginPath();ctx.arc(cx+5*s,62*s,1*s,0,6.28);ctx.fill();
-      ctx.beginPath();ctx.moveTo(cx-3*s,72*s);ctx.quadraticCurveTo(cx,74*s,cx+3*s,72*s);ctx.strokeStyle=goldD;ctx.lineWidth=.6;ctx.stroke();
-      // Crown
-      var crY=50*s;
-      ctx.beginPath();ctx.moveTo(cx-12*s,crY+4*s);
-      ctx.lineTo(cx-8*s,crY-4*s);ctx.lineTo(cx-4*s,crY+2*s);ctx.lineTo(cx,crY-8*s);
-      ctx.lineTo(cx+4*s,crY+2*s);ctx.lineTo(cx+8*s,crY-4*s);ctx.lineTo(cx+12*s,crY+4*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.8;glow(G+'0.4)',6);ctx.stroke();noGlow();
-      // Crown jewel
-      ctx.beginPath();ctx.arc(cx,crY-8*s,2.5*s,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.6;ctx.stroke();
-      ctx.beginPath();ctx.arc(cx,crY-8*s,1*s,0,6.28);ctx.fillStyle=G+'0.3)';ctx.fill();
-      // Flowing hair — 6 strands each side with varying opacity
-      var hairL=[
-        [cx-15*s,58*s, cx-25*s,52*s, cx-35*s,60*s, cx-40*s,78*s, cx-42*s,100*s, cx-40*s,120*s, cx-36*s,140*s, cx-30*s,155*s],
-        [cx-14*s,60*s, cx-22*s,56*s, cx-30*s,64*s, cx-36*s,82*s, cx-38*s,102*s, cx-38*s,122*s, cx-34*s,138*s],
-        [cx-13*s,62*s, cx-20*s,60*s, cx-26*s,70*s, cx-32*s,88*s, cx-34*s,108*s, cx-32*s,126*s],
-        [cx-16*s,56*s, cx-28*s,48*s, cx-42*s,54*s, cx-48*s,72*s, cx-50*s,96*s, cx-48*s,118*s, cx-44*s,138*s, cx-38*s,156*s, cx-32*s,168*s],
-        [cx-17*s,54*s, cx-32*s,44*s, cx-50*s,50*s, cx-58*s,68*s, cx-60*s,92*s, cx-56*s,116*s, cx-50*s,140*s, cx-42*s,162*s],
-        [cx-15*s,55*s, cx-24*s,50*s, cx-32*s,58*s, cx-38*s,74*s, cx-40*s,94*s, cx-38*s,114*s]
-      ];
-      var hairR=hairL.map(function(h){return h.map(function(v,i){return i%2===0?cx+(cx-v):v})});
-      var hairAlpha=[.65,.45,.3,.5,.35,.25];
-      for(var hi=0;hi<hairL.length;hi++){
-        ctx.beginPath();ctx.moveTo(hairL[hi][0],hairL[hi][1]);
-        for(var hj=2;hj<hairL[hi].length-2;hj+=4){
-          ctx.bezierCurveTo(hairL[hi][hj],hairL[hi][hj+1],hairL[hi][hj+2],hairL[hi][hj+3],
-            hairL[hi][hj+4]||hairL[hi][hj+2],hairL[hi][hj+5]||hairL[hi][hj+3]);
-        }
-        ctx.strokeStyle=G+hairAlpha[hi]+')';ctx.lineWidth=.8+(hi===0?.3:0);
-        if(hi<2){glow(G+'0.2)',4)}ctx.stroke();noGlow();
-      }
-      for(var hi=0;hi<hairR.length;hi++){
-        ctx.beginPath();ctx.moveTo(hairR[hi][0],hairR[hi][1]);
-        for(var hj=2;hj<hairR[hi].length-2;hj+=4){
-          ctx.bezierCurveTo(hairR[hi][hj],hairR[hi][hj+1],hairR[hi][hj+2],hairR[hi][hj+3],
-            hairR[hi][hj+4]||hairR[hi][hj+2],hairR[hi][hj+5]||hairR[hi][hj+3]);
-        }
-        ctx.strokeStyle=G+hairAlpha[hi]+')';ctx.lineWidth=.8+(hi===0?.3:0);
-        if(hi<2){glow(G+'0.2)',4)}ctx.stroke();noGlow();
-      }
-      // Neck
-      ctx.beginPath();ctx.moveTo(cx-4*s,86*s);ctx.quadraticCurveTo(cx-5*s,95*s,cx-6*s,100*s);ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(cx+4*s,86*s);ctx.quadraticCurveTo(cx+5*s,95*s,cx+6*s,100*s);ctx.stroke();
-      // Arms — graceful outward curves
-      ctx.beginPath();ctx.moveTo(cx-6*s,100*s);ctx.bezierCurveTo(cx-14*s,108*s,cx-24*s,118*s,cx-30*s,132*s);
-      ctx.bezierCurveTo(cx-34*s,142*s,cx-32*s,148*s,cx-26*s,150*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(cx+6*s,100*s);ctx.bezierCurveTo(cx+14*s,108*s,cx+24*s,118*s,cx+30*s,132*s);
-      ctx.bezierCurveTo(cx+34*s,142*s,cx+32*s,148*s,cx+26*s,150*s);ctx.stroke();
-      // Fingers
-      for(var fi=-1;fi<=1;fi++){
-        ctx.beginPath();ctx.moveTo(cx-26*s,150*s);ctx.quadraticCurveTo(cx-28*s+fi*2*s,154*s,cx-24*s+fi*3*s,156*s);
-        ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-        ctx.beginPath();ctx.moveTo(cx+26*s,150*s);ctx.quadraticCurveTo(cx+28*s-fi*2*s,154*s,cx+24*s-fi*3*s,156*s);ctx.stroke();
-      }
-      // Torso
-      ctx.beginPath();ctx.moveTo(cx-6*s,100*s);ctx.bezierCurveTo(cx-8*s,120*s,cx-10*s,140*s,cx-12*s,165*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(cx+6*s,100*s);ctx.bezierCurveTo(cx+8*s,120*s,cx+10*s,140*s,cx+12*s,165*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
-      // Waist ornament
-      for(var wi=0;wi<4;wi++){
-        ctx.beginPath();
-        var wy=140*s+wi*6*s;
-        ctx.moveTo(cx-10*s,wy);ctx.quadraticCurveTo(cx-5*s,wy+3*s,cx,wy);
-        ctx.quadraticCurveTo(cx+5*s,wy+3*s,cx+10*s,wy);
-        ctx.strokeStyle=G+(0.25-wi*.04)+')';ctx.lineWidth=.5;ctx.stroke();
-      }
-      // Tail — two main curves diverging
-      ctx.beginPath();ctx.moveTo(cx-12*s,165*s);
-      ctx.bezierCurveTo(cx-16*s,190*s,cx-24*s,220*s,cx-36*s,250*s);
-      ctx.bezierCurveTo(cx-46*s,272*s,cx-58*s,290*s,cx-68*s,310*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.3)',6);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(cx+12*s,165*s);
-      ctx.bezierCurveTo(cx+10*s,190*s,cx+4*s,220*s,cx-8*s,250*s);
-      ctx.bezierCurveTo(cx-18*s,272*s,cx-30*s,290*s,cx-40*s,310*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
-      // Scale pattern — overlapping arcs
-      for(var sy=175*s;sy<300*s;sy+=12*s){
-        var tailCx=cx-((sy-165*s)/(300*s-165*s))*30*s;
-        var tailW=14*s-((sy-165*s)/(300*s-165*s))*6*s;
-        var sa=.2-((sy-175*s)/(300*s-175*s))*.1;
-        for(var sx=-2;sx<=2;sx++){
-          ctx.beginPath();ctx.arc(tailCx+sx*tailW*.4,sy,tailW*.3,0,Math.PI);
-          ctx.strokeStyle=G+sa+')';ctx.lineWidth=.4;ctx.stroke();
-        }
-      }
-      // Tail fin — flowing forked shape with veins
-      var finBase=310*s;
-      // Left fin
-      ctx.beginPath();ctx.moveTo(cx-68*s,finBase);
-      ctx.bezierCurveTo(cx-78*s,finBase+20*s,cx-88*s,finBase+40*s,cx-92*s,finBase+60*s);
-      ctx.bezierCurveTo(cx-94*s,finBase+72*s,cx-88*s,finBase+78*s,cx-80*s,finBase+74*s);
-      ctx.bezierCurveTo(cx-70*s,finBase+68*s,cx-60*s,finBase+56*s,cx-54*s,finBase+42*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.25)',4);ctx.stroke();noGlow();
-      // Right fin
-      ctx.beginPath();ctx.moveTo(cx-40*s,finBase);
-      ctx.bezierCurveTo(cx-30*s,finBase+18*s,cx-22*s,finBase+36*s,cx-18*s,finBase+56*s);
-      ctx.bezierCurveTo(cx-16*s,finBase+68*s,cx-22*s,finBase+76*s,cx-30*s,finBase+72*s);
-      ctx.bezierCurveTo(cx-38*s,finBase+66*s,cx-46*s,finBase+54*s,cx-50*s,finBase+40*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.25)',4);ctx.stroke();noGlow();
-      // Fin veins
-      for(var fv=0;fv<5;fv++){
-        var fvt=fv/5;
-        ctx.beginPath();
-        ctx.moveTo(cx-68*s-fvt*24*s,(finBase+fvt*60*s));
-        ctx.lineTo(cx-56*s-fvt*4*s,(finBase+20*s+fvt*30*s));
-        ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.4;ctx.stroke();
-      }
-      for(var fv=0;fv<4;fv++){
-        var fvt=fv/4;
-        ctx.beginPath();
-        ctx.moveTo(cx-40*s+fvt*18*s,(finBase+fvt*56*s));
-        ctx.lineTo(cx-48*s+fvt*8*s,(finBase+18*s+fvt*28*s));
-        ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.4;ctx.stroke();
-      }
-      // Stars
-      star(30*s,40*s,2*s,.5);star(w-30*s,32*s,1.8*s,.4);
-      star(20*s,130*s,1.5*s,.35);star(w-22*s,120*s,1.7*s,.4);
-      star(15*s,220*s,1.2*s,.3);star(w-18*s,240*s,1.4*s,.35);
-      star(40*s,300*s,1*s,.25);star(w-35*s,340*s,1.3*s,.3);
-      // Constellation near crown
-      conLine(w-40*s,25*s,w-30*s,32*s,.15);conLine(w-30*s,32*s,w-22*s,28*s,.12);
-      star(w-40*s,25*s,1*s,.3);star(w-22*s,28*s,.8*s,.25);
-    }
-
-    /* ── TIGER (large, welcome) ── */
-    if(fig==='tiger'){
-      var s=w/320;
-      // Aura
-      halo(w/2,100*s,100*s,.06,[4,6]);
-      // HEAD
-      ctx.beginPath();ctx.ellipse(72*s,78*s,26*s,22*s,0,0,6.28);
-      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.3)',8);ctx.stroke();noGlow();
-      // Inner head structure
-      ctx.beginPath();ctx.ellipse(72*s,78*s,20*s,17*s,0,0,6.28);
-      ctx.strokeStyle=goldD;ctx.lineWidth=.4;ctx.stroke();
-      // Ears
-      ctx.beginPath();ctx.moveTo(52*s,60*s);ctx.lineTo(44*s,38*s);ctx.lineTo(58*s,56*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(92*s,60*s);ctx.lineTo(100*s,38*s);ctx.lineTo(86*s,56*s);ctx.stroke();
-      // Inner ears
-      ctx.beginPath();ctx.moveTo(54*s,60*s);ctx.lineTo(48*s,44*s);ctx.lineTo(57*s,58*s);
-      ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(90*s,60*s);ctx.lineTo(96*s,44*s);ctx.lineTo(87*s,58*s);ctx.stroke();
-      // Eyes — almond with glow
-      ctx.beginPath();ctx.moveTo(58*s,74*s);ctx.bezierCurveTo(62*s,68*s,68*s,68*s,72*s,74*s);
-      ctx.bezierCurveTo(68*s,72*s,62*s,72*s,58*s,74*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.fillStyle=G+'0.1)';ctx.fill();ctx.stroke();
-      ctx.beginPath();ctx.arc(65*s,72.5*s,1.2*s,0,6.28);ctx.fillStyle=gold;glow(G+'0.5)',4);ctx.fill();noGlow();
-      ctx.beginPath();ctx.moveTo(72*s,74*s);ctx.bezierCurveTo(76*s,68*s,82*s,68*s,86*s,74*s);
-      ctx.bezierCurveTo(82*s,72*s,76*s,72*s,72*s,74*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.fillStyle=G+'0.1)';ctx.fill();ctx.stroke();
-      ctx.beginPath();ctx.arc(79*s,72.5*s,1.2*s,0,6.28);ctx.fillStyle=gold;glow(G+'0.5)',4);ctx.fill();noGlow();
-      // Nose
-      ctx.beginPath();ctx.moveTo(69*s,80*s);ctx.lineTo(72*s,83*s);ctx.lineTo(75*s,80*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.6;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(72*s,83*s);ctx.quadraticCurveTo(72*s,86*s,69*s,87*s);ctx.strokeStyle=goldD;ctx.lineWidth=.4;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(72*s,83*s);ctx.quadraticCurveTo(72*s,86*s,75*s,87*s);ctx.stroke();
-      // Whiskers — 4 each side
-      for(var wi=0;wi<4;wi++){
-        var wa=.25-wi*.04,wy=80*s+wi*3*s;
-        ctx.beginPath();ctx.moveTo(56*s,wy);ctx.lineTo(28*s-wi*4*s,wy-4*s+wi*3*s);
-        ctx.strokeStyle=G+wa+')';ctx.lineWidth=.4;ctx.stroke();
-        ctx.beginPath();ctx.moveTo(88*s,wy);ctx.lineTo(116*s+wi*4*s,wy-4*s+wi*3*s);ctx.stroke();
-      }
-      // Stripes on forehead — elegant curves
-      for(var si=0;si<6;si++){
-        var sx=54*s+si*7*s,sOff=(si<3?-1:1)*(3-Math.abs(si-2.5))*2*s;
-        ctx.beginPath();ctx.moveTo(sx,62*s);ctx.quadraticCurveTo(sx+sOff,52*s,sx,42*s+Math.abs(si-2.5)*4*s);
-        ctx.strokeStyle=G+(0.2-Math.abs(si-2.5)*.03)+')';ctx.lineWidth=.6;ctx.stroke();
-      }
-      // NECK
-      ctx.beginPath();ctx.moveTo(56*s,96*s);ctx.bezierCurveTo(58*s,108*s,62*s,118*s,68*s,126*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(88*s,96*s);ctx.bezierCurveTo(92*s,106*s,98*s,114*s,106*s,120*s);ctx.stroke();
-      // BODY — muscular flowing curves
-      ctx.beginPath();ctx.moveTo(68*s,126*s);
-      ctx.bezierCurveTo(82*s,132*s,110*s,138*s,140*s,136*s);
-      ctx.bezierCurveTo(170*s,134*s,200*s,128*s,230*s,118*s);
-      ctx.bezierCurveTo(250*s,110*s,265*s,100*s,275*s,92*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.25)',5);ctx.stroke();noGlow();
-      // Lower body
-      ctx.beginPath();ctx.moveTo(106*s,120*s);
-      ctx.bezierCurveTo(120*s,126*s,145*s,132*s,170*s,132*s);
-      ctx.bezierCurveTo(200*s,132*s,225*s,126*s,250*s,118*s);
-      ctx.bezierCurveTo(265*s,112*s,275*s,104*s,280*s,96*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
-      // Belly
-      ctx.beginPath();ctx.moveTo(78*s,130*s);
-      ctx.bezierCurveTo(100*s,150*s,130*s,158*s,165*s,156*s);
-      ctx.bezierCurveTo(200*s,154*s,230*s,148*s,255*s,138*s);
-      ctx.bezierCurveTo(268*s,132*s,278*s,124*s,282*s,116*s);
-      ctx.strokeStyle=goldD;ctx.lineWidth=.7;ctx.stroke();
-      // LEGS — front
-      ctx.beginPath();ctx.moveTo(78*s,130*s);ctx.bezierCurveTo(76*s,148*s,72*s,166*s,70*s,182*s);
-      ctx.bezierCurveTo(68*s,190*s,70*s,194*s,74*s,194*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
-      // Paw detail
-      ctx.beginPath();ctx.moveTo(74*s,194*s);ctx.quadraticCurveTo(68*s,196*s,64*s,194*s);
-      ctx.quadraticCurveTo(62*s,192*s,66*s,190*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(96*s,138*s);ctx.bezierCurveTo(94*s,156*s,90*s,172*s,88*s,186*s);
-      ctx.bezierCurveTo(86*s,192*s,88*s,196*s,92*s,196*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(92*s,196*s);ctx.quadraticCurveTo(86*s,198*s,82*s,196*s);
-      ctx.quadraticCurveTo(80*s,194*s,84*s,192*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      // LEGS — hind
-      ctx.beginPath();ctx.moveTo(238*s,134*s);ctx.bezierCurveTo(234*s,154*s,228*s,170*s,224*s,184*s);
-      ctx.bezierCurveTo(222*s,190*s,224*s,194*s,228*s,194*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(228*s,194*s);ctx.quadraticCurveTo(222*s,196*s,218*s,194*s);
-      ctx.quadraticCurveTo(216*s,192*s,220*s,190*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(258*s,124*s);ctx.bezierCurveTo(256*s,144*s,252*s,162*s,248*s,178*s);
-      ctx.bezierCurveTo(246*s,186*s,248*s,190*s,252*s,190*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(252*s,190*s);ctx.quadraticCurveTo(246*s,192*s,242*s,190*s);
-      ctx.quadraticCurveTo(240*s,188*s,244*s,186*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      // TAIL — long elegant curl
-      ctx.beginPath();ctx.moveTo(275*s,92*s);
-      ctx.bezierCurveTo(285*s,80*s,292*s,66*s,296*s,52*s);
-      ctx.bezierCurveTo(298*s,40*s,296*s,30*s,290*s,26*s);
-      ctx.bezierCurveTo(284*s,22*s,280*s,28*s,282*s,36*s);
-      ctx.bezierCurveTo(284*s,44*s,288*s,48*s,290*s,42*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      // Body stripes
-      for(var bi=0;bi<8;bi++){
-        var bx=100*s+bi*22*s;
-        var by1=130*s+((bi<3)?bi*4:8-(bi-3)*2)*s;
-        var by2=by1+18*s;
-        ctx.beginPath();ctx.moveTo(bx,by1);ctx.quadraticCurveTo(bx+2*s,by1+(by2-by1)/2,bx,by2);
-        ctx.strokeStyle=G+(0.15-bi*.01)+')';ctx.lineWidth=.7;ctx.stroke();
-      }
-      // Constellation stars at joints
-      var joints=[[68*s,126*s],[106*s,120*s],[165*s,136*s],[238*s,126*s],[275*s,92*s],[290*s,26*s]];
-      for(var ji=0;ji<joints.length;ji++){
-        star(joints[ji][0],joints[ji][1],2*s,.45);
-      }
-      for(var ji=0;ji<joints.length-1;ji++){
-        conLine(joints[ji][0],joints[ji][1],joints[ji+1][0],joints[ji+1][1],.1);
-      }
-      // Ambient stars
-      star(18*s,22*s,1.5*s,.35);star(w-12*s,16*s,1.2*s,.3);
-      star(10*s,h-16*s,1*s,.25);star(w-14*s,h-12*s,1.3*s,.28);
-    }
-
-    /* ── KOI (medium, home screen) ── */
-    if(fig==='koi'){
-      var s=w/280;
-      halo(w/2,90*s,.45*w,.05,[3,7]);halo(w/2,90*s,.35*w,.07);
-      // Body S-curve — cubic bezier for smooth flow
-      ctx.beginPath();ctx.moveTo(40*s,90*s);
-      ctx.bezierCurveTo(60*s,60*s,90*s,50*s,120*s,58*s);
-      ctx.bezierCurveTo(150*s,66*s,175*s,82*s,200*s,90*s);
-      ctx.bezierCurveTo(215*s,94*s,230*s,92*s,242*s,84*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=1.2;glow(G+'0.3)',6);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(40*s,104*s);
-      ctx.bezierCurveTo(60*s,130*s,90*s,136*s,120*s,128*s);
-      ctx.bezierCurveTo(150*s,120*s,175*s,106*s,200*s,102*s);
-      ctx.bezierCurveTo(215*s,100*s,230*s,104*s,242*s,100*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=1;ctx.stroke();
-      // Head
-      ctx.beginPath();ctx.ellipse(248*s,92*s,14*s,10*s,-.15,0,6.28);
-      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
-      // Eye
-      ctx.beginPath();ctx.arc(254*s,89*s,3*s,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.arc(254.5*s,89*s,1*s,0,6.28);ctx.fillStyle=gold;glow(G+'0.5)',3);ctx.fill();noGlow();
-      // Mouth
-      ctx.beginPath();ctx.moveTo(261*s,91*s);ctx.quadraticCurveTo(264*s,93*s,261*s,95*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      // Gill
-      ctx.beginPath();ctx.moveTo(236*s,86*s);ctx.quadraticCurveTo(234*s,92*s,236*s,98*s);ctx.strokeStyle=goldD;ctx.lineWidth=.6;ctx.stroke();
-      // Dorsal fins — 4 flowing spines
-      for(var di=0;di<4;di++){
-        var dx=100*s+di*20*s,dh=28*s-di*4*s,da=.5-di*.08;
-        ctx.beginPath();ctx.moveTo(dx,62*s+(di*4*s));
-        ctx.bezierCurveTo(dx-4*s,62*s-dh+(di*4*s),dx-8*s,62*s-dh-6*s+(di*4*s),dx-6*s,62*s-dh+4*s+(di*4*s));
-        ctx.bezierCurveTo(dx-2*s,62*s-dh+14*s+(di*4*s),dx+2*s,62*s+(di*4*s),dx+4*s,64*s+(di*4*s));
-        ctx.strokeStyle=G+da+')';ctx.lineWidth=.7;ctx.stroke();
-      }
-      // Pectoral fin
-      ctx.beginPath();ctx.moveTo(185*s,100*s);
-      ctx.bezierCurveTo(178*s,116*s,168*s,128*s,162*s,134*s);
-      ctx.bezierCurveTo(158*s,138*s,160*s,136*s,166*s,130*s);
-      ctx.bezierCurveTo(172*s,124*s,180*s,112*s,186*s,104*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      // Ventral fin
-      ctx.beginPath();ctx.moveTo(135*s,128*s);
-      ctx.bezierCurveTo(132*s,140*s,126*s,150*s,122*s,154*s);
-      ctx.bezierCurveTo(120*s,156*s,122*s,152*s,126*s,146*s);
-      ctx.strokeStyle=goldD;ctx.lineWidth=.6;ctx.stroke();
-      // Tail — flowing fork
-      ctx.beginPath();ctx.moveTo(40*s,90*s);
-      ctx.bezierCurveTo(30*s,78*s,20*s,62*s,14*s,48*s);
-      ctx.bezierCurveTo(10*s,38*s,12*s,34*s,18*s,40*s);
-      ctx.bezierCurveTo(24*s,48*s,30*s,60*s,36*s,74*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(40*s,104*s);
-      ctx.bezierCurveTo(30*s,118*s,20*s,134*s,14*s,148*s);
-      ctx.bezierCurveTo(10*s,158*s,12*s,162*s,18*s,156*s);
-      ctx.bezierCurveTo(24*s,148*s,30*s,134*s,36*s,118*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      // Tail veins
-      for(var tv=0;tv<4;tv++){
-        var t=tv/4;
-        ctx.beginPath();ctx.moveTo(40*s-t*26*s,90*s-t*42*s);ctx.lineTo(36*s-t*14*s,82*s-t*18*s);
-        ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.4;ctx.stroke();
-        ctx.beginPath();ctx.moveTo(40*s-t*26*s,104*s+t*44*s);ctx.lineTo(36*s-t*14*s,112*s+t*20*s);ctx.stroke();
-      }
-      // Scale pattern — arcs along body
-      for(var si=0;si<12;si++){
-        var st=si/12,sx=60*s+st*170*s;
-        var sy=90*s+Math.sin(st*3.14)*12*s-(1-st)*6*s;
-        ctx.beginPath();ctx.arc(sx,sy,4*s-st*1.5*s,.3,Math.PI-.3);
-        ctx.strokeStyle=G+(0.12-st*.03)+')';ctx.lineWidth=.4;ctx.stroke();
-      }
-      // Bubbles
-      ctx.beginPath();ctx.arc(266*s,78*s,3*s,0,6.28);ctx.strokeStyle=G+'0.15)';ctx.lineWidth=.4;ctx.stroke();
-      ctx.beginPath();ctx.arc(270*s,66*s,2.2*s,0,6.28);ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.35;ctx.stroke();
-      ctx.beginPath();ctx.arc(264*s,58*s,1.5*s,0,6.28);ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.3;ctx.stroke();
-      // Stars
-      star(12*s,24*s,1.5*s,.4);star(w-14*s,20*s,1.2*s,.3);star(70*s,16*s,1*s,.25);star(w-30*s,h-14*s,1.3*s,.3);
-    }
-
-    /* ── LEOPARD (sleeping, Step 1) ── */
-    if(fig==='leopard'){
-      var s=w/300;
-      halo(w/2,100*s,120*s,.05);
-      // Body — curved sleeping form
-      ctx.beginPath();ctx.moveTo(52*s,106*s);
-      ctx.bezierCurveTo(72*s,72*s,110*s,56*s,150*s,58*s);
-      ctx.bezierCurveTo(190*s,60*s,225*s,72*s,248*s,92*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.25)',5);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(52*s,106*s);
-      ctx.bezierCurveTo(72*s,128*s,110*s,138*s,150*s,136*s);
-      ctx.bezierCurveTo(190*s,134*s,225*s,126*s,248*s,110*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
-      // Head resting
-      ctx.beginPath();ctx.ellipse(52*s,100*s,22*s,16*s,-.1,0,6.28);
-      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',6);ctx.stroke();noGlow();
-      // Ears
-      ctx.beginPath();ctx.moveTo(38*s,88*s);ctx.lineTo(32*s,72*s);ctx.lineTo(42*s,84*s);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(50*s,86*s);ctx.lineTo(48*s,70*s);ctx.lineTo(56*s,82*s);ctx.stroke();
-      // Closed eyes
-      ctx.beginPath();ctx.moveTo(40*s,98*s);ctx.quadraticCurveTo(44*s,94*s,48*s,98*s);ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(54*s,98*s);ctx.quadraticCurveTo(58*s,94*s,62*s,98*s);ctx.stroke();
-      // Nose
-      ctx.beginPath();ctx.moveTo(49*s,103*s);ctx.quadraticCurveTo(52*s,105*s,55*s,103*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      // Paws
-      ctx.beginPath();ctx.moveTo(34*s,112*s);ctx.bezierCurveTo(28*s,118*s,30*s,126*s,38*s,126*s);
-      ctx.bezierCurveTo(44*s,126*s,48*s,122*s,46*s,116*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(60*s,112*s);ctx.bezierCurveTo(56*s,118*s,58*s,126*s,66*s,126*s);
-      ctx.bezierCurveTo(72*s,126*s,76*s,122*s,74*s,116*s);ctx.stroke();
-      // Hind leg
-      ctx.beginPath();ctx.moveTo(220*s,116*s);ctx.bezierCurveTo(218*s,128*s,222*s,138*s,232*s,138*s);
-      ctx.bezierCurveTo(240*s,138*s,244*s,130*s,240*s,122*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      // Tail
-      ctx.beginPath();ctx.moveTo(248*s,92*s);
-      ctx.bezierCurveTo(258*s,82*s,268*s,76*s,276*s,74*s);
-      ctx.bezierCurveTo(284*s,72*s,288*s,74*s,286*s,80*s);
-      ctx.bezierCurveTo(284*s,86*s,276*s,90*s,268*s,96*s);
-      ctx.bezierCurveTo(260*s,100*s,254*s,104*s,250*s,108*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.8;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      // Rosette spots
-      var spots=[[100,76],[118,68],[138,64],[158,62],[178,64],[198,70],[216,80],[130,110],[156,112],[182,108],[205,102],[110,92],[145,88],[175,86]];
-      for(var si=0;si<spots.length;si++){rosette(spots[si][0]*s,spots[si][1]*s,4*s)}
-      // Flowers
-      flower(82*s,42*s,6*s,.22);flower(200*s,44*s,5*s,.18);flower(268*s,52*s,4*s,.15);
-      flower(60*s,56*s,4*s,.16);flower(240*s,56*s,5*s,.2);
-      // Stars
-      star(20*s,30*s,1.8*s,.45);star(140*s,26*s,1.4*s,.35);star(w-20*s,34*s,1.3*s,.3);
-      star(w-14*s,h-18*s,1*s,.25);star(12*s,h-14*s,1.2*s,.28);
-    }
-
-    /* ── LEOPARD SMALL (Step 2) ── */
-    if(fig==='leopard-sm'){
-      var s=w/220;
-      ctx.beginPath();ctx.moveTo(30*s,54*s);
-      ctx.bezierCurveTo(42*s,36*s,64*s,28*s,88*s,30*s);
-      ctx.bezierCurveTo(112*s,32*s,136*s,38*s,152*s,48*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(30*s,54*s);
-      ctx.bezierCurveTo(42*s,66*s,64*s,72*s,88*s,70*s);
-      ctx.bezierCurveTo(112*s,68*s,136*s,62*s,152*s,56*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.ellipse(30*s,50*s,12*s,9*s,0,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(22*s,42*s);ctx.lineTo(18*s,30*s);ctx.lineTo(24*s,40*s);ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(30*s,40*s);ctx.lineTo(30*s,30*s);ctx.lineTo(34*s,38*s);ctx.stroke();
-      ctx.beginPath();ctx.arc(26*s,49*s,.8*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
-      ctx.beginPath();ctx.arc(33*s,49*s,.8*s,0,6.28);ctx.fill();
-      ctx.beginPath();ctx.moveTo(152*s,48*s);ctx.bezierCurveTo(162*s,38*s,170*s,34*s,176*s,32*s);
-      ctx.bezierCurveTo(180*s,32*s,178*s,38*s,172*s,44*s);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
-      var spts=[[64,38],[80,34],[100,34],[120,36],[140,42],[76,58],[100,56],[124,52]];
-      for(var i=0;i<spts.length;i++){rosette(spts[i][0]*s,spts[i][1]*s,3*s)}
-      flower(62*s,18*s,4*s,.2);flower(140*s,18*s,3.5*s,.16);
-      star(8*s,14*s,1.2*s,.35);star(w-10*s,16*s,1*s,.28);
-    }
-
-    /* ── KOI SMALL (Step 3) ── */
-    if(fig==='koi-sm'){
-      var s=w/200;
-      ctx.beginPath();ctx.moveTo(28*s,50*s);
-      ctx.bezierCurveTo(42*s,34*s,64*s,28*s,86*s,34*s);
-      ctx.bezierCurveTo(108*s,40*s,128*s,50*s,146*s,54*s);
-      ctx.bezierCurveTo(156*s,56*s,164*s,52*s,170*s,46*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(28*s,60*s);
-      ctx.bezierCurveTo(42*s,74*s,64*s,78*s,86*s,72*s);
-      ctx.bezierCurveTo(108*s,66*s,128*s,60*s,146*s,60*s);
-      ctx.bezierCurveTo(156*s,62*s,164*s,60*s,170*s,56*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.ellipse(174*s,51*s,8*s,6*s,-.2,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.arc(178*s,49*s,1.5*s,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.4;ctx.stroke();
-      ctx.beginPath();ctx.arc(178.3*s,49*s,.5*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
-      // Tail
-      ctx.beginPath();ctx.moveTo(28*s,50*s);ctx.bezierCurveTo(20*s,40*s,14*s,28*s,12*s,20*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(28*s,60*s);ctx.bezierCurveTo(20*s,70*s,14*s,80*s,12*s,88*s);ctx.stroke();
-      // Fins
-      ctx.beginPath();ctx.moveTo(76*s,32*s);ctx.bezierCurveTo(72*s,22*s,68*s,16*s,70*s,20*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      for(var i=0;i<6;i++){
-        var t=i/6,sx=50*s+t*110*s,sy=50*s+Math.sin(t*3.14)*8*s;
-        ctx.beginPath();ctx.arc(sx,sy,2.5*s,.2,Math.PI-.2);ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.35;ctx.stroke();
-      }
-      star(8*s,14*s,1*s,.3);star(w-8*s,10*s,.8*s,.25);
-    }
-
-    /* ── TIGER SMALL (Step 4) ── */
-    if(fig==='tiger-sm'){
-      var s=w/220;
-      ctx.beginPath();ctx.moveTo(30*s,54*s);
-      ctx.bezierCurveTo(44*s,36*s,66*s,28*s,90*s,30*s);
-      ctx.bezierCurveTo(114*s,32*s,140*s,38*s,162*s,44*s);
-      ctx.bezierCurveTo(176*s,48*s,186*s,46*s,192*s,40*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(30*s,54*s);
-      ctx.bezierCurveTo(44*s,66*s,66*s,72*s,90*s,72*s);
-      ctx.bezierCurveTo(114*s,72*s,140*s,68*s,162*s,62*s);
-      ctx.bezierCurveTo(176*s,58*s,186*s,54*s,192*s,48*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.ellipse(30*s,48*s,12*s,10*s,0,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(22*s,40*s);ctx.lineTo(18*s,28*s);ctx.lineTo(24*s,38*s);ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(34*s,38*s);ctx.lineTo(34*s,28*s);ctx.lineTo(38*s,36*s);ctx.stroke();
-      ctx.beginPath();ctx.moveTo(24*s,46*s);ctx.bezierCurveTo(26*s,42*s,30*s,42*s,32*s,46*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.fillStyle=G+'0.08)';ctx.fill();ctx.stroke();
-      ctx.beginPath();ctx.moveTo(32*s,46*s);ctx.bezierCurveTo(34*s,42*s,38*s,42*s,40*s,46*s);ctx.fill();ctx.stroke();
-      ctx.beginPath();ctx.arc(28*s,45*s,.6*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
-      ctx.beginPath();ctx.arc(36*s,45*s,.6*s,0,6.28);ctx.fill();
-      // Tail
-      ctx.beginPath();ctx.moveTo(192*s,40*s);ctx.bezierCurveTo(198*s,32*s,202*s,26*s,204*s,22*s);
-      ctx.bezierCurveTo(206*s,18*s,204*s,16*s,200*s,18*s);ctx.strokeStyle=gold;ctx.lineWidth=.6;ctx.stroke();
-      // Stripes
-      for(var i=0;i<5;i++){
-        var x=70*s+i*24*s;
-        ctx.beginPath();ctx.moveTo(x,36*s+i*2*s);ctx.quadraticCurveTo(x+1.5*s,46*s+i*2*s,x,56*s+i*2*s);
-        ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.5;ctx.stroke();
-      }
-      // Whiskers
-      for(var i=0;i<3;i++){
-        ctx.beginPath();ctx.moveTo(18*s,48*s+i*3*s);ctx.lineTo(6*s,46*s+i*4*s);ctx.strokeStyle=G+'0.15)';ctx.lineWidth=.3;ctx.stroke();
-      }
-      star(8*s,14*s,1.2*s,.35);star(w-10*s,10*s,1*s,.28);
-    }
-
-    /* ── MERMAID SMALL (Step 5) ── */
-    if(fig==='mermaid-sm'){
-      var cx=w/2,s=w/160;
-      halo(cx,48*s,36*s,.06,[2,4]);
-      ctx.beginPath();ctx.ellipse(cx,38*s,8*s,10*s,0,0,6.28);
-      ctx.strokeStyle=gold;ctx.lineWidth=.8;glow(G+'0.2)',4);ctx.stroke();noGlow();
-      // Hair
-      ctx.beginPath();ctx.moveTo(cx-8*s,34*s);ctx.bezierCurveTo(cx-14*s,30*s,cx-20*s,36*s,cx-22*s,48*s);
-      ctx.bezierCurveTo(cx-24*s,60*s,cx-22*s,72*s,cx-20*s,80*s);
-      ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(cx+8*s,34*s);ctx.bezierCurveTo(cx+14*s,30*s,cx+20*s,36*s,cx+22*s,48*s);
-      ctx.bezierCurveTo(cx+24*s,60*s,cx+22*s,72*s,cx+20*s,80*s);ctx.stroke();
-      ctx.beginPath();ctx.moveTo(cx-9*s,32*s);ctx.bezierCurveTo(cx-18*s,26*s,cx-28*s,32*s,cx-30*s,48*s);
-      ctx.bezierCurveTo(cx-32*s,64*s,cx-28*s,80*s,cx-24*s,90*s);
-      ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(cx+9*s,32*s);ctx.bezierCurveTo(cx+18*s,26*s,cx+28*s,32*s,cx+30*s,48*s);
-      ctx.bezierCurveTo(cx+32*s,64*s,cx+28*s,80*s,cx+24*s,90*s);ctx.stroke();
-      // Crown
-      ctx.beginPath();ctx.moveTo(cx-6*s,28*s);ctx.lineTo(cx-3*s,22*s);ctx.lineTo(cx,26*s);ctx.lineTo(cx+3*s,22*s);ctx.lineTo(cx+6*s,28*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.stroke();
-      // Body
-      ctx.beginPath();ctx.moveTo(cx-4*s,48*s);ctx.bezierCurveTo(cx-5*s,62*s,cx-6*s,78*s,cx-8*s,94*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(cx+4*s,48*s);ctx.bezierCurveTo(cx+5*s,62*s,cx+6*s,78*s,cx+8*s,94*s);ctx.stroke();
-      // Tail
-      ctx.beginPath();ctx.moveTo(cx-8*s,94*s);ctx.bezierCurveTo(cx-12*s,112*s,cx-20*s,130*s,cx-30*s,148*s);
-      ctx.bezierCurveTo(cx-36*s,158*s,cx-40*s,168*s,cx-44*s,178*s);
-      ctx.strokeStyle=gold;ctx.lineWidth=.7;glow(G+'0.2)',3);ctx.stroke();noGlow();
-      ctx.beginPath();ctx.moveTo(cx+8*s,94*s);ctx.bezierCurveTo(cx+6*s,112*s,cx,130*s,cx-10*s,148*s);
-      ctx.bezierCurveTo(cx-16*s,158*s,cx-22*s,168*s,cx-28*s,178*s);ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
-      // Fins
-      ctx.beginPath();ctx.moveTo(cx-44*s,178*s);ctx.bezierCurveTo(cx-50*s,188*s,cx-54*s,198*s,cx-50*s,204*s);
-      ctx.bezierCurveTo(cx-46*s,200*s,cx-40*s,192*s,cx-36*s,184*s);ctx.strokeStyle=goldB;ctx.lineWidth=.5;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(cx-28*s,178*s);ctx.bezierCurveTo(cx-22*s,188*s,cx-18*s,198*s,cx-22*s,204*s);
-      ctx.bezierCurveTo(cx-26*s,200*s,cx-30*s,192*s,cx-32*s,184*s);ctx.stroke();
-      // Scale arcs
-      for(var i=0;i<5;i++){
-        var sy=100*s+i*14*s,sw=6*s-i*.8*s;
-        ctx.beginPath();ctx.moveTo(cx-sw,sy);ctx.quadraticCurveTo(cx,sy+3*s,cx+sw,sy);
-        ctx.strokeStyle=G+(0.15-i*.02)+')';ctx.lineWidth=.4;ctx.stroke();
-      }
-      star(w-14*s,16*s,1.2*s,.35);star(14*s,12*s,1*s,.28);star(w-10*s,h*.6,0.8*s,.22);
-    }
-  });
-}
-
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded',function(){
-  initCelestial();drawCelestial();initDecoArt();
+  initCelestial();drawCelestial();
   setTimeout(function(){var sl=document.getElementById('splashLoader');sl.classList.add('hide');setTimeout(function(){sl.style.display='none'},600)},1800);
   if(S.path){goHome()}
   if(S.rsvp){var b=document.getElementById('rsvpBtn');if(b){b.textContent='✓ RSVP Confirmed';b.style.opacity='.65';b.onclick=null}}
