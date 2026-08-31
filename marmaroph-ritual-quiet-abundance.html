@@ -125,20 +125,14 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .wa-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-style:italic;color:var(--gold);margin-bottom:10px}
 .wa-body{font-size:13px;line-height:1.75;color:rgba(255,255,255,.6);margin-bottom:14px}
 .body-copy{font-size:13px;line-height:1.85;color:rgba(255,255,255,.7);padding:0 18px}
-.deco-fig{display:flex;justify-content:center;padding:10px 0;opacity:.65;position:relative}
-.deco-fig svg{overflow:visible}
-.deco-fig.float1{animation:dfloat1 8s ease-in-out infinite}
-.deco-fig.float2{animation:dfloat2 10s ease-in-out infinite}
-.deco-fig.float3{animation:dfloat3 12s ease-in-out infinite}
+.deco-art{display:flex;justify-content:center;padding:10px 0;pointer-events:none}
+.deco-art canvas{display:block}
+.deco-art.float1{animation:dfloat1 8s ease-in-out infinite}
+.deco-art.float2{animation:dfloat2 10s ease-in-out infinite}
+.deco-art.float3{animation:dfloat3 12s ease-in-out infinite}
 @keyframes dfloat1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(.5deg)}}
 @keyframes dfloat2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(-.4deg)}}
 @keyframes dfloat3{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-5px) rotate(.3deg)}66%{transform:translateY(-3px) rotate(-.3deg)}}
-@keyframes shimmer{0%,100%{opacity:.3}50%{opacity:1}}
-.shimmer{animation:shimmer 3s ease-in-out infinite}
-@keyframes starPulse{0%,100%{opacity:.2;r:1}50%{opacity:.8;r:1.5}}
-.deco-bg{position:absolute;left:0;right:0;pointer-events:none;z-index:1;display:flex;justify-content:center;opacity:.35}
-.deco-bg.left{justify-content:flex-start;padding-left:8px}
-.deco-bg.right{justify-content:flex-end;padding-right:8px}
 /* Finance overlay */
 #finOverlay{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.23,1,.32,1);overflow:hidden}
 #finOverlay canvas{position:absolute;inset:0;z-index:0}
@@ -176,83 +170,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="sec-rule"><span class="sr-ico">✦ ✦ ✦</span></div>
   </div>
 
-  <!-- Mermaid figure — detailed gold line-art -->
-  <div class="deco-fig float1">
-    <svg width="180" height="280" viewBox="0 0 180 280" fill="none">
-      <!-- Halo circles -->
-      <circle cx="90" cy="60" r="52" stroke="rgba(212,179,102,.12)" stroke-width=".4"/>
-      <circle cx="90" cy="60" r="62" stroke="rgba(212,179,102,.07)" stroke-width=".3" stroke-dasharray="2 4"/>
-      <circle cx="90" cy="60" r="72" stroke="rgba(212,179,102,.04)" stroke-width=".3"/>
-      <!-- Head -->
-      <ellipse cx="90" cy="48" rx="11" ry="13.5" stroke="var(--gold)" stroke-width=".8" fill="none"/>
-      <!-- Eyes -->
-      <path d="M84 46 Q86 44.5 88 46" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M92 46 Q94 44.5 96 46" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <circle cx="86" cy="45.5" r=".6" fill="var(--gold)"/>
-      <circle cx="94" cy="45.5" r=".6" fill="var(--gold)"/>
-      <!-- Lips -->
-      <path d="M87 51 Q90 52.5 93 51" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <!-- Flowing hair left -->
-      <path d="M79 42 Q72 38 66 42 Q60 48 56 58 Q52 68 50 80 Q48 92 46 100 Q44 108 40 114" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M79 44 Q74 42 70 46 Q64 54 60 66 Q56 78 54 88 Q52 96 48 104" stroke="rgba(212,179,102,.4)" stroke-width=".5" fill="none"/>
-      <path d="M80 40 Q76 34 68 36 Q58 40 52 52 Q46 64 42 78 Q38 92 36 104 Q34 112 30 118" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <!-- Flowing hair right -->
-      <path d="M101 42 Q108 38 114 42 Q120 48 124 58 Q128 68 130 80 Q132 92 134 100 Q136 108 140 114" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M101 44 Q106 42 110 46 Q116 54 120 66 Q124 78 126 88 Q128 96 132 104" stroke="rgba(212,179,102,.4)" stroke-width=".5" fill="none"/>
-      <path d="M100 40 Q104 34 112 36 Q122 40 128 52 Q134 64 138 78 Q142 92 144 104 Q146 112 150 118" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <!-- Hair ornament/crown -->
-      <path d="M82 36 L85 30 L88 35 L90 28 L92 35 L95 30 L98 36" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <circle cx="90" cy="27" r="1.5" stroke="var(--gold)" stroke-width=".4" fill="rgba(212,179,102,.15)"/>
-      <!-- Neck and shoulders -->
-      <path d="M86 61 Q86 66 84 70" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M94 61 Q94 66 96 70" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Arms -->
-      <path d="M84 70 Q78 74 72 80 Q66 86 62 94 Q60 100 64 104" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M96 70 Q102 74 108 80 Q114 86 118 94 Q120 100 116 104" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Hands holding -->
-      <path d="M64 104 Q66 108 70 106 Q72 104 70 102" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <path d="M116 104 Q114 108 110 106 Q108 104 110 102" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <!-- Torso -->
-      <path d="M84 70 Q83 82 82 94 Q81 106 82 118" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <path d="M96 70 Q97 82 98 94 Q99 106 98 118" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <!-- Waist detail -->
-      <path d="M82 100 Q86 102 90 100 Q94 102 98 100" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <path d="M82 105 Q86 107 90 105 Q94 107 98 105" stroke="rgba(212,179,102,.25)" stroke-width=".4" fill="none"/>
-      <!-- Tail - flowing curves -->
-      <path d="M82 118 Q78 134 72 150 Q66 166 58 180 Q50 194 42 206 Q36 214 28 220" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <path d="M98 118 Q102 134 100 150 Q98 166 92 180 Q86 194 78 206 Q72 214 66 220" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <!-- Scale pattern on tail -->
-      <path d="M80 128 Q84 130 88 128 Q92 130 96 128" stroke="rgba(212,179,102,.3)" stroke-width=".35" fill="none"/>
-      <path d="M76 140 Q80 142 84 140 Q88 142 92 140 Q96 142 100 140" stroke="rgba(212,179,102,.25)" stroke-width=".35" fill="none"/>
-      <path d="M72 152 Q76 154 80 152 Q84 154 88 152 Q92 154 96 152" stroke="rgba(212,179,102,.22)" stroke-width=".35" fill="none"/>
-      <path d="M68 164 Q72 166 76 164 Q80 166 84 164 Q88 166 92 164" stroke="rgba(212,179,102,.2)" stroke-width=".35" fill="none"/>
-      <path d="M62 178 Q66 180 70 178 Q74 180 78 178 Q82 180 86 178" stroke="rgba(212,179,102,.18)" stroke-width=".3" fill="none"/>
-      <!-- Tail fin - flowing forked shape -->
-      <path d="M28 220 Q22 228 16 238 Q12 248 14 256 Q18 252 24 248 Q30 244 38 240 Q44 236 48 234" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M28 220 Q24 230 22 242 Q20 252 24 260 Q28 254 34 248 Q40 242 44 238" stroke="rgba(212,179,102,.5)" stroke-width=".5" fill="none"/>
-      <path d="M66 220 Q72 228 76 238 Q78 248 74 256 Q70 250 64 244 Q58 238 52 234" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M66 220 Q70 230 72 242 Q74 252 70 260 Q66 254 60 248 Q54 242 50 238" stroke="rgba(212,179,102,.5)" stroke-width=".5" fill="none"/>
-      <!-- Fin veins -->
-      <path d="M20 240 Q28 236 36 234" stroke="rgba(212,179,102,.2)" stroke-width=".3" fill="none"/>
-      <path d="M22 250 Q30 244 38 240" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <path d="M72 240 Q64 236 56 234" stroke="rgba(212,179,102,.2)" stroke-width=".3" fill="none"/>
-      <path d="M72 250 Q64 244 56 240" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <!-- Stars scattered -->
-      <circle cx="22" cy="30" r="1.3" fill="rgba(212,179,102,.5)" class="shimmer"/>
-      <circle cx="158" cy="24" r="1" fill="rgba(212,179,102,.4)" class="shimmer" style="animation-delay:.7s"/>
-      <circle cx="14" cy="90" r=".9" fill="rgba(212,179,102,.35)" class="shimmer" style="animation-delay:1.4s"/>
-      <circle cx="166" cy="86" r="1.1" fill="rgba(212,179,102,.45)" class="shimmer" style="animation-delay:2.1s"/>
-      <circle cx="36" cy="150" r=".8" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:.4s"/>
-      <circle cx="144" cy="140" r="1" fill="rgba(212,179,102,.35)" class="shimmer" style="animation-delay:1.8s"/>
-      <circle cx="10" cy="200" r=".7" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:2.5s"/>
-      <circle cx="170" cy="180" r=".9" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1.1s"/>
-      <!-- Tiny constellation near head -->
-      <line x1="150" y1="18" x2="158" y2="24" stroke="rgba(212,179,102,.15)" stroke-width=".3"/>
-      <line x1="158" y1="24" x2="166" y2="20" stroke="rgba(212,179,102,.15)" stroke-width=".3"/>
-      <circle cx="150" cy="18" r=".7" fill="rgba(212,179,102,.3)"/>
-      <circle cx="166" cy="20" r=".6" fill="rgba(212,179,102,.25)"/>
-    </svg>
-  </div>
+  <!-- Mermaid figure — canvas rendered -->
+  <div class="deco-art float1"><canvas class="deco-canvas" data-fig="mermaid" data-w="280" data-h="420"></canvas></div>
 
   <div class="glass-card" style="margin-top:0">
     <p class="body-copy" style="padding:0;font-style:italic;color:rgba(255,255,255,.65)">✦ She avoids it the way she avoids the pile of mail on the counter. Not from ignorance, but from a relationship with money that was never built on calm.</p>
@@ -269,86 +188,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🌿</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S5 · Seed</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Mark the day. The Quiet Abundance Dinner awaits.</p></div></div>
   </div>
 
-  <!-- Tiger figure — celestial constellation style -->
-  <div class="deco-fig float2" style="margin-top:10px">
-    <svg width="240" height="160" viewBox="0 0 240 160" fill="none">
-      <!-- Aura circle -->
-      <circle cx="120" cy="80" r="70" stroke="rgba(212,179,102,.08)" stroke-width=".4" stroke-dasharray="3 5"/>
-      <!-- Head -->
-      <ellipse cx="54" cy="58" rx="18" ry="16" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <!-- Ears -->
-      <path d="M40 44 L36 32 L44 40" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M68 44 L72 32 L64 40" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Inner ears -->
-      <path d="M40 44 L38 36 L43 42" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <path d="M68 44 L70 36 L65 42" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <!-- Eyes — almond shaped -->
-      <path d="M44 54 Q48 50 52 54 Q48 52.5 44 54" stroke="var(--gold)" stroke-width=".5" fill="rgba(212,179,102,.15)"/>
-      <path d="M56 54 Q60 50 64 54 Q60 52.5 56 54" stroke="var(--gold)" stroke-width=".5" fill="rgba(212,179,102,.15)"/>
-      <circle cx="48" cy="53" r=".8" fill="var(--gold)"/>
-      <circle cx="60" cy="53" r=".8" fill="var(--gold)"/>
-      <!-- Nose and mouth -->
-      <path d="M52 58 L54 60 L56 58" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <path d="M54 60 Q54 62 52 63" stroke="var(--gold)" stroke-width=".3" fill="none"/>
-      <path d="M54 60 Q54 62 56 63" stroke="var(--gold)" stroke-width=".3" fill="none"/>
-      <!-- Whiskers -->
-      <line x1="42" y1="60" x2="26" y2="58" stroke="rgba(212,179,102,.25)" stroke-width=".3"/>
-      <line x1="42" y1="62" x2="24" y2="62" stroke="rgba(212,179,102,.2)" stroke-width=".3"/>
-      <line x1="42" y1="64" x2="26" y2="66" stroke="rgba(212,179,102,.25)" stroke-width=".3"/>
-      <line x1="66" y1="60" x2="82" y2="58" stroke="rgba(212,179,102,.25)" stroke-width=".3"/>
-      <line x1="66" y1="62" x2="84" y2="62" stroke="rgba(212,179,102,.2)" stroke-width=".3"/>
-      <line x1="66" y1="64" x2="82" y2="66" stroke="rgba(212,179,102,.25)" stroke-width=".3"/>
-      <!-- Tiger stripes on face -->
-      <path d="M42 48 Q44 44 42 40" stroke="rgba(212,179,102,.2)" stroke-width=".4" fill="none"/>
-      <path d="M48 46 Q50 42 48 38" stroke="rgba(212,179,102,.18)" stroke-width=".4" fill="none"/>
-      <path d="M60 46 Q58 42 60 38" stroke="rgba(212,179,102,.18)" stroke-width=".4" fill="none"/>
-      <path d="M66 48 Q64 44 66 40" stroke="rgba(212,179,102,.2)" stroke-width=".4" fill="none"/>
-      <!-- Neck / chest -->
-      <path d="M42 72 Q44 80 48 86 Q52 90 54 92" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M66 72 Q68 78 72 82 Q76 86 80 88" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Body — long flowing line -->
-      <path d="M54 92 Q62 96 74 98 Q90 100 110 98 Q130 96 150 92 Q168 88 182 82 Q194 76 200 70" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <path d="M80 88 Q90 92 104 94 Q120 96 138 94 Q156 90 170 84 Q184 78 194 72 Q200 68 204 62" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Belly line -->
-      <path d="M56 94 Q70 106 90 110 Q110 112 130 110 Q150 108 168 102 Q182 96 192 88" stroke="rgba(212,179,102,.35)" stroke-width=".5" fill="none"/>
-      <!-- Front legs -->
-      <path d="M56 94 Q54 106 52 118 Q50 128 52 134" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M52 134 Q48 136 46 134 Q44 132 48 130" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <path d="M72 100 Q70 112 68 124 Q66 132 68 136" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M68 136 Q64 138 62 136 Q60 134 64 132" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <!-- Hind legs -->
-      <path d="M170 96 Q168 110 164 122 Q162 130 164 136" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M164 136 Q160 138 158 136 Q156 134 160 132" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <path d="M186 88 Q184 102 180 116 Q178 126 180 132" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M180 132 Q176 134 174 132 Q172 130 176 128" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <!-- Tail — long curved up -->
-      <path d="M200 70 Q208 60 214 50 Q218 42 220 36 Q222 30 218 26 Q214 24 210 28 Q208 34 212 38" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Tiger stripes on body -->
-      <path d="M90 96 Q92 102 90 108" stroke="rgba(212,179,102,.2)" stroke-width=".4" fill="none"/>
-      <path d="M106 94 Q108 100 106 106" stroke="rgba(212,179,102,.18)" stroke-width=".4" fill="none"/>
-      <path d="M122 94 Q124 100 122 106" stroke="rgba(212,179,102,.18)" stroke-width=".4" fill="none"/>
-      <path d="M138 92 Q140 98 138 104" stroke="rgba(212,179,102,.2)" stroke-width=".4" fill="none"/>
-      <path d="M154 90 Q156 96 154 102" stroke="rgba(212,179,102,.18)" stroke-width=".4" fill="none"/>
-      <!-- Stars at joints — constellation points -->
-      <circle cx="54" cy="92" r="1.5" fill="rgba(212,179,102,.5)" class="shimmer"/>
-      <circle cx="80" cy="88" r="1.3" fill="rgba(212,179,102,.4)" class="shimmer" style="animation-delay:.5s"/>
-      <circle cx="120" cy="96" r="1.4" fill="rgba(212,179,102,.45)" class="shimmer" style="animation-delay:1s"/>
-      <circle cx="170" cy="90" r="1.3" fill="rgba(212,179,102,.4)" class="shimmer" style="animation-delay:1.5s"/>
-      <circle cx="200" cy="70" r="1.5" fill="rgba(212,179,102,.5)" class="shimmer" style="animation-delay:2s"/>
-      <circle cx="218" cy="26" r="1.2" fill="rgba(212,179,102,.45)" class="shimmer" style="animation-delay:.8s"/>
-      <!-- Constellation lines between stars -->
-      <line x1="54" y1="92" x2="80" y2="88" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <line x1="80" y1="88" x2="120" y2="96" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <line x1="120" y1="96" x2="170" y2="90" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <line x1="170" y1="90" x2="200" y2="70" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <line x1="200" y1="70" x2="218" y2="26" stroke="rgba(212,179,102,.1)" stroke-width=".3"/>
-      <!-- Scattered ambient stars -->
-      <circle cx="14" cy="20" r="1" fill="rgba(212,179,102,.35)" class="shimmer" style="animation-delay:1.2s"/>
-      <circle cx="230" cy="14" r=".8" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:2.2s"/>
-      <circle cx="8" cy="140" r=".7" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:.3s"/>
-      <circle cx="232" cy="148" r=".9" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1.7s"/>
-    </svg>
-  </div>
+  <!-- Tiger figure — canvas rendered -->
+  <div class="deco-art float2" style="margin-top:10px"><canvas class="deco-canvas" data-fig="tiger" data-w="320" data-h="220"></canvas></div>
 
   <!-- QUIZ -->
   <div class="sec-title" style="font-size:22px;margin-top:18px">Your Financial Diagnosis</div>
@@ -450,56 +291,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7" id="rd1Text"></div>
   </div>
 
-  <!-- Koi fish — gold line-art -->
-  <div class="deco-fig float3" style="margin-top:6px">
-    <svg width="200" height="140" viewBox="0 0 200 140" fill="none">
-      <!-- Water ripple circles -->
-      <circle cx="100" cy="70" r="60" stroke="rgba(212,179,102,.06)" stroke-width=".3"/>
-      <circle cx="100" cy="70" r="50" stroke="rgba(212,179,102,.08)" stroke-width=".3" stroke-dasharray="2 6"/>
-      <!-- Body — elegant S-curve -->
-      <path d="M30 68 Q42 52 58 48 Q74 44 90 48 Q106 52 118 60 Q130 68 140 74 Q150 78 160 76 Q168 72 172 66" stroke="var(--gold)" stroke-width=".8" fill="none"/>
-      <path d="M30 82 Q42 96 58 98 Q74 100 90 96 Q106 92 118 84 Q130 78 140 78 Q150 80 160 82 Q168 80 172 76" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <!-- Head -->
-      <ellipse cx="172" cy="71" rx="10" ry="7" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <!-- Eye -->
-      <circle cx="176" cy="69" r="2" stroke="var(--gold)" stroke-width=".5" fill="rgba(212,179,102,.15)"/>
-      <circle cx="176.5" cy="69" r=".7" fill="var(--gold)"/>
-      <!-- Mouth -->
-      <path d="M181 70 Q183 71 181 72" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <!-- Gill line -->
-      <path d="M164 66 Q162 70 164 74" stroke="rgba(212,179,102,.35)" stroke-width=".4" fill="none"/>
-      <!-- Dorsal fin — flowing -->
-      <path d="M80 48 Q76 34 70 28 Q66 26 68 32 Q72 40 78 46" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M90 46 Q88 36 84 30 Q82 28 84 34 Q86 40 90 46" stroke="rgba(212,179,102,.4)" stroke-width=".4" fill="none"/>
-      <path d="M100 50 Q98 42 96 36 Q94 32 96 38 Q98 44 100 50" stroke="rgba(212,179,102,.3)" stroke-width=".4" fill="none"/>
-      <!-- Pectoral fin -->
-      <path d="M130 76 Q126 86 120 94 Q116 98 120 96 Q126 92 130 86" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M134 78 Q132 86 128 92" stroke="rgba(212,179,102,.3)" stroke-width=".35" fill="none"/>
-      <!-- Ventral fin -->
-      <path d="M100 96 Q98 106 94 112 Q92 114 96 112 Q100 108 102 100" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <!-- Tail — forked flowing -->
-      <path d="M30 68 Q22 60 16 50 Q12 42 10 36 Q14 42 20 48 Q26 54 30 60" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M30 82 Q22 90 16 100 Q12 108 10 114 Q14 108 20 102 Q26 96 30 90" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M30 68 Q24 62 18 54 Q14 48 14 42" stroke="rgba(212,179,102,.4)" stroke-width=".4" fill="none"/>
-      <path d="M30 82 Q24 88 18 96 Q14 102 14 108" stroke="rgba(212,179,102,.4)" stroke-width=".4" fill="none"/>
-      <!-- Scale pattern -->
-      <path d="M60 64 Q64 62 68 64 Q72 62 76 64" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <path d="M80 60 Q84 58 88 60 Q92 58 96 60" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <path d="M100 62 Q104 60 108 62 Q112 60 116 62" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <path d="M120 66 Q124 64 128 66 Q132 64 136 66" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <path d="M70 78 Q74 76 78 78 Q82 76 86 78" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <path d="M90 80 Q94 78 98 80 Q102 78 106 80" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <!-- Bubbles -->
-      <circle cx="186" cy="60" r="2" stroke="rgba(212,179,102,.2)" stroke-width=".3" fill="none"/>
-      <circle cx="190" cy="52" r="1.5" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <circle cx="184" cy="48" r="1" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <!-- Stars -->
-      <circle cx="8" cy="20" r="1" fill="rgba(212,179,102,.4)" class="shimmer"/>
-      <circle cx="192" cy="16" r=".8" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1.3s"/>
-      <circle cx="50" cy="12" r=".7" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:2s"/>
-      <circle cx="150" cy="130" r=".9" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:.6s"/>
-    </svg>
-  </div>
+  <!-- Koi fish — canvas rendered -->
+  <div class="deco-art float3" style="margin-top:6px"><canvas class="deco-canvas" data-fig="koi" data-w="280" data-h="180"></canvas></div>
 
   <div class="wa-card">
     <div class="wa-title">Your ritual sisters</div>
@@ -524,58 +317,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Add one intentional element. A candle, a plant, your Abundance Bowl.</div></div></div>
     <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Sit in it for two minutes right now.</div></div></div>
   </div>
-  <!-- Sleeping leopard with stars & flowers -->
-  <div class="deco-fig float2" style="margin-top:14px">
-    <svg width="220" height="120" viewBox="0 0 220 120" fill="none">
-      <!-- Soft aura -->
-      <ellipse cx="110" cy="72" rx="90" ry="35" stroke="rgba(212,179,102,.06)" stroke-width=".3"/>
-      <!-- Body — curled sleeping pose -->
-      <path d="M40 78 Q50 60 70 54 Q90 48 110 50 Q130 52 150 58 Q168 64 180 72" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <path d="M40 78 Q50 90 70 94 Q90 96 110 94 Q130 92 150 88 Q168 84 180 78" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Head resting on paws -->
-      <ellipse cx="40" cy="74" rx="16" ry="12" stroke="var(--gold)" stroke-width=".7" fill="none"/>
-      <!-- Ear -->
-      <path d="M30 64 L26 54 L34 60" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M38 62 L36 54 L42 58" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <!-- Closed eyes (sleeping) -->
-      <path d="M32 72 Q35 70 38 72" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <path d="M42 72 Q45 70 48 72" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <!-- Nose -->
-      <path d="M38 76 Q40 77 42 76" stroke="var(--gold)" stroke-width=".3" fill="none"/>
-      <!-- Front paws tucked -->
-      <path d="M28 82 Q24 86 26 90 Q30 92 34 90 Q36 88 34 84" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M46 82 Q44 86 46 90 Q50 92 54 90 Q56 88 54 84" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <!-- Hind legs tucked -->
-      <path d="M160 82 Q158 90 162 96 Q168 98 174 94 Q176 90 172 86" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <!-- Tail curled -->
-      <path d="M180 72 Q188 66 194 62 Q200 58 204 56 Q208 56 206 60 Q202 64 196 68 Q190 72 184 76" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <!-- Spots pattern -->
-      <circle cx="70" cy="62" r="2.5" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <circle cx="82" cy="58" r="2" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="95" cy="56" r="2.5" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <circle cx="108" cy="55" r="2" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="122" cy="56" r="2.5" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <circle cx="136" cy="60" r="2" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="150" cy="64" r="2.5" stroke="rgba(212,179,102,.13)" stroke-width=".3" fill="none"/>
-      <circle cx="164" cy="70" r="2" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="78" cy="80" r="2" stroke="rgba(212,179,102,.1)" stroke-width=".3" fill="none"/>
-      <circle cx="100" cy="82" r="2.5" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="130" cy="80" r="2" stroke="rgba(212,179,102,.1)" stroke-width=".3" fill="none"/>
-      <!-- Flowers around -->
-      <path d="M60 36 Q62 32 64 36 Q68 34 66 38 Q68 42 64 40 Q60 42 62 38 Q58 36 60 36" stroke="rgba(212,179,102,.25)" stroke-width=".35" fill="none"/>
-      <circle cx="63" cy="37" r="1" fill="rgba(212,179,102,.2)"/>
-      <path d="M150 40 Q152 36 154 40 Q158 38 156 42 Q158 46 154 44 Q150 46 152 42 Q148 40 150 40" stroke="rgba(212,179,102,.2)" stroke-width=".35" fill="none"/>
-      <circle cx="153" cy="41" r="1" fill="rgba(212,179,102,.18)"/>
-      <path d="M196 44 Q198 40 200 44 Q204 42 202 46 Q204 50 200 48 Q196 50 198 46 Q192 44 196 44" stroke="rgba(212,179,102,.18)" stroke-width=".3" fill="none"/>
-      <circle cx="199" cy="45" r=".8" fill="rgba(212,179,102,.15)"/>
-      <!-- Stars -->
-      <circle cx="16" cy="26" r="1.2" fill="rgba(212,179,102,.45)" class="shimmer"/>
-      <circle cx="100" cy="22" r="1" fill="rgba(212,179,102,.35)" class="shimmer" style="animation-delay:1.5s"/>
-      <circle cx="180" cy="30" r=".9" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:.8s"/>
-      <circle cx="210" cy="100" r=".7" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:2.2s"/>
-      <circle cx="10" cy="100" r=".8" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1.1s"/>
-    </svg>
-  </div>
+  <!-- Sleeping leopard — canvas rendered -->
+  <div class="deco-art float2" style="margin-top:14px"><canvas class="deco-canvas" data-fig="leopard" data-w="300" data-h="180"></canvas></div>
 
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(2)">Space is set. Continue.</button></div>
   <footer>Marmaroph</footer>
@@ -596,30 +339,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="saveBowl()">Place it in the bowl ✦</button>
     <p style="font-size:11px;color:var(--gold);text-align:center;margin-top:6px;display:none" id="bowlMsg">✦ Placed with intention.</p>
   </div>
-  <!-- Leopard with flowers accent -->
-  <div class="deco-fig float3" style="margin-top:8px">
-    <svg width="140" height="80" viewBox="0 0 140 80" fill="none">
-      <path d="M22 44 Q28 34 40 30 Q52 28 62 32 Q72 36 82 40 Q92 42 100 40 Q108 36 114 32" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M22 44 Q28 50 40 54 Q52 56 62 54 Q72 52 82 48 Q92 46 100 48 Q108 50 114 48" stroke="rgba(212,179,102,.4)" stroke-width=".45" fill="none"/>
-      <ellipse cx="22" cy="40" rx="8" ry="6" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M16 34 L14 26 L18 32" stroke="var(--gold)" stroke-width=".35" fill="none"/>
-      <path d="M22 34 L22 26 L24 32" stroke="var(--gold)" stroke-width=".35" fill="none"/>
-      <circle cx="19" cy="39" r=".5" fill="var(--gold)"/>
-      <circle cx="24" cy="39" r=".5" fill="var(--gold)"/>
-      <path d="M114 32 Q120 26 126 24 Q130 24 128 28 Q124 32 118 36" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <circle cx="50" cy="36" r="1.8" stroke="rgba(212,179,102,.1)" stroke-width=".3" fill="none"/>
-      <circle cx="66" cy="36" r="1.5" stroke="rgba(212,179,102,.1)" stroke-width=".3" fill="none"/>
-      <circle cx="82" cy="38" r="1.8" stroke="rgba(212,179,102,.1)" stroke-width=".3" fill="none"/>
-      <circle cx="96" cy="38" r="1.5" stroke="rgba(212,179,102,.1)" stroke-width=".3" fill="none"/>
-      <!-- Flowers -->
-      <path d="M48 18 Q50 14 52 18 Q56 16 54 20 Q56 24 52 22 Q48 24 50 20 Q44 18 48 18" stroke="rgba(212,179,102,.22)" stroke-width=".3" fill="none"/>
-      <circle cx="51" cy="19" r=".8" fill="rgba(212,179,102,.18)"/>
-      <path d="M104 16 Q106 12 108 16 Q112 14 110 18 Q112 22 108 20 Q104 22 106 18 Q100 16 104 16" stroke="rgba(212,179,102,.18)" stroke-width=".3" fill="none"/>
-      <circle cx="107" cy="17" r=".7" fill="rgba(212,179,102,.15)"/>
-      <circle cx="6" cy="12" r=".8" fill="rgba(212,179,102,.35)" class="shimmer"/>
-      <circle cx="134" cy="14" r=".7" fill="rgba(212,179,102,.28)" class="shimmer" style="animation-delay:1.2s"/>
-    </svg>
-  </div>
+  <!-- Leopard accent — canvas rendered -->
+  <div class="deco-art float3" style="margin-top:8px"><canvas class="deco-canvas" data-fig="leopard-sm" data-w="220" data-h="110"></canvas></div>
 
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(3)">Offering placed. Continue.</button></div>
   <footer>Marmaroph</footer>
@@ -643,24 +364,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="glass-card">
     <p style="font-size:14px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.75;text-align:center" id="todayAff">"Money has never been your enemy."</p>
   </div>
-  <!-- Small koi fish accent -->
-  <div class="deco-fig float1" style="margin-top:8px">
-    <svg width="140" height="80" viewBox="0 0 140 80" fill="none">
-      <path d="M20 40 Q30 28 46 26 Q62 24 76 30 Q88 36 98 42 Q108 46 116 44 Q122 40 126 36" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M20 48 Q30 58 46 58 Q62 56 76 50 Q88 46 98 46 Q108 48 116 50 Q122 48 126 44" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <ellipse cx="126" cy="40" rx="7" ry="5" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <circle cx="129" cy="39" r="1.2" stroke="var(--gold)" stroke-width=".4" fill="rgba(212,179,102,.12)"/>
-      <circle cx="129.3" cy="39" r=".4" fill="var(--gold)"/>
-      <path d="M20 40 Q14 34 10 28 Q14 34 18 38" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M20 48 Q14 54 10 60 Q14 54 18 48" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M60 28 Q58 20 54 16" stroke="rgba(212,179,102,.3)" stroke-width=".35" fill="none"/>
-      <path d="M72 30 Q70 24 68 20" stroke="rgba(212,179,102,.25)" stroke-width=".35" fill="none"/>
-      <circle cx="134" cy="30" r="1.3" stroke="rgba(212,179,102,.15)" stroke-width=".3" fill="none"/>
-      <circle cx="136" cy="24" r="1" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="6" cy="18" r=".8" fill="rgba(212,179,102,.35)" class="shimmer"/>
-      <circle cx="134" cy="12" r=".7" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:1.4s"/>
-    </svg>
-  </div>
+  <!-- Koi accent — canvas rendered -->
+  <div class="deco-art float1" style="margin-top:8px"><canvas class="deco-canvas" data-fig="koi-sm" data-w="200" data-h="100"></canvas></div>
 
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(4)">Grounded. Continue.</button></div>
   <footer>Marmaroph</footer>
@@ -698,25 +403,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div id="expList"></div>
   </div>
 
-  <!-- Tiger accent -->
-  <div class="deco-fig float3" style="margin-top:8px">
-    <svg width="160" height="80" viewBox="0 0 160 80" fill="none">
-      <!-- Crouching tiger silhouette — simplified -->
-      <path d="M24 42 Q30 32 42 28 Q54 26 64 30 Q74 34 84 38 Q94 40 104 40 Q114 38 122 34 Q130 30 136 28" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M24 42 Q30 48 42 52 Q54 54 64 52 Q74 50 84 48 Q94 48 104 50 Q114 52 122 50 Q130 46 136 42" stroke="rgba(212,179,102,.45)" stroke-width=".5" fill="none"/>
-      <ellipse cx="24" cy="38" rx="8" ry="7" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M18 32 L16 24 L20 30" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <path d="M26 32 L24 24 L28 30" stroke="var(--gold)" stroke-width=".4" fill="none"/>
-      <circle cx="20" cy="37" r=".6" fill="var(--gold)"/>
-      <circle cx="26" cy="37" r=".6" fill="var(--gold)"/>
-      <path d="M136 28 Q142 22 148 20 Q152 20 150 24 Q146 28 140 32" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <circle cx="70" cy="34" r="1.5" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="86" cy="36" r="1.2" stroke="rgba(212,179,102,.1)" stroke-width=".3" fill="none"/>
-      <circle cx="102" cy="36" r="1.5" stroke="rgba(212,179,102,.12)" stroke-width=".3" fill="none"/>
-      <circle cx="8" cy="16" r=".9" fill="rgba(212,179,102,.35)" class="shimmer"/>
-      <circle cx="152" cy="12" r=".7" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:1.6s"/>
-    </svg>
-  </div>
+  <!-- Tiger accent — canvas rendered -->
+  <div class="deco-art float3" style="margin-top:8px"><canvas class="deco-canvas" data-fig="tiger-sm" data-w="220" data-h="110"></canvas></div>
 
   <!-- FINANCE TOOL BUTTON -->
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="openFinance()">💰 Open My Finances</button></div>
@@ -740,24 +428,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin:12px 0">A small gathering of women who have spent 30 days in conscious relationship with their resources.</p>
     <button class="btn btn-primary" id="rsvpBtn" onclick="doRSVP()">RSVP for the Dinner</button>
   </div>
-  <!-- Mermaid silhouette — small -->
-  <div class="deco-fig float2" style="margin-top:8px">
-    <svg width="100" height="160" viewBox="0 0 100 160" fill="none">
-      <circle cx="50" cy="34" r="32" stroke="rgba(212,179,102,.08)" stroke-width=".3" stroke-dasharray="2 5"/>
-      <ellipse cx="50" cy="28" rx="6" ry="7.5" stroke="var(--gold)" stroke-width=".6" fill="none"/>
-      <path d="M44 26 Q38 24 34 28 Q30 34 28 42 Q26 50 24 56" stroke="rgba(212,179,102,.4)" stroke-width=".4" fill="none"/>
-      <path d="M56 26 Q62 24 66 28 Q70 34 72 42 Q74 50 76 56" stroke="rgba(212,179,102,.4)" stroke-width=".4" fill="none"/>
-      <path d="M46 35 Q46 44 45 54 Q44 62 44 68" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M54 35 Q54 44 55 54 Q56 62 56 68" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M44 68 Q42 80 38 92 Q34 104 28 114 Q24 120 20 124" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M56 68 Q58 80 56 92 Q54 104 50 114 Q48 120 44 124" stroke="var(--gold)" stroke-width=".5" fill="none"/>
-      <path d="M20 124 Q16 130 12 138 Q16 134 22 132 Q28 130 34 132 Q38 136 42 142" stroke="var(--gold)" stroke-width=".45" fill="none"/>
-      <path d="M44 124 Q48 130 50 138 Q48 134 42 132" stroke="var(--gold)" stroke-width=".45" fill="none"/>
-      <circle cx="82" cy="14" r=".8" fill="rgba(212,179,102,.35)" class="shimmer"/>
-      <circle cx="16" cy="10" r=".7" fill="rgba(212,179,102,.3)" class="shimmer" style="animation-delay:1s"/>
-      <circle cx="88" cy="80" r=".6" fill="rgba(212,179,102,.25)" class="shimmer" style="animation-delay:1.8s"/>
-    </svg>
-  </div>
+  <!-- Mermaid accent — canvas rendered -->
+  <div class="deco-art float2" style="margin-top:8px"><canvas class="deco-canvas" data-fig="mermaid-sm" data-w="160" data-h="220"></canvas></div>
 
   <div class="sec-title" style="font-size:18px;margin-top:16px">Your ritual month</div>
   <div class="month-cal"><div class="mc-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="mc-body" id="calSeed"></div></div>
@@ -1395,9 +1067,589 @@ function drawCelestial(){
   window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight});
 }
 
+/* ═══════════════════════════════════════════════════ */
+/* DECORATIVE CANVAS ART — gold line-art figures       */
+/* ═══════════════════════════════════════════════════ */
+function initDecoArt(){
+  document.querySelectorAll('.deco-canvas').forEach(function(c){
+    var fig=c.dataset.fig,w=+c.dataset.w,h=+c.dataset.h;
+    var dpr=window.devicePixelRatio||1;
+    c.width=w*dpr;c.height=h*dpr;
+    c.style.width=w+'px';c.style.height=h+'px';
+    var ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+    // Gold colors
+    var G='rgba(212,179,102,',gold=G+'0.7)',goldB=G+'0.55)',goldD=G+'0.3)',goldF=G+'0.15)';
+    // Helper: stroke with glow
+    function glow(color,blur){ctx.shadowColor=color;ctx.shadowBlur=blur}
+    function noGlow(){ctx.shadowColor='transparent';ctx.shadowBlur=0}
+    // Helper: draw smooth bezier curve
+    function bez(pts,color,lw,gl){
+      ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineCap='round';
+      if(gl){glow(G+'0.4)',gl)}
+      ctx.moveTo(pts[0],pts[1]);
+      for(var i=2;i<pts.length-2;i+=4){ctx.bezierCurveTo(pts[i],pts[i+1],pts[i+2],pts[i+3],pts[i+4]||pts[i+2],pts[i+5]||pts[i+3])}
+      ctx.stroke();noGlow();
+    }
+    // Helper: draw star
+    function star(x,y,r,a){
+      ctx.beginPath();ctx.arc(x,y,r,0,6.28);
+      ctx.fillStyle=G+(a||.5)+')';
+      glow(G+'0.6)',r*6);ctx.fill();noGlow();
+      ctx.beginPath();ctx.arc(x,y,r*.4,0,6.28);ctx.fillStyle=G+'0.9)';ctx.fill();
+    }
+    // Helper: draw constellation line
+    function conLine(x1,y1,x2,y2,a){
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+      ctx.strokeStyle=G+(a||.12)+')';ctx.lineWidth=.5;ctx.stroke();
+    }
+    // Helper: draw halo ring
+    function halo(cx,cy,r,a,dash){
+      ctx.beginPath();ctx.arc(cx,cy,r,0,6.28);
+      ctx.strokeStyle=G+(a||.08)+')';ctx.lineWidth=.5;
+      if(dash){ctx.setLineDash(dash)}ctx.stroke();ctx.setLineDash([]);
+    }
+    // Helper: 5-petal flower
+    function flower(cx,cy,r,a){
+      for(var p=0;p<5;p++){
+        var ang=p*1.2566-1.57;
+        ctx.beginPath();ctx.ellipse(cx+Math.cos(ang)*r*.6,cy+Math.sin(ang)*r*.6,r*.5,r*.25,ang,0,6.28);
+        ctx.strokeStyle=G+(a||.2)+')';ctx.lineWidth=.6;ctx.stroke();
+      }
+      ctx.beginPath();ctx.arc(cx,cy,r*.25,0,6.28);ctx.fillStyle=G+(a||.2)+')';ctx.fill();
+    }
+    // Helper: rosette spot (leopard)
+    function rosette(cx,cy,r){
+      ctx.beginPath();ctx.arc(cx,cy,r,0,6.28);
+      ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.6;ctx.stroke();
+      for(var d=0;d<4;d++){
+        var da=d*1.57+.4;
+        ctx.beginPath();ctx.arc(cx+Math.cos(da)*r*.6,cy+Math.sin(da)*r*.6,r*.2,0,6.28);
+        ctx.fillStyle=G+'0.08)';ctx.fill();
+      }
+    }
+
+    /* ── MERMAID (large, welcome) ── */
+    if(fig==='mermaid'){
+      var cx=w/2,s=w/280; // scale factor
+      // Halos
+      halo(cx,85*s,75*s,.1);halo(cx,85*s,90*s,.06,[3,5]);halo(cx,85*s,105*s,.03);
+      // Head
+      ctx.beginPath();ctx.ellipse(cx,68*s,15*s,18*s,0,0,6.28);
+      ctx.strokeStyle=gold;ctx.lineWidth=1.2;glow(G+'0.3)',8);ctx.stroke();noGlow();
+      // Face details
+      ctx.beginPath();ctx.moveTo(cx-8*s,63*s);ctx.quadraticCurveTo(cx-5*s,60*s,cx-2*s,63*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+2*s,63*s);ctx.quadraticCurveTo(cx+5*s,60*s,cx+8*s,63*s);ctx.stroke();
+      ctx.beginPath();ctx.arc(cx-5*s,62*s,1*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
+      ctx.beginPath();ctx.arc(cx+5*s,62*s,1*s,0,6.28);ctx.fill();
+      ctx.beginPath();ctx.moveTo(cx-3*s,72*s);ctx.quadraticCurveTo(cx,74*s,cx+3*s,72*s);ctx.strokeStyle=goldD;ctx.lineWidth=.6;ctx.stroke();
+      // Crown
+      var crY=50*s;
+      ctx.beginPath();ctx.moveTo(cx-12*s,crY+4*s);
+      ctx.lineTo(cx-8*s,crY-4*s);ctx.lineTo(cx-4*s,crY+2*s);ctx.lineTo(cx,crY-8*s);
+      ctx.lineTo(cx+4*s,crY+2*s);ctx.lineTo(cx+8*s,crY-4*s);ctx.lineTo(cx+12*s,crY+4*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.8;glow(G+'0.4)',6);ctx.stroke();noGlow();
+      // Crown jewel
+      ctx.beginPath();ctx.arc(cx,crY-8*s,2.5*s,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.6;ctx.stroke();
+      ctx.beginPath();ctx.arc(cx,crY-8*s,1*s,0,6.28);ctx.fillStyle=G+'0.3)';ctx.fill();
+      // Flowing hair — 6 strands each side with varying opacity
+      var hairL=[
+        [cx-15*s,58*s, cx-25*s,52*s, cx-35*s,60*s, cx-40*s,78*s, cx-42*s,100*s, cx-40*s,120*s, cx-36*s,140*s, cx-30*s,155*s],
+        [cx-14*s,60*s, cx-22*s,56*s, cx-30*s,64*s, cx-36*s,82*s, cx-38*s,102*s, cx-38*s,122*s, cx-34*s,138*s],
+        [cx-13*s,62*s, cx-20*s,60*s, cx-26*s,70*s, cx-32*s,88*s, cx-34*s,108*s, cx-32*s,126*s],
+        [cx-16*s,56*s, cx-28*s,48*s, cx-42*s,54*s, cx-48*s,72*s, cx-50*s,96*s, cx-48*s,118*s, cx-44*s,138*s, cx-38*s,156*s, cx-32*s,168*s],
+        [cx-17*s,54*s, cx-32*s,44*s, cx-50*s,50*s, cx-58*s,68*s, cx-60*s,92*s, cx-56*s,116*s, cx-50*s,140*s, cx-42*s,162*s],
+        [cx-15*s,55*s, cx-24*s,50*s, cx-32*s,58*s, cx-38*s,74*s, cx-40*s,94*s, cx-38*s,114*s]
+      ];
+      var hairR=hairL.map(function(h){return h.map(function(v,i){return i%2===0?cx+(cx-v):v})});
+      var hairAlpha=[.65,.45,.3,.5,.35,.25];
+      for(var hi=0;hi<hairL.length;hi++){
+        ctx.beginPath();ctx.moveTo(hairL[hi][0],hairL[hi][1]);
+        for(var hj=2;hj<hairL[hi].length-2;hj+=4){
+          ctx.bezierCurveTo(hairL[hi][hj],hairL[hi][hj+1],hairL[hi][hj+2],hairL[hi][hj+3],
+            hairL[hi][hj+4]||hairL[hi][hj+2],hairL[hi][hj+5]||hairL[hi][hj+3]);
+        }
+        ctx.strokeStyle=G+hairAlpha[hi]+')';ctx.lineWidth=.8+(hi===0?.3:0);
+        if(hi<2){glow(G+'0.2)',4)}ctx.stroke();noGlow();
+      }
+      for(var hi=0;hi<hairR.length;hi++){
+        ctx.beginPath();ctx.moveTo(hairR[hi][0],hairR[hi][1]);
+        for(var hj=2;hj<hairR[hi].length-2;hj+=4){
+          ctx.bezierCurveTo(hairR[hi][hj],hairR[hi][hj+1],hairR[hi][hj+2],hairR[hi][hj+3],
+            hairR[hi][hj+4]||hairR[hi][hj+2],hairR[hi][hj+5]||hairR[hi][hj+3]);
+        }
+        ctx.strokeStyle=G+hairAlpha[hi]+')';ctx.lineWidth=.8+(hi===0?.3:0);
+        if(hi<2){glow(G+'0.2)',4)}ctx.stroke();noGlow();
+      }
+      // Neck
+      ctx.beginPath();ctx.moveTo(cx-4*s,86*s);ctx.quadraticCurveTo(cx-5*s,95*s,cx-6*s,100*s);ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+4*s,86*s);ctx.quadraticCurveTo(cx+5*s,95*s,cx+6*s,100*s);ctx.stroke();
+      // Arms — graceful outward curves
+      ctx.beginPath();ctx.moveTo(cx-6*s,100*s);ctx.bezierCurveTo(cx-14*s,108*s,cx-24*s,118*s,cx-30*s,132*s);
+      ctx.bezierCurveTo(cx-34*s,142*s,cx-32*s,148*s,cx-26*s,150*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(cx+6*s,100*s);ctx.bezierCurveTo(cx+14*s,108*s,cx+24*s,118*s,cx+30*s,132*s);
+      ctx.bezierCurveTo(cx+34*s,142*s,cx+32*s,148*s,cx+26*s,150*s);ctx.stroke();
+      // Fingers
+      for(var fi=-1;fi<=1;fi++){
+        ctx.beginPath();ctx.moveTo(cx-26*s,150*s);ctx.quadraticCurveTo(cx-28*s+fi*2*s,154*s,cx-24*s+fi*3*s,156*s);
+        ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(cx+26*s,150*s);ctx.quadraticCurveTo(cx+28*s-fi*2*s,154*s,cx+24*s-fi*3*s,156*s);ctx.stroke();
+      }
+      // Torso
+      ctx.beginPath();ctx.moveTo(cx-6*s,100*s);ctx.bezierCurveTo(cx-8*s,120*s,cx-10*s,140*s,cx-12*s,165*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(cx+6*s,100*s);ctx.bezierCurveTo(cx+8*s,120*s,cx+10*s,140*s,cx+12*s,165*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
+      // Waist ornament
+      for(var wi=0;wi<4;wi++){
+        ctx.beginPath();
+        var wy=140*s+wi*6*s;
+        ctx.moveTo(cx-10*s,wy);ctx.quadraticCurveTo(cx-5*s,wy+3*s,cx,wy);
+        ctx.quadraticCurveTo(cx+5*s,wy+3*s,cx+10*s,wy);
+        ctx.strokeStyle=G+(0.25-wi*.04)+')';ctx.lineWidth=.5;ctx.stroke();
+      }
+      // Tail — two main curves diverging
+      ctx.beginPath();ctx.moveTo(cx-12*s,165*s);
+      ctx.bezierCurveTo(cx-16*s,190*s,cx-24*s,220*s,cx-36*s,250*s);
+      ctx.bezierCurveTo(cx-46*s,272*s,cx-58*s,290*s,cx-68*s,310*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.3)',6);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(cx+12*s,165*s);
+      ctx.bezierCurveTo(cx+10*s,190*s,cx+4*s,220*s,cx-8*s,250*s);
+      ctx.bezierCurveTo(cx-18*s,272*s,cx-30*s,290*s,cx-40*s,310*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
+      // Scale pattern — overlapping arcs
+      for(var sy=175*s;sy<300*s;sy+=12*s){
+        var tailCx=cx-((sy-165*s)/(300*s-165*s))*30*s;
+        var tailW=14*s-((sy-165*s)/(300*s-165*s))*6*s;
+        var sa=.2-((sy-175*s)/(300*s-175*s))*.1;
+        for(var sx=-2;sx<=2;sx++){
+          ctx.beginPath();ctx.arc(tailCx+sx*tailW*.4,sy,tailW*.3,0,Math.PI);
+          ctx.strokeStyle=G+sa+')';ctx.lineWidth=.4;ctx.stroke();
+        }
+      }
+      // Tail fin — flowing forked shape with veins
+      var finBase=310*s;
+      // Left fin
+      ctx.beginPath();ctx.moveTo(cx-68*s,finBase);
+      ctx.bezierCurveTo(cx-78*s,finBase+20*s,cx-88*s,finBase+40*s,cx-92*s,finBase+60*s);
+      ctx.bezierCurveTo(cx-94*s,finBase+72*s,cx-88*s,finBase+78*s,cx-80*s,finBase+74*s);
+      ctx.bezierCurveTo(cx-70*s,finBase+68*s,cx-60*s,finBase+56*s,cx-54*s,finBase+42*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.25)',4);ctx.stroke();noGlow();
+      // Right fin
+      ctx.beginPath();ctx.moveTo(cx-40*s,finBase);
+      ctx.bezierCurveTo(cx-30*s,finBase+18*s,cx-22*s,finBase+36*s,cx-18*s,finBase+56*s);
+      ctx.bezierCurveTo(cx-16*s,finBase+68*s,cx-22*s,finBase+76*s,cx-30*s,finBase+72*s);
+      ctx.bezierCurveTo(cx-38*s,finBase+66*s,cx-46*s,finBase+54*s,cx-50*s,finBase+40*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.25)',4);ctx.stroke();noGlow();
+      // Fin veins
+      for(var fv=0;fv<5;fv++){
+        var fvt=fv/5;
+        ctx.beginPath();
+        ctx.moveTo(cx-68*s-fvt*24*s,(finBase+fvt*60*s));
+        ctx.lineTo(cx-56*s-fvt*4*s,(finBase+20*s+fvt*30*s));
+        ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.4;ctx.stroke();
+      }
+      for(var fv=0;fv<4;fv++){
+        var fvt=fv/4;
+        ctx.beginPath();
+        ctx.moveTo(cx-40*s+fvt*18*s,(finBase+fvt*56*s));
+        ctx.lineTo(cx-48*s+fvt*8*s,(finBase+18*s+fvt*28*s));
+        ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.4;ctx.stroke();
+      }
+      // Stars
+      star(30*s,40*s,2*s,.5);star(w-30*s,32*s,1.8*s,.4);
+      star(20*s,130*s,1.5*s,.35);star(w-22*s,120*s,1.7*s,.4);
+      star(15*s,220*s,1.2*s,.3);star(w-18*s,240*s,1.4*s,.35);
+      star(40*s,300*s,1*s,.25);star(w-35*s,340*s,1.3*s,.3);
+      // Constellation near crown
+      conLine(w-40*s,25*s,w-30*s,32*s,.15);conLine(w-30*s,32*s,w-22*s,28*s,.12);
+      star(w-40*s,25*s,1*s,.3);star(w-22*s,28*s,.8*s,.25);
+    }
+
+    /* ── TIGER (large, welcome) ── */
+    if(fig==='tiger'){
+      var s=w/320;
+      // Aura
+      halo(w/2,100*s,100*s,.06,[4,6]);
+      // HEAD
+      ctx.beginPath();ctx.ellipse(72*s,78*s,26*s,22*s,0,0,6.28);
+      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.3)',8);ctx.stroke();noGlow();
+      // Inner head structure
+      ctx.beginPath();ctx.ellipse(72*s,78*s,20*s,17*s,0,0,6.28);
+      ctx.strokeStyle=goldD;ctx.lineWidth=.4;ctx.stroke();
+      // Ears
+      ctx.beginPath();ctx.moveTo(52*s,60*s);ctx.lineTo(44*s,38*s);ctx.lineTo(58*s,56*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(92*s,60*s);ctx.lineTo(100*s,38*s);ctx.lineTo(86*s,56*s);ctx.stroke();
+      // Inner ears
+      ctx.beginPath();ctx.moveTo(54*s,60*s);ctx.lineTo(48*s,44*s);ctx.lineTo(57*s,58*s);
+      ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(90*s,60*s);ctx.lineTo(96*s,44*s);ctx.lineTo(87*s,58*s);ctx.stroke();
+      // Eyes — almond with glow
+      ctx.beginPath();ctx.moveTo(58*s,74*s);ctx.bezierCurveTo(62*s,68*s,68*s,68*s,72*s,74*s);
+      ctx.bezierCurveTo(68*s,72*s,62*s,72*s,58*s,74*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.fillStyle=G+'0.1)';ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.arc(65*s,72.5*s,1.2*s,0,6.28);ctx.fillStyle=gold;glow(G+'0.5)',4);ctx.fill();noGlow();
+      ctx.beginPath();ctx.moveTo(72*s,74*s);ctx.bezierCurveTo(76*s,68*s,82*s,68*s,86*s,74*s);
+      ctx.bezierCurveTo(82*s,72*s,76*s,72*s,72*s,74*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.fillStyle=G+'0.1)';ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.arc(79*s,72.5*s,1.2*s,0,6.28);ctx.fillStyle=gold;glow(G+'0.5)',4);ctx.fill();noGlow();
+      // Nose
+      ctx.beginPath();ctx.moveTo(69*s,80*s);ctx.lineTo(72*s,83*s);ctx.lineTo(75*s,80*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.6;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(72*s,83*s);ctx.quadraticCurveTo(72*s,86*s,69*s,87*s);ctx.strokeStyle=goldD;ctx.lineWidth=.4;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(72*s,83*s);ctx.quadraticCurveTo(72*s,86*s,75*s,87*s);ctx.stroke();
+      // Whiskers — 4 each side
+      for(var wi=0;wi<4;wi++){
+        var wa=.25-wi*.04,wy=80*s+wi*3*s;
+        ctx.beginPath();ctx.moveTo(56*s,wy);ctx.lineTo(28*s-wi*4*s,wy-4*s+wi*3*s);
+        ctx.strokeStyle=G+wa+')';ctx.lineWidth=.4;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(88*s,wy);ctx.lineTo(116*s+wi*4*s,wy-4*s+wi*3*s);ctx.stroke();
+      }
+      // Stripes on forehead — elegant curves
+      for(var si=0;si<6;si++){
+        var sx=54*s+si*7*s,sOff=(si<3?-1:1)*(3-Math.abs(si-2.5))*2*s;
+        ctx.beginPath();ctx.moveTo(sx,62*s);ctx.quadraticCurveTo(sx+sOff,52*s,sx,42*s+Math.abs(si-2.5)*4*s);
+        ctx.strokeStyle=G+(0.2-Math.abs(si-2.5)*.03)+')';ctx.lineWidth=.6;ctx.stroke();
+      }
+      // NECK
+      ctx.beginPath();ctx.moveTo(56*s,96*s);ctx.bezierCurveTo(58*s,108*s,62*s,118*s,68*s,126*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(88*s,96*s);ctx.bezierCurveTo(92*s,106*s,98*s,114*s,106*s,120*s);ctx.stroke();
+      // BODY — muscular flowing curves
+      ctx.beginPath();ctx.moveTo(68*s,126*s);
+      ctx.bezierCurveTo(82*s,132*s,110*s,138*s,140*s,136*s);
+      ctx.bezierCurveTo(170*s,134*s,200*s,128*s,230*s,118*s);
+      ctx.bezierCurveTo(250*s,110*s,265*s,100*s,275*s,92*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.25)',5);ctx.stroke();noGlow();
+      // Lower body
+      ctx.beginPath();ctx.moveTo(106*s,120*s);
+      ctx.bezierCurveTo(120*s,126*s,145*s,132*s,170*s,132*s);
+      ctx.bezierCurveTo(200*s,132*s,225*s,126*s,250*s,118*s);
+      ctx.bezierCurveTo(265*s,112*s,275*s,104*s,280*s,96*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
+      // Belly
+      ctx.beginPath();ctx.moveTo(78*s,130*s);
+      ctx.bezierCurveTo(100*s,150*s,130*s,158*s,165*s,156*s);
+      ctx.bezierCurveTo(200*s,154*s,230*s,148*s,255*s,138*s);
+      ctx.bezierCurveTo(268*s,132*s,278*s,124*s,282*s,116*s);
+      ctx.strokeStyle=goldD;ctx.lineWidth=.7;ctx.stroke();
+      // LEGS — front
+      ctx.beginPath();ctx.moveTo(78*s,130*s);ctx.bezierCurveTo(76*s,148*s,72*s,166*s,70*s,182*s);
+      ctx.bezierCurveTo(68*s,190*s,70*s,194*s,74*s,194*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
+      // Paw detail
+      ctx.beginPath();ctx.moveTo(74*s,194*s);ctx.quadraticCurveTo(68*s,196*s,64*s,194*s);
+      ctx.quadraticCurveTo(62*s,192*s,66*s,190*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(96*s,138*s);ctx.bezierCurveTo(94*s,156*s,90*s,172*s,88*s,186*s);
+      ctx.bezierCurveTo(86*s,192*s,88*s,196*s,92*s,196*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(92*s,196*s);ctx.quadraticCurveTo(86*s,198*s,82*s,196*s);
+      ctx.quadraticCurveTo(80*s,194*s,84*s,192*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      // LEGS — hind
+      ctx.beginPath();ctx.moveTo(238*s,134*s);ctx.bezierCurveTo(234*s,154*s,228*s,170*s,224*s,184*s);
+      ctx.bezierCurveTo(222*s,190*s,224*s,194*s,228*s,194*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(228*s,194*s);ctx.quadraticCurveTo(222*s,196*s,218*s,194*s);
+      ctx.quadraticCurveTo(216*s,192*s,220*s,190*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(258*s,124*s);ctx.bezierCurveTo(256*s,144*s,252*s,162*s,248*s,178*s);
+      ctx.bezierCurveTo(246*s,186*s,248*s,190*s,252*s,190*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.8;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(252*s,190*s);ctx.quadraticCurveTo(246*s,192*s,242*s,190*s);
+      ctx.quadraticCurveTo(240*s,188*s,244*s,186*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      // TAIL — long elegant curl
+      ctx.beginPath();ctx.moveTo(275*s,92*s);
+      ctx.bezierCurveTo(285*s,80*s,292*s,66*s,296*s,52*s);
+      ctx.bezierCurveTo(298*s,40*s,296*s,30*s,290*s,26*s);
+      ctx.bezierCurveTo(284*s,22*s,280*s,28*s,282*s,36*s);
+      ctx.bezierCurveTo(284*s,44*s,288*s,48*s,290*s,42*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      // Body stripes
+      for(var bi=0;bi<8;bi++){
+        var bx=100*s+bi*22*s;
+        var by1=130*s+((bi<3)?bi*4:8-(bi-3)*2)*s;
+        var by2=by1+18*s;
+        ctx.beginPath();ctx.moveTo(bx,by1);ctx.quadraticCurveTo(bx+2*s,by1+(by2-by1)/2,bx,by2);
+        ctx.strokeStyle=G+(0.15-bi*.01)+')';ctx.lineWidth=.7;ctx.stroke();
+      }
+      // Constellation stars at joints
+      var joints=[[68*s,126*s],[106*s,120*s],[165*s,136*s],[238*s,126*s],[275*s,92*s],[290*s,26*s]];
+      for(var ji=0;ji<joints.length;ji++){
+        star(joints[ji][0],joints[ji][1],2*s,.45);
+      }
+      for(var ji=0;ji<joints.length-1;ji++){
+        conLine(joints[ji][0],joints[ji][1],joints[ji+1][0],joints[ji+1][1],.1);
+      }
+      // Ambient stars
+      star(18*s,22*s,1.5*s,.35);star(w-12*s,16*s,1.2*s,.3);
+      star(10*s,h-16*s,1*s,.25);star(w-14*s,h-12*s,1.3*s,.28);
+    }
+
+    /* ── KOI (medium, home screen) ── */
+    if(fig==='koi'){
+      var s=w/280;
+      halo(w/2,90*s,.45*w,.05,[3,7]);halo(w/2,90*s,.35*w,.07);
+      // Body S-curve — cubic bezier for smooth flow
+      ctx.beginPath();ctx.moveTo(40*s,90*s);
+      ctx.bezierCurveTo(60*s,60*s,90*s,50*s,120*s,58*s);
+      ctx.bezierCurveTo(150*s,66*s,175*s,82*s,200*s,90*s);
+      ctx.bezierCurveTo(215*s,94*s,230*s,92*s,242*s,84*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=1.2;glow(G+'0.3)',6);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(40*s,104*s);
+      ctx.bezierCurveTo(60*s,130*s,90*s,136*s,120*s,128*s);
+      ctx.bezierCurveTo(150*s,120*s,175*s,106*s,200*s,102*s);
+      ctx.bezierCurveTo(215*s,100*s,230*s,104*s,242*s,100*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=1;ctx.stroke();
+      // Head
+      ctx.beginPath();ctx.ellipse(248*s,92*s,14*s,10*s,-.15,0,6.28);
+      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',5);ctx.stroke();noGlow();
+      // Eye
+      ctx.beginPath();ctx.arc(254*s,89*s,3*s,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.arc(254.5*s,89*s,1*s,0,6.28);ctx.fillStyle=gold;glow(G+'0.5)',3);ctx.fill();noGlow();
+      // Mouth
+      ctx.beginPath();ctx.moveTo(261*s,91*s);ctx.quadraticCurveTo(264*s,93*s,261*s,95*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      // Gill
+      ctx.beginPath();ctx.moveTo(236*s,86*s);ctx.quadraticCurveTo(234*s,92*s,236*s,98*s);ctx.strokeStyle=goldD;ctx.lineWidth=.6;ctx.stroke();
+      // Dorsal fins — 4 flowing spines
+      for(var di=0;di<4;di++){
+        var dx=100*s+di*20*s,dh=28*s-di*4*s,da=.5-di*.08;
+        ctx.beginPath();ctx.moveTo(dx,62*s+(di*4*s));
+        ctx.bezierCurveTo(dx-4*s,62*s-dh+(di*4*s),dx-8*s,62*s-dh-6*s+(di*4*s),dx-6*s,62*s-dh+4*s+(di*4*s));
+        ctx.bezierCurveTo(dx-2*s,62*s-dh+14*s+(di*4*s),dx+2*s,62*s+(di*4*s),dx+4*s,64*s+(di*4*s));
+        ctx.strokeStyle=G+da+')';ctx.lineWidth=.7;ctx.stroke();
+      }
+      // Pectoral fin
+      ctx.beginPath();ctx.moveTo(185*s,100*s);
+      ctx.bezierCurveTo(178*s,116*s,168*s,128*s,162*s,134*s);
+      ctx.bezierCurveTo(158*s,138*s,160*s,136*s,166*s,130*s);
+      ctx.bezierCurveTo(172*s,124*s,180*s,112*s,186*s,104*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      // Ventral fin
+      ctx.beginPath();ctx.moveTo(135*s,128*s);
+      ctx.bezierCurveTo(132*s,140*s,126*s,150*s,122*s,154*s);
+      ctx.bezierCurveTo(120*s,156*s,122*s,152*s,126*s,146*s);
+      ctx.strokeStyle=goldD;ctx.lineWidth=.6;ctx.stroke();
+      // Tail — flowing fork
+      ctx.beginPath();ctx.moveTo(40*s,90*s);
+      ctx.bezierCurveTo(30*s,78*s,20*s,62*s,14*s,48*s);
+      ctx.bezierCurveTo(10*s,38*s,12*s,34*s,18*s,40*s);
+      ctx.bezierCurveTo(24*s,48*s,30*s,60*s,36*s,74*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(40*s,104*s);
+      ctx.bezierCurveTo(30*s,118*s,20*s,134*s,14*s,148*s);
+      ctx.bezierCurveTo(10*s,158*s,12*s,162*s,18*s,156*s);
+      ctx.bezierCurveTo(24*s,148*s,30*s,134*s,36*s,118*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      // Tail veins
+      for(var tv=0;tv<4;tv++){
+        var t=tv/4;
+        ctx.beginPath();ctx.moveTo(40*s-t*26*s,90*s-t*42*s);ctx.lineTo(36*s-t*14*s,82*s-t*18*s);
+        ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.4;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(40*s-t*26*s,104*s+t*44*s);ctx.lineTo(36*s-t*14*s,112*s+t*20*s);ctx.stroke();
+      }
+      // Scale pattern — arcs along body
+      for(var si=0;si<12;si++){
+        var st=si/12,sx=60*s+st*170*s;
+        var sy=90*s+Math.sin(st*3.14)*12*s-(1-st)*6*s;
+        ctx.beginPath();ctx.arc(sx,sy,4*s-st*1.5*s,.3,Math.PI-.3);
+        ctx.strokeStyle=G+(0.12-st*.03)+')';ctx.lineWidth=.4;ctx.stroke();
+      }
+      // Bubbles
+      ctx.beginPath();ctx.arc(266*s,78*s,3*s,0,6.28);ctx.strokeStyle=G+'0.15)';ctx.lineWidth=.4;ctx.stroke();
+      ctx.beginPath();ctx.arc(270*s,66*s,2.2*s,0,6.28);ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.35;ctx.stroke();
+      ctx.beginPath();ctx.arc(264*s,58*s,1.5*s,0,6.28);ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.3;ctx.stroke();
+      // Stars
+      star(12*s,24*s,1.5*s,.4);star(w-14*s,20*s,1.2*s,.3);star(70*s,16*s,1*s,.25);star(w-30*s,h-14*s,1.3*s,.3);
+    }
+
+    /* ── LEOPARD (sleeping, Step 1) ── */
+    if(fig==='leopard'){
+      var s=w/300;
+      halo(w/2,100*s,120*s,.05);
+      // Body — curved sleeping form
+      ctx.beginPath();ctx.moveTo(52*s,106*s);
+      ctx.bezierCurveTo(72*s,72*s,110*s,56*s,150*s,58*s);
+      ctx.bezierCurveTo(190*s,60*s,225*s,72*s,248*s,92*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=1.1;glow(G+'0.25)',5);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(52*s,106*s);
+      ctx.bezierCurveTo(72*s,128*s,110*s,138*s,150*s,136*s);
+      ctx.bezierCurveTo(190*s,134*s,225*s,126*s,248*s,110*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.9;ctx.stroke();
+      // Head resting
+      ctx.beginPath();ctx.ellipse(52*s,100*s,22*s,16*s,-.1,0,6.28);
+      ctx.strokeStyle=gold;ctx.lineWidth=1;glow(G+'0.25)',6);ctx.stroke();noGlow();
+      // Ears
+      ctx.beginPath();ctx.moveTo(38*s,88*s);ctx.lineTo(32*s,72*s);ctx.lineTo(42*s,84*s);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(50*s,86*s);ctx.lineTo(48*s,70*s);ctx.lineTo(56*s,82*s);ctx.stroke();
+      // Closed eyes
+      ctx.beginPath();ctx.moveTo(40*s,98*s);ctx.quadraticCurveTo(44*s,94*s,48*s,98*s);ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(54*s,98*s);ctx.quadraticCurveTo(58*s,94*s,62*s,98*s);ctx.stroke();
+      // Nose
+      ctx.beginPath();ctx.moveTo(49*s,103*s);ctx.quadraticCurveTo(52*s,105*s,55*s,103*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      // Paws
+      ctx.beginPath();ctx.moveTo(34*s,112*s);ctx.bezierCurveTo(28*s,118*s,30*s,126*s,38*s,126*s);
+      ctx.bezierCurveTo(44*s,126*s,48*s,122*s,46*s,116*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(60*s,112*s);ctx.bezierCurveTo(56*s,118*s,58*s,126*s,66*s,126*s);
+      ctx.bezierCurveTo(72*s,126*s,76*s,122*s,74*s,116*s);ctx.stroke();
+      // Hind leg
+      ctx.beginPath();ctx.moveTo(220*s,116*s);ctx.bezierCurveTo(218*s,128*s,222*s,138*s,232*s,138*s);
+      ctx.bezierCurveTo(240*s,138*s,244*s,130*s,240*s,122*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      // Tail
+      ctx.beginPath();ctx.moveTo(248*s,92*s);
+      ctx.bezierCurveTo(258*s,82*s,268*s,76*s,276*s,74*s);
+      ctx.bezierCurveTo(284*s,72*s,288*s,74*s,286*s,80*s);
+      ctx.bezierCurveTo(284*s,86*s,276*s,90*s,268*s,96*s);
+      ctx.bezierCurveTo(260*s,100*s,254*s,104*s,250*s,108*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.8;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      // Rosette spots
+      var spots=[[100,76],[118,68],[138,64],[158,62],[178,64],[198,70],[216,80],[130,110],[156,112],[182,108],[205,102],[110,92],[145,88],[175,86]];
+      for(var si=0;si<spots.length;si++){rosette(spots[si][0]*s,spots[si][1]*s,4*s)}
+      // Flowers
+      flower(82*s,42*s,6*s,.22);flower(200*s,44*s,5*s,.18);flower(268*s,52*s,4*s,.15);
+      flower(60*s,56*s,4*s,.16);flower(240*s,56*s,5*s,.2);
+      // Stars
+      star(20*s,30*s,1.8*s,.45);star(140*s,26*s,1.4*s,.35);star(w-20*s,34*s,1.3*s,.3);
+      star(w-14*s,h-18*s,1*s,.25);star(12*s,h-14*s,1.2*s,.28);
+    }
+
+    /* ── LEOPARD SMALL (Step 2) ── */
+    if(fig==='leopard-sm'){
+      var s=w/220;
+      ctx.beginPath();ctx.moveTo(30*s,54*s);
+      ctx.bezierCurveTo(42*s,36*s,64*s,28*s,88*s,30*s);
+      ctx.bezierCurveTo(112*s,32*s,136*s,38*s,152*s,48*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(30*s,54*s);
+      ctx.bezierCurveTo(42*s,66*s,64*s,72*s,88*s,70*s);
+      ctx.bezierCurveTo(112*s,68*s,136*s,62*s,152*s,56*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.ellipse(30*s,50*s,12*s,9*s,0,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(22*s,42*s);ctx.lineTo(18*s,30*s);ctx.lineTo(24*s,40*s);ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(30*s,40*s);ctx.lineTo(30*s,30*s);ctx.lineTo(34*s,38*s);ctx.stroke();
+      ctx.beginPath();ctx.arc(26*s,49*s,.8*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
+      ctx.beginPath();ctx.arc(33*s,49*s,.8*s,0,6.28);ctx.fill();
+      ctx.beginPath();ctx.moveTo(152*s,48*s);ctx.bezierCurveTo(162*s,38*s,170*s,34*s,176*s,32*s);
+      ctx.bezierCurveTo(180*s,32*s,178*s,38*s,172*s,44*s);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
+      var spts=[[64,38],[80,34],[100,34],[120,36],[140,42],[76,58],[100,56],[124,52]];
+      for(var i=0;i<spts.length;i++){rosette(spts[i][0]*s,spts[i][1]*s,3*s)}
+      flower(62*s,18*s,4*s,.2);flower(140*s,18*s,3.5*s,.16);
+      star(8*s,14*s,1.2*s,.35);star(w-10*s,16*s,1*s,.28);
+    }
+
+    /* ── KOI SMALL (Step 3) ── */
+    if(fig==='koi-sm'){
+      var s=w/200;
+      ctx.beginPath();ctx.moveTo(28*s,50*s);
+      ctx.bezierCurveTo(42*s,34*s,64*s,28*s,86*s,34*s);
+      ctx.bezierCurveTo(108*s,40*s,128*s,50*s,146*s,54*s);
+      ctx.bezierCurveTo(156*s,56*s,164*s,52*s,170*s,46*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(28*s,60*s);
+      ctx.bezierCurveTo(42*s,74*s,64*s,78*s,86*s,72*s);
+      ctx.bezierCurveTo(108*s,66*s,128*s,60*s,146*s,60*s);
+      ctx.bezierCurveTo(156*s,62*s,164*s,60*s,170*s,56*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.ellipse(174*s,51*s,8*s,6*s,-.2,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.arc(178*s,49*s,1.5*s,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.4;ctx.stroke();
+      ctx.beginPath();ctx.arc(178.3*s,49*s,.5*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
+      // Tail
+      ctx.beginPath();ctx.moveTo(28*s,50*s);ctx.bezierCurveTo(20*s,40*s,14*s,28*s,12*s,20*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(28*s,60*s);ctx.bezierCurveTo(20*s,70*s,14*s,80*s,12*s,88*s);ctx.stroke();
+      // Fins
+      ctx.beginPath();ctx.moveTo(76*s,32*s);ctx.bezierCurveTo(72*s,22*s,68*s,16*s,70*s,20*s);ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      for(var i=0;i<6;i++){
+        var t=i/6,sx=50*s+t*110*s,sy=50*s+Math.sin(t*3.14)*8*s;
+        ctx.beginPath();ctx.arc(sx,sy,2.5*s,.2,Math.PI-.2);ctx.strokeStyle=G+'0.1)';ctx.lineWidth=.35;ctx.stroke();
+      }
+      star(8*s,14*s,1*s,.3);star(w-8*s,10*s,.8*s,.25);
+    }
+
+    /* ── TIGER SMALL (Step 4) ── */
+    if(fig==='tiger-sm'){
+      var s=w/220;
+      ctx.beginPath();ctx.moveTo(30*s,54*s);
+      ctx.bezierCurveTo(44*s,36*s,66*s,28*s,90*s,30*s);
+      ctx.bezierCurveTo(114*s,32*s,140*s,38*s,162*s,44*s);
+      ctx.bezierCurveTo(176*s,48*s,186*s,46*s,192*s,40*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.9;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(30*s,54*s);
+      ctx.bezierCurveTo(44*s,66*s,66*s,72*s,90*s,72*s);
+      ctx.bezierCurveTo(114*s,72*s,140*s,68*s,162*s,62*s);
+      ctx.bezierCurveTo(176*s,58*s,186*s,54*s,192*s,48*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.ellipse(30*s,48*s,12*s,10*s,0,0,6.28);ctx.strokeStyle=gold;ctx.lineWidth=.8;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(22*s,40*s);ctx.lineTo(18*s,28*s);ctx.lineTo(24*s,38*s);ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(34*s,38*s);ctx.lineTo(34*s,28*s);ctx.lineTo(38*s,36*s);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(24*s,46*s);ctx.bezierCurveTo(26*s,42*s,30*s,42*s,32*s,46*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.fillStyle=G+'0.08)';ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(32*s,46*s);ctx.bezierCurveTo(34*s,42*s,38*s,42*s,40*s,46*s);ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.arc(28*s,45*s,.6*s,0,6.28);ctx.fillStyle=gold;ctx.fill();
+      ctx.beginPath();ctx.arc(36*s,45*s,.6*s,0,6.28);ctx.fill();
+      // Tail
+      ctx.beginPath();ctx.moveTo(192*s,40*s);ctx.bezierCurveTo(198*s,32*s,202*s,26*s,204*s,22*s);
+      ctx.bezierCurveTo(206*s,18*s,204*s,16*s,200*s,18*s);ctx.strokeStyle=gold;ctx.lineWidth=.6;ctx.stroke();
+      // Stripes
+      for(var i=0;i<5;i++){
+        var x=70*s+i*24*s;
+        ctx.beginPath();ctx.moveTo(x,36*s+i*2*s);ctx.quadraticCurveTo(x+1.5*s,46*s+i*2*s,x,56*s+i*2*s);
+        ctx.strokeStyle=G+'0.12)';ctx.lineWidth=.5;ctx.stroke();
+      }
+      // Whiskers
+      for(var i=0;i<3;i++){
+        ctx.beginPath();ctx.moveTo(18*s,48*s+i*3*s);ctx.lineTo(6*s,46*s+i*4*s);ctx.strokeStyle=G+'0.15)';ctx.lineWidth=.3;ctx.stroke();
+      }
+      star(8*s,14*s,1.2*s,.35);star(w-10*s,10*s,1*s,.28);
+    }
+
+    /* ── MERMAID SMALL (Step 5) ── */
+    if(fig==='mermaid-sm'){
+      var cx=w/2,s=w/160;
+      halo(cx,48*s,36*s,.06,[2,4]);
+      ctx.beginPath();ctx.ellipse(cx,38*s,8*s,10*s,0,0,6.28);
+      ctx.strokeStyle=gold;ctx.lineWidth=.8;glow(G+'0.2)',4);ctx.stroke();noGlow();
+      // Hair
+      ctx.beginPath();ctx.moveTo(cx-8*s,34*s);ctx.bezierCurveTo(cx-14*s,30*s,cx-20*s,36*s,cx-22*s,48*s);
+      ctx.bezierCurveTo(cx-24*s,60*s,cx-22*s,72*s,cx-20*s,80*s);
+      ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+8*s,34*s);ctx.bezierCurveTo(cx+14*s,30*s,cx+20*s,36*s,cx+22*s,48*s);
+      ctx.bezierCurveTo(cx+24*s,60*s,cx+22*s,72*s,cx+20*s,80*s);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx-9*s,32*s);ctx.bezierCurveTo(cx-18*s,26*s,cx-28*s,32*s,cx-30*s,48*s);
+      ctx.bezierCurveTo(cx-32*s,64*s,cx-28*s,80*s,cx-24*s,90*s);
+      ctx.strokeStyle=goldD;ctx.lineWidth=.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+9*s,32*s);ctx.bezierCurveTo(cx+18*s,26*s,cx+28*s,32*s,cx+30*s,48*s);
+      ctx.bezierCurveTo(cx+32*s,64*s,cx+28*s,80*s,cx+24*s,90*s);ctx.stroke();
+      // Crown
+      ctx.beginPath();ctx.moveTo(cx-6*s,28*s);ctx.lineTo(cx-3*s,22*s);ctx.lineTo(cx,26*s);ctx.lineTo(cx+3*s,22*s);ctx.lineTo(cx+6*s,28*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.5;ctx.stroke();
+      // Body
+      ctx.beginPath();ctx.moveTo(cx-4*s,48*s);ctx.bezierCurveTo(cx-5*s,62*s,cx-6*s,78*s,cx-8*s,94*s);ctx.strokeStyle=goldB;ctx.lineWidth=.7;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+4*s,48*s);ctx.bezierCurveTo(cx+5*s,62*s,cx+6*s,78*s,cx+8*s,94*s);ctx.stroke();
+      // Tail
+      ctx.beginPath();ctx.moveTo(cx-8*s,94*s);ctx.bezierCurveTo(cx-12*s,112*s,cx-20*s,130*s,cx-30*s,148*s);
+      ctx.bezierCurveTo(cx-36*s,158*s,cx-40*s,168*s,cx-44*s,178*s);
+      ctx.strokeStyle=gold;ctx.lineWidth=.7;glow(G+'0.2)',3);ctx.stroke();noGlow();
+      ctx.beginPath();ctx.moveTo(cx+8*s,94*s);ctx.bezierCurveTo(cx+6*s,112*s,cx,130*s,cx-10*s,148*s);
+      ctx.bezierCurveTo(cx-16*s,158*s,cx-22*s,168*s,cx-28*s,178*s);ctx.strokeStyle=goldB;ctx.lineWidth=.6;ctx.stroke();
+      // Fins
+      ctx.beginPath();ctx.moveTo(cx-44*s,178*s);ctx.bezierCurveTo(cx-50*s,188*s,cx-54*s,198*s,cx-50*s,204*s);
+      ctx.bezierCurveTo(cx-46*s,200*s,cx-40*s,192*s,cx-36*s,184*s);ctx.strokeStyle=goldB;ctx.lineWidth=.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx-28*s,178*s);ctx.bezierCurveTo(cx-22*s,188*s,cx-18*s,198*s,cx-22*s,204*s);
+      ctx.bezierCurveTo(cx-26*s,200*s,cx-30*s,192*s,cx-32*s,184*s);ctx.stroke();
+      // Scale arcs
+      for(var i=0;i<5;i++){
+        var sy=100*s+i*14*s,sw=6*s-i*.8*s;
+        ctx.beginPath();ctx.moveTo(cx-sw,sy);ctx.quadraticCurveTo(cx,sy+3*s,cx+sw,sy);
+        ctx.strokeStyle=G+(0.15-i*.02)+')';ctx.lineWidth=.4;ctx.stroke();
+      }
+      star(w-14*s,16*s,1.2*s,.35);star(14*s,12*s,1*s,.28);star(w-10*s,h*.6,0.8*s,.22);
+    }
+  });
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded',function(){
-  initCelestial();drawCelestial();
+  initCelestial();drawCelestial();initDecoArt();
   setTimeout(function(){var sl=document.getElementById('splashLoader');sl.classList.add('hide');setTimeout(function(){sl.style.display='none'},600)},1800);
   if(S.path){goHome()}
   if(S.rsvp){var b=document.getElementById('rsvpBtn');if(b){b.textContent='✓ RSVP Confirmed';b.style.opacity='.65';b.onclick=null}}
