@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abundance Corner Analyser · Marmaroph</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a0e27;--navy-mid:#0f1538;--navy-light:#151d45;
+  --gold:#d4b366;--gold-light:#e8d5a3;--gold-soft:rgba(212,179,102,.55);--gold-dim:rgba(212,179,102,.25);
+  --sky:#6b9fd4;--sky-soft:rgba(107,159,212,.25);
+  --glass:rgba(255,255,255,.05);--glass-border:rgba(212,179,102,.18);
+  --card:rgba(255,255,255,.06);--card-bd:rgba(212,179,102,.12);
+  --tx:#fff;--tx2:rgba(255,255,255,.75);--tx3:rgba(255,255,255,.45);--tx4:rgba(255,255,255,.25);
+  --success:#5cb87a;--warn:#c89040;
+}
+html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-gradient(165deg,#080d24 0%,#0c1235 40%,#111a40 60%,#080d24 100%);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+
+/* HEADER */
+.hdr{text-align:center;padding:2rem 0 1.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--glass-border)}
+.hdr-logo{font-size:8px;font-weight:600;letter-spacing:.6em;color:var(--gold-soft);text-transform:uppercase;margin-bottom:.8rem}
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;font-style:italic;color:var(--gold);line-height:1.15;margin-bottom:.4rem}
+.hdr-title em{color:var(--sky)}
+.hdr-sub{font-size:10px;font-weight:300;color:var(--tx3);line-height:1.9;max-width:340px;margin:.6rem auto 0}
+
+/* USAGE */
+.usage-bar{display:flex;gap:8px;justify-content:center;margin-bottom:1.4rem}
+.usage-chip{background:var(--card);border:1px solid var(--card-bd);border-radius:20px;padding:4px 12px;font-size:9px;font-weight:600;color:var(--tx3);display:flex;align-items:center;gap:5px}
+.usage-dot{width:6px;height:6px;border-radius:50%;background:var(--tx4);display:inline-block}
+.usage-dot.used{background:var(--gold)}
+.usage-chip.exhausted{border-color:rgba(200,80,80,.3);color:rgba(255,150,150,.7)}
+
+/* STEP DOTS */
+.steps{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:1.5rem}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--tx4);transition:all .35s}
+.sdot.on{background:var(--gold);transform:scale(1.25)}
+.sdot.done{background:var(--sky)}
+.sline{width:28px;height:1px;background:var(--tx4)}
+
+/* PANELS */
+.panel{display:none;animation:fi .35s ease}
+.panel.show{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* DAY / NIGHT TOGGLE */
+.tod-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.4rem}
+.tod-btn{background:var(--card);border:2px solid var(--card-bd);border-radius:12px;padding:1rem .75rem;text-align:center;cursor:pointer;transition:all .22s}
+.tod-btn:hover{border-color:var(--gold-soft)}
+.tod-btn.sel{border-color:var(--gold);background:rgba(212,179,102,.08)}
+.tod-icon{font-size:22px;display:block;margin-bottom:.4rem}
+.tod-name{font-size:11px;font-weight:700;color:var(--gold)}
+.tod-hint{font-size:9px;font-weight:300;color:var(--tx3);margin-top:2px}
+
+/* TIPS */
+.tips-card{background:var(--card);border:1px solid var(--card-bd);border-radius:12px;padding:1rem;margin-bottom:1.25rem}
+.tips-hdr{display:flex;align-items:center;gap:9px;margin-bottom:.85rem}
+.tips-ico{width:30px;height:30px;background:rgba(212,179,102,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.tips-title{font-size:11px;font-weight:700;color:var(--gold)}
+.tips-sub{font-size:9px;font-weight:300;color:var(--tx3)}
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tip{background:rgba(255,255,255,.03);border:1px solid var(--card-bd);border-radius:8px;padding:.6rem .75rem;display:flex;gap:7px}
+.tip-e{font-size:13px;flex-shrink:0}
+.tip-t{font-size:9px;font-weight:300;color:var(--tx2);line-height:1.5}
+.tip-t strong{font-weight:600;color:var(--gold);display:block;margin-bottom:1px}
+
+/* UPLOAD */
+.upzone{border:2px dashed var(--card-bd);border-radius:12px;padding:2rem 1rem;text-align:center;cursor:pointer;background:var(--card);position:relative;margin-bottom:1.25rem;transition:all .22s}
+.upzone:hover,.upzone.over{border-color:var(--gold);background:rgba(212,179,102,.06)}
+.upzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.up-icon{font-size:24px;opacity:.3;display:block;margin-bottom:.45rem}
+.up-label{font-size:16px;font-weight:300;color:var(--gold);display:block;margin-bottom:.2rem}
+.up-hint{font-size:9px;font-weight:300;color:var(--tx3)}
+.preview-wrap{display:none;margin-bottom:1.25rem;border-radius:12px;overflow:hidden;border:1px solid var(--card-bd);position:relative}
+.preview-wrap img{width:100%;max-height:320px;object-fit:contain;display:block;background:rgba(0,0,0,.3)}
+.preview-tag{position:absolute;top:8px;left:8px;background:rgba(212,179,102,.88);color:#0a0e27;font-size:8px;font-weight:700;letter-spacing:.18em;padding:3px 9px;border-radius:3px}
+.preview-change{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:.12em;padding:3px 9px;border-radius:3px;cursor:pointer;border:1px solid var(--card-bd);backdrop-filter:blur(8px)}
+
+/* REJECT */
+.reject-card{background:rgba(200,60,60,.08);border:1px solid rgba(200,60,60,.2);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem;display:none}
+.reject-icon{font-size:20px;margin-bottom:.5rem;display:block}
+.reject-title{font-size:13px;font-weight:700;color:rgba(255,150,150,.9);margin-bottom:.3rem}
+.reject-text{font-size:11px;font-weight:300;color:var(--tx2);line-height:1.6}
+.limit-card{background:rgba(200,144,64,.08);border:1px solid rgba(200,144,64,.2);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem;display:none}
+.limit-title{font-size:13px;font-weight:700;color:var(--warn);margin-bottom:.3rem}
+.limit-text{font-size:11px;font-weight:300;color:var(--tx2);line-height:1.6}
+
+/* COMPASS */
+.comp-card{background:var(--card);border:1px solid var(--card-bd);border-radius:12px;padding:1.2rem;margin-bottom:1.25rem}
+.comp-intro{background:rgba(212,179,102,.06);border-radius:10px;padding:.85rem .95rem;margin-bottom:1.1rem;font-size:11px;font-weight:300;color:var(--tx2);line-height:1.7}
+.comp-intro strong{font-weight:700;color:var(--gold)}
+.comp-lbl{font-size:9px;font-weight:700;letter-spacing:.28em;color:var(--tx3);text-transform:uppercase;margin-bottom:.7rem}
+.dir-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:1rem}
+.dir-btn{background:var(--card);border:2px solid var(--card-bd);border-radius:9px;padding:.6rem .3rem;text-align:center;cursor:pointer;transition:all .2s}
+.dir-btn:hover{border-color:var(--gold-soft)}
+.dir-btn.sel{border-color:var(--gold);background:rgba(212,179,102,.1)}
+.dir-code{font-size:13px;font-weight:700;color:var(--gold)}
+.dir-name{font-size:8px;font-weight:300;color:var(--tx3);margin-top:1px}
+.fs-preview{border:1px solid var(--card-bd);border-radius:10px;padding:.9rem;margin-bottom:1rem;display:none}
+.fsp-top{display:flex;align-items:center;gap:9px;margin-bottom:.6rem}
+.fsp-badge{width:34px;height:34px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--navy);flex-shrink:0;font-weight:700}
+.fsp-dir{font-size:13px;font-weight:700;color:var(--gold)}
+.fsp-elem{font-size:9px;font-weight:400;color:var(--tx3)}
+.fsp-fit{display:inline-flex;align-items:center;gap:4px;background:rgba(212,179,102,.08);color:var(--gold);font-size:9px;font-weight:600;letter-spacing:.12em;padding:3px 10px;border-radius:20px;border:1px solid var(--card-bd);margin-bottom:.55rem}
+.fsp-note{font-size:11px;font-weight:300;color:var(--tx2);line-height:1.65}
+.fsp-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:.6rem}
+.fsp-pill{background:var(--card);border:1px solid var(--card-bd);border-radius:5px;padding:3px 9px;font-size:9px;font-weight:500;color:var(--tx2)}
+
+/* STYLE PREFERENCE */
+.style-section{margin-top:1.25rem}
+.style-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:.7rem}
+.style-btn{background:var(--card);border:2px solid var(--card-bd);border-radius:10px;padding:.8rem .5rem;text-align:center;cursor:pointer;transition:all .22s}
+.style-btn:hover{border-color:var(--gold-soft)}
+.style-btn.sel{border-color:var(--gold);background:rgba(212,179,102,.1)}
+.style-icon{font-size:20px;display:block;margin-bottom:.3rem}
+.style-name{font-size:10px;font-weight:600;color:var(--gold)}
+.style-desc{font-size:8px;font-weight:300;color:var(--tx3);margin-top:2px;line-height:1.4}
+
+/* PERSONALITY Q */
+.pq-card{background:var(--card);border:1px solid var(--card-bd);border-radius:12px;padding:1rem;margin-top:1rem}
+.pq-label{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:.6rem}
+.pq-opts{display:flex;flex-direction:column;gap:6px}
+.pq-opt{background:rgba(255,255,255,.03);border:1.5px solid var(--card-bd);border-radius:8px;padding:.6rem .8rem;cursor:pointer;transition:all .2s;font-size:11px;font-weight:300;color:var(--tx2)}
+.pq-opt:hover{border-color:var(--gold-soft)}
+.pq-opt.sel{border-color:var(--gold);background:rgba(212,179,102,.08);color:var(--gold)}
+
+/* BUTTONS */
+.btn{width:100%;padding:.8rem 1.5rem;border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;cursor:pointer;transition:all .2s}
+.btn-p{background:var(--gold);color:var(--navy)}
+.btn-p:hover{background:var(--gold-light)}
+.btn-p:disabled{background:rgba(212,179,102,.2);color:var(--tx4);cursor:not-allowed}
+.btn-s{background:transparent;color:var(--gold);border:1.5px solid var(--gold-dim);margin-top:10px}
+.btn-s:hover{background:rgba(212,179,102,.06)}
+
+/* LOADING */
+.load-wrap{text-align:center;padding:3rem 1.5rem}
+.load-orb{width:54px;height:54px;border-radius:50%;border:2px solid var(--gold-dim);border-top-color:var(--gold);animation:spin 1.1s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;font-style:italic;color:var(--gold);margin-bottom:.3rem}
+.load-sub{font-size:10px;font-weight:300;color:var(--tx3);margin-bottom:1.5rem}
+.load-steps{max-width:260px;margin:0 auto;text-align:left;display:flex;flex-direction:column;gap:9px}
+.lsr{display:flex;align-items:center;gap:9px;font-size:10px;font-weight:300;color:var(--tx4);opacity:.25;transition:opacity .5s}
+.lsr.lit{opacity:1;color:var(--tx2)}
+.lspip{width:5px;height:5px;border-radius:50%;background:var(--tx4);flex-shrink:0}
+.lsr.lit .lspip{background:var(--gold)}
+
+/* RESULTS */
+.res-eyebrow{font-size:9px;font-weight:700;letter-spacing:.3em;color:var(--sky);margin-bottom:.35rem}
+.res-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;font-style:italic;color:var(--gold);line-height:1.15;margin-bottom:1.4rem}
+.res-title em{color:var(--sky)}
+
+/* BEFORE / AFTER */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
+.ba-panel{border-radius:11px;overflow:hidden;position:relative;border:1px solid var(--card-bd);background:var(--card)}
+.ba-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.ba-tag{position:absolute;top:8px;left:8px;background:rgba(212,179,102,.88);color:var(--navy);font-size:8px;font-weight:700;letter-spacing:.18em;padding:3px 9px;border-radius:3px}
+.ba-gen{width:100%;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(212,179,102,.04)}
+.ba-gen-orb{width:32px;height:32px;border-radius:50%;border:2px solid var(--gold-dim);border-top-color:var(--gold);animation:spin 1.1s linear infinite}
+.ba-gen-text{font-size:9px;font-weight:500;color:var(--tx3);text-align:center}
+.hidden{display:none!important}
+
+/* SECTION BLOCKS */
+.sec-block{margin-bottom:1.5rem}
+.sec-hdr{background:rgba(212,179,102,.12);border:1px solid var(--card-bd);border-radius:12px 12px 0 0;padding:.8rem 1rem;display:flex;align-items:center;gap:10px}
+.sh-num{font-size:22px;font-weight:300;color:var(--gold-soft);line-height:1}
+.sh-lbl{font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);margin-bottom:1px}
+.sh-title{font-size:14px;font-weight:600;color:var(--gold)}
+.sec-body{border:1px solid var(--card-bd);border-top:none;border-radius:0 0 12px 12px;padding:1rem}
+
+/* SCORE */
+.score-wrap{display:flex;align-items:center;gap:1.25rem;padding:.25rem 0 .75rem}
+.score-circ{flex-shrink:0;position:relative;width:76px;height:76px}
+.score-svg{width:76px;height:76px;transform:rotate(-90deg)}
+.score-trk{fill:none;stroke:var(--tx4);stroke-width:7}
+.score-ring{fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-n{font-size:22px;font-weight:700;color:var(--gold);line-height:1}
+.score-d{font-size:8px;font-weight:400;color:var(--tx3)}
+.score-bars{flex:1;display:flex;flex-direction:column;gap:8px}
+.sb-row{display:flex;align-items:center;gap:8px}
+.sb-lbl{font-size:9px;font-weight:500;color:var(--tx3);width:65px;text-align:right}
+.sb-track{flex:1;height:6px;background:var(--card);border-radius:3px;overflow:hidden}
+.sb-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.sb-val{font-size:9px;font-weight:700;color:var(--gold);width:20px}
+
+/* FENG SHUI MINI */
+.bagua-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:.85rem}
+.bm{background:var(--card);border:1px solid var(--card-bd);border-radius:6px;padding:.4rem .25rem;text-align:center}
+.bm.act{border-color:var(--gold);background:rgba(212,179,102,.08)}
+.bm-dir{font-size:9px;font-weight:700;color:var(--tx3);margin-bottom:1px}
+.bm.act .bm-dir{color:var(--gold)}
+.bm-elem{font-size:8px;font-weight:300;color:var(--tx3)}
+
+/* PALETTE */
+.palette-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:.85rem}
+.sw{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+.sw-col{height:48px}
+.sw-lbl{font-size:8px;font-weight:500;color:var(--tx2);padding:4px 6px 5px;background:var(--card);line-height:1.3}
+
+/* ANALYSIS TEXT */
+.analysis-section{margin-bottom:1.1rem}
+.as-title{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--sky);text-transform:uppercase;margin-bottom:.55rem;padding-bottom:.35rem;border-bottom:1px solid var(--card-bd)}
+.as-text{font-size:12px;font-weight:300;color:var(--tx2);line-height:1.8}
+.as-text p{margin-bottom:.7rem}
+.as-text ul{padding-left:1.2rem;margin-bottom:.7rem}
+.as-text li{margin-bottom:.35rem}
+.as-text strong{font-weight:600;color:var(--gold)}
+.as-text em{color:var(--sky)}
+
+/* FENG SHUI NOTE */
+.fs-note-box{background:rgba(212,179,102,.06);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.75rem .9rem;font-size:12px;font-weight:300;color:var(--tx2);line-height:1.7;margin-bottom:.85rem}
+
+/* MATERIALS */
+.mat-grid{display:flex;flex-direction:column;gap:7px}
+.mat-card{background:var(--card);border:1px solid var(--card-bd);border-radius:8px;padding:.7rem .85rem}
+.mat-name{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.mat-where{font-size:9px;font-weight:500;color:var(--sky);margin-bottom:3px}
+.mat-why{font-size:10px;font-weight:300;color:var(--tx2);line-height:1.5}
+.mat-spec{font-size:9px;font-weight:300;color:var(--tx3);margin-top:3px;font-style:italic}
+
+/* SHOPPING */
+.shop-grid{display:flex;flex-direction:column;gap:6px}
+.shop-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--card-bd);border-radius:8px;padding:.6rem .8rem}
+.shop-cat{font-size:8px;font-weight:700;letter-spacing:.15em;color:var(--sky);text-transform:uppercase;width:60px;flex-shrink:0}
+.shop-info{flex:1}
+.shop-name{font-size:11px;font-weight:600;color:var(--gold)}
+.shop-why{font-size:9px;font-weight:300;color:var(--tx3);margin-top:1px}
+.shop-pri{font-size:8px;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.shop-pri.high{background:rgba(212,179,102,.15);color:var(--gold)}
+.shop-pri.medium{background:var(--card);color:var(--tx3)}
+
+/* PRIORITY CHANGES */
+.pri-list{display:flex;flex-direction:column;gap:10px}
+.pri-item{background:var(--card);border:1px solid var(--card-bd);border-radius:10px;overflow:hidden}
+.pri-head{display:flex;align-items:center;gap:8px;padding:.65rem .85rem;background:rgba(212,179,102,.06)}
+.pri-num{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.pri-label{font-size:11px;font-weight:600;color:var(--gold)}
+.pri-body{padding:.65rem .85rem}
+.pri-mistake{font-size:10px;font-weight:300;color:rgba(255,150,150,.8);margin-bottom:.4rem;line-height:1.6}
+.pri-mistake::before{content:'✕ ';font-weight:700}
+.pri-fix{font-size:10px;font-weight:300;color:var(--success);line-height:1.6}
+.pri-fix::before{content:'✓ ';font-weight:700}
+
+/* MINI CARDS */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mini-card{background:var(--card);border:1px solid var(--card-bd);border-radius:9px;padding:.75rem .9rem}
+.mc-lbl{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--tx3);text-transform:uppercase;margin-bottom:.35rem}
+.mc-val{font-size:11px;font-weight:400;color:var(--tx2);line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="hdr-logo">MARMAROPH HOME &amp; LIVING</div>
+    <h1 class="hdr-title">Your Abundance <em>Corner</em></h1>
+    <p class="hdr-sub">Upload a photo of your ritual space. We will analyse it through Feng Shui, healthy home criteria, and interior design principles, then show you how to transform it.</p>
+  </div>
+
+  <div class="usage-bar" id="usageBar"></div>
+
+  <div class="steps">
+    <div class="sdot on" id="d1"></div><div class="sline"></div>
+    <div class="sdot" id="d2"></div><div class="sline"></div>
+    <div class="sdot" id="d3"></div><div class="sline"></div>
+    <div class="sdot" id="d4"></div>
+  </div>
+
+  <!-- ═══════ PANEL 1 — PHOTO UPLOAD ═══════ -->
+  <div class="panel show" id="p1">
+
+    <div class="tod-row">
+      <div class="tod-btn sel" id="tod-day" onclick="selectTod('day')">
+        <span class="tod-icon">☀️</span>
+        <div class="tod-name">Natural Light</div>
+        <div class="tod-hint">Daytime, curtains open</div>
+      </div>
+      <div class="tod-btn" id="tod-night" onclick="selectTod('night')">
+        <span class="tod-icon">🕯️</span>
+        <div class="tod-name">Artificial Light</div>
+        <div class="tod-hint">Evening, lamps on</div>
+      </div>
+    </div>
+
+    <div class="tips-card">
+      <div class="tips-hdr">
+        <div class="tips-ico">📐</div>
+        <div>
+          <div class="tips-title">How to photograph your Abundance Corner</div>
+          <div class="tips-sub">Follow these for the best analysis</div>
+        </div>
+      </div>
+      <div class="tips-grid">
+        <div class="tip"><span class="tip-e">📍</span><div class="tip-t"><strong>Show the full area</strong>Stand back enough to capture the desk, shelf, or table corner and its surroundings.</div></div>
+        <div class="tip"><span class="tip-e">📏</span><div class="tip-t"><strong>Chest height</strong>Hold at chest height, not above. This shows the space as you experience it sitting.</div></div>
+        <div class="tip"><span class="tip-e">🖼</span><div class="tip-t"><strong>Include context</strong>Walls behind, nearby window, floor, any objects already placed. More context = better advice.</div></div>
+        <div class="tip"><span class="tip-e">🚫</span><div class="tip-t"><strong>Be honest</strong>Do not tidy or style it first. No flash, no filters. The before must be truthful.</div></div>
+      </div>
+    </div>
+
+    <div class="upzone" id="upzone">
+      <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
+      <span class="up-icon">⬆</span>
+      <span class="up-label">Tap to upload your photo</span>
+      <span class="up-hint">JPG · PNG · HEIC — your abundance corner, desk, or shelf</span>
+    </div>
+
+    <div class="preview-wrap" id="previewWrap">
+      <img id="previewImg" src="" alt="Your space">
+      <div class="preview-tag">BEFORE</div>
+      <div class="preview-change" onclick="resetUpload()">Change ↺</div>
+    </div>
+
+    <div class="reject-card" id="rejectCard">
+      <span class="reject-icon">✕</span>
+      <div class="reject-title">This space does not match the ritual</div>
+      <div class="reject-text" id="rejectText"></div>
+    </div>
+
+    <div class="limit-card" id="limitCard">
+      <div class="limit-title">Daily limit reached</div>
+      <div class="limit-text" id="limitText"></div>
+    </div>
+
+    <button class="btn btn-p" id="p1btn" onclick="goToCompass()" disabled>Continue to Compass →</button>
+  </div>
+
+  <!-- ═══════ PANEL 2 — COMPASS + STYLE ═══════ -->
+  <div class="panel" id="p2">
+    <div class="comp-card">
+      <div class="comp-intro">
+        <strong>Take your compass</strong> (or open your phone's Compass app).<br>
+        Stand at the <strong>geometric centre of your home</strong>. Hold the compass flat, needle settled.<br>
+        Now face toward your abundance corner. <strong>Which direction are you facing?</strong>
+      </div>
+      <div class="comp-lbl">Select the direction of your space</div>
+      <div class="dir-grid">
+        <div class="dir-btn" onclick="selectDir('N')"><div class="dir-code">N</div><div class="dir-name">North</div></div>
+        <div class="dir-btn" onclick="selectDir('NE')"><div class="dir-code">NE</div><div class="dir-name">N·East</div></div>
+        <div class="dir-btn" onclick="selectDir('E')"><div class="dir-code">E</div><div class="dir-name">East</div></div>
+        <div class="dir-btn" onclick="selectDir('SE')"><div class="dir-code">SE</div><div class="dir-name">S·East</div></div>
+        <div class="dir-btn" onclick="selectDir('S')"><div class="dir-code">S</div><div class="dir-name">South</div></div>
+        <div class="dir-btn" onclick="selectDir('SW')"><div class="dir-code">SW</div><div class="dir-name">S·West</div></div>
+        <div class="dir-btn" onclick="selectDir('W')"><div class="dir-code">W</div><div class="dir-name">West</div></div>
+        <div class="dir-btn" onclick="selectDir('NW')"><div class="dir-code">NW</div><div class="dir-name">N·West</div></div>
+      </div>
+      <div class="fs-preview" id="fsPreview">
+        <div class="fsp-top">
+          <div class="fsp-badge" id="fspBadge">N</div>
+          <div>
+            <div class="fsp-dir" id="fspDir">North</div>
+            <div class="fsp-elem" id="fspElem">Career &amp; Life Path</div>
+          </div>
+        </div>
+        <div class="fsp-fit" id="fspFit">◌ Moderate</div>
+        <div class="fsp-note" id="fspNote"></div>
+        <div class="fsp-pills" id="fspPills"></div>
+      </div>
+    </div>
+
+    <!-- Style Preference -->
+    <div class="style-section">
+      <div class="comp-lbl">Your preferred aesthetic</div>
+      <div class="style-grid">
+        <div class="style-btn" onclick="selectStyle('minimal')">
+          <span class="style-icon">◻️</span>
+          <div class="style-name">Minimal</div>
+          <div class="style-desc">Clean lines, calm, uncluttered</div>
+        </div>
+        <div class="style-btn" onclick="selectStyle('warm')">
+          <span class="style-icon">🕯️</span>
+          <div class="style-name">Warm</div>
+          <div class="style-desc">Textured, layered, cozy</div>
+        </div>
+        <div class="style-btn" onclick="selectStyle('botanical')">
+          <span class="style-icon">🌿</span>
+          <div class="style-name">Botanical</div>
+          <div class="style-desc">Green, living, earthy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personality Questions (from abundance corner) -->
+    <div class="pq-card">
+      <div class="pq-label">What does money feel like in your body right now?</div>
+      <div class="pq-opts" id="pqMoney">
+        <div class="pq-opt" onclick="selectPQ(this,'money')">Tight chest, shallow breathing</div>
+        <div class="pq-opt" onclick="selectPQ(this,'money')">Numb, I avoid thinking about it</div>
+        <div class="pq-opt" onclick="selectPQ(this,'money')">Anxious excitement, always calculating</div>
+        <div class="pq-opt" onclick="selectPQ(this,'money')">Calm but disconnected</div>
+      </div>
+    </div>
+
+    <div class="pq-card">
+      <div class="pq-label">When you sit at this space, what would help you feel safe enough to open your finances?</div>
+      <div class="pq-opts" id="pqSafe">
+        <div class="pq-opt" onclick="selectPQ(this,'safe')">Warmth: candle, soft light, a blanket</div>
+        <div class="pq-opt" onclick="selectPQ(this,'safe')">Beauty: something visually inspiring around me</div>
+        <div class="pq-opt" onclick="selectPQ(this,'safe')">Order: clear desk, everything in its place</div>
+        <div class="pq-opt" onclick="selectPQ(this,'safe')">Nature: a plant, natural materials, fresh air</div>
+      </div>
+    </div>
+
+    <div class="pq-card">
+      <div class="pq-label">What is your biggest financial goal this season?</div>
+      <div class="pq-opts" id="pqGoal">
+        <div class="pq-opt" onclick="selectPQ(this,'goal')">Pay off a specific debt</div>
+        <div class="pq-opt" onclick="selectPQ(this,'goal')">Build an emergency fund</div>
+        <div class="pq-opt" onclick="selectPQ(this,'goal')">Understand where my money actually goes</div>
+        <div class="pq-opt" onclick="selectPQ(this,'goal')">Feel calm, not panicked, when I check my accounts</div>
+      </div>
+    </div>
+
+    <button class="btn btn-p" id="p2btn" onclick="startAnalysis()" disabled>Analyse My Abundance Corner →</button>
+    <button class="btn btn-s" onclick="goBack(1)">← Back</button>
+  </div>
+
+  <!-- ═══════ PANEL 3 — LOADING ═══════ -->
+  <div class="panel" id="p3">
+    <div class="load-wrap">
+      <div class="load-orb"></div>
+      <div class="load-title">Reading your space</div>
+      <div class="load-sub">Feng Shui · Healthy Home · Abundance Design</div>
+      <div class="load-steps">
+        <div class="lsr lit" id="ls1"><div class="lspip"></div>Validating your space</div>
+        <div class="lsr" id="ls2"><div class="lspip"></div>Running Feng Shui + design analysis</div>
+        <div class="lsr" id="ls3"><div class="lspip"></div>Building your recommendations</div>
+        <div class="lsr" id="ls4"><div class="lspip"></div>Generating day vision</div>
+        <div class="lsr" id="ls5"><div class="lspip"></div>Generating night vision</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ PANEL 4 — RESULTS ═══════ -->
+  <div class="panel" id="p4">
+    <div class="res-eyebrow">MARMAROPH ABUNDANCE CORNER ANALYSIS</div>
+    <h2 class="res-title">Your Space <em>Transformed</em></h2>
+
+    <!-- Before / After DAY -->
+    <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">☀️ Natural Light</div>
+    <div class="ba-grid">
+      <div class="ba-panel">
+        <img class="ba-img" id="beforeImg" src="" alt="Before">
+        <div class="ba-tag">BEFORE</div>
+      </div>
+      <div class="ba-panel" id="afterPanelDay">
+        <div class="ba-gen" id="afterGenDay">
+          <div class="ba-gen-orb"></div>
+          <div class="ba-gen-text">Generating<br>day vision…</div>
+        </div>
+        <img class="ba-img hidden" id="afterImgDay" src="" alt="After — Day">
+        <div class="ba-tag" style="background:rgba(107,159,212,.9);color:#fff">AFTER</div>
+      </div>
+    </div>
+
+    <!-- Before / After NIGHT -->
+    <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">🕯️ Artificial Light</div>
+    <div class="ba-grid" style="margin-bottom:1.5rem">
+      <div class="ba-panel">
+        <img class="ba-img" id="beforeImg2" src="" alt="Before">
+        <div class="ba-tag">BEFORE</div>
+      </div>
+      <div class="ba-panel" id="afterPanelNight">
+        <div class="ba-gen" id="afterGenNight">
+          <div class="ba-gen-orb"></div>
+          <div class="ba-gen-text">Generating<br>night vision…</div>
+        </div>
+        <img class="ba-img hidden" id="afterImgNight" src="" alt="After — Night">
+        <div class="ba-tag" style="background:rgba(212,179,102,.9);color:var(--navy)">AFTER</div>
+      </div>
+    </div>
+
+    <!-- Score Block -->
+    <div class="sec-block" id="scoreBlock" style="display:none">
+      <div class="sec-hdr">
+        <div class="sh-num">◉</div>
+        <div><div class="sh-lbl">BEFORE TRANSFORMATION</div><div class="sh-title">Space Score</div></div>
+      </div>
+      <div class="sec-body">
+        <div class="score-wrap">
+          <div class="score-circ">
+            <svg class="score-svg" viewBox="0 0 76 76">
+              <circle class="score-trk" cx="38" cy="38" r="32"/>
+              <circle class="score-ring" id="scoreRing" cx="38" cy="38" r="32" stroke-dasharray="201" stroke-dashoffset="201"/>
+            </svg>
+            <div class="score-inner">
+              <div class="score-n" id="scoreNum">0</div>
+              <div class="score-d">/ 100</div>
+            </div>
+          </div>
+          <div class="score-bars" id="scoreBars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis Sections -->
+    <div id="analysisContent"></div>
+
+    <!-- Reset -->
+    <button class="btn btn-s" onclick="resetAll()" style="margin-top:1rem">↺ Analyse another space</button>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG ───────────────────────────────────────────────────────
+const API_KEY='AQ.Ab8RN6J3yhzUPLjTaOJ91MFBDTZbQ6ALhh_FrSdQmBTTkNk5WQ';
+const VISION_MODEL='gemini-2.5-flash';
+const IMAGE_MODEL_A='imagen-4.0-generate-001';
+const IMAGE_MODEL_B='gemini-2.5-flash-image';
+const LIMIT=3;
+
+// ── STATE ────────────────────────────────────────────────────────
+let state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',
+  spaceType:'abundance corner',style:null,money:null,safe:null,goal:null,
+  afterDayB64:null,afterNightB64:null};
+
+// ── FENG SHUI DATA (Wealth/Abundance focus) ─────────────────────
+const FS={
+  N:{trig:'Kan',elem:'Water',chi:'水',energy:'Career & Life Path',fit:'supportive',
+    emoji:'💧',note:'Water energy brings flow and opportunity. For an abundance corner facing North, activate the productive cycle: Water feeds Wood. Add a living plant and solid wood elements to channel career wealth.',
+    colors:['Warm Ivory','Midnight Navy','Forest Green','Dark Walnut'],
+    palette:[{name:'Warm Ivory',hex:'#f5f0e6'},{name:'Midnight Navy',hex:'#1e2f4a'},{name:'Forest Green',hex:'#2a5438'},{name:'Dark Walnut',hex:'#3a2010'}],
+    plants:['Lucky Bamboo','Peace Lily','Money Tree'],
+    desk:'Natural wood with oil finish',light_day:'2700K warm, maximize natural light.',
+    light_night:'Desk lamp + candle at 2200K amber. Warm and intimate.',
+    scents:['Frankincense','Sandalwood','Vetiver']},
+  NE:{trig:'Gen',elem:'Earth',chi:'土',energy:'Knowledge & Wisdom',fit:'moderate',
+    emoji:'🏔',note:'Earth energy grounds financial decisions in wisdom. Activate with Fire touches: copper, amber light, warm ceramics. Clarity before spending.',
+    colors:['Sandy Beige','Warm Terracotta','Yellow Ochre','Sage Green'],
+    palette:[{name:'Sandy Beige',hex:'#c8b090'},{name:'Terracotta',hex:'#b85c2a'},{name:'Warm Ochre',hex:'#c09040'},{name:'Sage Green',hex:'#7a9870'}],
+    plants:['Aloe Vera','Jade Plant','Lavender'],
+    desk:'Stone or ceramic surfaces',light_day:'2700K warm, natural light dominant.',
+    light_night:'Copper desk lamp + beeswax candle at 2200K.',
+    scents:['Cedarwood','Bergamot','Clary Sage']},
+  E:{trig:'Zhen',elem:'Wood',chi:'木',energy:'Health & New Beginnings',fit:'strong',
+    emoji:'🌿',note:'Wood energy supports growth and new financial chapters. This direction is powerful for starting fresh with money. Strengthen with living plants, natural wood, and Water accents.',
+    colors:['Sage Green','Forest Green','Warm Oak','Cream'],
+    palette:[{name:'Sage Green',hex:'#8faa8a'},{name:'Forest Green',hex:'#2a5438'},{name:'Warm Oak',hex:'#b08050'},{name:'Cream',hex:'#f5efe0'}],
+    plants:['Rubber Plant','Pothos','Money Tree'],
+    desk:'Solid hardwood, light oak or ash',light_day:'Full natural light, green filtered through plants.',
+    light_night:'Brass desk lamp + green-tinted glass candle holder.',
+    scents:['Eucalyptus','Rosemary','Lemongrass']},
+  SE:{trig:'Xun',elem:'Wood',chi:'木',energy:'Wealth & Prosperity',fit:'ideal',
+    emoji:'🍀',note:'THE wealth corner in Feng Shui. Southeast is the most powerful direction for abundance. Activate fully with lush plants, flowing water features, and Wood element. This is your golden direction.',
+    colors:['Emerald Green','Gold','Warm Wood','Deep Plum'],
+    palette:[{name:'Emerald',hex:'#2d6a4f'},{name:'Gold',hex:'#d4b366'},{name:'Warm Wood',hex:'#8b6914'},{name:'Deep Plum',hex:'#5c374c'}],
+    plants:['Money Tree (Pachira)','Jade Plant','Golden Pothos'],
+    desk:'Rich wood with brass accents',light_day:'Abundant natural light, windows unobstructed.',
+    light_night:'Warm brass lamp + cluster of beeswax candles.',
+    scents:['Cinnamon','Orange','Ylang Ylang']},
+  S:{trig:'Li',elem:'Fire',chi:'火',energy:'Fame & Recognition',fit:'strong',
+    emoji:'🔥',note:'Fire energy drives recognition and reputation: your financial confidence becomes visible. Activate with warm reds, candles, and pointed upward energy.',
+    colors:['Warm Red','Coral','Gold','Ivory'],
+    palette:[{name:'Warm Red',hex:'#a0382e'},{name:'Coral',hex:'#c06048'},{name:'Gold',hex:'#d4b366'},{name:'Ivory',hex:'#f5f0e6'}],
+    plants:['Fiddle Leaf Fig','Bird of Paradise','Red Anthurium'],
+    desk:'Dark wood with copper accents',light_day:'Bright, warm natural light.',
+    light_night:'Statement desk lamp + taper candles.',
+    scents:['Cinnamon','Clove','Rose']},
+  SW:{trig:'Kun',elem:'Earth',chi:'土',energy:'Relationships & Partnership',fit:'moderate',
+    emoji:'🤝',note:'Earth energy here governs partnerships and shared finances. Ground it with ceramics, stone, and warm textiles. Ideal for couples managing money together.',
+    colors:['Warm Pink','Terracotta','Sandy Beige','Soft Gold'],
+    palette:[{name:'Warm Pink',hex:'#c09088'},{name:'Terracotta',hex:'#b85c2a'},{name:'Sandy Beige',hex:'#c8b090'},{name:'Soft Gold',hex:'#d4b366'}],
+    plants:['Orchid','Peace Lily','Jade Plant'],
+    desk:'Marble or stone top, warm wood legs',light_day:'Soft warm light, gentle not harsh.',
+    light_night:'Paired table lamps + floating candles.',
+    scents:['Rose','Jasmine','Sandalwood']},
+  W:{trig:'Dui',elem:'Metal',chi:'金',energy:'Children & Creativity',fit:'supportive',
+    emoji:'⚙️',note:'Metal energy brings precision, clarity, and creative solutions to finances. Activate with metallic accents (brass, copper, gold), round shapes, and white/cream tones.',
+    colors:['White','Silver Grey','Warm Gold','Cream'],
+    palette:[{name:'Off White',hex:'#f0ece4'},{name:'Warm Grey',hex:'#a0998e'},{name:'Brass',hex:'#c0a040'},{name:'Cream',hex:'#f5efe0'}],
+    plants:['White Orchid','Air Plant','Eucalyptus'],
+    desk:'Metal-framed desk or polished wood',light_day:'Clean bright light, crisp and clear.',
+    light_night:'Brushed brass desk lamp + single pillar candle.',
+    scents:['Peppermint','Tea Tree','Lemon']},
+  NW:{trig:'Qian',elem:'Metal',chi:'金',energy:'Mentors & Helpful People',fit:'strong',
+    emoji:'🧭',note:'Metal energy in the NW attracts mentors and financial guidance. Perfect for seeking advisors, learning from experts. Strengthen with gold/silver objects and clear organization.',
+    colors:['Charcoal','Gold','Silver','Cream'],
+    palette:[{name:'Charcoal',hex:'#2a2a2a'},{name:'Gold',hex:'#d4b366'},{name:'Silver',hex:'#b0b0b0'},{name:'Cream',hex:'#f0ece4'}],
+    plants:['ZZ Plant','Snake Plant','White Peace Lily'],
+    desk:'Dark wood or metal with gold accents',light_day:'Strong natural light, organized clarity.',
+    light_night:'Architectural desk lamp + gold-rimmed candle holder.',
+    scents:['Frankincense','Myrrh','White Sage']}
+};
+
+// ── USAGE ────────────────────────────────────────────────────────
+function getUsage(){try{return JSON.parse(localStorage.getItem('qa_space_usage'))||{}}catch(e){return{}}}
+function saveUsage(u){try{localStorage.setItem('qa_space_usage',JSON.stringify(u))}catch(e){}}
+function remainingCount(tod){var u=getUsage();return Math.max(0,LIMIT-(u[tod]||0))}
+function incrementUsage(tod){var u=getUsage();u[tod]=(u[tod]||0)+1;saveUsage(u)}
+
+function checkUsageLimit(){
+  var r=remainingCount(state.tod);
+  if(r<=0){
+    document.getElementById('limitCard').style.display='block';
+    document.getElementById('limitText').textContent='You have used all '+LIMIT+' analyses for '+(state.tod==='day'?'daytime':'evening')+' photos today. Try the other lighting mode, or come back tomorrow.';
+    return false;
+  }
+  document.getElementById('limitCard').style.display='none';
+  return true;
+}
+
+function renderUsageBar(){
+  var html='';
+  ['day','night'].forEach(function(t){
+    var u=getUsage(),used=u[t]||0;
+    var ex=used>=LIMIT?' exhausted':'';
+    html+='<div class="usage-chip'+ex+'">'+(t==='day'?'☀️':'🕯️')+' ';
+    for(var i=0;i<LIMIT;i++) html+='<span class="usage-dot'+(i<used?' used':'')+'"></span>';
+    html+='</div>';
+  });
+  document.getElementById('usageBar').innerHTML=html;
+}
+
+// ── NAVIGATION ───────────────────────────────────────────────────
+function showPanel(n){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('show')});
+  document.getElementById('p'+n).classList.add('show');
+  for(var i=1;i<=4;i++){
+    var d=document.getElementById('d'+i);
+    d.className='sdot'+(i<n?' done':'')+(i===n?' on':'');
+  }
+  window.scrollTo(0,0);
+}
+function goBack(n){showPanel(n)}
+
+function selectTod(t){
+  state.tod=t;
+  document.getElementById('tod-day').className='tod-btn'+(t==='day'?' sel':'');
+  document.getElementById('tod-night').className='tod-btn'+(t==='night'?' sel':'');
+  checkUsageLimit();
+}
+
+function handleFile(f){
+  if(!f)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var dataUrl=e.target.result;
+    state.imgMime=f.type||'image/jpeg';
+    state.imgB64=dataUrl.split(',')[1];
+    document.getElementById('previewImg').src=dataUrl;
+    document.getElementById('previewWrap').style.display='block';
+    document.getElementById('upzone').style.display='none';
+    document.getElementById('rejectCard').style.display='none';
+    document.getElementById('p1btn').disabled=false;
+  };
+  reader.readAsDataURL(f);
+}
+
+function resetUpload(){
+  document.getElementById('previewWrap').style.display='none';
+  document.getElementById('upzone').style.display='block';
+  document.getElementById('fileInput').value='';
+  state.imgB64=null;
+  document.getElementById('p1btn').disabled=true;
+  document.getElementById('rejectCard').style.display='none';
+}
+
+function selectDir(d){
+  state.dir=d;
+  document.querySelectorAll('.dir-btn').forEach(function(b){b.classList.remove('sel')});
+  event.target.closest('.dir-btn').classList.add('sel');
+  var fs=FS[d];
+  document.getElementById('fspBadge').textContent=d;
+  document.getElementById('fspDir').textContent=d+' — '+fs.trig+' · '+fs.elem;
+  document.getElementById('fspElem').textContent=fs.energy;
+  var fitMap={ideal:'★ Ideal for wealth',strong:'◉ Strong',supportive:'◌ Supportive',moderate:'◌ Moderate'};
+  document.getElementById('fspFit').textContent=fitMap[fs.fit]||fs.fit;
+  document.getElementById('fspNote').textContent=fs.note;
+  var pills=fs.colors.map(function(c){return '<div class="fsp-pill">'+c+'</div>'}).join('');
+  pills+=fs.plants.map(function(p){return '<div class="fsp-pill">🌿 '+p+'</div>'}).join('');
+  document.getElementById('fspPills').innerHTML=pills;
+  document.getElementById('fsPreview').style.display='block';
+  checkP2Ready();
+}
+
+function selectStyle(s){
+  state.style=s;
+  document.querySelectorAll('.style-btn').forEach(function(b){b.classList.remove('sel')});
+  event.target.closest('.style-btn').classList.add('sel');
+  checkP2Ready();
+}
+
+function selectPQ(el,key){
+  state[key]=el.textContent;
+  el.parentElement.querySelectorAll('.pq-opt').forEach(function(o){o.classList.remove('sel')});
+  el.classList.add('sel');
+  checkP2Ready();
+}
+
+function checkP2Ready(){
+  document.getElementById('p2btn').disabled=!(state.dir && state.style);
+}
+
+function goToCompass(){
+  if(!checkUsageLimit())return;
+  showPanel(2);
+}
+
+function lightStep(n){
+  for(var i=1;i<=5;i++){
+    var el=document.getElementById('ls'+i);
+    if(el) el.className='lsr'+(i<=n?' lit':'');
+  }
+}
+
+// ── API CALLS ────────────────────────────────────────────────────
+async function geminiVision(prompt){
+  var body={contents:[{parts:[
+    {inline_data:{mime_type:state.imgMime,data:state.imgB64}},
+    {text:prompt}
+  ]}]};
+  var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+VISION_MODEL+':generateContent?key='+API_KEY,
+    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  var d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.candidates[0].content.parts[0].text;
+}
+
+async function generateImage(prompt){
+  try{
+    var body={instances:[{prompt:prompt}],parameters:{sampleCount:1,aspectRatio:'3:4',outputMimeType:'image/jpeg'}};
+    var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+IMAGE_MODEL_A+':predict?key='+API_KEY,
+      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var d=await r.json();
+    if(d.predictions&&d.predictions[0]&&d.predictions[0].bytesBase64Encoded){
+      return 'data:image/jpeg;base64,'+d.predictions[0].bytesBase64Encoded;
+    }
+  }catch(e){}
+  var body2={contents:[{parts:[{text:prompt}]}],
+    generationConfig:{responseModalities:['IMAGE','TEXT']}};
+  var r2=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+IMAGE_MODEL_B+':generateContent?key='+API_KEY,
+    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body2)});
+  var d2=await r2.json();
+  if(d2.error)throw new Error(d2.error.message);
+  var parts=(d2.candidates&&d2.candidates[0]&&d2.candidates[0].content&&d2.candidates[0].content.parts)||[];
+  var imgP=parts.find(function(p){return p.inlineData});
+  if(imgP)return 'data:'+imgP.inlineData.mimeType+';base64,'+imgP.inlineData.data;
+  return null;
+}
+
+// ── PROMPTS ──────────────────────────────────────────────────────
+function buildValidationPrompt(){
+  return 'You are a professional interior design analyst. Look at this image.\n'+
+    'Valid spaces: desk, writing table, shelf area, console table, side table, nightstand used as workspace, dedicated corner of a room, home office nook, vanity table used for finances.\n'+
+    'Invalid spaces: full kitchen, bathroom, outdoor area with no desk/table, gym, garage, an extremely blurry or dark image.\n'+
+    'Respond ONLY in this JSON format:\n'+
+    '{"is_valid":true or false,"space_type":"brief label like desk corner or shelf area","rejection_reason":"If not valid: one warm friendly sentence. If valid: empty string."}';
+}
+
+function buildAnalysisPrompt(){
+  var fs=FS[state.dir];
+  var tod=state.tod==='day'?'morning/midday natural light':'evening artificial light';
+  var styleDesc={minimal:'minimalist, Scandinavian-inspired, clean lines, breathing room',
+    warm:'layered warmth, rich textures, candles, woolen throws, aged wood patina',
+    botanical:'lush greenery, terracotta, natural fibres, living walls, biophilic design'}[state.style]||'warm natural';
+  var personality='';
+  if(state.money)personality+='Money feeling: '+state.money+'. ';
+  if(state.safe)personality+='Needs to feel safe: '+state.safe+'. ';
+  if(state.goal)personality+='Financial goal: '+state.goal+'. ';
+
+  return 'You are a certified Marmaroph Healthy Home designer, Compass Feng Shui expert, and abundance mindset coach. Analyse this '+tod+' photo of a '+state.spaceType+' being used as an Abundance Corner for a financial wellness ritual.\n\n'+
+    'COMPASS CONTEXT: Direction '+state.dir+' — '+fs.trig+' ('+fs.chi+') · '+fs.elem+' element · '+fs.energy+'\n'+fs.note+'\n\n'+
+    'STYLE PREFERENCE: '+styleDesc+'\n\n'+
+    'PERSONALITY CONTEXT: '+personality+'\n\n'+
+    'MARMAROPH FRAMEWORK:\n'+
+    'APPROVED MATERIALS: Solid hardwoods with natural oil/beeswax finish, honed natural stone, terracotta, unglazed ceramic, linen/wool/cotton, rattan/bamboo, copper/brass.\n'+
+    'ELIMINATE: MDF, particle board, vinyl, plastic laminates, synthetic fragrance, artificial plants, cluttered papers.\n'+
+    'LIGHTING: Day 2700-3000K max. Evening <=2700K transitioning to <=2200K candlelight.\n'+
+    'COLOURS: 60% warm ivory base, 30% natural mid-tone, 10% accent.\n'+
+    'ABUNDANCE CORNER ESSENTIALS: A bowl or vessel for gratitude offerings, a candle, a living plant, a journal or notebook, intentional objects only.\n\n'+
+    'Structure your response with EXACTLY these section headers (use ##):\n\n'+
+    '## THE BEFORE STATE\n'+
+    'Bullet-point inventory of everything you observe:\n'+
+    '- Desk/Surface: [type, material, size, condition]\n'+
+    '- Chair/Seating: [if visible]\n'+
+    '- Lighting: [type, estimated CCT, quality]\n'+
+    '- Walls: [colour, texture, art]\n'+
+    '- Plants: [present/absent, type, condition]\n'+
+    '- Objects: [what is on/around the surface]\n'+
+    '- Clutter level: [specific items that should not be here]\n'+
+    '- Overall energy: [one sentence]\n\n'+
+    '## FENG SHUI READING — '+state.dir+' · '+fs.elem+'\n'+
+    'Use bullet points:\n'+
+    '- What supports the '+fs.elem+' element and '+fs.energy+' in this space\n'+
+    '- What conflicts with or drains the '+fs.elem+' energy\n'+
+    '- How the wealth/abundance energy flows (or stagnates) here\n'+
+    '- Specific Feng Shui cures for this direction and financial intention\n'+
+    '- One sentence of encouragement\n\n'+
+    '## ABUNDANCE DESIGN ANALYSIS\n'+
+    'This section addresses the space as a financial ritual zone. Bullet points:\n'+
+    '1. RITUAL READINESS: Can someone sit here, light a candle, open their finances, and feel calm? What prevents it?\n'+
+    '2. SENSORY LAYERS: What does this space sound like, smell like, feel like? What is missing?\n'+
+    '3. INTENTIONALITY: Does every object here earn its place? What must be removed for clarity?\n'+
+    '4. LIGHTING LAYERS: What light sources exist? What is needed for day vs night ritual?\n'+
+    '5. WALL & VERTICAL SPACE: What is above and behind? Does it inspire or drain?\n'+
+    '6. COLOUR STORY: Current palette vs recommended for '+state.style+' style + '+fs.elem+' element.\n\n'+
+    '## THE FIVE PRIORITY CHANGES\n'+
+    'Number 1-5. For each:\nMISTAKE: [specific]\nFIX: [exact solution with materials, size, placement]\n\n'+
+    '## WHAT TO KEEP\nBullet points. Be generous where warranted.\n\n'+
+    '## MATERIALS SPECIFICATION\n'+
+    'List exactly 5-7 natural materials. Format per line:\nMATERIAL_NAME | where_to_use | why_chosen | product_spec\n\n'+
+    '## SPACE SCORE\n'+
+    'Score BEFORE transformation. Reply with ONLY a single-line JSON:\n'+
+    '{"overall":0,"materials":0,"lighting":0,"feng_shui":0,"ritual":0,"abundance":0}\n'+
+    'materials/lighting/feng_shui/ritual each out of 20. abundance (ritual-readiness for financial work) out of 20. overall = sum of five.\n\n'+
+    '## SHOPPING LIST\n'+
+    'Reply with ONLY a single-line JSON array:\n'+
+    '[{"n":"item name","c":"category","s":"search query","t":"why they need this","p":"high or medium"}]\n'+
+    'Include 6-10 items.\n\n'+
+    '## AFTER VISION DIRECTIVES\n'+
+    'Reply with ONLY a single-line JSON:\n'+
+    '{"windows_visible":true,"space_is_dark":false,"camera_angle":"describe exact camera position","custom_palette":[{"name":"Name","hex":"#hex"},{"name":"Name","hex":"#hex"},{"name":"Name","hex":"#hex"},{"name":"Name","hex":"#hex"}],"desk_keep":"describe furniture to preserve","desk_change":"what to replace","light_layers":["desk lamp","candle","wall sconce"],"plant_type":"recommended plant","bowl_type":"bowl or vessel for offerings","wall_art":"what to put on wall"}\n\n'+
+    'Tone: Marmaroph voice — warm, intelligent, authoritative. Never generic. Address the reader directly. Use bullet points throughout.';
+}
+
+function buildImagePrompt(directives,isNight){
+  var fs=FS[state.dir];
+  var d=directives||{};
+  var palette=(d.custom_palette||fs.palette).map(function(p){return p.name}).join(', ');
+  var styleMap={minimal:'minimalist Scandinavian: clean lines, white space, one statement object, breathing room',
+    warm:'layered warmth: wool throw, beeswax candles, aged wood patina, linen, copper accents, intimate cocoon',
+    botanical:'biophilic: lush trailing pothos, terracotta pots, jute rug, natural fibre baskets, living wall accent'};
+  var styleDesc=styleMap[state.style]||styleMap.warm;
+
+  var lightDesc=isNight
+    ?'EVENING SCENE — ALL LIGHTS ON: warm desk lamp at 2200K, beeswax candle flickering, ambient wall sconce. Total warm layered illumination. No harsh overhead. Intimate, ritual-ready.'
+    :'DAYTIME SCENE — natural light flooding in'+(d.windows_visible?', sheer linen curtains filtering warm golden light':'')+'. Desk lamp visible but subordinate to daylight. Fresh, alive, clear.';
+
+  return 'Professional interior design editorial photograph. A beautifully transformed abundance corner / financial ritual space.\n'+
+    'STYLE: '+styleDesc+'\n'+
+    'COMPASS FENG SHUI: '+state.dir+' sector · '+fs.trig+' · '+fs.elem+' element · '+fs.energy+'\n'+
+    'FURNITURE: '+(d.desk_keep?'Preserve existing: '+d.desk_keep+'.':'Natural wood desk or console, oil finish.')+
+    (d.desk_change?' Replace: '+d.desk_change+'.':'')+'\n'+
+    'LIGHTING: '+lightDesc+'\n'+
+    'ON THE DESK/SURFACE: '+(d.bowl_type||'a beautiful ceramic bowl')+' for daily gratitude offerings, a quality journal with linen cover, '+(isNight?'two beeswax taper candles lit':'one unlit candle in a brass holder')+', and a '+(d.plant_type||fs.plants[0])+' in an unglazed terracotta or stone pot.\n'+
+    'WALL: '+(d.wall_art||'one piece of meaningful art — abstract, textural, or botanical print in a thin natural wood frame')+'.\n'+
+    'PLANTS: ONE statement plant — '+(d.plant_type||fs.plants[0])+' — on or near the desk. Maximum two plants total. NEVER artificial.\n'+
+    'COLOUR PALETTE: '+palette+', warm ivory walls.\n'+
+    'MATERIALS: natural wood grain · aged brass · linen · wool · ceramic · terracotta · copper. Zero synthetic. Zero plastic. Zero high-gloss.\n'+
+    'CAMERA ANGLE: '+(d.camera_angle||'slightly elevated angle showing full desk surface and wall behind')+'. Same position as original photo.\n'+
+    'DO NOT INCLUDE: laptop screens, phones, clutter, plastic, synthetic fabrics, artificial plants, harsh lighting, chrome.\n'+
+    'QUALITY: Architectural Digest or Kinfolk editorial. Portrait 3:4. Sharp focus.';
+}
+
+// ── PARSE ────────────────────────────────────────────────────────
+function parseAnalysis(raw){
+  var sections={before:'',feng:'',abundance:'',priority:'',keep:'',materials:'',shopping:null,score:null,directives:null};
+  var rx=/##\s*(THE BEFORE STATE|FENG SHUI READING[^#]*|ABUNDANCE DESIGN ANALYSIS|THE FIVE PRIORITY CHANGES|WHAT TO KEEP|MATERIALS SPECIFICATION|SPACE SCORE|SHOPPING LIST|AFTER VISION DIRECTIVES)([\s\S]*?)(?=##|$)/gi;
+  var m;
+  while((m=rx.exec(raw))!==null){
+    var h=m[1].trim().toUpperCase(),body=m[2].trim();
+    if(h.startsWith('THE BEFORE'))sections.before=body;
+    else if(h.startsWith('FENG SHUI'))sections.feng=body;
+    else if(h.startsWith('ABUNDANCE'))sections.abundance=body;
+    else if(h.startsWith('THE FIVE'))sections.priority=body;
+    else if(h.startsWith('WHAT'))sections.keep=body;
+    else if(h.startsWith('MATERIALS'))sections.materials=body;
+    else if(h.startsWith('SPACE SCORE')){var jm=body.match(/\{[^}]+\}/);if(jm){try{sections.score=JSON.parse(jm[0])}catch(e){}}}
+    else if(h.startsWith('SHOPPING')){var jm=body.match(/\[[\s\S]*\]/);if(jm){try{sections.shopping=JSON.parse(jm[0])}catch(e){}}}
+    else if(h.startsWith('AFTER VISION')){var jm=body.match(/\{[\s\S]*\}/);if(jm){try{sections.directives=JSON.parse(jm[0])}catch(e){}}}
+  }
+  if(!sections.score){var jm=raw.match(/\{"overall"\s*:\s*\d+[^}]+\}/);if(jm){try{sections.score=JSON.parse(jm[0])}catch(e){}}}
+  if(!sections.score)sections.score={overall:0,materials:0,lighting:0,feng_shui:0,ritual:0,abundance:0};
+  if(!sections.directives)sections.directives={windows_visible:true,space_is_dark:false,camera_angle:'slightly elevated angle showing desk and wall',custom_palette:null,desk_keep:'',desk_change:'',light_layers:['desk lamp','candle'],plant_type:'',bowl_type:'',wall_art:''};
+  if(!sections.before&&!sections.priority)sections.before=raw;
+  return sections;
+}
+
+function parseMaterials(raw){
+  return raw.split('\n').map(function(l){return l.trim()}).filter(function(l){return l.includes('|')}).map(function(l){
+    var p=l.split('|').map(function(s){return s.trim()});
+    return{name:p[0]||'',where:p[1]||'',why:p[2]||'',spec:p[3]||''};
+  }).filter(function(m){return m.name&&m.name.length>1}).slice(0,7);
+}
+
+function parsePriorityChanges(text){
+  var items=[];
+  var rx=/^\s*(\d+)[\.\)]\s*([\s\S]*?)(?=\n\s*\d+[\.\)]|\n\n\n|$)/gm;
+  var match;
+  while((match=rx.exec(text))!==null){
+    var block=match[2].trim();
+    var mistakeM=block.match(/MISTAKE[:\s]+([^\n]+(?:\n(?!FIX)[^\n]+)*)/i);
+    var fixM=block.match(/FIX[:\s]+([^\n]+(?:\n[^\n]+)*)/i);
+    var firstLine=block.split('\n')[0].replace(/MISTAKE.*/i,'').replace(/^\*+/,'').trim();
+    items.push({label:firstLine||'Change '+match[1],mistake:mistakeM?mistakeM[1].trim():'',fix:fixM?fixM[1].trim():block});
+  }
+  if(!items.length){
+    text.split(/\n\n+/).forEach(function(p,i){
+      var c=p.replace(/^\d+[\.\)]\s*/,'').replace(/\*\*/g,'').trim();
+      if(c)items.push({label:'Change '+(i+1),mistake:'',fix:c});
+    });
+  }
+  return items.slice(0,5);
+}
+
+function renderText(t){
+  if(!t)return '';
+  var lines=t.split('\n'),html='',inList=false;
+  for(var i=0;i<lines.length;i++){
+    var trimmed=lines[i].trim();
+    var isBullet=/^[-•*]\s+/.test(trimmed);
+    if(isBullet){
+      if(!inList){html+='<ul>';inList=true}
+      html+='<li>'+trimmed.replace(/^[-•*]\s+/,'').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>')+'</li>';
+    }else{
+      if(inList){html+='</ul>';inList=false}
+      if(trimmed)html+='<p>'+trimmed.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>')+'</p>';
+    }
+  }
+  if(inList)html+='</ul>';
+  return '<div class="as-text">'+html+'</div>';
+}
+
+// ── RENDER RESULTS ───────────────────────────────────────────────
+function renderResults(analysis,sec){
+  var fs=FS[state.dir];
+
+  // Before images
+  var beforeSrc='data:'+state.imgMime+';base64,'+state.imgB64;
+  document.getElementById('beforeImg').src=beforeSrc;
+  document.getElementById('beforeImg2').src=beforeSrc;
+
+  // Score
+  var sc=sec.score;
+  if(sc&&sc.overall){
+    document.getElementById('scoreBlock').style.display='';
+    var pct=Math.min(100,Math.max(0,sc.overall));
+    var circ=201;
+    document.getElementById('scoreRing').style.strokeDashoffset=circ-circ*(pct/100);
+    document.getElementById('scoreNum').textContent=pct;
+    var bars=[['Materials',sc.materials,20],['Lighting',sc.lighting,20],['Feng Shui',sc.feng_shui,20],['Ritual',sc.ritual,20],['Abundance',sc.abundance,20]];
+    var barsHtml='';
+    bars.forEach(function(b){
+      var w=Math.min(100,Math.max(0,(b[1]/b[2])*100));
+      var col=w>=70?'var(--success)':w>=40?'var(--gold)':'rgba(255,150,150,.7)';
+      barsHtml+='<div class="sb-row"><div class="sb-lbl">'+b[0]+'</div><div class="sb-track"><div class="sb-fill" style="width:'+w+'%;background:'+col+'"></div></div><div class="sb-val">'+b[1]+'/'+b[2]+'</div></div>';
+    });
+    document.getElementById('scoreBars').innerHTML=barsHtml;
+  }
+
+  // Build analysis content
+  var html='';
+
+  // Before state
+  if(sec.before){
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">1</div><div><div class="sh-lbl">INVENTORY</div><div class="sh-title">The Before State</div></div></div>';
+    html+='<div class="sec-body">'+renderText(sec.before)+'</div></div>';
+  }
+
+  // Feng Shui
+  if(sec.feng){
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">2</div><div><div class="sh-lbl">'+state.dir+' · '+fs.elem.toUpperCase()+'</div><div class="sh-title">Feng Shui Reading</div></div></div>';
+    html+='<div class="sec-body">';
+    // Mini bagua
+    html+='<div class="bagua-mini">';
+    ['N','NE','E','SE','S','SW','W','NW'].forEach(function(d){
+      var f=FS[d],act=d===state.dir?' act':'';
+      html+='<div class="bm'+act+'"><div class="bm-dir">'+d+'</div><div class="bm-elem">'+f.elem+'</div></div>';
+    });
+    html+='</div>';
+    html+='<div class="fs-note-box">'+fs.note+'</div>';
+    html+=renderText(sec.feng);
+    // Palette
+    html+='<div style="margin-top:.8rem"><div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">RECOMMENDED PALETTE</div>';
+    html+='<div class="palette-row">';
+    var pal=sec.directives&&sec.directives.custom_palette?sec.directives.custom_palette:fs.palette;
+    pal.forEach(function(c){
+      html+='<div class="sw"><div class="sw-col" style="background:'+c.hex+'"></div><div class="sw-lbl">'+c.name+'</div></div>';
+    });
+    html+='</div></div>';
+    html+='</div></div>';
+  }
+
+  // Abundance design
+  if(sec.abundance){
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">3</div><div><div class="sh-lbl">RITUAL SPACE</div><div class="sh-title">Abundance Design Analysis</div></div></div>';
+    html+='<div class="sec-body">'+renderText(sec.abundance)+'</div></div>';
+  }
+
+  // Priority changes
+  if(sec.priority){
+    var changes=parsePriorityChanges(sec.priority);
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">4</div><div><div class="sh-lbl">ACTION PLAN</div><div class="sh-title">Five Priority Changes</div></div></div>';
+    html+='<div class="sec-body"><div class="pri-list">';
+    changes.forEach(function(c,i){
+      html+='<div class="pri-item"><div class="pri-head"><div class="pri-num">'+(i+1)+'</div><div class="pri-label">'+c.label+'</div></div>';
+      html+='<div class="pri-body">';
+      if(c.mistake)html+='<div class="pri-mistake">'+c.mistake+'</div>';
+      if(c.fix)html+='<div class="pri-fix">'+c.fix+'</div>';
+      html+='</div></div>';
+    });
+    html+='</div></div></div>';
+  }
+
+  // What to keep
+  if(sec.keep){
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">✦</div><div><div class="sh-lbl">ALREADY ALIGNED</div><div class="sh-title">What to Keep</div></div></div>';
+    html+='<div class="sec-body">'+renderText(sec.keep)+'</div></div>';
+  }
+
+  // Materials
+  if(sec.materials){
+    var mats=parseMaterials(sec.materials);
+    if(mats.length){
+      html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">5</div><div><div class="sh-lbl">NATURAL ONLY</div><div class="sh-title">Materials Specification</div></div></div>';
+      html+='<div class="sec-body"><div class="mat-grid">';
+      mats.forEach(function(m){
+        html+='<div class="mat-card"><div class="mat-name">'+m.name+'</div><div class="mat-where">'+m.where+'</div><div class="mat-why">'+m.why+'</div>';
+        if(m.spec)html+='<div class="mat-spec">'+m.spec+'</div>';
+        html+='</div>';
+      });
+      html+='</div></div></div>';
+    }
+  }
+
+  // Shopping list
+  if(sec.shopping&&sec.shopping.length){
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">6</div><div><div class="sh-lbl">CURATED</div><div class="sh-title">Shopping List</div></div></div>';
+    html+='<div class="sec-body"><div class="shop-grid">';
+    sec.shopping.forEach(function(item){
+      html+='<div class="shop-item"><div class="shop-cat">'+item.c+'</div><div class="shop-info"><div class="shop-name">'+item.n+'</div><div class="shop-why">'+item.t+'</div></div>';
+      html+='<div class="shop-pri '+(item.p||'medium')+'">'+item.p+'</div></div>';
+    });
+    html+='</div></div></div>';
+  }
+
+  document.getElementById('analysisContent').innerHTML=html;
+}
+
+// ── MAIN ANALYSIS ────────────────────────────────────────────────
+async function startAnalysis(){
+  if(!checkUsageLimit())return;
+  showPanel(3);
+  lightStep(1);
+
+  try{
+    // Step 1: Validate
+    var validRaw=await geminiVision(buildValidationPrompt());
+    var parsed;
+    try{
+      var clean=validRaw.replace(/```json\n?/g,'').replace(/```/g,'').trim();
+      parsed=JSON.parse(clean);
+    }catch(e){parsed={is_valid:true,space_type:'desk corner',rejection_reason:''};}
+
+    if(!parsed.is_valid){
+      showPanel(1);
+      document.getElementById('rejectCard').style.display='block';
+      document.getElementById('rejectText').innerHTML=
+        (parsed.rejection_reason||'Please photograph a desk, shelf, or table corner.')+
+        '<br><br><strong>Valid spaces:</strong> desk · writing table · shelf area · console table · home office nook · any dedicated corner';
+      document.getElementById('p1btn').disabled=true;
+      return;
+    }
+    state.spaceType=parsed.space_type||'abundance corner';
+
+    // Step 2: Full analysis
+    lightStep(2);
+    var analysis=await geminiVision(buildAnalysisPrompt());
+    lightStep(3);
+
+    var parsedSections=parseAnalysis(analysis);
+    state._directives=parsedSections.directives;
+
+    incrementUsage(state.tod);
+    renderUsageBar();
+
+    renderResults(analysis,parsedSections);
+    showPanel(4);
+
+    // Step 4: Generate DAY image
+    lightStep(4);
+    var dayImg=await generateImage(buildImagePrompt(state._directives,false));
+    if(dayImg){
+      state.afterDayB64=dayImg;
+      document.getElementById('afterGenDay').style.display='none';
+      var ai=document.getElementById('afterImgDay');
+      ai.src=dayImg;ai.classList.remove('hidden');
+    }
+
+    // Step 5: Generate NIGHT image
+    lightStep(5);
+    var nightImg=await generateImage(buildImagePrompt(state._directives,true));
+    if(nightImg){
+      state.afterNightB64=nightImg;
+      document.getElementById('afterGenNight').style.display='none';
+      var ni=document.getElementById('afterImgNight');
+      ni.src=nightImg;ni.classList.remove('hidden');
+    }
+
+  }catch(err){
+    showPanel(2);
+    alert('Something went wrong: '+err.message+'\n\nPlease try again.');
+    console.error(err);
+  }
+}
+
+// ── RESET ────────────────────────────────────────────────────────
+function resetAll(){
+  state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'abundance corner',style:null,money:null,safe:null,goal:null,afterDayB64:null,afterNightB64:null};
+  resetUpload();
+  document.querySelectorAll('.dir-btn,.style-btn,.pq-opt').forEach(function(b){b.classList.remove('sel')});
+  document.getElementById('fsPreview').style.display='none';
+  document.getElementById('p2btn').disabled=true;
+  document.getElementById('tod-day').classList.add('sel');
+  document.getElementById('tod-night').classList.remove('sel');
+  document.getElementById('scoreBlock').style.display='none';
+  document.getElementById('analysisContent').innerHTML='';
+  ['afterGenDay','afterGenNight'].forEach(function(id){document.getElementById(id).style.display=''});
+  ['afterImgDay','afterImgNight'].forEach(function(id){document.getElementById(id).classList.add('hidden')});
+  showPanel(1);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+renderUsageBar();
+</script>
+</body>
+</html>

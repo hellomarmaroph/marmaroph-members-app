@@ -152,6 +152,16 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .gt-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:6px;overflow:hidden}
 .gt-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--sky));border-radius:3px;transition:width .5s}
 footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.12);text-align:center;padding:18px 0;margin-top:10px}
+/* Tool overlay */
+.tool-overlay{position:fixed;inset:0;z-index:200;background:#080d24;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.23,1,.32,1)}
+.tool-overlay.open{transform:translateY(0)}
+.to-bar{display:flex;align-items:center;justify-content:space-between;padding:54px 16px 10px;background:rgba(8,13,36,.95);border-bottom:1px solid var(--glass-border);flex-shrink:0}
+.to-title{font-size:12px;font-weight:600;color:#fff;letter-spacing:.08em}
+.to-close{width:32px;height:32px;background:rgba(255,255,255,.06);border:1px solid var(--glass-border);border-radius:50%;cursor:pointer;color:rgba(255,255,255,.6);font-size:16px;display:flex;align-items:center;justify-content:center}
+.tool-overlay iframe{flex:1;border:none;width:100%;background:#080d24}
+#toolLoader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;background:#080d24;transition:opacity .4s}
+#toolLoader.hide{opacity:0;pointer-events:none}
+#toolLoader .sl-spinner{width:28px;height:28px;border:2px solid rgba(212,179,102,.2);border-top-color:var(--gold);border-radius:50%;animation:slSpin .9s linear infinite}
 </style>
 </head>
 <body>
@@ -320,7 +330,10 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <!-- Sleeping leopard — canvas rendered -->
   <div class="deco-art float2" style="margin-top:14px"><img src="img/deco-leopard.png" alt="" width="260" loading="lazy"></div>
 
-  <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(2)">Space is set. Continue.</button></div>
+  <div style="padding:16px 18px 0">
+    <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="openTool('space','Abundance Corner Analyser')">✦ Diagnose your space</button>
+    <button class="btn btn-primary" style="width:100%" onclick="goStep(2)">Space is set. Continue.</button>
+  </div>
   <footer>Marmaroph</footer>
 </section>
 
@@ -1067,6 +1080,23 @@ function drawCelestial(){
   window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight});
 }
 
+/* ── Tool overlay ── */
+var TOOL_URLS={space:'abundance-corner-analyser.html'};
+function openTool(name,title){
+  var ov=document.getElementById('toolOverlay');
+  document.getElementById('toTitle').textContent=title||'Tool';
+  var ldr=document.getElementById('toolLoader');ldr.classList.remove('hide');
+  var fr=document.getElementById('toolFrame');
+  fr.src=TOOL_URLS[name]||'';
+  ov.classList.add('open');
+}
+function closeTool(){
+  var ov=document.getElementById('toolOverlay');
+  ov.classList.remove('open');
+  var fr=document.getElementById('toolFrame');
+  setTimeout(function(){fr.src='about:blank'},400);
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded',function(){
   initCelestial();drawCelestial();
@@ -1076,5 +1106,16 @@ document.addEventListener('DOMContentLoaded',function(){
   renderExpList();
 });
 </script>
+
+<!-- Tool overlay -->
+<div class="tool-overlay" id="toolOverlay">
+  <div class="to-bar">
+    <span class="to-title" id="toTitle">Tool</span>
+    <div class="to-close" onclick="closeTool()">✕</div>
+  </div>
+  <div id="toolLoader"><div class="sl-spinner"></div></div>
+  <iframe id="toolFrame" title="Marmaroph tool" onload="var tl=document.getElementById('toolLoader');if(tl)tl.classList.add('hide')"></iframe>
+</div>
+
 </body>
 </html>
