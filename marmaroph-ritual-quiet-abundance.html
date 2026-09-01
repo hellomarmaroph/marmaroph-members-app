@@ -133,24 +133,17 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 @keyframes dfloat1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(.5deg)}}
 @keyframes dfloat2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(-.4deg)}}
 @keyframes dfloat3{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-5px) rotate(.3deg)}66%{transform:translateY(-3px) rotate(-.3deg)}}
-/* Finance overlay */
-#finOverlay{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.23,1,.32,1);overflow:hidden}
-#finOverlay canvas{position:absolute;inset:0;z-index:0}
-#finOverlay .fo-scroll{position:relative;z-index:1;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 80px}
-.fo-head{display:flex;align-items:center;justify-content:space-between;padding:52px 18px 12px;position:relative;z-index:2}
-.fo-head span{font-size:13px;font-weight:600;color:#fff}
-.fo-close{width:32px;height:32px;background:rgba(255,255,255,.06);border:1px solid var(--glass-border);border-radius:50%;cursor:pointer;color:rgba(255,255,255,.6);font-size:16px;display:flex;align-items:center;justify-content:center;border:1px solid var(--glass-border)}
-/* goal timeline */
-.goal-tl{position:relative;padding-left:28px;margin:0 18px}
-.goal-tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:3px;border-radius:2px;background:linear-gradient(180deg,var(--gold),var(--sky),rgba(255,255,255,.08))}
-.gt-node{position:relative;margin-bottom:16px}
-.gt-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy)}
-.gt-dot.done{background:var(--gold);border-color:var(--gold)}
-.gt-dot.active{background:rgba(212,179,102,.3);border-color:var(--gold);box-shadow:0 0 10px rgba(212,179,102,.3)}
-.gt-name{font-size:13px;font-weight:600;color:#fff}
-.gt-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
-.gt-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:6px;overflow:hidden}
-.gt-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--sky));border-radius:3px;transition:width .5s}
+/* Dinner countdown ring */
+.dinner-ring{position:relative;width:220px;height:220px;margin:0 auto}
+.dinner-ring canvas{display:block}
+.dinner-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.dinner-ring-inner .cd-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:#fff;line-height:1}
+.dinner-ring-inner .cd-unit{font-size:9px;letter-spacing:.3em;color:rgba(255,255,255,.35)}
+/* Shooting stars */
+.shooting-star{position:fixed;width:2px;height:2px;background:#fff;border-radius:50%;pointer-events:none;z-index:1;opacity:0}
+.shooting-star::after{content:'';position:absolute;top:0;right:0;width:60px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.6),transparent);transform-origin:right center;transform:rotate(0deg)}
+@keyframes shoot{0%{opacity:0;transform:translate(0,0)}5%{opacity:1}80%{opacity:.6}100%{opacity:0;transform:translate(-320px,180px)}}
+/* Finance tool now in finance-tracker.html */
 footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.12);text-align:center;padding:18px 0;margin-top:10px}
 /* Progress bar */
 .progress-wrap{margin:0 18px;position:relative;z-index:4}
@@ -162,15 +155,41 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 .day-strip .dn{font-family:'Cormorant Garamond',serif;font-size:50px;font-weight:300;line-height:1;color:#fff}
 .day-strip .dn span{font-size:16px;color:rgba(255,255,255,.45)}
 .day-strip .chip{background:rgba(255,255,255,.06);border:1px solid var(--glass-border);border-radius:20px;padding:5px 14px;font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--gold-soft);transform:translateY(-8px)}
-/* Month picker */
-.month-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 18px;margin-top:10px}
-.mp-btn{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .22s}
-.mp-btn:hover{border-color:var(--gold-soft)}
-.mp-btn.sel{border-color:var(--gold);background:rgba(212,179,102,.1)}
-.mp-btn.past{opacity:.35;pointer-events:none}
-.mp-month{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:#fff}
-.mp-year{font-size:9px;color:rgba(255,255,255,.3);margin-top:2px}
-.mp-btn.sel .mp-month{color:var(--gold)}
+/* Month picker (dropdown style) */
+.month-pick{padding:0 18px;margin-top:10px}
+.month-pick .glass-card{margin:0;padding:16px}
+.month-pick-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+.month-pick select{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;color:#fff;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='rgba(255,255,255,0.4)' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer;transition:border-color .2s}
+.month-pick select:focus{outline:none;border-color:var(--gold)}
+.month-pick select option{background:var(--navy);color:#fff}
+.month-pick .yr-sel{width:90px}
+/* Before photo on Space page */
+.before-photo-wrap{padding:0 18px;margin-top:14px}
+.before-photo-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:14px;text-align:center}
+.before-photo-card img{width:100%;border-radius:10px;margin-bottom:8px}
+.before-photo-card .bp-label{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-soft)}
+/* Ritual timeline */
+.rtl{position:relative;padding-left:32px;margin:14px 22px 0}
+.rtl::before{content:'';position:absolute;left:9px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,var(--gold),var(--sky),rgba(255,255,255,.08))}
+.rtl-node{position:relative;margin-bottom:18px}
+.rtl-node:last-child{margin-bottom:0}
+.rtl-dot{position:absolute;left:-27px;top:2px;width:16px;height:16px;border-radius:50%;border:2px solid var(--glass-border);background:var(--navy);display:flex;align-items:center;justify-content:center}
+.rtl-dot svg{width:8px;height:8px}
+.rtl-step{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.rtl-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#fff;line-height:1.2;margin-bottom:2px}
+.rtl-desc{font-size:11px;color:rgba(255,255,255,.45);line-height:1.6}
+/* Themed icon circle */
+.ico-circle{width:42px;height:42px;border-radius:50%;background:rgba(212,179,102,.08);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ico-circle svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+/* Flow card */
+.flow-card{background:rgba(255,255,255,.03);border:1px solid var(--glass-border);border-radius:14px;padding:16px 18px;margin:8px 18px;display:flex;gap:14px;align-items:flex-start}
+.flow-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold-soft);line-height:1;flex-shrink:0;width:28px;text-align:center}
+.flow-body{flex:1}
+.flow-title{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:3px;letter-spacing:.06em}
+.flow-desc{font-size:11px;color:rgba(255,255,255,.5);line-height:1.65}
+/* Arrow connector */
+.flow-arrow{display:flex;justify-content:center;padding:2px 0;color:rgba(212,179,102,.3)}
+.flow-arrow svg{width:16px;height:16px}
 /* Tool overlay */
 .tool-overlay{position:fixed;inset:0;z-index:200;background:#080d24;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.23,1,.32,1)}
 .tool-overlay.open{transform:translateY(0)}
@@ -199,34 +218,87 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="sec-rule"><span class="sr-ico">✦ ✦ ✦</span></div>
   </div>
 
-  <!-- Mermaid figure — canvas rendered -->
-  <div class="deco-art float1"><img src="img/deco-mermaid.png" alt="" width="260" loading="lazy"></div>
+  <!-- Mermaid figure -->
+  <div class="deco-art float1"><img src="img/deco-mermaid-gold.png" alt="" width="240" loading="lazy"></div>
 
   <div class="glass-card" style="margin-top:0">
-    <p class="body-copy" style="padding:0;font-style:italic;color:rgba(255,255,255,.65)">✦ She avoids it the way she avoids the pile of mail on the counter. Not from ignorance, but from a relationship with money that was never built on calm.</p>
+    <p class="body-copy" style="padding:0;font-style:italic;color:rgba(255,255,255,.65)">She avoids it the way she avoids the pile of mail on the counter. Not from ignorance, but from a relationship with money that was never built on calm.</p>
     <p class="body-copy" style="padding:0;margin-top:12px;font-size:12px;color:rgba(255,255,255,.45)">Not a budgeting system. A practice for meeting your resources with a dedicated space, a grounded nervous system, and questions that reveal what your spending is truly trying to do for you.</p>
   </div>
 
-  <div class="sec-title" style="font-size:22px;margin-top:24px">How the method unfolds</div>
+  <!-- ── HOW THE METHOD UNFOLDS (Timeline) ── -->
+  <div class="sec-title" style="font-size:22px;margin-top:28px">How the method unfolds</div>
   <div class="sec-title-sub">30 days · the five S's</div>
-  <div style="padding:0 18px;display:flex;flex-direction:column;gap:10px;margin-top:6px">
-    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🏠</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S1 · Space</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Set your Abundance Corner. Cleared, purposeful, visible.</p></div></div>
-    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🪔</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S2 · Symbolism</div><p style="font-size:12px;color:rgba(255,255,255,.5)">The Abundance Bowl. Your physical anchor.</p></div></div>
-    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🧘</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S3 · Grounding</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Money mindset meditations + breathing.</p></div></div>
-    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">📖</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S4 · Sense</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Financial lessons, mindset shifts + finance tool.</p></div></div>
-    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🌿</span><div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px">S5 · Seed</div><p style="font-size:12px;color:rgba(255,255,255,.5)">Mark the day. The Quiet Abundance Dinner awaits.</p></div></div>
+
+  <div class="rtl">
+    <div class="rtl-node">
+      <div class="rtl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="rtl-step">S1 · Space</div>
+      <div class="rtl-title">Your Abundance Corner</div>
+      <div class="rtl-desc">Choose, clear, and consecrate the physical place where your financial practice lives. A corner, a desk, a shelf with intention.</div>
+    </div>
+    <div class="rtl-node">
+      <div class="rtl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m-7.07-3.93l1.41-1.41m9.9-9.9l1.41-1.41M2 12h2m16 0h2m-3.93 7.07l-1.41-1.41m-9.9-9.9L4.93 4.93"/></svg></div>
+      <div class="rtl-step">S2 · Symbolism</div>
+      <div class="rtl-title">The Abundance Bowl</div>
+      <div class="rtl-desc">A beautiful vessel placed in your corner. Each day, you place something in it that represents what you are grateful for financially.</div>
+    </div>
+    <div class="rtl-node">
+      <div class="rtl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10z"/><path d="M12 6v6l4 2"/></svg></div>
+      <div class="rtl-step">S3 · Grounding</div>
+      <div class="rtl-title">Money Mindset Reset</div>
+      <div class="rtl-desc">Breathing and meditation before you open a single number. Money decisions made from anxiety compound the problem.</div>
+    </div>
+    <div class="rtl-node">
+      <div class="rtl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2V3z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7V3z"/></svg></div>
+      <div class="rtl-step">S4 · Sense</div>
+      <div class="rtl-title">Financial Awareness</div>
+      <div class="rtl-desc">Daily lessons, mindset shifts, and a mindful spending tracker that asks why before how much.</div>
+    </div>
+    <div class="rtl-node">
+      <div class="rtl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="rtl-step">S5 · Seed</div>
+      <div class="rtl-title">Let Today Count</div>
+      <div class="rtl-desc">Mark the day. After 30 days, the Quiet Abundance Dinner awaits. A gathering of women in conscious relationship with their resources.</div>
+    </div>
   </div>
 
-  <!-- When do you want to start? -->
-  <div class="sec-title" style="font-size:22px;margin-top:24px">When do you want to start?</div>
-  <div class="sec-title-sub">choose your 30-day window</div>
-  <div class="month-pick" id="monthPick"></div>
+  <!-- Koi fish accent (between timeline and prep flow) -->
+  <div class="deco-art float3" style="margin-top:8px"><img src="img/deco-koi-gold.png" alt="" width="200" loading="lazy"></div>
 
-  <!-- Tiger figure — canvas rendered -->
-  <div class="deco-art float2" style="margin-top:10px"><img src="img/deco-leopard.png" alt="" width="280" loading="lazy"></div>
+  <!-- ── BEFORE YOU BEGIN: Two-step preparation flow ── -->
+  <div class="sec-title" style="font-size:22px;margin-top:32px">Before you begin</div>
+  <div class="sec-title-sub">two steps to prepare your ritual</div>
 
-  <!-- QUIZ -->
-  <div class="sec-title" style="font-size:22px;margin-top:18px">Your Financial Diagnosis</div>
+  <div class="flow-card">
+    <div class="flow-num">1</div>
+    <div class="flow-body">
+      <div class="flow-title">Your Financial Diagnosis</div>
+      <div class="flow-desc">Understand your relationship with money. Three honest questions that shape your personal 30-day path.</div>
+    </div>
+  </div>
+  <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+  <div class="flow-card">
+    <div class="flow-num">2</div>
+    <div class="flow-body">
+      <div class="flow-title">Your Space Analysis</div>
+      <div class="flow-desc">Upload a photo of the place where you will sit with your finances. AI-powered redesign with Feng Shui, interior design, and before/after vision.</div>
+    </div>
+  </div>
+  <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+  <div class="flow-card" style="border-color:var(--gold);background:rgba(212,179,102,.04)">
+    <div class="flow-num" style="color:var(--gold)">✦</div>
+    <div class="flow-body">
+      <div class="flow-title">Begin your 30 days</div>
+      <div class="flow-desc">Space set. Path clear. Begin the daily ritual with your personalised programme.</div>
+    </div>
+  </div>
+
+  <!-- Sun compass accent (between prep flow and quiz) -->
+  <div class="deco-art float1" style="margin-top:8px"><img src="img/deco-sun-gold.png" alt="" width="240" loading="lazy"></div>
+
+  <!-- ── STEP 1: Financial Diagnosis (Quiz) ── -->
+  <div class="sec-title" style="font-size:22px;margin-top:32px">Your Financial Diagnosis</div>
   <div class="sec-title-sub">let us understand your relationship with money</div>
   <p class="body-copy" style="margin-bottom:14px;font-size:12px">Every financial reality is different. Answer honestly so this ritual can speak to yours.</p>
 
@@ -257,7 +329,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
     <div class="quiz-step" id="qs-r">
       <div class="quiz-result show">
-        <div style="font-size:10px;letter-spacing:.28em;color:var(--gold-soft);margin-bottom:8px">✦ YOUR PATH ✦</div>
+        <div style="font-size:10px;letter-spacing:.28em;color:var(--gold-soft);margin-bottom:8px">YOUR PATH</div>
         <div class="qr-letter" id="qr-l">B</div>
         <div class="qr-name" id="qr-n">Foundation Builder</div>
       </div>
@@ -269,22 +341,46 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
   </div>
 
-  <!-- SANCTUARY ANALYZER -->
+  <!-- ── Tiger figure (between diagnosis and space analyzer) ── -->
   <div id="analyzerSection" style="display:none">
-    <div class="sec-title" style="font-size:22px;margin-top:18px">Abundance Corner Analyzer</div>
-    <div class="sec-title-sub">rate your financial sanctuary</div>
-    <p class="body-copy" style="margin-bottom:14px;font-size:12px">Before the ritual begins, assess the space where you will sit with your finances.</p>
-    <div class="diag-wrap" id="diagWrap">
-      <div class="diag-q"><div class="diag-label">1. Do you have a dedicated spot for financial work?</div><div class="diag-opts"><div class="diag-opt" onclick="dSel(this,0,0)">No, I do finances anywhere</div><div class="diag-opt" onclick="dSel(this,0,1)">Sort of. The kitchen table or couch.</div><div class="diag-opt" onclick="dSel(this,0,2)">Yes, I have a specific place</div></div></div>
-      <div class="diag-q"><div class="diag-label">2. How does your financial space feel?</div><div class="diag-opts"><div class="diag-opt" onclick="dSel(this,1,0)">Cluttered or stressful</div><div class="diag-opt" onclick="dSel(this,1,1)">Neutral. Functional but not calming.</div><div class="diag-opt" onclick="dSel(this,1,2)">Calm, clean, and intentional</div></div></div>
-      <div class="diag-q"><div class="diag-label">3. Do you feel calm when you sit down with money?</div><div class="diag-opts"><div class="diag-opt" onclick="dSel(this,2,0)">No. Anxiety or avoidance.</div><div class="diag-opt" onclick="dSel(this,2,1)">Sometimes. Depends on the day.</div><div class="diag-opt" onclick="dSel(this,2,2)">Yes. I approach it with presence.</div></div></div>
-      <div class="diag-result" id="diagResult">
-        <div class="dr-score" id="drScore">0</div>
-        <div class="dr-label">Abundance Corner Score</div>
-        <p class="dr-body" id="drBody"></p>
+
+    <div class="deco-art float2" style="margin:14px 0"><img src="img/deco-tiger.png" alt="" width="260" loading="lazy"></div>
+
+    <!-- STEP 2: Space Analyzer -->
+    <div class="sec-title" style="font-size:22px;margin-top:4px">Your Abundance Corner</div>
+    <div class="sec-title-sub">diagnose and redesign your financial space</div>
+    <p class="body-copy" style="margin-bottom:14px;font-size:12px">Upload a photo of the space where you sit with your finances. We will analyse it through Feng Shui, healthy home criteria, and interior design principles, then show you exactly how to transform it.</p>
+    <div style="padding:0 18px">
+      <div class="glass-card" style="margin:0;padding:20px;text-align:center">
+        <div class="ico-circle" style="margin:0 auto 10px">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3z"/><path d="M3 9h18M9 3v18"/></svg>
+        </div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--gold);margin-bottom:6px">Space Analysis + Redesign</div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:14px">
+          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Photo upload</span>
+          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Feng Shui compass</span>
+          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">AI analysis</span>
+          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Space score</span>
+          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Style preferences</span>
+          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Before/after vision</span>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="openTool('space','Abundance Corner Analyser')">Diagnose your space</button>
       </div>
     </div>
-    <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goHome()">✦ Begin the Ritual</button></div>
+
+    <!-- Month picker (dropdown style) -->
+    <div class="sec-title" style="font-size:18px;margin-top:28px">When do you want to start?</div>
+    <div class="sec-title-sub">choose your 30-day window</div>
+    <div class="month-pick">
+      <div class="glass-card">
+        <div class="month-pick-grid">
+          <div><select id="ritualMonthSel" onchange="pickMonthDrop()"></select></div>
+          <div><select id="ritualYearSel" class="yr-sel" onchange="pickMonthDrop()"></select></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goHome()">Begin the Ritual ✦</button></div>
   </div>
   <footer>Marmaroph Home &amp; Living</footer>
 </section>
@@ -345,8 +441,15 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7" id="rd1Text"></div>
   </div>
 
-  <!-- Koi fish — canvas rendered -->
-  <div class="deco-art float3" style="margin-top:6px"><img src="img/deco-koi.png" alt="" width="220" loading="lazy"></div>
+  <!-- Golden tiger accent -->
+  <div class="deco-art float2" style="margin-top:6px"><img src="img/deco-tiger-gold.png" alt="" width="240" loading="lazy"></div>
+
+  <!-- Daily tools -->
+  <div class="sec-title" style="font-size:18px;margin-top:6px">Daily Tools</div>
+  <div class="sec-title-sub">your quiet ledger</div>
+  <div style="padding:0 18px 12px">
+    <button class="btn btn-primary" style="width:100%" onclick="openTool('finance','My Finances')">Open My Quiet Ledger</button>
+  </div>
 
   <div class="wa-card">
     <div class="wa-title">Your ritual sisters</div>
@@ -382,11 +485,20 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Add one intentional element. A candle, a plant, your Abundance Bowl.</div></div></div>
     <div class="check-item" onclick="toggleCk(this)"><div class="ck-dot">✓</div><div><div class="ck-text">Sit in it for two minutes right now.</div></div></div>
   </div>
-  <!-- Sleeping leopard — canvas rendered -->
-  <div class="deco-art float2" style="margin-top:14px"><img src="img/deco-leopard.png" alt="" width="260" loading="lazy"></div>
-
   <div style="padding:16px 18px 0">
     <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="openTool('space','Abundance Corner Analyser')">✦ Diagnose your space</button>
+  </div>
+
+  <!-- Before photo from sanctuary analyzer -->
+  <div class="before-photo-wrap" id="spaceBeforeWrap" style="display:none">
+    <div class="before-photo-card">
+      <div class="bp-label" style="margin-bottom:8px">Your space before</div>
+      <img id="spaceBeforeImg" src="" alt="Before photo">
+      <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:4px">Captured with the Sanctuary Analyser</div>
+    </div>
+  </div>
+
+  <div style="padding:12px 18px 0">
     <button class="btn btn-primary" style="width:100%" onclick="goStep(2)">Space is set. Continue.</button>
   </div>
   <footer>Marmaroph</footer>
@@ -398,7 +510,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="rule-label"><span class="eyebrow">S2 · SYMBOLISM</span></div>
   <div class="sec-title">The Abundance Bowl</div>
   <div class="sec-title-sub">your physical anchor</div>
-  <div class="bowl-circle">🪔</div>
+  <div class="bowl-circle"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m-7.07-3.93l1.41-1.41m9.9-9.9l1.41-1.41M2 12h2m16 0h2m-3.93 7.07l-1.41-1.41m-9.9-9.9L4.93 4.93"/></svg></div>
   <div style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft);text-align:center;margin-bottom:8px">THE ABUNDANCE BOWL</div>
   <p class="body-copy" style="margin-top:6px">A beautiful bowl placed in your Abundance Corner. Each day, you place something in it that represents what you are grateful for financially.</p>
   <div class="glass-card" style="margin-top:14px">
@@ -407,9 +519,6 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="saveBowl()">Place it in the bowl ✦</button>
     <p style="font-size:11px;color:var(--gold);text-align:center;margin-top:6px;display:none" id="bowlMsg">✦ Placed with intention.</p>
   </div>
-  <!-- Leopard accent — canvas rendered -->
-  <div class="deco-art float3" style="margin-top:8px"><img src="img/deco-leopard.png" alt="" width="180" loading="lazy"></div>
-
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(3)">Offering placed. Continue.</button></div>
   <footer>Marmaroph</footer>
 </section>
@@ -420,6 +529,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="rule-label"><span class="eyebrow">S3 · GROUNDING</span></div>
   <div class="sec-title">Money Mindset Reset</div>
   <div class="sec-title-sub">breathe before you count</div>
+  <!-- Sacred constellations accent -->
+  <div class="deco-art float1" style="margin-top:4px"><img src="img/deco-sacred.png" alt="" width="220" loading="lazy"></div>
   <p class="body-copy" style="margin-top:6px">Before you open a single number, ground your nervous system. Money decisions made from anxiety compound the problem.</p>
   <div class="glass-card" style="text-align:center;margin-top:14px">
     <div class="eyebrow" style="margin-bottom:10px">4 · 7 · 8 Breathing</div>
@@ -432,9 +543,6 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="glass-card">
     <p style="font-size:14px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.75;text-align:center" id="todayAff">"Money has never been your enemy."</p>
   </div>
-  <!-- Koi accent — canvas rendered -->
-  <div class="deco-art float1" style="margin-top:8px"><img src="img/deco-koi.png" alt="" width="160" loading="lazy"></div>
-
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(4)">Grounded. Continue.</button></div>
   <footer>Marmaroph</footer>
 </section>
@@ -447,6 +555,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="rule-label"><span class="eyebrow">S4 · SENSE</span></div>
   <div class="sec-title">Financial Awareness</div>
   <div class="sec-title-sub">learn · shift · track</div>
+  <!-- Jaguar sideways accent -->
+  <div class="deco-art float2" style="margin-top:4px"><img src="img/deco-leopard-run2.png" alt="" width="260" loading="lazy"></div>
 
   <div class="sec-title" style="font-size:18px;margin-top:6px">Today's Lesson</div>
   <div id="todayLesson"></div>
@@ -455,27 +565,13 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="sec-title-sub">old belief vs new truth</div>
   <div id="todayMindset"></div>
 
-  <div class="sec-title" style="font-size:18px;margin-top:20px">Mindful Spending</div>
-  <div class="glass-card">
-    <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:10px">Log an expense and answer one honest question about it.</p>
-    <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end;margin-bottom:10px">
-      <input class="finp" type="text" id="expDesc" placeholder="What did you buy?">
-      <input class="finp" type="number" id="expAmt" placeholder="$" style="width:70px">
-      <button class="btn btn-ghost" onclick="addExp()" style="height:42px;padding:0 12px">Add</button>
-    </div>
-    <div id="expReflect" style="display:none">
-      <div class="refl-q-box"><div class="refl-ql">✦ Marmi asks</div><div class="refl-qt" id="expQ"></div></div>
-      <textarea class="refl-ta" id="expAns" placeholder="Write your honest answer..."></textarea>
-      <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="saveExpRefl()">Save reflection</button>
-    </div>
-    <div id="expList"></div>
+  <div class="sec-title" style="font-size:18px;margin-top:20px">Your Quiet Ledger</div>
+  <div class="sec-title-sub">clarity, not anxiety</div>
+  <div class="glass-card" style="text-align:center">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <p style="font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:14px">Your finances are not something to fear. They are something to understand. Open your financial sanctuary and take calm, intentional control of your money.</p>
+    <button class="btn btn-primary" style="width:100%" onclick="openTool('finance','My Finances')">Open My Quiet Ledger</button>
   </div>
-
-  <!-- Tiger accent — canvas rendered -->
-  <div class="deco-art float3" style="margin-top:8px"><img src="img/deco-leopard.png" alt="" width="180" loading="lazy"></div>
-
-  <!-- FINANCE TOOL BUTTON -->
-  <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="openFinance()">💰 Open My Finances</button></div>
 
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(5)">Lesson done. Continue.</button></div>
   <footer>Marmaroph</footer>
@@ -487,20 +583,28 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="rule-label"><span class="eyebrow">S5 · SEED</span></div>
   <div class="sec-title">Let Today Count</div>
   <div class="sec-title-sub">mark your practice</div>
+  <!-- Jaguar front accent -->
+  <div class="deco-art float2" style="margin-top:4px"><img src="img/deco-leopard-walk2.png" alt="" width="240" loading="lazy"></div>
   <p class="body-copy" style="margin-top:10px">One session, fully arrived at, is enough. Mark the day.</p>
   <div style="padding:14px 18px"><button class="btn btn-primary" style="width:100%" id="markBtn" onclick="markDay()">✦ Mark today's practice complete</button></div>
   <p style="font-size:12px;color:var(--gold);text-align:center;display:none" id="markMsg"></p>
+
   <div class="sec-title" style="font-size:18px;margin-top:20px">The Quiet Abundance Dinner</div>
-  <div class="glass-card" style="text-align:center">
-    <div class="countdown-box"><div class="cd-num" id="cdNum">-</div><div class="cd-unit">DAYS UNTIL THE DINNER</div></div>
-    <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin:12px 0">A small gathering of women who have spent 30 days in conscious relationship with their resources.</p>
-    <button class="btn btn-primary" id="rsvpBtn" onclick="doRSVP()">RSVP for the Dinner</button>
+  <div style="text-align:center;margin:10px auto 0;position:relative">
+    <div class="dinner-ring">
+      <canvas id="dinnerRing" width="220" height="220"></canvas>
+      <div class="dinner-ring-inner">
+        <div class="cd-num" id="cdNum">-</div>
+        <div class="cd-unit">DAYS LEFT</div>
+      </div>
+    </div>
   </div>
-  <!-- Mermaid accent — canvas rendered -->
-  <div class="deco-art float2" style="margin-top:8px"><img src="img/deco-mermaid.png" alt="" width="140" loading="lazy"></div>
+  <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin:12px 18px;text-align:center">A small gathering of women who have spent 30 days in conscious relationship with their resources.</p>
+  <div style="padding:0 18px"><button class="btn btn-primary" style="width:100%" id="rsvpBtn" onclick="doRSVP()">RSVP for the Dinner</button></div>
 
   <div class="sec-title" style="font-size:18px;margin-top:16px">Your ritual month</div>
   <div class="month-cal"><div class="mc-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="mc-body" id="calSeed"></div></div>
+
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="completeRitual()">Complete today's ritual ✦</button></div>
   <footer>Marmaroph</footer>
 </section>
@@ -513,62 +617,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <footer>Marmaroph</footer>
 </section>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- FINANCE TOOL — Full celestial overlay               -->
-<!-- ═══════════════════════════════════════════════════ -->
-<div id="finOverlay">
-  <canvas id="finStars"></canvas>
-  <div class="fo-scroll">
-    <div class="fo-head"><span>✦ My Finances</span><button class="fo-close" onclick="closeFinance()">✕</button></div>
-
-    <!-- GOAL AT TOP -->
-    <div style="padding:0 18px" id="finGoalTop"></div>
-
-    <!-- GOAL TIMELINE -->
-    <div class="sec-title" style="font-size:18px;margin-top:14px">Your Journey</div>
-    <div class="sec-title-sub">small steps toward big dreams</div>
-    <div class="goal-tl" id="goalTimeline"></div>
-
-    <!-- ACTUAL FINANCIAL SITUATION -->
-    <div class="sec-title" style="font-size:18px;margin-top:20px">Your Financial Snapshot</div>
-    <div class="sec-title-sub">where you stand today</div>
-    <div style="padding:0 18px">
-      <div class="fgrp"><label class="flbl">Monthly Income ($)</label><input class="finp" type="number" id="fInc" placeholder="How much do you earn?"></div>
-      <div class="fgrp"><label class="flbl">Monthly Expenses ($)</label><input class="finp" type="number" id="fExp" placeholder="Rent, food, bills..."></div>
-      <div class="fgrp"><label class="flbl">Total Savings ($)</label><input class="finp" type="number" id="fSav" placeholder="All savings accounts"></div>
-      <div class="fgrp"><label class="flbl">Assets ($)</label><input class="finp" type="number" id="fAst" placeholder="Property, investments..."></div>
-      <button class="btn btn-ghost" style="width:100%" onclick="saveSnapshot()">Save my snapshot</button>
-      <div id="snapViz" style="margin-top:14px"></div>
-    </div>
-
-    <!-- DAILY TRACKER -->
-    <div class="sec-title" style="font-size:18px;margin-top:20px">Daily Tracker</div>
-    <div class="sec-title-sub">log today's money moment</div>
-    <div style="padding:0 18px">
-      <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end;margin-bottom:10px">
-        <input class="finp" type="text" id="dtDesc" placeholder="Coffee, groceries...">
-        <input class="finp" type="number" id="dtAmt" placeholder="$" style="width:70px">
-        <button class="btn btn-ghost" onclick="addDailyTrack()" style="height:42px;padding:0 12px">+</button>
-      </div>
-      <div id="dailyList"></div>
-    </div>
-
-    <!-- LIFE PROFILE + GOAL SETUP -->
-    <div id="goalSetup" style="padding:0 18px;margin-top:20px">
-      <div class="sec-title" style="font-size:18px;margin-top:0">Set Your Main Goal</div>
-      <div class="sec-title-sub">we will break it into smaller steps</div>
-      <div id="goalSetupForm">
-        <div class="fgrp"><label class="flbl">Your main financial goal</label><input class="finp" type="text" id="gName" placeholder="e.g. Peace Fund, Buy a home, Retire early..."></div>
-        <div class="fgrp"><label class="flbl">Target amount ($)</label><input class="finp" type="number" id="gTarget" placeholder="How much do you need?"></div>
-        <div class="fgrp"><label class="flbl">Are you single or with a partner?</label><select class="finp" id="gpRel"><option value="">Select...</option><option value="single">Single</option><option value="partner">With a partner</option></select></div>
-        <div class="fgrp"><label class="flbl">Do you have children?</label><select class="finp" id="gpKids"><option value="">Select...</option><option value="no">No</option><option value="yes">Yes</option><option value="planning">Planning for children</option></select></div>
-        <button class="btn btn-primary" style="width:100%" onclick="createGoalPlan()">Create my plan ✦</button>
-      </div>
-    </div>
-
-    <footer>Marmaroph Home &amp; Living</footer>
-  </div>
-</div>
+<!-- Finance tool now loads via iframe: finance-tracker.html -->
 
 <script>
 /* ── localStorage ── */
@@ -609,7 +658,7 @@ function sv(){
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});var el=document.getElementById(id);if(el){el.classList.add('active');el.scrollTop=0}}
 function goWelcome(){show('s-welcome')}
 function goHome(){show('s-home');renderHome();drawSunCal();buildCal('calHome')}
-function goStep(n){show('s-r'+n);if(n===4){renderLesson();renderTodayMindset()}if(n===5){buildCal('calSeed');startTimer()}}
+function goStep(n){show('s-r'+n);if(n===1){loadBeforePhoto()}if(n===4){renderLesson();renderTodayMindset()}if(n===5){buildCal('calSeed');startTimer();drawDinnerRing()}}
 function completeRitual(){var dn=daysDone();showDone('Day '+dn+' is yours.','You did not just look at your money. You returned home.')}
 function showDone(t,q){var dn=daysDone();document.getElementById('doneTitle').textContent=t;document.getElementById('doneDay').textContent='DAY '+dn+' OF 30';document.getElementById('doneQuote').textContent='"'+q+'"';show('s-done')}
 
@@ -642,23 +691,7 @@ function showQuizResult(){
   document.querySelector('.screen.active').scrollTo({top:document.getElementById('analyzerSection').offsetTop-50,behavior:'smooth'});
 }
 
-/* ── Sanctuary Analyzer ── */
-var diagA=[-1,-1,-1];
-function dSel(el,q,v){
-  diagA[q]=v;
-  el.parentNode.querySelectorAll('.diag-opt').forEach(function(o){o.classList.remove('sel')});
-  el.classList.add('sel');
-  if(diagA[0]>=0&&diagA[1]>=0&&diagA[2]>=0){
-    var score=diagA[0]+diagA[1]+diagA[2];var pct=Math.round(score/6*100);
-    document.getElementById('drScore').textContent=pct+'%';
-    var body='';
-    if(pct<34)body='Your relationship with your financial space needs attention. This ritual will help you build a calm, intentional place for your money practice.';
-    else if(pct<67)body='You have some good foundations. This ritual will help you move from functional to intentional.';
-    else body='Your abundance corner is already strong. This ritual will deepen your practice.';
-    document.getElementById('drBody').textContent=body;
-    document.getElementById('diagResult').classList.add('show');
-  }
-}
+/* ── Sanctuary Analyzer (now in abundance-corner-analyser.html tool) ── */
 
 /* ── Home ── */
 function daysDone(){return S.days.filter(Boolean).length}
@@ -684,31 +717,49 @@ function renderHome(){
   }
 }
 
-/* ── Month Picker ── */
+/* ── Month Picker (dropdown) ── */
 function buildMonthPicker(){
-  var wrap=document.getElementById('monthPick');if(!wrap)return;
+  var mSel=document.getElementById('ritualMonthSel');
+  var ySel=document.getElementById('ritualYearSel');
+  if(!mSel||!ySel)return;
   var now=new Date();
-  var curMonth=now.getMonth();
-  var curYear=now.getFullYear();
   var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var html='';
-  for(var i=0;i<6;i++){
-    var m=(curMonth+i)%12;
-    var y=curYear+Math.floor((curMonth+i)/12);
-    var key=y+'-'+(m<9?'0':'')+(m+1);
-    var isPast=false;
-    var isSel=S.startMonth===key;
-    html+='<div class="mp-btn'+(isSel?' sel':'')+(isPast?' past':'')+'" onclick="pickMonth(\''+key+'\',this)">';
-    html+='<div class="mp-month">'+months[m]+'</div>';
-    html+='<div class="mp-year">'+y+'</div>';
-    html+='</div>';
+  var savedM=-1,savedY=-1;
+  if(S.startMonth){var parts=S.startMonth.split('-');savedY=parseInt(parts[0]);savedM=parseInt(parts[1])-1;}
+  mSel.innerHTML='';
+  for(var i=0;i<12;i++){
+    var opt=document.createElement('option');
+    opt.value=i;opt.textContent=months[i];
+    if(savedM>=0?i===savedM:i===now.getMonth())opt.selected=true;
+    mSel.appendChild(opt);
   }
-  wrap.innerHTML=html;
+  ySel.innerHTML='';
+  for(var y=now.getFullYear();y<=now.getFullYear()+2;y++){
+    var opt=document.createElement('option');
+    opt.value=y;opt.textContent=y;
+    if(savedY>=0?y===savedY:y===now.getFullYear())opt.selected=true;
+    ySel.appendChild(opt);
+  }
+  if(!S.startMonth)pickMonthDrop();
 }
-function pickMonth(key,el){
-  S.startMonth=key;sv();
-  document.querySelectorAll('.mp-btn').forEach(function(b){b.classList.remove('sel')});
-  el.classList.add('sel');
+function pickMonthDrop(){
+  var mSel=document.getElementById('ritualMonthSel');
+  var ySel=document.getElementById('ritualYearSel');
+  if(!mSel||!ySel)return;
+  var mi=parseInt(mSel.value);
+  var yr=parseInt(ySel.value);
+  S.startMonth=yr+'-'+(mi<9?'0':'')+(mi+1);
+  sv();
+}
+/* ── Before photo from analyzer ── */
+function loadBeforePhoto(){
+  try{
+    var data=localStorage.getItem('qa_space_before');
+    if(data){
+      document.getElementById('spaceBeforeImg').src=data;
+      document.getElementById('spaceBeforeWrap').style.display='block';
+    }
+  }catch(e){}
 }
 function saveRD1(){var a=document.getElementById('rq1').value.trim(),b=document.getElementById('rq2').value.trim(),c=document.getElementById('rq3').value.trim();if(!a&&!b&&!c)return;S.rd1=[a,b,c];sv();renderHome()}
 
@@ -904,201 +955,7 @@ function doRSVP(){S.rsvp=true;sv();var b=document.getElementById('rsvpBtn');b.te
 var timerInt=null;
 function startTimer(){var t=document.getElementById('cdNum');if(!t)return;if(timerInt)clearInterval(timerInt);function tick(){var now=new Date(),end=new Date(now.getFullYear(),now.getMonth()+1,0,20,0,0),diff=Math.max(0,end-now),d=Math.floor(diff/86400000);t.textContent=d}tick();timerInt=setInterval(tick,60000)}
 
-/* ═══════════════════════════════════════════════════ */
-/* FINANCE TOOL with celestial canvas                  */
-/* ═══════════════════════════════════════════════════ */
-var finAnimId=null;
-function openFinance(){
-  document.getElementById('finOverlay').style.transform='translateY(0)';
-  renderFinance();
-  drawFinStars();
-}
-function closeFinance(){
-  document.getElementById('finOverlay').style.transform='translateY(100%)';
-  if(finAnimId){cancelAnimationFrame(finAnimId);finAnimId=null}
-}
-
-function drawFinStars(){
-  var c=document.getElementById('finStars');if(!c)return;
-  var ctx=c.getContext('2d');
-  var W=c.width=window.innerWidth,H=c.height=window.innerHeight*3;
-  c.style.width='100%';c.style.height=H+'px';
-  // Build stars for finance canvas
-  var fStars=[];
-  for(var i=0;i<400;i++){
-    fStars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.8+.2,a:Math.random()*.4+.1,sp:Math.random()*1.5+.5,ph:Math.random()*6.28});
-  }
-  // Constellations for finance
-  var fCons=[
-    // Tiger constellation
-    [[.15,.05],[.18,.03],[.22,.04],[.25,.06],[.28,.04],[.32,.05],[.35,.07],[.33,.1],[.3,.12],[.26,.11],[.22,.1],[.18,.08]],
-    // Crown
-    [[.6,.02],[.63,.01],[.66,.025],[.69,.01],[.72,.02]],
-    // Fish
-    [[.8,.08],[.83,.07],[.86,.08],[.88,.1],[.86,.12],[.83,.13],[.8,.12],[.78,.1]]
-  ];
-
-  function frame(t){
-    ctx.clearRect(0,0,W,H);var ts=t*.001;
-    // Gradient background
-    var bg=ctx.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#080d24');bg.addColorStop(.3,'#0c1235');bg.addColorStop(.6,'#111a40');bg.addColorStop(1,'#080d24');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    // Stars
-    for(var i=0;i<fStars.length;i++){
-      var s=fStars[i],tw=Math.sin(ts*s.sp+s.ph)*.5+.5;
-      var a=s.a+tw*(1-s.a)*.6;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.28);
-      ctx.fillStyle='rgba(255,255,255,'+a.toFixed(2)+')';ctx.fill();
-      if(s.r>0.6){ctx.beginPath();ctx.arc(s.x,s.y,s.r*3,0,6.28);ctx.fillStyle='rgba(212,179,102,'+(a*.06).toFixed(3)+')';ctx.fill()}
-    }
-    // Constellations
-    for(var ci=0;ci<fCons.length;ci++){
-      var con=fCons[ci],cA=Math.sin(ts*.4+ci*2)*.15+.2;
-      ctx.strokeStyle='rgba(212,179,102,'+cA+')';ctx.lineWidth=.5;ctx.beginPath();
-      for(var j=0;j<con.length;j++){if(j===0)ctx.moveTo(con[j][0]*W,con[j][1]*H);else ctx.lineTo(con[j][0]*W,con[j][1]*H)}
-      ctx.stroke();
-      for(var j=0;j<con.length;j++){ctx.beginPath();ctx.arc(con[j][0]*W,con[j][1]*H,1.5,0,6.28);ctx.fillStyle='rgba(212,179,102,'+(cA+.15)+')';ctx.fill()}
-    }
-    // Shimmer particles
-    for(var p=0;p<30;p++){
-      var px=Math.sin(ts*.2+p*1.1)*.3+.5,py=(p/30)*H;
-      py=(py+ts*8)%H;
-      var pA=Math.sin(ts*2+p*1.5)*.25+.2;
-      ctx.beginPath();ctx.arc(px*W,py,1,0,6.28);ctx.fillStyle='rgba(212,179,102,'+pA+')';ctx.fill();
-    }
-    // Sun glow at top
-    var sg=ctx.createRadialGradient(W*.5,H*.03,0,W*.5,H*.03,80);
-    sg.addColorStop(0,'rgba(212,179,102,.08)');sg.addColorStop(1,'rgba(212,179,102,0)');
-    ctx.fillStyle=sg;ctx.fillRect(0,0,W,H*.1);
-    // Moon
-    var mx=W*.85,my=H*.04;
-    ctx.beginPath();ctx.arc(mx,my,10,0,6.28);ctx.fillStyle='rgba(212,179,102,.06)';ctx.fill();
-    ctx.beginPath();ctx.arc(mx,my,10,0,6.28);ctx.strokeStyle='rgba(212,179,102,.15)';ctx.lineWidth=.5;ctx.stroke();
-    ctx.beginPath();ctx.arc(mx+3,my-1,7.5,0,6.28);ctx.fillStyle='#080d24';ctx.fill();
-
-    finAnimId=requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-}
-
-function renderFinance(){
-  // Fill inputs
-  var fi=document.getElementById('fInc');if(fi)fi.value=S.income||'';
-  var fe=document.getElementById('fExp');if(fe)fe.value=S.mE||'';
-  var fs=document.getElementById('fSav');if(fs)fs.value=S.mS||'';
-  var fa=document.getElementById('fAst');if(fa)fa.value=S.assets||'';
-  renderGoalTop();
-  renderGoalTimeline();
-  renderSnapViz();
-  renderDailyList();
-  // Show/hide goal setup
-  if(S.mainGoal){document.getElementById('goalSetupForm').style.display='none'}
-}
-
-function renderGoalTop(){
-  var c=document.getElementById('finGoalTop');if(!c)return;
-  if(!S.mainGoal){c.innerHTML='<div style="text-align:center;padding:14px 0"><div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--sky)">SET YOUR FIRST GOAL BELOW</div></div>';return}
-  var pct=S.mainGoal.target>0?Math.min((S.mS/S.mainGoal.target)*100,100).toFixed(1):'0';
-  c.innerHTML='<div style="text-align:center;padding:14px 0"><div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--sky);margin-bottom:6px">YOUR GOAL</div>'+
-    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-style:italic;color:var(--gold);margin-bottom:4px">'+S.mainGoal.name+'</div>'+
-    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:36px;color:#fff">$'+(S.mS||0).toLocaleString()+' <span style="font-size:16px;color:rgba(255,255,255,.3)">of $'+S.mainGoal.target.toLocaleString()+'</span></div>'+
-    '<div class="sav-bar-wrap" style="height:10px;margin:10px 0"><div class="sav-bar" style="width:'+pct+'%"></div></div>'+
-    '<div style="font-size:11px;color:rgba(255,255,255,.4)">'+pct+'% complete</div></div>';
-}
-
-function renderGoalTimeline(){
-  var c=document.getElementById('goalTimeline');if(!c)return;
-  if(!S.milestones.length){c.innerHTML='<div style="padding:10px 0;font-size:12px;color:rgba(255,255,255,.35);text-align:center">Set your goal below to see your journey.</div>';return}
-  c.innerHTML=S.milestones.map(function(m){
-    var pct=m.target>0?Math.min((S.mS/m.target)*100,100):0;
-    var done=pct>=100,active=!done&&pct>0;
-    return '<div class="gt-node"><div class="gt-dot'+(done?' done':active?' active':'')+'"></div>'+
-      '<div class="gt-name">'+(done?'✓ ':'')+m.name+'</div>'+
-      '<div class="gt-sub">$'+m.target.toLocaleString()+'</div>'+
-      '<div class="gt-bar"><div class="gt-fill" style="width:'+pct+'%"></div></div></div>';
-  }).join('');
-}
-
-function saveSnapshot(){
-  S.income=parseFloat(document.getElementById('fInc').value)||0;
-  S.mE=parseFloat(document.getElementById('fExp').value)||0;
-  S.mS=parseFloat(document.getElementById('fSav').value)||0;
-  S.assets=parseFloat(document.getElementById('fAst').value)||0;
-  sv();renderSnapViz();renderGoalTop();renderGoalTimeline();
-}
-
-function renderSnapViz(){
-  var v=document.getElementById('snapViz');if(!v)return;
-  if(!S.income&&!S.mE){v.innerHTML='';return}
-  var surplus=S.income-S.mE;
-  var nw=S.mS+S.assets;
-  var savRate=S.income>0?((surplus/S.income)*100).toFixed(0):0;
-  v.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
-    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:26px;color:'+(surplus>=0?'var(--gold)':'rgba(255,80,80,.7)')+'">$'+Math.abs(surplus).toLocaleString()+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">'+(surplus>=0?'Monthly surplus':'Monthly deficit')+'</div></div>'+
-    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:26px;color:var(--sky)">'+savRate+'%</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Savings rate</div></div>'+
-    '</div>'+
-    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center;margin-top:10px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:26px;color:var(--gold)">$'+nw.toLocaleString()+'</div><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Net worth</div></div>';
-}
-
-function createGoalPlan(){
-  var name=document.getElementById('gName').value.trim();
-  var target=parseFloat(document.getElementById('gTarget').value)||0;
-  var rel=document.getElementById('gpRel').value;
-  var kids=document.getElementById('gpKids').value;
-  if(!name||!target)return;
-  S.mainGoal={name:name,target:target};
-  S.profile={rel:rel,kids:kids};
-  // Break into milestones (gradient from small to big)
-  S.milestones=[];
-  if(target<=5000){
-    S.milestones=[
-      {name:'First $500',target:500},
-      {name:'Halfway there',target:Math.round(target/2)},
-      {name:name+' complete',target:target}
-    ];
-  }else if(target<=20000){
-    S.milestones=[
-      {name:'First $1,000',target:1000},
-      {name:'$'+Math.round(target*.25).toLocaleString()+' saved',target:Math.round(target*.25)},
-      {name:'Halfway there',target:Math.round(target/2)},
-      {name:'$'+Math.round(target*.75).toLocaleString()+' saved',target:Math.round(target*.75)},
-      {name:name+' complete',target:target}
-    ];
-  }else{
-    S.milestones=[
-      {name:'First $1,000',target:1000},
-      {name:'$5,000 saved',target:5000},
-      {name:'$'+Math.round(target*.25).toLocaleString(),target:Math.round(target*.25)},
-      {name:'Halfway: $'+Math.round(target/2).toLocaleString(),target:Math.round(target/2)},
-      {name:'$'+Math.round(target*.75).toLocaleString(),target:Math.round(target*.75)},
-      {name:name+' complete',target:target}
-    ];
-  }
-  // Add life-stage goals
-  if(kids==='planning')S.milestones.push({name:'Baby Fund',target:target+10000});
-  if(rel==='partner')S.milestones.push({name:'Shared dream',target:target+15000});
-  sv();
-  document.getElementById('goalSetupForm').style.display='none';
-  renderGoalTop();renderGoalTimeline();
-}
-
-/* ── Daily tracker ── */
-function addDailyTrack(){
-  var d=document.getElementById('dtDesc'),a=document.getElementById('dtAmt');
-  if(!d||!d.value.trim())return;
-  S.dailyTrack.push({d:d.value.trim(),a:parseFloat(a?a.value:0)||0,dt:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});
-  sv();d.value='';a.value='';renderDailyList();
-}
-function renderDailyList(){
-  var c=document.getElementById('dailyList');if(!c)return;
-  var today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
-  var todayItems=S.dailyTrack.filter(function(e){return e.dt===today});
-  var total=todayItems.reduce(function(s,e){return s+e.a},0);
-  c.innerHTML=(todayItems.length?'<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Today: $'+total.toLocaleString()+'</div>':'')+
-    todayItems.slice().reverse().map(function(e){return '<div class="expense-row"><div class="expense-name">'+e.d+'</div><div class="expense-amt">$'+e.a.toLocaleString()+'</div></div>'}).join('')+
-    (todayItems.length?'':'<p style="font-size:11px;color:rgba(255,255,255,.25);margin-top:6px">No entries today yet.</p>');
-}
+/* Finance tool now in finance-tracker.html (loaded via iframe tool overlay) */
 
 /* ═══════════════════════════════════════════════════ */
 /* CELESTIAL CANVAS (main background)                  */
@@ -1175,7 +1032,7 @@ function drawCelestial(){
 }
 
 /* ── Tool overlay ── */
-var TOOL_URLS={space:'abundance-corner-analyser.html'};
+var TOOL_URLS={space:'abundance-corner-analyser.html',finance:'finance-tracker.html'};
 function openTool(name,title){
   var ov=document.getElementById('toolOverlay');
   document.getElementById('toTitle').textContent=title||'Tool';
@@ -1191,10 +1048,63 @@ function closeTool(){
   setTimeout(function(){fr.src='about:blank'},400);
 }
 
+/* ── Dinner ring countdown (circle frame) ── */
+function drawDinnerRing(){
+  var c=document.getElementById('dinnerRing');if(!c)return;
+  var ctx=c.getContext('2d'),s=220,cx=s/2,cy=s/2,r=90;
+  ctx.clearRect(0,0,s,s);
+  // Track
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=6;ctx.stroke();
+  // Progress arc
+  var dn=daysDone(),pct=dn/30;
+  if(pct>0){
+    ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*pct);
+    var g=ctx.createLinearGradient(cx-r,cy,cx+r,cy);
+    g.addColorStop(0,'rgba(107,159,212,.8)');g.addColorStop(1,'rgba(212,179,102,.9)');
+    ctx.strokeStyle=g;ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();
+  }
+  // Decorative dots around ring
+  for(var i=0;i<30;i++){
+    var a=-Math.PI/2+Math.PI*2*i/30;
+    var dx=cx+Math.cos(a)*(r+14),dy=cy+Math.sin(a)*(r+14);
+    ctx.beginPath();ctx.arc(dx,dy,i<dn?2:1,0,Math.PI*2);
+    ctx.fillStyle=i<dn?'rgba(212,179,102,.6)':'rgba(255,255,255,.12)';ctx.fill();
+  }
+  // Outer glow ring
+  ctx.beginPath();ctx.arc(cx,cy,r+24,0,Math.PI*2);
+  ctx.strokeStyle='rgba(212,179,102,.06)';ctx.lineWidth=1;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,r-14,0,Math.PI*2);
+  ctx.strokeStyle='rgba(212,179,102,.04)';ctx.lineWidth=.5;ctx.stroke();
+}
+
+/* ── Shooting stars ── */
+function spawnShootingStar(){
+  var star=document.createElement('div');
+  star.className='shooting-star';
+  var x=Math.random()*80+10,y=Math.random()*40;
+  var angle=25+Math.random()*20;
+  var dur=.6+Math.random()*.5;
+  star.style.cssText='left:'+x+'%;top:'+y+'%;animation:shoot '+dur+'s linear forwards';
+  star.querySelector||0;
+  star.style.setProperty('--angle',angle+'deg');
+  var trail=document.createElement('span');
+  trail.style.cssText='position:absolute;top:0;right:0;width:'+(40+Math.random()*40)+'px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.5),transparent);transform-origin:right center;transform:rotate('+angle+'deg)';
+  star.appendChild(trail);
+  document.body.appendChild(star);
+  setTimeout(function(){star.remove()},dur*1000+100);
+}
+function shootingStarLoop(){
+  spawnShootingStar();
+  setTimeout(shootingStarLoop,3000+Math.random()*6000);
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded',function(){
   initCelestial();drawCelestial();
   buildMonthPicker();
+  drawDinnerRing();
+  setTimeout(shootingStarLoop,2000);
   setTimeout(function(){var sl=document.getElementById('splashLoader');sl.classList.add('hide');setTimeout(function(){sl.style.display='none'},600)},1800);
   if(S.path){goHome()}
   if(S.rsvp){var b=document.getElementById('rsvpBtn');if(b){b.textContent='✓ RSVP Confirmed';b.style.opacity='.65';b.onclick=null}}
