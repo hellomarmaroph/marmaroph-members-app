@@ -1288,27 +1288,64 @@ function renderPortfolioChart(){
 /* ═══════════════════════════════════════ */
 /* AI PLAN GENERATION                       */
 /* ═══════════════════════════════════════ */
-var GEMINI_KEY='AQ.Ab8RN6J3yhzUPLjTaOJ91MFBDTZbQ6ALhh_FrSdQmBTTkNk5WQ';
 function generatePlan(tier){
   var planEl=document.getElementById('plan'+tier);if(!planEl)return;
   planEl.innerHTML='<div class="plan-loading"><div class="pl-spinner"></div><div style="font-size:11px;color:rgba(255,255,255,.35)">Creating your personalized plan...</div></div>';
-  var prompt='';
-  if(tier==='A'){
-    var debtList=F.debts.map(function(d){return d.name+': $'+d.balance+' at '+d.rate+'% APR, min $'+d.minPay}).join('; ');
-    prompt='You are a compassionate financial wellness coach for women. Create a personalized consumer debt freedom plan.\nMonthly income: $'+F.income+'\nMonthly expenses: $'+F.expenses+'\nDebts: '+debtList+'\nCreate a step-by-step plan using the avalanche method. Include which debt to attack first, monthly payment allocation, estimated payoff timeline, one sacrifice suggestion, one encouragement. Be specific with numbers. Warm tone, never judgmental. Numbered steps, under 8 steps. No markdown.';
-  }else if(tier==='B'){
-    prompt='You are a compassionate financial wellness coach for women. Create a personalized peace fund plan.\nMonthly income: $'+F.income+'\nMonthly expenses: $'+F.expenses+'\nCurrent savings: $'+F.savings+'\nAuto-save: $'+F.autoSave+'/month\nInvested: $'+F.invested+'\nRisk profile: '+(F.riskProfile||'not set')+'\nCreate a plan to build a 6-month peace fund ($'+(F.expenses*6||10000)+' target). Include savings rate analysis, auto-save recommendation, timeline, investment starter, one mindset shift. Numbered steps, under 8 steps. No markdown.';
-  }else{
-    var tp=F.portfolio.stocks+F.portfolio.bonds+F.portfolio.realEstate+F.portfolio.cash+F.portfolio.other;
-    prompt='You are a compassionate financial wellness coach for women. Create a wealth building plan.\nGoal: '+(F.wealthGoal?F.wealthGoal.name+' $'+F.wealthGoal.target+' in '+F.wealthGoal.years+' years':'Not set')+'\nIncome: $'+F.income+'\nExpenses: $'+F.expenses+'\nPeace fund: $'+F.savings+'\nPortfolio: $'+tp+'\nCreate a plan including portfolio review, monthly investment target, diversification, compound growth projection. Numbered steps, under 8 steps. No markdown.';
-  }
-  fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+GEMINI_KEY,{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:800}})
-  }).then(function(r){return r.json()}).then(function(data){
-    var text='';try{text=data.candidates[0].content.parts[0].text}catch(e){text='Could not generate plan. Please try again.'}
+  setTimeout(function(){
+    var text='';
+    var income=parseFloat(F.income)||0,expenses=parseFloat(F.expenses)||0,surplus=income-expenses;
+    if(tier==='A'){
+      var debts=(F.debts||[]).slice().sort(function(a,b){return(parseFloat(b.rate)||0)-(parseFloat(a.rate)||0)});
+      var totalDebt=debts.reduce(function(s,d){return s+(parseFloat(d.balance)||0)},0);
+      var totalMin=debts.reduce(function(s,d){return s+(parseFloat(d.minPay)||0)},0);
+      var extra=Math.max(0,surplus-totalMin);
+      var first=debts[0];
+      var months=totalDebt>0&&surplus>0?Math.ceil(totalDebt/surplus):0;
+      var lines=[];
+      lines.push('1. Pay all minimum payments first: $'+totalMin+'/month across '+debts.length+' debt'+(debts.length>1?'s':'')+'.');
+      if(first)lines.push('2. Attack "'+(first.name||'highest-rate debt')+'" first ('+first.rate+'% APR, $'+first.balance+' balance). This saves you the most in interest.');
+      lines.push('3. Direct your extra $'+extra.toFixed(0)+'/month toward that top debt while paying minimums on everything else.');
+      if(first){var fpay=(parseFloat(first.minPay)||0)+extra;var fmo=fpay>0?Math.ceil((parseFloat(first.balance)||0)/fpay):0;lines.push('4. At $'+fpay.toFixed(0)+'/month, "'+(first.name||'this debt')+'" will be cleared in roughly '+fmo+' months.');}
+      lines.push('5. Once cleared, roll that payment into the next debt. Each payoff accelerates the next one.');
+      lines.push('6. Consider one small sacrifice this month: one subscription, one dining-out evening. Even $30 redirected shortens your timeline.');
+      if(months>0)lines.push('7. Estimated total debt-free timeline: '+months+' months ('+Math.round(months/12*10)/10+' years). Every payment is progress.');
+      lines.push('8. You are not behind. Naming your debts is the bravest financial act. Keep going.');
+      text=lines.join('\n');
+    }else if(tier==='B'){
+      var savings=parseFloat(F.savings)||0,autoSave=parseFloat(F.autoSave)||0;
+      var target=expenses>0?expenses*6:10000;
+      var gap=Math.max(0,target-savings);
+      var rate=income>0?Math.round(autoSave/income*100):0;
+      var idealSave=Math.round(income*0.2);
+      var months2=autoSave>0?Math.ceil(gap/autoSave):0;
+      var lines2=[];
+      lines2.push('1. Your peace fund target is $'+target.toFixed(0)+' (6 months of expenses). You have $'+savings.toFixed(0)+', so $'+gap.toFixed(0)+' to go.');
+      lines2.push('2. Current savings rate: '+rate+'% of income ($'+autoSave+'/month). Aim for 20% ($'+idealSave+'/month) as your next milestone.');
+      if(autoSave<idealSave)lines2.push('3. Increase auto-save by $'+Math.min(50,idealSave-autoSave).toFixed(0)+' this month. Small jumps you barely feel add up fast.');
+      else lines2.push('3. Your savings rate is strong. Maintain it and watch compound growth work for you.');
+      if(months2>0)lines2.push('4. At your current rate, your peace fund will be full in '+months2+' months. Every deposit is a layer of calm.');
+      lines2.push('5. Keep your peace fund in a high-yield savings account. Your money should earn while it waits.');
+      lines2.push('6. Once your peace fund is full, redirect that auto-save toward investments. Your future self will thank you.');
+      lines2.push('7. Mindset shift: saving is not deprivation. It is choosing your future peace over a momentary want.');
+      text=lines2.join('\n');
+    }else{
+      var tp=0;if(F.portfolio)tp=(parseFloat(F.portfolio.stocks)||0)+(parseFloat(F.portfolio.bonds)||0)+(parseFloat(F.portfolio.realEstate)||0)+(parseFloat(F.portfolio.cash)||0)+(parseFloat(F.portfolio.other)||0);
+      var goal=F.wealthGoal||{};
+      var goalTarget=parseFloat(goal.target)||50000;
+      var goalYears=parseFloat(goal.years)||5;
+      var monthlyNeeded=goalTarget>tp?(goalTarget-tp)/(goalYears*12):0;
+      var lines3=[];
+      lines3.push('1. '+(goal.name?'Goal: "'+goal.name+'" ':'')+'Target: $'+goalTarget.toFixed(0)+' in '+goalYears+' years. Current portfolio: $'+tp.toFixed(0)+'.');
+      lines3.push('2. Monthly investment needed: $'+monthlyNeeded.toFixed(0)+'. Set up an automatic transfer on payday so investing happens before spending.');
+      lines3.push('3. Review your portfolio balance. A simple split: 70% index funds, 20% bonds, 10% alternatives. Complexity is rarely rewarded.');
+      lines3.push('4. If $'+monthlyNeeded.toFixed(0)+'/month feels too high, start with $'+Math.round(monthlyNeeded*0.5)+'. Consistency matters more than amount.');
+      lines3.push('5. At 7% average annual return, $'+monthlyNeeded.toFixed(0)+'/month becomes roughly $'+(Math.round(monthlyNeeded*goalYears*12*1.25)).toFixed(0)+' in '+goalYears+' years with compound growth.');
+      lines3.push('6. Revisit this plan every 90 days. Markets shift, life shifts. Your plan should breathe with you.');
+      lines3.push('7. Wealth is not a number. It is the freedom to choose how you spend your time. You are building that freedom right now.');
+      text=lines3.join('\n');
+    }
     F['plan'+tier]=text;sv();renderSavedPlan('plan'+tier,text);
-  }).catch(function(){planEl.innerHTML='<div class="glass" style="text-align:center"><p style="font-size:11px;color:var(--danger)">Could not connect. Check your connection and try again.</p></div>';});
+  },800);
 }
 function renderSavedPlan(elId,text){
   var el=document.getElementById(elId);if(!el)return;

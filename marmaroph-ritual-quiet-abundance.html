@@ -141,8 +141,6 @@ canvas#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .dinner-ring-inner .cd-unit{font-size:9px;letter-spacing:.3em;color:rgba(255,255,255,.35)}
 /* Shooting stars */
 .shooting-star{position:fixed;width:2px;height:2px;background:#fff;border-radius:50%;pointer-events:none;z-index:1;opacity:0}
-.shooting-star::after{content:'';position:absolute;top:0;right:0;width:60px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.6),transparent);transform-origin:right center;transform:rotate(0deg)}
-@keyframes shoot{0%{opacity:0;transform:translate(0,0)}5%{opacity:1}80%{opacity:.6}100%{opacity:0;transform:translate(-320px,180px)}}
 /* Finance tool now in finance-tracker.html */
 footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.12);text-align:center;padding:18px 0;margin-top:10px}
 /* Progress bar */
@@ -1079,20 +1077,29 @@ function drawDinnerRing(){
 }
 
 /* ── Shooting stars ── */
+var _ssId=0;
 function spawnShootingStar(){
   var star=document.createElement('div');
   star.className='shooting-star';
-  var x=Math.random()*80+10,y=Math.random()*40;
-  var angle=25+Math.random()*20;
-  var dur=.6+Math.random()*.5;
-  star.style.cssText='left:'+x+'%;top:'+y+'%;animation:shoot '+dur+'s linear forwards';
-  star.querySelector||0;
-  star.style.setProperty('--angle',angle+'deg');
+  /* Random direction: 0=top-left→bottom-right, 1=top-right→bottom-left, 2=top→bottom-left, 3=right→left */
+  var dir=Math.floor(Math.random()*4);
+  var x,y,dx,dy;
+  if(dir===0){x=Math.random()*60;y=Math.random()*30;dx=200+Math.random()*200;dy=100+Math.random()*120;}
+  else if(dir===1){x=40+Math.random()*60;y=Math.random()*30;dx=-(200+Math.random()*200);dy=100+Math.random()*120;}
+  else if(dir===2){x=Math.random()*100;y=Math.random()*20;dx=-(60+Math.random()*140);dy=180+Math.random()*120;}
+  else{x=70+Math.random()*30;y=Math.random()*50;dx=-(250+Math.random()*150);dy=40+Math.random()*80;}
+  var dur=.4+Math.random()*1.0;
+  var id='ss'+(_ssId++);
+  var kf='@keyframes '+id+'{0%{opacity:0;transform:translate(0,0)}5%{opacity:1}80%{opacity:.6}100%{opacity:0;transform:translate('+dx+'px,'+dy+'px)}}';
+  var st=document.createElement('style');st.textContent=kf;document.head.appendChild(st);
+  star.style.cssText='left:'+x+'%;top:'+y+'%;animation:'+id+' '+dur+'s linear forwards';
+  var trailLen=30+Math.random()*60;
+  var trailAngle=Math.atan2(dy,dx)*180/Math.PI;
   var trail=document.createElement('span');
-  trail.style.cssText='position:absolute;top:0;right:0;width:'+(40+Math.random()*40)+'px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.5),transparent);transform-origin:right center;transform:rotate('+angle+'deg)';
+  trail.style.cssText='position:absolute;top:0;left:0;width:'+trailLen+'px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5));transform-origin:left center;transform:rotate('+trailAngle+'deg)';
   star.appendChild(trail);
   document.body.appendChild(star);
-  setTimeout(function(){star.remove()},dur*1000+100);
+  setTimeout(function(){star.remove();st.remove()},dur*1000+100);
 }
 function shootingStarLoop(){
   spawnShootingStar();
