@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Quiet Abundance — My Quiet Ledger</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700&display=swap');
+:root{
+  --navy:#0b1026;--deep:#0e1430;--gold:#d4b366;--sky:#6b9fd4;
+  --glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);
+  --danger:rgba(255,80,80,.7);--success:rgba(80,200,120,.7);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Montserrat','Helvetica Neue',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--sans);background:var(--navy);color:#fff;-webkit-font-smoothing:antialiased}
+canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.main{position:relative;z-index:1;height:100vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 100px}
+
+/* Typography */
+.sec-lbl{font-size:8.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--sky);text-align:center;margin-bottom:4px}
+.sec-title{font-family:var(--serif);font-size:24px;font-weight:400;text-align:center;color:#fff;margin-bottom:4px}
+.sec-sub{font-size:11px;color:rgba(255,255,255,.35);text-align:center;font-style:italic;margin-bottom:16px}
+.heading{font-family:var(--serif);font-size:18px;color:#fff;margin:18px 18px 6px}
+.subtext{font-size:11px;color:rgba(255,255,255,.35);margin:0 18px 12px;font-style:italic}
+
+/* Buttons */
+.btn{border:none;cursor:pointer;border-radius:12px;font-family:var(--sans);font-weight:600;font-size:13px;padding:14px 20px;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;gap:6px;position:relative;overflow:hidden}
+.btn-primary{background:linear-gradient(135deg,#e8c96e,var(--gold),#c4a04e,#b8943f);color:var(--navy);box-shadow:0 4px 20px rgba(212,179,102,.3),inset 0 1px 0 rgba(255,255,255,.2)}
+.btn-primary:active{transform:scale(.97);box-shadow:0 2px 10px rgba(212,179,102,.2)}
+.btn-primary::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);animation:btnShimmer 3s infinite}
+@keyframes btnShimmer{0%{transform:translateX(-100%) rotate(45deg)}100%{transform:translateX(100%) rotate(45deg)}}
+.btn-ghost{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.btn-ghost:active{background:rgba(255,255,255,.08)}
+.btn-sm{padding:8px 14px;font-size:11px;border-radius:8px}
+.btn-sky{background:linear-gradient(135deg,#7eb8e8,var(--sky),#5a8ec0);color:#fff;box-shadow:0 4px 20px rgba(107,159,212,.25)}
+.btn-green{background:linear-gradient(135deg,#6ddb8e,#50c878,#3da85c);color:#fff;box-shadow:0 4px 20px rgba(80,200,120,.25)}
+
+/* Glass card */
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:18px;margin:0 16px 12px}
+.glass-sm{background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:14px}
+
+/* Forms */
+.fgrp{margin-bottom:12px}
+.flbl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45);display:block;margin-bottom:4px}
+.finp{width:100%;border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;font-size:14px;color:#fff;background:rgba(255,255,255,.04);transition:border-color .2s;font-family:inherit}
+.finp:focus{border-color:var(--gold);outline:none}
+.finp::placeholder{color:rgba(255,255,255,.2)}
+select.finp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='rgba(255,255,255,.3)' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+
+/* Chips */
+.chip{padding:7px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--glass-border);background:var(--glass);color:rgba(255,255,255,.6);transition:all .2s}
+.chip.sel{border-color:var(--gold);background:rgba(212,179,102,.1);color:var(--gold)}
+.chip:active{transform:scale(.95)}
+
+/* Views */
+.view{display:none}
+.view.active{display:block}
+
+/* Progress bar */
+.prog-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin:8px 0}
+.prog-fill{height:100%;border-radius:4px;transition:width .5s}
+.prog-gold{background:linear-gradient(90deg,var(--gold),#c4a04e)}
+.prog-sky{background:linear-gradient(90deg,var(--sky),#5a8ec0)}
+.prog-green{background:linear-gradient(90deg,var(--success),#4dc970)}
+
+/* Stat grid */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 16px 12px}
+.stat-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:12px;text-align:center}
+.stat-val{font-family:var(--serif);font-size:22px;font-weight:400}
+.stat-lbl{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px}
+.stat-card.wide{grid-column:1/-1}
+
+/* Motivational quote */
+.motiv-quote{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--gold);text-align:center;padding:14px 24px;line-height:1.5}
+.motiv-attr{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center;margin-top:4px;margin-bottom:14px}
+
+/* Timeline */
+.tl{position:relative;padding-left:28px;margin:0 18px 12px}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:3px;border-radius:2px}
+.tl-gold::before{background:linear-gradient(180deg,var(--gold),rgba(212,179,102,.1))}
+.tl-sky::before{background:linear-gradient(180deg,var(--sky),rgba(107,159,212,.1))}
+.tl-green::before{background:linear-gradient(180deg,var(--success),rgba(80,200,120,.1))}
+.tl-node{position:relative;margin-bottom:14px}
+.tl-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy)}
+.tl-dot.done{background:var(--gold);border-color:var(--gold)}
+.tl-dot.active{background:rgba(212,179,102,.3);border-color:var(--gold);box-shadow:0 0 10px rgba(212,179,102,.3)}
+.tl-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.8)}
+.tl-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:1px}
+.tl-bar{height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:4px;overflow:hidden}
+.tl-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--sky));border-radius:3px;transition:width .5s}
+
+/* Debt cards */
+.debt-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:14px;margin:0 16px 10px;position:relative}
+.debt-card .dc-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.85)}
+.debt-card .dc-info{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px}
+.debt-card .dc-amt{font-family:var(--serif);font-size:20px;color:var(--danger);position:absolute;right:14px;top:14px}
+.debt-card .dc-del{position:absolute;right:14px;bottom:10px;font-size:10px;color:rgba(255,80,80,.5);cursor:pointer;border:none;background:none}
+
+/* Expense row */
+.exp-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--glass);border:1px solid rgba(255,255,255,.04);border-radius:10px;margin-bottom:5px}
+.exp-name{font-size:12px;font-weight:500;color:rgba(255,255,255,.8)}
+.exp-cat{font-size:9px;color:var(--sky);margin-top:1px}
+.exp-amt{font-size:12px;color:var(--gold);font-weight:600}
+
+/* Chart */
+.chart-wrap{margin:0 16px 12px;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:12px;overflow:hidden}
+.chart-wrap canvas{width:100%;height:160px}
+
+/* Interest rate info */
+.rate-info{background:rgba(212,179,102,.04);border:1px solid rgba(212,179,102,.12);border-radius:12px;padding:12px;margin:0 16px 12px}
+.rate-info .ri-title{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.rate-info p{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6}
+
+/* Education */
+.edu-box{background:rgba(107,159,212,.05);border:1px solid rgba(107,159,212,.12);border-radius:14px;padding:14px 16px;margin:0 16px 12px}
+.edu-box .eb-title{font-size:11px;font-weight:700;color:var(--sky);margin-bottom:4px}
+.edu-box p{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6}
+
+/* AI Plan */
+.plan-card{background:linear-gradient(135deg,rgba(212,179,102,.06),rgba(107,159,212,.06));border:1px solid rgba(212,179,102,.15);border-radius:18px;padding:18px;margin:0 16px 12px}
+.plan-card .pc-head{font-family:var(--serif);font-size:18px;color:var(--gold);margin-bottom:8px}
+.plan-card .pc-step{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+.plan-card .pc-num{width:22px;height:22px;border-radius:50%;background:rgba(212,179,102,.15);color:var(--gold);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.plan-card .pc-txt{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6}
+.plan-loading{text-align:center;padding:20px}
+.plan-loading .pl-spinner{width:28px;height:28px;border:2px solid var(--glass-border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Psych question */
+.psych-q{background:rgba(212,179,102,.04);border:1px solid rgba(212,179,102,.1);border-radius:14px;padding:14px 16px;margin:12px 16px}
+.psych-q .pq-label{font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.5;margin-bottom:10px}
+.pq-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.pq-opt{padding:8px 12px;border-radius:8px;font-size:11px;cursor:pointer;border:1.5px solid var(--glass-border);background:var(--glass);color:rgba(255,255,255,.6);transition:all .2s;text-align:center}
+.pq-opt.sel{border-color:var(--gold);background:rgba(212,179,102,.1);color:var(--gold)}
+.pq-opt:active{transform:scale(.97)}
+/* Happiness scale */
+.hap-scale{display:flex;gap:4px;justify-content:center;margin:6px 0}
+.hap-dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--glass-border);background:var(--glass);color:rgba(255,255,255,.5);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.hap-dot.sel{border-color:var(--gold);background:rgba(212,179,102,.15);color:var(--gold)}
+
+/* Asset row */
+.asset-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;margin:0 16px 6px}
+.asset-row .ar-name{font-size:12px;font-weight:500;color:rgba(255,255,255,.8)}
+.asset-row .ar-type{font-size:9px;color:var(--sky)}
+.asset-row .ar-val{font-family:var(--serif);font-size:16px;color:var(--gold)}
+
+/* Unlock banner */
+.unlock-banner{background:linear-gradient(135deg,rgba(80,200,120,.08),rgba(212,179,102,.08));border:1px solid rgba(80,200,120,.2);border-radius:16px;padding:18px;margin:0 16px 16px;text-align:center}
+.unlock-banner .ub-title{font-family:var(--serif);font-size:20px;color:var(--success);margin-bottom:4px}
+.unlock-banner .ub-sub{font-size:11px;color:rgba(255,255,255,.4)}
+
+
+/* Close button */
+.close-btn{position:fixed;top:14px;right:14px;z-index:100;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(11,16,38,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.close-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
+.close-btn:active{transform:scale(.9)}
+.close-btn svg{width:14px;height:14px;stroke:rgba(255,255,255,.5);stroke-width:2;fill:none;stroke-linecap:round}
+
+/* Decorative images */
+.deco-img{display:block;margin:0 auto;opacity:.12;pointer-events:none;max-width:180px;height:auto;filter:sepia(.3) brightness(1.3) saturate(.5)}
+.deco-img.gold{filter:sepia(.5) brightness(1.4) saturate(.4) hue-rotate(-10deg)}
+.deco-img-sm{max-width:120px}
+.deco-img-lg{max-width:220px}
+.deco-section{position:relative;text-align:center;padding:10px 0}
+
+/* Glitter overlay */
+.glitter-overlay{position:fixed;inset:0;z-index:0;pointer-events:none}
+.glitter-dot{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--gold);animation:glitter 3s ease-in-out infinite alternate}
+@keyframes glitter{0%{opacity:0;transform:scale(0)}50%{opacity:.6;transform:scale(1.2)}100%{opacity:0;transform:scale(0)}}
+
+/* Glass card glow */
+.glass{background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--glass-border);border-radius:16px;padding:18px;margin:0 16px 12px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+
+/* Motivational quote enhanced */
+.motiv-quote{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--gold);text-align:center;padding:14px 24px;line-height:1.5;text-shadow:0 0 30px rgba(212,179,102,.15)}
+
+/* Chip glow on select */
+.chip.sel{border-color:var(--gold);background:rgba(212,179,102,.1);color:var(--gold);box-shadow:0 0 12px rgba(212,179,102,.1)}
+
+/* Progress bar glow */
+.prog-fill.prog-gold{box-shadow:0 0 8px rgba(212,179,102,.3)}
+.prog-fill.prog-sky{box-shadow:0 0 8px rgba(107,159,212,.3)}
+.prog-fill.prog-green{box-shadow:0 0 8px rgba(80,200,120,.3)}
+
+/* Timeline dot glow */
+.tl-dot.done{box-shadow:0 0 10px rgba(212,179,102,.4)}
+.tl-dot.active{box-shadow:0 0 12px rgba(212,179,102,.4)}
+
+/* Section divider */
+.celestial-divider{text-align:center;padding:8px 0;opacity:.25}
+.celestial-divider svg{width:60px;height:12px}
+
+footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.15);padding:30px 0 16px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .5s ease-out both}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="glitter-overlay" id="glitterOverlay"></div>
+<button class="close-btn" onclick="closeFinance()" aria-label="Close">
+  <svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+</button>
+<div class="main" id="mainScroll">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ONBOARDING                              -->
+<!-- ═══════════════════════════════════════ -->
+<div class="view active" id="v-onboard">
+  <div style="padding:32px 18px 0;text-align:center">
+    <img src="img/deco-tiger.png" class="deco-img deco-img-sm gold" alt="" style="margin-bottom:8px;opacity:.15">
+    <div class="sec-lbl">QUIET ABUNDANCE</div>
+    <div class="sec-title" style="font-size:28px">Your Quiet Ledger</div>
+    <div class="sec-sub" style="margin-bottom:8px">Independence and freedom start with being in control of your finances</div>
+    <div class="motiv-quote">"A woman who understands her money understands her power."</div>
+    <div class="motiv-attr">The Quiet Abundance Method</div>
+  </div>
+
+  <div class="glass" style="margin-top:8px">
+    <div class="flbl" style="margin-bottom:10px;font-size:10px;color:rgba(255,255,255,.6)">Do you currently have debt?</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="chip" style="width:100%;text-align:center" onclick="pickDebt(this,'yes')">Yes, I have debt</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="pickDebt(this,'no')">No, I am debt-free</div>
+    </div>
+  </div>
+
+  <!-- Debt type -->
+  <div id="debtTypeSection" style="display:none">
+    <div class="heading">What type of debt?</div>
+    <div class="subtext">Select all that apply</div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px" id="debtTypeList">
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'consumer')">Consumer debt (credit cards, personal loans)</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'mortgage')">Mortgage debt</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'investment')">Investment debt</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'other')">Other debt</div>
+    </div>
+    <div id="otherDebtInput" style="display:none;padding:8px 16px 0">
+      <input class="finp" type="text" id="otherDebtDesc" placeholder="What kind of debt?">
+    </div>
+    <div id="consumerEdu" style="display:none;margin-top:14px">
+      <div class="edu-box">
+        <div class="eb-title">Why consumer debt is the most dangerous</div>
+        <p>Consumer debt (credit cards, personal loans, buy-now-pay-later) carries the highest interest rates, often 20-30% annually. A $5,000 credit card balance at 24% APR costs you $1,200 per year in interest alone. That money could be building your future instead of paying for your past.</p>
+        <p style="margin-top:8px;color:var(--gold)">The Quiet Abundance method locks your focus here first. No savings goals, no investments, until this weight is lifted.</p>
+      </div>
+    </div>
+    <div style="padding:16px 16px 0">
+      <button class="btn btn-primary" style="width:100%;display:none" id="debtContinueBtn" onclick="completeOnboard()">Continue</button>
+    </div>
+  </div>
+
+  <!-- No debt path -->
+  <div id="noDebtSection" style="display:none">
+    <div class="heading">Do you have a peace fund?</div>
+    <div class="subtext">An emergency fund covering 4-6 months of expenses</div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px">
+      <div class="chip" style="width:100%;text-align:center" onclick="pickPeaceFund(this,'no')">Not yet</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="pickPeaceFund(this,'partial')">I have some savings but not 4-6 months</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="pickPeaceFund(this,'yes')">Yes, I have 4-6 months covered</div>
+    </div>
+  </div>
+
+  <!-- Start month -->
+  <div id="monthSection" style="display:none">
+    <div class="heading" style="font-size:15px;letter-spacing:.15em;text-transform:uppercase;font-family:var(--sans);font-weight:700;color:var(--sky)">Choose your starting month</div>
+    <div class="subtext">Select the month and year when your financial journey begins</div>
+    <div class="glass">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end">
+        <div class="fgrp" style="margin:0"><select class="finp" id="startMonthSel" onchange="updateStartMonth()"></select></div>
+        <div class="fgrp" style="margin:0"><select class="finp" id="startYearSel" onchange="updateStartMonth()" style="width:90px"></select></div>
+      </div>
+    </div>
+    <div style="padding:8px 16px 0">
+      <button class="btn btn-primary" style="width:100%" id="startBtn" onclick="finishOnboard()">Begin my journey ✦</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- MAIN TRACKER                            -->
+<!-- ═══════════════════════════════════════ -->
+<div class="view" id="v-tracker">
+  <div style="padding:48px 18px 12px;text-align:center">
+    <div class="sec-lbl">QUIET ABUNDANCE</div>
+    <div class="sec-title" id="trackerTitle">Your Quiet Ledger</div>
+  </div>
+
+  <!-- ══ TIER A: Debt Freedom ══ -->
+  <div class="view" id="tier-A">
+    <div class="deco-section"><img src="img/deco-tiger.png" class="deco-img gold" alt="" style="max-width:140px;opacity:.1"></div>
+    <div class="motiv-quote">"Every dollar you pay off is a step closer to the woman you are becoming."</div>
+    <div class="motiv-attr">Your Debt Freedom Journey</div>
+    <div id="debtGoalTop"></div>
+
+    <!-- Freedom Timeline -->
+    <div class="heading">Your Freedom Timeline</div>
+    <div class="subtext">when each debt disappears</div>
+    <div class="tl tl-gold" id="debtTimeline"></div>
+
+    <!-- Income & Expenses -->
+    <div class="heading">Monthly Overview</div>
+    <div class="subtext">your income and fixed expenses</div>
+    <div class="glass">
+      <div class="fgrp"><label class="flbl">Monthly Income ($)</label><input class="finp" type="number" id="aIncome" placeholder="After tax" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Monthly Fixed Expenses ($)</label><input class="finp" type="number" id="aExpenses" placeholder="Rent, utilities, food, transport..." onchange="saveFinData()"></div>
+      <div id="aSurplusViz"></div>
+    </div>
+
+    <!-- Debts list -->
+    <div class="heading">Your Debts</div>
+    <div class="subtext">list every consumer debt with its interest rate</div>
+    <div id="debtsList"></div>
+    <div class="glass" id="addDebtForm">
+      <div class="fgrp"><label class="flbl">Debt name</label><input class="finp" type="text" id="dName" placeholder="e.g. Chase Visa, Car loan..."></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="fgrp"><label class="flbl">Balance ($)</label><input class="finp" type="number" id="dBalance" placeholder="Owed"></div>
+        <div class="fgrp"><label class="flbl">Interest rate (%)</label><input class="finp" type="number" id="dRate" placeholder="APR" step="0.1"></div>
+      </div>
+      <div class="fgrp"><label class="flbl">Minimum payment ($)</label><input class="finp" type="number" id="dMinPay" placeholder="Monthly minimum"></div>
+      <button class="btn btn-ghost" style="width:100%" onclick="addDebt()">Add this debt</button>
+    </div>
+
+    <div class="rate-info">
+      <div class="ri-title">Understanding your interest</div>
+      <p>Credit cards typically charge 20-30% APR. Personal loans 8-15%. Car loans 5-10%. The higher the rate, the more urgently that debt needs to go. We attack the highest-rate debt first (avalanche method) while making minimums on everything else.</p>
+    </div>
+
+    <!-- Monthly payments -->
+    <div class="heading">Monthly Payment Progress</div>
+    <div class="subtext">track what you have paid this month</div>
+    <div id="monthlyPayments"></div>
+
+    <!-- Daily spending -->
+    <div class="heading">Daily Spending</div>
+    <div class="subtext">every dollar tracked is a dollar chosen</div>
+    <div id="dailyTrackerA"></div>
+
+    <!-- AI Plan -->
+    <div class="deco-section" style="padding-top:12px"><img src="img/deco-leopard.png" class="deco-img gold deco-img-sm" alt="" style="opacity:.06;max-width:80px"></div>
+    <div style="padding:8px 16px 0">
+      <button class="btn btn-primary" style="width:100%" onclick="generatePlan('A')">Generate My Debt Freedom Plan</button>
+    </div>
+    <div id="planA"></div>
+  </div>
+
+  <!-- ══ TIER B: Peace Fund ══ -->
+  <div class="view" id="tier-B">
+    <div class="deco-section"><img src="img/deco-leopard.png" class="deco-img gold" alt="" style="max-width:140px;opacity:.1"></div>
+    <div class="motiv-quote">"Peace is not the absence of problems. It is the presence of a fund that says: I am ready."</div>
+    <div class="motiv-attr">Your Peace Fund Journey</div>
+    <div id="peaceFundGoal"></div>
+
+    <!-- Peace Fund Timeline -->
+    <div class="heading">Your Peace Timeline</div>
+    <div class="subtext">building your financial safety net</div>
+    <div class="tl tl-sky" id="peaceTimeline"></div>
+
+    <!-- Income & Expenses -->
+    <div class="heading">Monthly Overview</div>
+    <div class="subtext">your complete financial picture</div>
+    <div class="glass">
+      <div class="fgrp"><label class="flbl">Monthly Income ($)</label><input class="finp" type="number" id="bIncome" placeholder="After tax" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Monthly Expenses ($)</label><input class="finp" type="number" id="bExpenses" placeholder="All monthly expenses" onchange="saveFinData()"></div>
+      <div id="bSurplusViz"></div>
+    </div>
+
+    <!-- Savings -->
+    <div class="heading">The 10% Rule</div>
+    <div class="subtext">a part of all you earn is yours to keep</div>
+    <div class="edu-box">
+      <div class="eb-title">Automate your peace</div>
+      <p>Set up an automatic transfer of at least 10% of your income on payday. This is not optional spending money. This is your peace fund. The money that lets you sleep at night.</p>
+    </div>
+    <div class="glass">
+      <div class="fgrp"><label class="flbl">Current Peace Fund Balance ($)</label><input class="finp" type="number" id="bSavings" placeholder="Emergency savings" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Monthly Auto-Save Amount ($)</label><input class="finp" type="number" id="bAutoSave" placeholder="10% of income recommended" onchange="saveFinData()"></div>
+      <div id="peaceFundRing"></div>
+    </div>
+
+    <!-- Investments -->
+    <div class="heading">Investments</div>
+    <div class="subtext">growing your money intentionally</div>
+    <div class="glass">
+      <div class="fgrp"><label class="flbl">Total Invested ($)</label><input class="finp" type="number" id="bInvested" placeholder="All investment accounts" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Risk Profile</label>
+        <select class="finp" id="bRisk" onchange="F.riskProfile=this.value;sv()">
+          <option value="">Select...</option>
+          <option value="conservative">Conservative</option>
+          <option value="moderate">Moderate</option>
+          <option value="aggressive">Aggressive</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Assets -->
+    <div class="heading">Assets</div>
+    <div class="subtext">what you own and whether it earns or costs</div>
+    <div id="assetsList"></div>
+    <div class="glass">
+      <div class="fgrp"><label class="flbl">Asset name</label><input class="finp" type="text" id="asName" placeholder="e.g. Car, Home, Business..."></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="fgrp"><label class="flbl">Value ($)</label><input class="finp" type="number" id="asValue" placeholder="Current value"></div>
+        <div class="fgrp"><label class="flbl">Type</label>
+          <select class="finp" id="asType"><option value="">Select...</option><option value="income">Income-producing</option><option value="cost">Money-taking</option><option value="neutral">Neutral</option></select>
+        </div>
+      </div>
+      <button class="btn btn-ghost" style="width:100%" onclick="addAsset()">Add asset</button>
+    </div>
+
+    <!-- Daily spending -->
+    <div class="heading">Daily Spending</div>
+    <div class="subtext">mindful money, peaceful mind</div>
+    <div id="dailyTrackerB"></div>
+
+    <!-- AI Plan -->
+    <div class="deco-section" style="padding-top:12px"><img src="img/deco-koi.png" class="deco-img gold deco-img-sm" alt="" style="opacity:.06;max-width:80px"></div>
+    <div style="padding:8px 16px 0">
+      <button class="btn btn-sky" style="width:100%" onclick="generatePlan('B')">Generate My Peace Fund Plan</button>
+    </div>
+    <div id="planB"></div>
+  </div>
+
+  <!-- ══ TIER C: Wealth Building ══ -->
+  <div class="view" id="tier-C">
+    <div class="deco-section"><img src="img/deco-koi.png" class="deco-img gold" alt="" style="max-width:160px;opacity:.12"></div>
+    <div class="motiv-quote">"Wealth is not about having a lot. It is about having enough to live on your own terms."</div>
+    <div class="motiv-attr">Your Wealth Building Journey</div>
+    <div id="wealthGoalTop"></div>
+
+    <!-- Wealth Timeline -->
+    <div class="heading">Your Wealth Timeline</div>
+    <div class="subtext">milestones on the way to your goal</div>
+    <div class="tl tl-green" id="wealthTimeline"></div>
+
+    <!-- Dashboard -->
+    <div class="heading">Wealth Dashboard</div>
+    <div class="subtext">your complete financial universe</div>
+    <div id="wealthStats"></div>
+
+    <!-- Custom goal -->
+    <div class="heading">Your Wealth Goal</div>
+    <div class="subtext">what are you building toward?</div>
+    <div class="glass" id="wealthGoalForm">
+      <div class="fgrp"><label class="flbl">Goal name</label><input class="finp" type="text" id="wGoalName" placeholder="e.g. Retire at 55, Buy rental property..."></div>
+      <div class="fgrp"><label class="flbl">Target amount ($)</label><input class="finp" type="number" id="wGoalTarget" placeholder="Your number"></div>
+      <div class="fgrp"><label class="flbl">Timeline (years)</label><input class="finp" type="number" id="wGoalYears" placeholder="How many years?"></div>
+      <button class="btn btn-ghost" style="width:100%" onclick="setWealthGoal()">Set my goal</button>
+    </div>
+
+    <!-- Portfolio -->
+    <div class="heading">Portfolio</div>
+    <div class="subtext">your investment allocation</div>
+    <div class="glass">
+      <div class="fgrp"><label class="flbl">Stocks / Index Funds ($)</label><input class="finp" type="number" id="wStocks" placeholder="0" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Bonds ($)</label><input class="finp" type="number" id="wBonds" placeholder="0" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Real Estate ($)</label><input class="finp" type="number" id="wRealEstate" placeholder="0" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Cash / Savings ($)</label><input class="finp" type="number" id="wCash" placeholder="0" onchange="saveFinData()"></div>
+      <div class="fgrp"><label class="flbl">Other Investments ($)</label><input class="finp" type="number" id="wOther" placeholder="0" onchange="saveFinData()"></div>
+      <div id="portfolioChart"></div>
+    </div>
+
+    <!-- Daily spending -->
+    <div class="heading">Daily Spending</div>
+    <div class="subtext">wealth is built one conscious choice at a time</div>
+    <div id="dailyTrackerC"></div>
+
+    <!-- AI Plan -->
+    <div class="deco-section" style="padding-top:12px"><img src="img/deco-tiger.png" class="deco-img gold deco-img-sm" alt="" style="opacity:.06;max-width:80px"></div>
+    <div style="padding:8px 16px 0">
+      <button class="btn btn-green" style="width:100%" onclick="generatePlan('C')">Generate My Wealth Building Plan</button>
+    </div>
+    <div id="planC"></div>
+  </div>
+
+  <footer>Marmaroph Home &amp; Living</footer>
+</div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════ */
+/* STATE                                    */
+/* ═══════════════════════════════════════ */
+function ls(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function ss(k,v){try{localStorage.setItem(k,String(v))}catch(e){}}
+
+var F={
+  tier:ls('fin_tier')||'',
+  hasDebt:ls('fin_hasDebt')||'',
+  debtTypes:JSON.parse(ls('fin_debtTypes')||'[]'),
+  peaceFundStatus:ls('fin_pfStatus')||'',
+  startMonth:ls('fin_startMonth')||'',
+  pendingTier:ls('fin_pendingTier')||'',
+
+  income:+ls('fin_income')||0,
+  expenses:+ls('fin_expenses')||0,
+  debts:JSON.parse(ls('fin_debts')||'[]'),
+  debtPayments:JSON.parse(ls('fin_debtPay')||'{}'),
+
+  savings:+ls('fin_savings')||0,
+  autoSave:+ls('fin_autoSave')||0,
+  invested:+ls('fin_invested')||0,
+  riskProfile:ls('fin_risk')||'',
+  assets:JSON.parse(ls('fin_assets')||'[]'),
+
+  wealthGoal:JSON.parse(ls('fin_wGoal')||'null'),
+  portfolio:JSON.parse(ls('fin_portfolio')||'{"stocks":0,"bonds":0,"realEstate":0,"cash":0,"other":0}'),
+
+  daily:JSON.parse(ls('fin_daily')||'[]'),
+  planA:ls('fin_planA')||'',planB:ls('fin_planB')||'',planC:ls('fin_planC')||''
+};
+
+function sv(){
+  ss('fin_tier',F.tier);ss('fin_hasDebt',F.hasDebt);
+  ss('fin_debtTypes',JSON.stringify(F.debtTypes));
+  ss('fin_pfStatus',F.peaceFundStatus);ss('fin_startMonth',F.startMonth);
+  ss('fin_pendingTier',F.pendingTier);
+  ss('fin_income',F.income);ss('fin_expenses',F.expenses);
+  ss('fin_debts',JSON.stringify(F.debts));ss('fin_debtPay',JSON.stringify(F.debtPayments));
+  ss('fin_savings',F.savings);ss('fin_autoSave',F.autoSave);
+  ss('fin_invested',F.invested);ss('fin_risk',F.riskProfile);
+  ss('fin_assets',JSON.stringify(F.assets));
+  ss('fin_wGoal',JSON.stringify(F.wealthGoal));ss('fin_portfolio',JSON.stringify(F.portfolio));
+  ss('fin_daily',JSON.stringify(F.daily));
+  ss('fin_planA',F.planA);ss('fin_planB',F.planB);ss('fin_planC',F.planC);
+}
+
+/* ═══════════════════════════════════════ */
+/* CELESTIAL BACKGROUND                     */
+/* ═══════════════════════════════════════ */
+var stars=[],glitter=[],shootingStars=[];
+function initBg(){
+  var c=document.getElementById('bgCanvas'),ctx=c.getContext('2d');
+  var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
+  // Stars - more variety
+  for(var i=0;i<500;i++){
+    stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.8+.1,a:Math.random()*.4+.05,sp:Math.random()*2+.3,ph:Math.random()*6.28,
+      col:Math.random()>.85?'gold':Math.random()>.7?'blue':'white'});
+  }
+  // Glitter particles
+  for(var i=0;i<60;i++){
+    glitter.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,sp:Math.random()*3+1,ph:Math.random()*6.28,drift:Math.random()*.3-.15});
+  }
+  // Shooting stars
+  for(var i=0;i<3;i++){
+    shootingStars.push({x:Math.random()*W,y:Math.random()*H*.3,len:Math.random()*60+30,angle:Math.PI*.15+Math.random()*.2,
+      sp:Math.random()*2+1,timer:Math.random()*20,interval:Math.random()*15+10,active:false,progress:0});
+  }
+  // Constellations
+  var cons=[
+    [[.08,.08],[.11,.05],[.15,.06],[.18,.04],[.22,.05],[.20,.08],[.15,.06]], // Ursa-like
+    [[.72,.10],[.75,.08],[.78,.09],[.76,.12],[.72,.10]], // Diamond
+    [[.45,.04],[.48,.02],[.51,.04]], // Triangle
+    [[.85,.20],[.88,.18],[.91,.20],[.89,.23]], // Square
+    [[.30,.15],[.33,.12],[.37,.14],[.35,.18],[.30,.15]], // Pentagon
+    [[.60,.08],[.63,.06],[.66,.09]] // Small trio
+  ];
+  // Nebula clouds
+  var nebulae=[
+    {x:.15,y:.3,rx:120,ry:60,col:'rgba(107,80,160,.03)'},
+    {x:.8,y:.6,rx:100,ry:80,col:'rgba(212,179,102,.02)'},
+    {x:.5,y:.85,rx:150,ry:50,col:'rgba(107,159,212,.025)'},
+    {x:.3,y:.7,rx:80,ry:100,col:'rgba(180,100,140,.02)'}
+  ];
+  // Moon
+  var moon={x:.85,y:.12,r:18};
+
+  function frame(t){
+    ctx.clearRect(0,0,W,H);var ts=t*.001;
+    // Sky gradient
+    var bg=ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#060a1e');bg.addColorStop(.3,'#0a1030');bg.addColorStop(.6,'#0c1235');bg.addColorStop(1,'#080d24');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+    // Nebula clouds
+    for(var ni=0;ni<nebulae.length;ni++){
+      var nb=nebulae[ni],nAlpha=Math.sin(ts*.2+ni*3)*.3+.7;
+      var grd=ctx.createRadialGradient(nb.x*W,nb.y*H,0,nb.x*W,nb.y*H,nb.rx);
+      var baseCol=nb.col.replace(/[\d.]+\)$/,(parseFloat(nb.col.match(/[\d.]+\)$/)[0])*nAlpha).toFixed(3)+')');
+      grd.addColorStop(0,baseCol);grd.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=grd;
+      ctx.beginPath();ctx.ellipse(nb.x*W,nb.y*H,nb.rx,nb.ry,Math.sin(ts*.1+ni)*.3,0,6.28);ctx.fill();
+    }
+
+    // Moon
+    var moonGlow=ctx.createRadialGradient(moon.x*W,moon.y*H,moon.r*.5,moon.x*W,moon.y*H,moon.r*4);
+    moonGlow.addColorStop(0,'rgba(220,210,180,.08)');moonGlow.addColorStop(.5,'rgba(212,179,102,.03)');moonGlow.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=moonGlow;ctx.fillRect(0,0,W,H);
+    // Moon body
+    ctx.beginPath();ctx.arc(moon.x*W,moon.y*H,moon.r,0,6.28);
+    var mg=ctx.createRadialGradient(moon.x*W-4,moon.y*H-4,0,moon.x*W,moon.y*H,moon.r);
+    mg.addColorStop(0,'rgba(240,230,200,.15)');mg.addColorStop(.7,'rgba(220,200,160,.08)');mg.addColorStop(1,'rgba(200,180,140,.04)');
+    ctx.fillStyle=mg;ctx.fill();
+    // Crescent shadow
+    ctx.beginPath();ctx.arc(moon.x*W+6,moon.y*H-2,moon.r*.85,0,6.28);
+    ctx.fillStyle='rgba(6,10,30,.12)';ctx.fill();
+
+    // Stars
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i],tw=Math.sin(ts*s.sp+s.ph)*.5+.5,a=s.a+tw*(1-s.a)*.6;
+      var colR=255,colG=255,colB=255;
+      if(s.col==='gold'){colR=212;colG=179;colB=102;}
+      else if(s.col==='blue'){colR=150;colG=180;colB=230;}
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.28);
+      ctx.fillStyle='rgba('+colR+','+colG+','+colB+','+a.toFixed(2)+')';ctx.fill();
+      // Star glow
+      if(s.r>.4){
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r*3,0,6.28);
+        ctx.fillStyle='rgba('+colR+','+colG+','+colB+','+(a*.04).toFixed(3)+')';ctx.fill();
+      }
+      // Cross sparkle on bright stars
+      if(s.r>.6&&a>.3){
+        var sp=s.r*4*a;
+        ctx.strokeStyle='rgba('+colR+','+colG+','+colB+','+(a*.15).toFixed(2)+')';ctx.lineWidth=.3;
+        ctx.beginPath();ctx.moveTo(s.x-sp,s.y);ctx.lineTo(s.x+sp,s.y);ctx.moveTo(s.x,s.y-sp);ctx.lineTo(s.x,s.y+sp);ctx.stroke();
+      }
+    }
+
+    // Glitter particles
+    for(var gi=0;gi<glitter.length;gi++){
+      var g=glitter[gi],ga=Math.sin(ts*g.sp+g.ph);
+      if(ga>0){
+        var gx=g.x+Math.sin(ts*.5+g.ph)*10,gy=g.y+Math.cos(ts*.3+g.ph)*5;
+        ctx.beginPath();ctx.arc(gx,gy,g.r*ga,0,6.28);
+        ctx.fillStyle='rgba(212,179,102,'+(ga*.25).toFixed(2)+')';ctx.fill();
+        // Sparkle cross
+        var gsp=g.r*3*ga;
+        ctx.strokeStyle='rgba(255,240,200,'+(ga*.1).toFixed(2)+')';ctx.lineWidth=.4;
+        ctx.beginPath();ctx.moveTo(gx-gsp,gy);ctx.lineTo(gx+gsp,gy);ctx.moveTo(gx,gy-gsp);ctx.lineTo(gx,gy+gsp);ctx.stroke();
+      }
+    }
+
+    // Shooting stars
+    for(var si=0;si<shootingStars.length;si++){
+      var ss=shootingStars[si];
+      ss.timer+=.016;
+      if(!ss.active&&ss.timer>ss.interval){ss.active=true;ss.progress=0;ss.x=Math.random()*W*.6+W*.1;ss.y=Math.random()*H*.2;ss.timer=0}
+      if(ss.active){
+        ss.progress+=.025*ss.sp;
+        if(ss.progress>=1){ss.active=false;continue}
+        var sx=ss.x+Math.cos(ss.angle)*ss.len*ss.progress;
+        var sy=ss.y+Math.sin(ss.angle)*ss.len*ss.progress;
+        var sa=Math.sin(ss.progress*Math.PI)*.8;
+        var tailLen=ss.len*.4;
+        var grad=ctx.createLinearGradient(sx-Math.cos(ss.angle)*tailLen,sy-Math.sin(ss.angle)*tailLen,sx,sy);
+        grad.addColorStop(0,'rgba(255,255,255,0)');grad.addColorStop(1,'rgba(255,240,210,'+sa.toFixed(2)+')');
+        ctx.strokeStyle=grad;ctx.lineWidth=1.5;ctx.beginPath();
+        ctx.moveTo(sx-Math.cos(ss.angle)*tailLen,sy-Math.sin(ss.angle)*tailLen);ctx.lineTo(sx,sy);ctx.stroke();
+        ctx.beginPath();ctx.arc(sx,sy,1.5,0,6.28);ctx.fillStyle='rgba(255,240,210,'+sa.toFixed(2)+')';ctx.fill();
+      }
+    }
+
+    // Constellations
+    for(var ci=0;ci<cons.length;ci++){
+      var con=cons[ci],cA=Math.sin(ts*.3+ci*2.5)*.1+.14;
+      // Lines
+      ctx.strokeStyle='rgba(212,179,102,'+cA.toFixed(2)+')';ctx.lineWidth=.4;ctx.beginPath();
+      for(var j=0;j<con.length;j++){if(!j)ctx.moveTo(con[j][0]*W,con[j][1]*H);else ctx.lineTo(con[j][0]*W,con[j][1]*H)}ctx.stroke();
+      // Stars at nodes
+      for(var j=0;j<con.length;j++){
+        ctx.beginPath();ctx.arc(con[j][0]*W,con[j][1]*H,1.2,0,6.28);
+        ctx.fillStyle='rgba(212,179,102,'+(cA+.1).toFixed(2)+')';ctx.fill();
+      }
+    }
+
+    // Subtle planet
+    var px=.12*W,py=.65*H,pAng=ts*.05;
+    ctx.beginPath();ctx.arc(px,py,4,0,6.28);
+    var pg=ctx.createRadialGradient(px-1,py-1,0,px,py,4);
+    pg.addColorStop(0,'rgba(180,140,100,.1)');pg.addColorStop(1,'rgba(140,100,80,.04)');
+    ctx.fillStyle=pg;ctx.fill();
+    // Ring
+    ctx.beginPath();ctx.ellipse(px,py,8,2,.3,0,6.28);ctx.strokeStyle='rgba(212,179,102,.06)';ctx.lineWidth=.5;ctx.stroke();
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ═══════════════════════════════════════ */
+/* ONBOARDING                               */
+/* ═══════════════════════════════════════ */
+function pickDebt(el,val){
+  F.hasDebt=val;
+  document.querySelectorAll('#v-onboard > .glass .chip').forEach(function(c){c.classList.remove('sel')});
+  if(el)el.classList.add('sel');
+  if(val==='yes'){
+    document.getElementById('debtTypeSection').style.display='block';
+    document.getElementById('noDebtSection').style.display='none';
+    document.getElementById('monthSection').style.display='none';
+  }else{
+    document.getElementById('debtTypeSection').style.display='none';
+    document.getElementById('noDebtSection').style.display='block';
+    document.getElementById('monthSection').style.display='none';
+  }
+}
+
+function toggleDebtType(el,type){
+  el.classList.toggle('sel');
+  var idx=F.debtTypes.indexOf(type);
+  if(idx===-1)F.debtTypes.push(type);else F.debtTypes.splice(idx,1);
+  document.getElementById('otherDebtInput').style.display=F.debtTypes.indexOf('other')!==-1?'block':'none';
+  document.getElementById('consumerEdu').style.display=F.debtTypes.indexOf('consumer')!==-1?'block':'none';
+  document.getElementById('debtContinueBtn').style.display=F.debtTypes.length?'flex':'none';
+}
+
+function completeOnboard(){
+  if(F.debtTypes.indexOf('consumer')!==-1) F.pendingTier='A';
+  else F.pendingTier='B';
+  sv();
+  showMonthPicker();
+}
+
+function pickPeaceFund(el,val){
+  F.peaceFundStatus=val;
+  document.querySelectorAll('#noDebtSection .chip').forEach(function(c){c.classList.remove('sel')});
+  if(el)el.classList.add('sel');
+  F.pendingTier=(val==='yes')?'C':'B';
+  sv();
+  showMonthPicker();
+}
+
+function showMonthPicker(){
+  document.getElementById('monthSection').style.display='block';
+  var mSel=document.getElementById('startMonthSel');
+  var ySel=document.getElementById('startYearSel');
+  var now=new Date();
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  mSel.innerHTML='';
+  for(var i=0;i<12;i++){
+    var opt=document.createElement('option');
+    opt.value=i;opt.textContent=months[i];
+    if(i===now.getMonth())opt.selected=true;
+    mSel.appendChild(opt);
+  }
+  ySel.innerHTML='';
+  for(var y=now.getFullYear();y<=now.getFullYear()+2;y++){
+    var opt=document.createElement('option');
+    opt.value=y;opt.textContent=y;
+    if(y===now.getFullYear())opt.selected=true;
+    ySel.appendChild(opt);
+  }
+  updateStartMonth();
+  document.getElementById('mainScroll').scrollTop=document.getElementById('monthSection').offsetTop-60;
+}
+
+function updateStartMonth(){
+  var mSel=document.getElementById('startMonthSel');
+  var ySel=document.getElementById('startYearSel');
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var mi=parseInt(mSel.value);
+  var yr=parseInt(ySel.value);
+  F.startMonth=months[mi]+' '+yr;
+}
+
+function finishOnboard(){
+  F.tier=F.pendingTier;sv();
+  showTracker();
+}
+
+/* ═══════════════════════════════════════ */
+/* TRACKER                                  */
+/* ═══════════════════════════════════════ */
+function showTracker(){
+  document.getElementById('v-onboard').classList.remove('active');
+  document.getElementById('v-tracker').classList.add('active');
+  showTier(F.tier);
+}
+
+function showTier(tier){
+  document.getElementById('tier-A').classList.remove('active');
+  document.getElementById('tier-B').classList.remove('active');
+  document.getElementById('tier-C').classList.remove('active');
+  document.getElementById('tier-'+tier).classList.add('active');
+  if(tier==='A')renderTierA();
+  if(tier==='B')renderTierB();
+  if(tier==='C')renderTierC();
+  document.getElementById('mainScroll').scrollTop=0;
+}
+
+/* ═══════════════════════════════════════ */
+/* DAILY SPENDING CATEGORIES + PSYCH Qs     */
+/* ═══════════════════════════════════════ */
+var CATS=[
+  {id:'food',label:'Food & Drink',color:'#e8a87c',needsQ:false},
+  {id:'transport',label:'Transport',color:'#85cdca',needsQ:false},
+  {id:'bills',label:'Bills',color:'#6b9fd4',needsQ:false},
+  {id:'health',label:'Health',color:'#7bc67e',needsQ:false},
+  {id:'shopping',label:'Shopping',color:'#d4b366',needsQ:true},
+  {id:'entertainment',label:'Entertainment',color:'#c490d1',needsQ:true},
+  {id:'personal',label:'Personal',color:'#e8758a',needsQ:true},
+  {id:'beauty',label:'Beauty',color:'#f0a6ca',needsQ:true},
+  {id:'travel',label:'Travel',color:'#88d8b0',needsQ:true},
+  {id:'other',label:'Other',color:'rgba(255,255,255,.4)',needsQ:false}
+];
+
+var pendingExp=null;
+var pendingAnswers={};
+
+function renderDailyTracker(containerId){
+  var c=document.getElementById(containerId);if(!c)return;
+  var today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  var todayItems=F.daily.filter(function(e){return e.dt===today});
+  var total=todayItems.reduce(function(s,e){return s+e.amt},0);
+
+  var catHtml=CATS.map(function(cat){
+    return '<div class="chip" style="font-size:10px;padding:5px 10px" onclick="pickExpCat(this,\''+cat.id+'\',\''+containerId+'\')">'+cat.label+'</div>';
+  }).join('');
+
+  var html='<div class="glass">'+
+    '<div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;margin-bottom:8px">'+
+      '<input class="finp" type="text" id="expD_'+containerId+'" placeholder="What did you spend on?">'+
+      '<input class="finp" type="number" id="expA_'+containerId+'" placeholder="$" style="width:80px">'+
+    '</div>'+
+    '<div class="flbl" style="margin-bottom:4px">Category</div>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px" id="catRow_'+containerId+'">'+catHtml+'</div>'+
+    '<button class="btn btn-ghost" style="width:100%" onclick="addExpense(\''+containerId+'\')">Log this expense</button>'+
+  '</div>';
+  html+='<div id="psychQ_'+containerId+'" style="display:none"></div>';
+  if(todayItems.length){
+    html+='<div style="padding:8px 16px"><div class="flbl" style="color:var(--gold);font-size:10px">Today: $'+total.toLocaleString()+'</div></div>';
+    todayItems.slice().reverse().forEach(function(e){
+      var cat=CATS.find(function(c){return c.id===e.cat})||CATS[CATS.length-1];
+      html+='<div class="exp-row" style="margin:0 16px 5px">'+
+        '<div><div class="exp-name">'+e.desc+'</div><div class="exp-cat" style="color:'+cat.color+'">'+cat.label+'</div></div>'+
+        '<div style="text-align:right"><div class="exp-amt">$'+e.amt.toLocaleString()+'</div></div>'+
+      '</div>';
+    });
+  }
+  // Insight graphs
+  html+='<div id="insightGraphs_'+containerId+'"></div>';
+  html+='<div class="chart-wrap" style="margin-top:12px"><canvas id="chart_'+containerId+'" height="160"></canvas></div>';
+  c.innerHTML=html;
+  setTimeout(function(){drawDailyChart('chart_'+containerId);renderInsightGraphs(containerId)},50);
+}
+
+var selectedCat='';
+function pickExpCat(el,catId,containerId){
+  selectedCat=catId;
+  var row=document.getElementById('catRow_'+containerId);
+  if(row)row.querySelectorAll('.chip').forEach(function(c){c.classList.remove('sel')});
+  el.classList.add('sel');
+}
+
+function addExpense(containerId){
+  var dEl=document.getElementById('expD_'+containerId);
+  var aEl=document.getElementById('expA_'+containerId);
+  if(!dEl||!dEl.value.trim())return;
+  var cat=selectedCat||'other';
+  var catObj=CATS.find(function(c){return c.id===cat});
+  pendingExp={desc:dEl.value.trim(),amt:parseFloat(aEl?aEl.value:0)||0,cat:cat,containerId:containerId};
+  pendingAnswers={};
+
+  if(catObj&&catObj.needsQ){
+    showPsychQuestions(containerId);
+  }else{
+    saveFinalExpense(containerId);
+  }
+}
+
+function showPsychQuestions(containerId){
+  var pq=document.getElementById('psychQ_'+containerId);
+  pendingAnswers={impress:'',happiness:0,instagram:'',priority:''};
+  var html='<div class="psych-q fade-up">'+
+    '<div class="pq-label" style="font-weight:600;color:var(--gold);margin-bottom:12px">Before you save, reflect honestly</div>'+
+
+    '<div class="pq-label">Is this purchase to impress others?</div>'+
+    '<div class="pq-opts">'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'impress\',\'yes\',\''+containerId+'\')">Yes, mostly</div>'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'impress\',\'partly\',\''+containerId+'\')">Partly</div>'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'impress\',\'no\',\''+containerId+'\')">No, purely for me</div>'+
+    '</div>'+
+
+    '<div class="pq-label" style="margin-top:10px">How happy does this purchase genuinely make you? (1-10)</div>'+
+    '<div class="hap-scale" id="hapScale_'+containerId+'">';
+  for(var i=1;i<=10;i++){
+    html+='<div class="hap-dot" onclick="pickHappiness(this,'+i+',\''+containerId+'\')">'+i+'</div>';
+  }
+  html+='</div>'+
+
+    '<div class="pq-label" style="margin-top:10px">If you could not post it on Instagram, would you still do it?</div>'+
+    '<div class="pq-opts">'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'instagram\',\'yes\',\''+containerId+'\')">Absolutely yes</div>'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'instagram\',\'maybe\',\''+containerId+'\')">Probably not</div>'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'instagram\',\'no\',\''+containerId+'\')">Honestly, no</div>'+
+    '</div>'+
+
+    '<div class="pq-label" style="margin-top:10px">What is the priority level of this purchase?</div>'+
+    '<div class="pq-opts">'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'priority\',\'essential\',\''+containerId+'\')">Essential</div>'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'priority\',\'nice\',\''+containerId+'\')">Nice to have</div>'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'priority\',\'impulse\',\''+containerId+'\')">Impulse</div>'+
+      '<div class="pq-opt" onclick="pickPQ(this,\'priority\',\'luxury\',\''+containerId+'\')">Luxury treat</div>'+
+    '</div>'+
+
+    '<button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="saveFinalExpense(\''+containerId+'\')">Save expense</button>'+
+  '</div>';
+  pq.innerHTML=html;
+  pq.style.display='block';
+}
+
+function pickPQ(el,key,val,containerId){
+  pendingAnswers[key]=val;
+  el.parentElement.querySelectorAll('.pq-opt').forEach(function(o){o.classList.remove('sel')});
+  el.classList.add('sel');
+}
+
+function pickHappiness(el,val,containerId){
+  pendingAnswers.happiness=val;
+  el.parentElement.querySelectorAll('.hap-dot').forEach(function(d){d.classList.remove('sel')});
+  el.classList.add('sel');
+}
+
+function saveFinalExpense(containerId){
+  if(!pendingExp)return;
+  var now=new Date();
+  F.daily.push({
+    desc:pendingExp.desc,
+    amt:pendingExp.amt,
+    cat:pendingExp.cat,
+    impress:pendingAnswers.impress||'',
+    happiness:pendingAnswers.happiness||0,
+    instagram:pendingAnswers.instagram||'',
+    priority:pendingAnswers.priority||'',
+    dt:now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
+  });
+  sv();selectedCat='';pendingExp=null;pendingAnswers={};
+  renderDailyTracker(containerId);
+}
+
+/* ═══════════════════════════════════════ */
+/* INSIGHT GRAPHS (from psych answers)      */
+/* ═══════════════════════════════════════ */
+function renderInsightGraphs(containerId){
+  var c=document.getElementById('insightGraphs_'+containerId);if(!c)return;
+  var withAnswers=F.daily.filter(function(e){return e.happiness>0});
+  if(withAnswers.length<2){c.innerHTML='';return}
+
+  // Average happiness
+  var avgHap=(withAnswers.reduce(function(s,e){return s+e.happiness},0)/withAnswers.length).toFixed(1);
+  // Impress breakdown
+  var impressYes=withAnswers.filter(function(e){return e.impress==='yes'}).length;
+  var impressPartly=withAnswers.filter(function(e){return e.impress==='partly'}).length;
+  var impressNo=withAnswers.filter(function(e){return e.impress==='no'}).length;
+  var impressTotal=impressYes+impressPartly+impressNo;
+  // Instagram breakdown
+  var igYes=withAnswers.filter(function(e){return e.instagram==='yes'}).length;
+  var igMaybe=withAnswers.filter(function(e){return e.instagram==='maybe'}).length;
+  var igNo=withAnswers.filter(function(e){return e.instagram==='no'}).length;
+  // Priority breakdown
+  var priEssential=withAnswers.filter(function(e){return e.priority==='essential'}).length;
+  var priNice=withAnswers.filter(function(e){return e.priority==='nice'}).length;
+  var priImpulse=withAnswers.filter(function(e){return e.priority==='impulse'}).length;
+  var priLuxury=withAnswers.filter(function(e){return e.priority==='luxury'}).length;
+  // $ by priority
+  var amtImpulse=withAnswers.filter(function(e){return e.priority==='impulse'}).reduce(function(s,e){return s+e.amt},0);
+  var amtForOthers=withAnswers.filter(function(e){return e.impress==='yes'}).reduce(function(s,e){return s+e.amt},0);
+
+  var html='<div class="glass" style="margin-top:12px">'+
+    '<div class="flbl" style="color:var(--sky);font-size:10px;margin-bottom:10px">YOUR SPENDING INSIGHTS</div>'+
+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+      '<div class="glass-sm" style="text-align:center"><div class="stat-val" style="color:var(--gold)">'+avgHap+'</div><div class="stat-lbl">Avg Happiness</div></div>'+
+      '<div class="glass-sm" style="text-align:center"><div class="stat-val" style="color:var(--danger)">$'+amtImpulse.toLocaleString()+'</div><div class="stat-lbl">Impulse Spending</div></div>'+
+    '</div>';
+
+  if(impressTotal>0){
+    var pctForOthers=Math.round((impressYes/impressTotal)*100);
+    html+='<div style="margin-bottom:10px"><div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:4px">Buying to impress others: '+pctForOthers+'%</div>'+
+      '<div style="display:flex;gap:2px;height:16px;border-radius:4px;overflow:hidden">'+
+        '<div style="width:'+(impressYes/impressTotal*100)+'%;background:var(--danger)" title="Yes"></div>'+
+        '<div style="width:'+(impressPartly/impressTotal*100)+'%;background:rgba(255,180,80,.6)" title="Partly"></div>'+
+        '<div style="width:'+(impressNo/impressTotal*100)+'%;background:var(--success)" title="For me"></div>'+
+      '</div>'+
+      '<div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(255,255,255,.3);margin-top:2px"><span>For others</span><span>For me</span></div>'+
+    '</div>';
+  }
+
+  if(amtForOthers>0){
+    html+='<div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:8px">You have spent <span style="color:var(--danger);font-weight:600">$'+amtForOthers.toLocaleString()+'</span> on purchases primarily to impress others. That money could be building your peace fund.</div>';
+  }
+
+  // Priority chart
+  var priTotal=priEssential+priNice+priImpulse+priLuxury;
+  if(priTotal>0){
+    html+='<div style="margin-bottom:6px"><div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:4px">Purchase priorities</div>'+
+      '<div style="display:flex;gap:2px;height:16px;border-radius:4px;overflow:hidden">'+
+        (priEssential?'<div style="width:'+(priEssential/priTotal*100)+'%;background:var(--success)" title="Essential"></div>':'')+
+        (priNice?'<div style="width:'+(priNice/priTotal*100)+'%;background:var(--sky)" title="Nice to have"></div>':'')+
+        (priImpulse?'<div style="width:'+(priImpulse/priTotal*100)+'%;background:var(--danger)" title="Impulse"></div>':'')+
+        (priLuxury?'<div style="width:'+(priLuxury/priTotal*100)+'%;background:var(--gold)" title="Luxury"></div>':'')+
+      '</div>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;font-size:8px;color:rgba(255,255,255,.3)">'+
+        '<span style="display:flex;align-items:center;gap:2px"><span style="width:6px;height:6px;border-radius:1px;background:var(--success)"></span>Essential</span>'+
+        '<span style="display:flex;align-items:center;gap:2px"><span style="width:6px;height:6px;border-radius:1px;background:var(--sky)"></span>Nice</span>'+
+        '<span style="display:flex;align-items:center;gap:2px"><span style="width:6px;height:6px;border-radius:1px;background:var(--danger)"></span>Impulse</span>'+
+        '<span style="display:flex;align-items:center;gap:2px"><span style="width:6px;height:6px;border-radius:1px;background:var(--gold)"></span>Luxury</span>'+
+      '</div></div>';
+  }
+
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+/* ═══════════════════════════════════════ */
+/* 7-DAY CHART                              */
+/* ═══════════════════════════════════════ */
+function drawDailyChart(canvasId){
+  var canvas=document.getElementById(canvasId);if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var dpr=window.devicePixelRatio||1;
+  var rect=canvas.getBoundingClientRect();
+  canvas.width=rect.width*dpr;canvas.height=160*dpr;
+  ctx.scale(dpr,dpr);var W=rect.width,H=160;
+  var days=[];
+  for(var i=6;i>=0;i--){
+    var d=new Date();d.setDate(d.getDate()-i);
+    var key=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    var label=d.toLocaleDateString('en-US',{weekday:'short'});
+    var total=F.daily.filter(function(e){return e.dt===key}).reduce(function(s,e){return s+e.amt},0);
+    days.push({label:label,total:total});
+  }
+  var max=Math.max.apply(null,days.map(function(d){return d.total}))||100;
+  var barW=(W-60)/7,padL=30,padB=24,chartH=H-padB-20;
+  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=20+chartH*(1-g/4);ctx.beginPath();ctx.moveTo(padL,gy);ctx.lineTo(W-10,gy);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.15)';ctx.font='8px Montserrat';ctx.textAlign='right';ctx.fillText('$'+Math.round(max*g/4),padL-4,gy+3);
+  }
+  days.forEach(function(d,i){
+    var x=padL+i*barW+barW*.15,bw=barW*.7,bh=max>0?(d.total/max)*chartH:0,y=20+chartH-bh;
+    var grad=ctx.createLinearGradient(0,y,0,20+chartH);
+    if(i===6){grad.addColorStop(0,'rgba(212,179,102,.8)');grad.addColorStop(1,'rgba(212,179,102,.2)');}
+    else{grad.addColorStop(0,'rgba(107,159,212,.5)');grad.addColorStop(1,'rgba(107,159,212,.1)');}
+    ctx.fillStyle=grad;ctx.beginPath();
+    var r=Math.min(4,bh/2);
+    if(bh>0){ctx.moveTo(x,20+chartH);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.lineTo(x+bw-r,y);ctx.quadraticCurveTo(x+bw,y,x+bw,y+r);ctx.lineTo(x+bw,20+chartH);}
+    ctx.fill();
+    if(d.total>0){ctx.fillStyle=i===6?'rgba(212,179,102,.9)':'rgba(255,255,255,.4)';ctx.font='bold 9px Montserrat';ctx.textAlign='center';ctx.fillText('$'+d.total,x+bw/2,y-5);}
+    ctx.fillStyle=i===6?'rgba(212,179,102,.9)':'rgba(255,255,255,.3)';ctx.font=i===6?'bold 9px Montserrat':'9px Montserrat';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,H-6);
+  });
+}
+
+/* ═══════════════════════════════════════ */
+/* SHARED RENDER HELPERS                    */
+/* ═══════════════════════════════════════ */
+function saveFinData(){
+  var ai=document.getElementById('aIncome')||document.getElementById('bIncome');
+  var ae=document.getElementById('aExpenses')||document.getElementById('bExpenses');
+  if(ai)F.income=parseFloat(ai.value)||0;
+  if(ae)F.expenses=parseFloat(ae.value)||0;
+  var bs=document.getElementById('bSavings');if(bs)F.savings=parseFloat(bs.value)||0;
+  var ba=document.getElementById('bAutoSave');if(ba)F.autoSave=parseFloat(ba.value)||0;
+  var bv=document.getElementById('bInvested');if(bv)F.invested=parseFloat(bv.value)||0;
+  var ws=document.getElementById('wStocks');if(ws)F.portfolio.stocks=parseFloat(ws.value)||0;
+  var wb=document.getElementById('wBonds');if(wb)F.portfolio.bonds=parseFloat(wb.value)||0;
+  var wr=document.getElementById('wRealEstate');if(wr)F.portfolio.realEstate=parseFloat(wr.value)||0;
+  var wc=document.getElementById('wCash');if(wc)F.portfolio.cash=parseFloat(wc.value)||0;
+  var wo=document.getElementById('wOther');if(wo)F.portfolio.other=parseFloat(wo.value)||0;
+  sv();
+  renderSurplus('aSurplusViz');renderSurplus('bSurplusViz');
+  renderPeaceFundRing();renderWealthStats();renderPortfolioChart();
+}
+
+function renderSurplus(vizId){
+  var v=document.getElementById(vizId);if(!v)return;
+  if(!F.income&&!F.expenses){v.innerHTML='';return}
+  var surplus=F.income-F.expenses;
+  var rate=F.income>0?((surplus/F.income)*100).toFixed(0):0;
+  v.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">'+
+    '<div class="glass-sm" style="text-align:center"><div class="stat-val" style="color:'+(surplus>=0?'var(--gold)':'var(--danger)')+'">$'+Math.abs(surplus).toLocaleString()+'</div><div class="stat-lbl">'+(surplus>=0?'Monthly surplus':'Monthly deficit')+'</div></div>'+
+    '<div class="glass-sm" style="text-align:center"><div class="stat-val" style="color:var(--sky)">'+rate+'%</div><div class="stat-lbl">Free cash rate</div></div></div>';
+}
+
+/* ═══════════════════════════════════════ */
+/* TIER A: DEBT FREEDOM                     */
+/* ═══════════════════════════════════════ */
+function renderTierA(){
+  fillInputs('A');renderDebtGoalTop();renderDebtsList();renderMonthlyPayments();renderDebtTimeline();
+  renderDailyTracker('dailyTrackerA');renderSurplus('aSurplusViz');
+  if(F.planA)renderSavedPlan('planA',F.planA);
+}
+function fillInputs(tier){
+  if(tier==='A'){var ai=document.getElementById('aIncome');if(ai)ai.value=F.income||'';var ae=document.getElementById('aExpenses');if(ae)ae.value=F.expenses||'';}
+  if(tier==='B'){var bi=document.getElementById('bIncome');if(bi)bi.value=F.income||'';var be=document.getElementById('bExpenses');if(be)be.value=F.expenses||'';var bs=document.getElementById('bSavings');if(bs)bs.value=F.savings||'';var ba=document.getElementById('bAutoSave');if(ba)ba.value=F.autoSave||'';var bv=document.getElementById('bInvested');if(bv)bv.value=F.invested||'';var br=document.getElementById('bRisk');if(br)br.value=F.riskProfile||'';}
+  if(tier==='C'){var ws=document.getElementById('wStocks');if(ws)ws.value=F.portfolio.stocks||'';var wb=document.getElementById('wBonds');if(wb)wb.value=F.portfolio.bonds||'';var wr=document.getElementById('wRealEstate');if(wr)wr.value=F.portfolio.realEstate||'';var wc=document.getElementById('wCash');if(wc)wc.value=F.portfolio.cash||'';var wo=document.getElementById('wOther');if(wo)wo.value=F.portfolio.other||'';}
+}
+function renderDebtGoalTop(){
+  var c=document.getElementById('debtGoalTop');if(!c)return;
+  var totalDebt=F.debts.reduce(function(s,d){return s+d.balance},0);
+  var totalPaid=F.debts.reduce(function(s,d){return s+(d.originalBalance||d.balance)-d.balance},0);
+  var pct=totalDebt+totalPaid>0?((totalPaid/(totalDebt+totalPaid))*100).toFixed(1):0;
+  c.innerHTML='<div class="glass" style="text-align:center">'+
+    '<div class="sec-lbl">DEBT FREEDOM GOAL</div>'+
+    '<div style="font-family:var(--serif);font-size:32px;color:var(--danger);margin:4px 0">$'+totalDebt.toLocaleString()+'</div>'+
+    '<div style="font-size:10px;color:rgba(255,255,255,.3)">total remaining</div>'+
+    '<div class="prog-wrap" style="margin:10px 0"><div class="prog-fill prog-gold" style="width:'+pct+'%"></div></div>'+
+    '<div style="font-size:10px;color:rgba(255,255,255,.3)">'+pct+'% paid off</div></div>';
+}
+function addDebt(){
+  var n=document.getElementById('dName'),b=document.getElementById('dBalance'),r=document.getElementById('dRate'),m=document.getElementById('dMinPay');
+  if(!n||!n.value.trim()||!b)return;
+  F.debts.push({name:n.value.trim(),balance:parseFloat(b.value)||0,originalBalance:parseFloat(b.value)||0,rate:parseFloat(r?r.value:0)||0,minPay:parseFloat(m?m.value:0)||0});
+  sv();n.value='';b.value='';if(r)r.value='';if(m)m.value='';
+  renderDebtsList();renderDebtGoalTop();renderDebtTimeline();
+}
+function removeDebt(idx){F.debts.splice(idx,1);sv();renderDebtsList();renderDebtGoalTop();renderDebtTimeline();}
+function renderDebtsList(){
+  var c=document.getElementById('debtsList');if(!c)return;
+  if(!F.debts.length){c.innerHTML='';return}
+  c.innerHTML=F.debts.map(function(d,i){
+    return '<div class="debt-card"><div class="dc-name">'+d.name+'</div><div class="dc-info">'+d.rate+'% APR &middot; $'+d.minPay+'/mo minimum</div><div class="dc-amt">$'+d.balance.toLocaleString()+'</div><button class="dc-del" onclick="removeDebt('+i+')">remove</button></div>';
+  }).join('');
+}
+function renderMonthlyPayments(){
+  var c=document.getElementById('monthlyPayments');if(!c)return;
+  if(!F.debts.length){c.innerHTML='<div style="padding:0 18px"><p style="font-size:11px;color:rgba(255,255,255,.25)">Add your debts above to track payments.</p></div>';return}
+  var month=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  var html='<div style="padding:0 16px"><div class="flbl" style="color:var(--sky)">'+month+'</div></div>';
+  F.debts.forEach(function(d,i){
+    var key=month+'_'+i;var paid=F.debtPayments[key]||0;var pct=d.minPay>0?Math.min((paid/d.minPay)*100,100):0;
+    html+='<div class="glass" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.8)">'+d.name+'</div><div style="font-size:10px;color:rgba(255,255,255,.3)">$'+paid+' of $'+d.minPay+' minimum</div></div><div style="display:flex;gap:4px"><input class="finp" type="number" id="pay_'+i+'" placeholder="$" style="width:70px;padding:6px 8px;font-size:12px"><button class="btn btn-ghost btn-sm" onclick="logPayment('+i+')">Pay</button></div></div><div class="prog-wrap"><div class="prog-fill prog-green" style="width:'+pct+'%"></div></div></div>';
+  });
+  c.innerHTML=html;
+}
+function logPayment(idx){
+  var inp=document.getElementById('pay_'+idx);if(!inp)return;var amt=parseFloat(inp.value)||0;if(!amt)return;
+  var month=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});var key=month+'_'+idx;
+  F.debtPayments[key]=(F.debtPayments[key]||0)+amt;F.debts[idx].balance=Math.max(0,F.debts[idx].balance-amt);
+  sv();inp.value='';renderMonthlyPayments();renderDebtGoalTop();renderDebtTimeline();checkDebtFreedom();
+}
+function checkDebtFreedom(){
+  var totalDebt=F.debts.reduce(function(s,d){return s+d.balance},0);
+  if(totalDebt<=0&&F.debts.length>0){
+    F.tier='B';sv();
+    var top=document.getElementById('debtGoalTop');
+    if(top){top.innerHTML='<div class="unlock-banner fade-up"><div class="ub-title">&#10024; Debt Freedom Achieved</div><div class="ub-sub">Your Peace Fund journey is now unlocked</div><button class="btn btn-primary" style="margin-top:12px" onclick="showTier(\'B\')">Begin Peace Fund</button></div>';}
+  }
+}
+function renderDebtTimeline(){
+  var c=document.getElementById('debtTimeline');if(!c)return;
+  if(!F.debts.length){c.innerHTML='<div style="padding:0 18px"><p style="font-size:11px;color:rgba(255,255,255,.25)">Add debts to see your freedom timeline.</p></div>';return}
+  var sorted=F.debts.slice().sort(function(a,b){return b.rate-a.rate});
+  var surplus=Math.max(0,F.income-F.expenses);var extraPay=Math.max(0,surplus-sorted.reduce(function(s,d){return s+d.minPay},0));
+  var html='';
+  sorted.forEach(function(d,i){
+    var monthsToPayoff=0;
+    if(d.balance>0&&d.minPay>0){var extra=i===0?extraPay:0;var totalPay=d.minPay+extra;var monthRate=d.rate/100/12;
+      if(monthRate>0&&totalPay>d.balance*monthRate){monthsToPayoff=Math.ceil(Math.log(totalPay/(totalPay-d.balance*monthRate))/Math.log(1+monthRate));}
+      else if(monthRate===0){monthsToPayoff=Math.ceil(d.balance/totalPay);}else{monthsToPayoff=999;}}
+    var pct=d.originalBalance>0?((d.originalBalance-d.balance)/d.originalBalance*100):0;var done=d.balance<=0;
+    html+='<div class="tl-node"><div class="tl-dot'+(done?' done':pct>0?' active':'')+'"></div><div class="tl-name">'+(done?'&#10003; ':'')+d.name+' ('+d.rate+'%)</div><div class="tl-sub">$'+d.balance.toLocaleString()+' remaining'+(monthsToPayoff>0&&monthsToPayoff<999?' &middot; ~'+monthsToPayoff+' months':'')+'</div><div class="tl-bar"><div class="tl-fill" style="width:'+pct+'%"></div></div></div>';
+  });
+  c.innerHTML=html;
+}
+
+/* ═══════════════════════════════════════ */
+/* TIER B: PEACE FUND                       */
+/* ═══════════════════════════════════════ */
+function renderTierB(){
+  fillInputs('B');renderSurplus('bSurplusViz');renderPeaceFundGoal();renderPeaceFundRing();renderPeaceTimeline();
+  renderAssetsList();renderDailyTracker('dailyTrackerB');
+  if(F.planB)renderSavedPlan('planB',F.planB);
+}
+function renderPeaceFundGoal(){
+  var c=document.getElementById('peaceFundGoal');if(!c)return;
+  var target=F.expenses*6||10000;var pct=target>0?Math.min((F.savings/target)*100,100).toFixed(1):0;
+  var months=F.autoSave>0&&F.savings<target?Math.ceil((target-F.savings)/F.autoSave):0;
+  c.innerHTML='<div class="glass" style="text-align:center"><div class="sec-lbl">PEACE FUND GOAL</div>'+
+    '<div style="font-family:var(--serif);font-size:12px;font-style:italic;color:rgba(255,255,255,.4);margin:2px 0">6 months of expenses = freedom to breathe</div>'+
+    '<div style="font-family:var(--serif);font-size:32px;color:var(--gold);margin:6px 0">$'+F.savings.toLocaleString()+'</div>'+
+    '<div style="font-size:10px;color:rgba(255,255,255,.3)">of $'+target.toLocaleString()+' goal</div>'+
+    '<div class="prog-wrap" style="margin:10px 0"><div class="prog-fill prog-sky" style="width:'+pct+'%"></div></div>'+
+    '<div style="font-size:10px;color:rgba(255,255,255,.3)">'+pct+'% funded'+(months>0?' &middot; ~'+months+' months to go':'')+'</div></div>';
+  if(F.savings>=target&&target>0){
+    c.innerHTML+='<div class="unlock-banner fade-up" style="margin-top:-4px"><div class="ub-title">&#10024; Peace Fund Complete</div><div class="ub-sub">Wealth building is now unlocked</div><button class="btn btn-primary" style="margin-top:12px" onclick="F.tier=\'C\';sv();showTier(\'C\')">Begin Wealth Building</button></div>';
+  }
+}
+function renderPeaceTimeline(){
+  var c=document.getElementById('peaceTimeline');if(!c)return;
+  var target=F.expenses*6||10000;
+  var milestones=[
+    {name:'First $1,000',target:1000},{name:'1 month of expenses',target:Math.round(F.expenses||1667)},
+    {name:'3 months',target:Math.round((F.expenses||1667)*3)},{name:'6 months (Peace!)',target:target}
+  ];
+  var html='';
+  milestones.forEach(function(m){
+    var pct=m.target>0?Math.min((F.savings/m.target)*100,100):0;var done=pct>=100;
+    html+='<div class="tl-node"><div class="tl-dot'+(done?' done':pct>0?' active':'')+'"></div><div class="tl-name">'+(done?'&#10003; ':'')+m.name+'</div><div class="tl-sub">$'+m.target.toLocaleString()+'</div><div class="tl-bar"><div class="tl-fill" style="width:'+pct+'%"></div></div></div>';
+  });
+  c.innerHTML=html;
+}
+function renderPeaceFundRing(){
+  var wrap=document.getElementById('peaceFundRing');if(!wrap)return;
+  var target=F.expenses*6||10000;var pct=Math.min(F.savings/target,1);
+  wrap.innerHTML='<canvas id="pfRingCanvas" width="120" height="120" style="display:block;margin:8px auto"></canvas><div style="font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:2px">'+(pct*100).toFixed(0)+'% of peace fund</div>';
+  var canvas=document.getElementById('pfRingCanvas');if(!canvas)return;var ctx=canvas.getContext('2d');
+  var cx=60,cy=60,r=46,lw=8;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=lw;ctx.stroke();
+  if(pct>0){ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*pct);var grad=ctx.createLinearGradient(0,0,120,120);grad.addColorStop(0,'#6b9fd4');grad.addColorStop(1,'#d4b366');ctx.strokeStyle=grad;ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();}
+  ctx.fillStyle='#fff';ctx.font='600 16px Montserrat';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('$'+Math.round(F.savings/1000)+'k',cx,cy-4);
+  ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='8px Montserrat';ctx.fillText('of $'+Math.round(target/1000)+'k',cx,cy+12);
+}
+function addAsset(){
+  var n=document.getElementById('asName'),v=document.getElementById('asValue'),t=document.getElementById('asType');
+  if(!n||!n.value.trim())return;F.assets.push({name:n.value.trim(),value:parseFloat(v?v.value:0)||0,type:t?t.value:'neutral'});
+  sv();n.value='';if(v)v.value='';if(t)t.value='';renderAssetsList();
+}
+function removeAsset(idx){F.assets.splice(idx,1);sv();renderAssetsList();}
+function renderAssetsList(){
+  var c=document.getElementById('assetsList');if(!c)return;
+  if(!F.assets.length){c.innerHTML='';return}
+  var colors={income:'var(--success)',cost:'var(--danger)',neutral:'rgba(255,255,255,.4)'};
+  var labels={income:'Income-producing',cost:'Money-taking',neutral:'Neutral'};
+  c.innerHTML=F.assets.map(function(a,i){
+    return '<div class="asset-row"><div><div class="ar-name">'+a.name+'</div><div class="ar-type" style="color:'+(colors[a.type]||colors.neutral)+'">'+(labels[a.type]||'')+'</div></div><div style="display:flex;align-items:center;gap:8px"><div class="ar-val">$'+a.value.toLocaleString()+'</div><button style="background:none;border:none;color:rgba(255,80,80,.4);font-size:10px;cursor:pointer" onclick="removeAsset('+i+')">&#10005;</button></div></div>';
+  }).join('');
+}
+
+/* ═══════════════════════════════════════ */
+/* TIER C: WEALTH BUILDING                  */
+/* ═══════════════════════════════════════ */
+function renderTierC(){
+  fillInputs('C');renderWealthGoalTop();renderWealthTimeline();renderWealthStats();renderPortfolioChart();
+  renderDailyTracker('dailyTrackerC');
+  if(F.planC)renderSavedPlan('planC',F.planC);
+  if(F.wealthGoal)document.getElementById('wealthGoalForm').style.display='none';
+}
+function setWealthGoal(){
+  var n=document.getElementById('wGoalName'),t=document.getElementById('wGoalTarget'),y=document.getElementById('wGoalYears');
+  if(!n||!n.value.trim()||!t)return;
+  F.wealthGoal={name:n.value.trim(),target:parseFloat(t.value)||0,years:parseFloat(y?y.value:0)||10};
+  sv();document.getElementById('wealthGoalForm').style.display='none';renderWealthGoalTop();renderWealthTimeline();
+}
+function renderWealthGoalTop(){
+  var c=document.getElementById('wealthGoalTop');if(!c)return;
+  if(!F.wealthGoal){c.innerHTML='';return}
+  var totalWealth=F.savings+F.invested+F.portfolio.stocks+F.portfolio.bonds+F.portfolio.realEstate+F.portfolio.cash+F.portfolio.other;
+  var pct=F.wealthGoal.target>0?Math.min((totalWealth/F.wealthGoal.target)*100,100).toFixed(1):0;
+  c.innerHTML='<div class="glass" style="text-align:center"><div class="sec-lbl">WEALTH GOAL</div>'+
+    '<div style="font-family:var(--serif);font-size:18px;font-style:italic;color:var(--gold);margin:4px 0">'+F.wealthGoal.name+'</div>'+
+    '<div style="font-family:var(--serif);font-size:32px;color:#fff;margin:4px 0">$'+totalWealth.toLocaleString()+'</div>'+
+    '<div style="font-size:10px;color:rgba(255,255,255,.3)">of $'+F.wealthGoal.target.toLocaleString()+' in '+F.wealthGoal.years+' years</div>'+
+    '<div class="prog-wrap" style="margin:10px 0"><div class="prog-fill prog-gold" style="width:'+pct+'%"></div></div>'+
+    '<div style="font-size:10px;color:rgba(255,255,255,.3)">'+pct+'% complete</div></div>';
+}
+function renderWealthTimeline(){
+  var c=document.getElementById('wealthTimeline');if(!c)return;
+  if(!F.wealthGoal){c.innerHTML='<div style="padding:0 18px"><p style="font-size:11px;color:rgba(255,255,255,.25)">Set your goal to see your wealth timeline.</p></div>';return}
+  var target=F.wealthGoal.target;
+  var milestones=[{name:'First $10,000',target:10000},{name:'$50,000',target:50000},{name:'$100,000',target:100000},{name:'Halfway: $'+Math.round(target/2).toLocaleString(),target:Math.round(target/2)},{name:F.wealthGoal.name,target:target}].filter(function(m){return m.target<=target});
+  var totalWealth=F.savings+F.invested+F.portfolio.stocks+F.portfolio.bonds+F.portfolio.realEstate+F.portfolio.cash+F.portfolio.other;
+  var html='';
+  milestones.forEach(function(m){
+    var pct=m.target>0?Math.min((totalWealth/m.target)*100,100):0;var done=pct>=100;
+    html+='<div class="tl-node"><div class="tl-dot'+(done?' done':pct>0?' active':'')+'"></div><div class="tl-name">'+(done?'&#10003; ':'')+m.name+'</div><div class="tl-sub">$'+m.target.toLocaleString()+'</div><div class="tl-bar"><div class="tl-fill" style="width:'+pct+'%"></div></div></div>';
+  });
+  c.innerHTML=html;
+}
+function renderWealthStats(){
+  var c=document.getElementById('wealthStats');if(!c)return;
+  var tp=F.portfolio.stocks+F.portfolio.bonds+F.portfolio.realEstate+F.portfolio.cash+F.portfolio.other;
+  var ta=F.assets.reduce(function(s,a){return s+a.value},0);
+  var nw=F.savings+tp+ta;var surplus=F.income-F.expenses;
+  c.innerHTML='<div class="stat-grid"><div class="stat-card wide"><div class="stat-val" style="color:var(--gold)">$'+nw.toLocaleString()+'</div><div class="stat-lbl">Net Worth</div></div>'+
+    '<div class="stat-card"><div class="stat-val" style="color:var(--sky)">$'+tp.toLocaleString()+'</div><div class="stat-lbl">Portfolio</div></div>'+
+    '<div class="stat-card"><div class="stat-val" style="color:var(--success)">$'+F.savings.toLocaleString()+'</div><div class="stat-lbl">Peace Fund</div></div></div>';
+}
+function renderPortfolioChart(){
+  var c=document.getElementById('portfolioChart');if(!c)return;
+  var items=[{label:'Stocks',val:F.portfolio.stocks,color:'#d4b366'},{label:'Bonds',val:F.portfolio.bonds,color:'#6b9fd4'},{label:'Real Estate',val:F.portfolio.realEstate,color:'#7bc67e'},{label:'Cash',val:F.portfolio.cash,color:'#e8a87c'},{label:'Other',val:F.portfolio.other,color:'#c490d1'}];
+  var total=items.reduce(function(s,i){return s+i.val},0);
+  if(!total){c.innerHTML='<div style="font-size:11px;color:rgba(255,255,255,.25);text-align:center;padding:8px 0">Enter your portfolio above to see allocation.</div>';return}
+  var html='<div style="display:flex;gap:3px;height:24px;border-radius:6px;overflow:hidden;margin-top:10px">';
+  items.forEach(function(item){if(item.val>0){html+='<div style="width:'+(item.val/total*100).toFixed(1)+'%;background:'+item.color+'"></div>';}});
+  html+='</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">';
+  items.forEach(function(item){if(item.val>0){html+='<div style="font-size:9px;color:rgba(255,255,255,.5)"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+item.color+';margin-right:3px;vertical-align:middle"></span>'+item.label+' '+(item.val/total*100).toFixed(0)+'%</div>';}});
+  html+='</div>';c.innerHTML=html;
+}
+
+/* ═══════════════════════════════════════ */
+/* AI PLAN GENERATION                       */
+/* ═══════════════════════════════════════ */
+var GEMINI_KEY='AQ.Ab8RN6J3yhzUPLjTaOJ91MFBDTZbQ6ALhh_FrSdQmBTTkNk5WQ';
+function generatePlan(tier){
+  var planEl=document.getElementById('plan'+tier);if(!planEl)return;
+  planEl.innerHTML='<div class="plan-loading"><div class="pl-spinner"></div><div style="font-size:11px;color:rgba(255,255,255,.35)">Creating your personalized plan...</div></div>';
+  var prompt='';
+  if(tier==='A'){
+    var debtList=F.debts.map(function(d){return d.name+': $'+d.balance+' at '+d.rate+'% APR, min $'+d.minPay}).join('; ');
+    prompt='You are a compassionate financial wellness coach for women. Create a personalized consumer debt freedom plan.\nMonthly income: $'+F.income+'\nMonthly expenses: $'+F.expenses+'\nDebts: '+debtList+'\nCreate a step-by-step plan using the avalanche method. Include which debt to attack first, monthly payment allocation, estimated payoff timeline, one sacrifice suggestion, one encouragement. Be specific with numbers. Warm tone, never judgmental. Numbered steps, under 8 steps. No markdown.';
+  }else if(tier==='B'){
+    prompt='You are a compassionate financial wellness coach for women. Create a personalized peace fund plan.\nMonthly income: $'+F.income+'\nMonthly expenses: $'+F.expenses+'\nCurrent savings: $'+F.savings+'\nAuto-save: $'+F.autoSave+'/month\nInvested: $'+F.invested+'\nRisk profile: '+(F.riskProfile||'not set')+'\nCreate a plan to build a 6-month peace fund ($'+(F.expenses*6||10000)+' target). Include savings rate analysis, auto-save recommendation, timeline, investment starter, one mindset shift. Numbered steps, under 8 steps. No markdown.';
+  }else{
+    var tp=F.portfolio.stocks+F.portfolio.bonds+F.portfolio.realEstate+F.portfolio.cash+F.portfolio.other;
+    prompt='You are a compassionate financial wellness coach for women. Create a wealth building plan.\nGoal: '+(F.wealthGoal?F.wealthGoal.name+' $'+F.wealthGoal.target+' in '+F.wealthGoal.years+' years':'Not set')+'\nIncome: $'+F.income+'\nExpenses: $'+F.expenses+'\nPeace fund: $'+F.savings+'\nPortfolio: $'+tp+'\nCreate a plan including portfolio review, monthly investment target, diversification, compound growth projection. Numbered steps, under 8 steps. No markdown.';
+  }
+  fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+GEMINI_KEY,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:800}})
+  }).then(function(r){return r.json()}).then(function(data){
+    var text='';try{text=data.candidates[0].content.parts[0].text}catch(e){text='Could not generate plan. Please try again.'}
+    F['plan'+tier]=text;sv();renderSavedPlan('plan'+tier,text);
+  }).catch(function(){planEl.innerHTML='<div class="glass" style="text-align:center"><p style="font-size:11px;color:var(--danger)">Could not connect. Check your connection and try again.</p></div>';});
+}
+function renderSavedPlan(elId,text){
+  var el=document.getElementById(elId);if(!el)return;
+  var lines=text.split('\n').filter(function(l){return l.trim()});
+  var html='<div class="plan-card fade-up"><div class="pc-head">Your Personalized Plan</div>';
+  var stepNum=0;
+  lines.forEach(function(line){
+    line=line.trim();var match=line.match(/^(\d+)[\.\)]\s*(.*)/);
+    if(match){stepNum++;html+='<div class="pc-step"><div class="pc-num">'+stepNum+'</div><div class="pc-txt">'+match[2]+'</div></div>';}
+    else if(line&&stepNum>0){html+='<div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin:0 0 8px 30px">'+line+'</div>';}
+    else if(line){html+='<div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:8px">'+line+'</div>';}
+  });
+  html+='</div>';el.innerHTML=html;
+}
+
+/* ═══════════════════════════════════════ */
+/* GLITTER OVERLAY                          */
+/* ═══════════════════════════════════════ */
+function initGlitterOverlay(){
+  var overlay=document.getElementById('glitterOverlay');if(!overlay)return;
+  var html='';
+  for(var i=0;i<30;i++){
+    var x=Math.random()*100,y=Math.random()*100,delay=Math.random()*5,dur=Math.random()*3+2,size=Math.random()*2+1;
+    html+='<div class="glitter-dot" style="left:'+x+'%;top:'+y+'%;width:'+size+'px;height:'+size+'px;animation-delay:'+delay+'s;animation-duration:'+dur+'s"></div>';
+  }
+  overlay.innerHTML=html;
+}
+
+/* ═══════════════════════════════════════ */
+/* INIT                                     */
+/* ═══════════════════════════════════════ */
+function closeFinance(){
+  try{parent.closeTool()}catch(e){window.history.back()}
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  initBg();
+  initGlitterOverlay();
+  if(F.tier)showTracker();
+});
+</script>
+</body>
+</html>
