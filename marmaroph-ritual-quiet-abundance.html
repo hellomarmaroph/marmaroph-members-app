@@ -269,10 +269,20 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 <!-- HOME — Daily Hub with Sun Calendar                 -->
 <!-- ═══════════════════════════════════════════════════ -->
 <section class="screen" id="s-home">
-  <div style="padding:48px 18px 0;text-align:center">
-    <div class="eyebrow" style="margin-bottom:4px">Quiet Abundance Ritual</div>
-    <div class="hello">Hi, beautiful</div>
+  <div class="stage-head">
+    <span class="back-link" onclick="goWelcome()">← The ritual</span>
+    <span class="stage-count">My Sanctuary</span>
   </div>
+
+  <div style="text-align:center;padding:0 18px">
+    <div class="eyebrow" style="margin-top:2px">The Home Sanctuary Club</div>
+    <div class="hello">Hi, beautiful</div>
+    <div style="position:relative;text-align:center;margin-top:0;padding:10px 0 8px">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;line-height:.94;color:#fff;text-shadow:0 2px 24px rgba(8,13,36,.35)">Quiet<br>Abundance</div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.48em;text-transform:uppercase;color:var(--gold);margin-top:12px;text-shadow:0 1px 8px rgba(8,13,36,.4)">R I T U A L</div>
+    </div>
+  </div>
+
   <div class="sun-cal-wrap"><canvas id="sunCal" width="380" height="380"></canvas></div>
   <div style="text-align:center;margin-top:-6px">
     <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3)" id="homeChip">PATH B</div>
@@ -307,6 +317,17 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="wa-card">
     <div class="wa-title">Your ritual sisters</div>
     <div class="wa-body">You are not doing this alone. Join the women who started the Quiet Abundance ritual this month.</div>
+    <div style="margin-top:10px">
+      <button style="display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:20px;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.15);color:rgba(37,211,102,.5);font-size:11px;font-weight:600;cursor:default;opacity:.7;font-family:'Montserrat',sans-serif">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(37,211,102,.5)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.493l4.624-1.214A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.994-1.951l-.42-.312-2.749.722.734-2.684-.343-.544A9.963 9.963 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+        Join on WhatsApp &middot; Coming soon
+      </button>
+    </div>
+  </div>
+
+  <div style="padding:12px 18px 0">
+    <button class="btn btn-ghost" style="width:100%;margin-bottom:8px" onclick="goWelcome()">← Back to the ritual</button>
+    <button class="btn btn-ghost" style="width:100%" onclick="window.location.href='index.html'">← Back to my sanctuary</button>
   </div>
   <footer>Marmaroph Home &amp; Living</footer>
 </section>
@@ -550,6 +571,7 @@ function sv(){
 
 /* ── Navigation ── */
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});var el=document.getElementById(id);if(el){el.classList.add('active');el.scrollTop=0}}
+function goWelcome(){show('s-welcome')}
 function goHome(){show('s-home');renderHome();drawSunCal();buildCal('calHome')}
 function goStep(n){show('s-r'+n);if(n===4){renderLesson();renderTodayMindset()}if(n===5){buildCal('calSeed');startTimer()}}
 function completeRitual(){var dn=daysDone();showDone('Day '+dn+' is yours.','You did not just look at your money. You returned home.')}
