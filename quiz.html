@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Marmaroph — Wellness Diagnosis</title>
+<style>
+:root{--bg:#0b1a2e;--gold:#d4b366;--gold-dim:rgba(212,179,102,.15);--serif:'Georgia',serif;--sans:system-ui,-apple-system,sans-serif;
+--nourishment:#6ec89b;--purpose:#b08fd4;--regulate:#8bb8c9;--movement:#e8a86d;--connection:#d4849a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:var(--bg);color:#fff;font-family:var(--sans);overflow:hidden}
+canvas#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+.app{position:fixed;top:0;left:0;width:100%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:1}
+.container{max-width:440px;margin:0 auto;padding:40px 20px 60px;text-align:center;min-height:100%}
+
+/* Brand header */
+.brand{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px}
+.brand-logo{font-family:var(--serif);font-size:22px;color:var(--gold);margin-bottom:4px}
+
+/* Progress */
+.progress-bar{width:100%;height:3px;background:rgba(255,255,255,.06);border-radius:4px;margin-bottom:32px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#f0d88a);border-radius:4px;transition:width .6s ease}
+
+/* Screen management */
+.screen{display:none}.screen.active{display:block}
+
+/* Intro screen */
+.intro-icon{width:80px;height:80px;margin:0 auto 20px;border-radius:50%;border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:32px;background:rgba(212,179,102,.04)}
+.intro-title{font-family:var(--serif);font-size:28px;color:#fff;margin-bottom:8px;line-height:1.3}
+.intro-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:6px;max-width:340px;margin-left:auto;margin-right:auto}
+.intro-quote{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);margin:24px 0;line-height:1.6}
+.intro-note{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:28px}
+
+/* Question */
+.q-num{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.q-pillar-tag{display:inline-flex;align-items:center;gap:5px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.q-pillar-tag .dot{width:6px;height:6px;border-radius:50%}
+.q-text{font-family:var(--serif);font-size:18px;color:#fff;margin-bottom:24px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.q-opt{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 16px;cursor:pointer;text-align:left;transition:.25s;display:flex;align-items:center;gap:12px}
+.q-opt:hover{background:rgba(255,255,255,.06)}
+.q-opt:active{transform:scale(.98)}
+.q-opt.sel{background:rgba(212,179,102,.08);border-color:var(--gold)}
+.q-opt-circle{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.25s}
+.q-opt.sel .q-opt-circle{border-color:var(--gold);background:var(--gold)}
+.q-opt.sel .q-opt-circle::after{content:'';width:6px;height:6px;border-radius:50%;background:#0b1a2e}
+.q-opt-text{flex:1}
+.q-opt-h{font-size:13px;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:2px}
+.q-opt-d{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5}
+.q-context{font-size:11px;color:rgba(255,255,255,.3);line-height:1.6;margin-top:8px;font-style:italic}
+
+/* Buttons */
+.btn{width:100%;padding:16px;border:none;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;transition:.25s;letter-spacing:.5px}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#c9a44e);color:#1a1a2e}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.2)}
+.btn:disabled{opacity:.3;cursor:default;transform:none}
+
+/* Transition */
+.fade-enter{animation:fadeUp .5s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Results ── */
+.results-title{font-family:var(--serif);font-size:24px;color:#fff;margin-bottom:6px}
+.results-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:28px}
+
+/* Pillar wheel */
+.wheel-wrap{position:relative;width:220px;height:220px;margin:0 auto 28px}
+.wheel-svg{width:100%;height:100%}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.wheel-score{font-family:var(--serif);font-size:36px;color:var(--gold)}
+.wheel-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+
+/* Pillar bars */
+.pillar-list{margin-bottom:28px}
+.pillar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04)}
+.pillar-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pillar-info{flex:1;text-align:left}
+.pillar-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:4px}
+.pillar-bar-track{width:100%;height:5px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.pillar-bar-fill{height:100%;border-radius:4px;transition:width 1.2s ease}
+.pillar-pct{font-size:11px;color:rgba(255,255,255,.4);min-width:30px;text-align:right}
+.pillar-msg{font-size:10px;color:rgba(255,255,255,.35);text-align:left;margin-top:2px;line-height:1.5}
+.pillar-row.needs-attention{border-color:rgba(212,179,102,.2);background:rgba(212,179,102,.04)}
+.pillar-row.needs-attention .pillar-name::after{content:' — needs attention';font-weight:400;color:var(--gold);font-size:10px}
+
+/* Recommendation card */
+.rec-card{background:linear-gradient(135deg,rgba(212,179,102,.06),rgba(107,159,212,.04));border:1px solid rgba(212,179,102,.15);border-radius:18px;padding:20px;margin-bottom:12px;text-align:left}
+.rec-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.rec-name{font-family:var(--serif);font-size:20px;color:#fff;margin-bottom:6px}
+.rec-why{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:14px}
+.rec-pillars{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.rec-ptag{font-size:8px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:16px;display:inline-flex;align-items:center;gap:4px}
+.rec-ptag .rdot{width:5px;height:5px;border-radius:50%}
+
+/* Shooting stars */
+.shooting-star{position:fixed;width:2px;height:2px;background:#fff;border-radius:50%;pointer-events:none;z-index:0;opacity:0}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="app" id="app">
+<div class="container">
+
+<!-- ── INTRO SCREEN ── -->
+<div class="screen active" id="s-intro">
+  <div style="padding-top:20px" class="fade-enter">
+    <div class="brand-logo">Marmaroph</div>
+    <div class="brand">THE HOME SANCTUARY CLUB</div>
+    <div class="intro-icon">&#9827;</div>
+    <div class="intro-title">Your Wellness Diagnosis</div>
+    <div class="intro-sub">
+      15 questions across the five pillars of holistic wellness.
+      At the end, you will see exactly where your life is thriving and where it is calling for attention.
+    </div>
+    <div class="intro-quote">"You cannot pour from an empty cup. First, understand the cup."</div>
+    <div class="intro-note">Takes about 3 minutes. Your answers stay private on your device.</div>
+    <button class="btn btn-gold" onclick="startQuiz()">Begin My Diagnosis</button>
+  </div>
+</div>
+
+<!-- ── QUESTION SCREEN ── -->
+<div class="screen" id="s-quiz">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div id="questionArea" class="fade-enter"></div>
+</div>
+
+<!-- ── RESULTS SCREEN ── -->
+<div class="screen" id="s-results">
+  <div id="resultsArea"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════ */
+/* CELESTIAL BACKGROUND                    */
+/* ═══════════════════════════════════════ */
+var starCanvas,starCtx,stars=[],constellations=[];
+function initCelestial(){
+  starCanvas=document.getElementById('stars');
+  starCtx=starCanvas.getContext('2d');
+  function resize(){starCanvas.width=window.innerWidth;starCanvas.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  for(var i=0;i<160;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.2+.3,a:Math.random(),s:Math.random()*.003+.001,p:Math.random()*Math.PI*2});
+  var cx=starCanvas.width,cy=starCanvas.height;
+  for(var c=0;c<4;c++){var pts=[];var bx=Math.random()*cx,by=Math.random()*cy;for(var p=0;p<Math.floor(Math.random()*4)+3;p++)pts.push({x:bx+Math.random()*180-90,y:by+Math.random()*180-90});constellations.push(pts)}
+  drawCelestial()
+}
+function drawCelestial(){
+  var w=starCanvas.width,h=starCanvas.height;
+  starCtx.clearRect(0,0,w,h);
+  stars.forEach(function(s){
+    s.p+=s.s;s.a=.3+Math.sin(s.p)*.7;
+    starCtx.beginPath();starCtx.arc(s.x*w,s.y*h,s.r,0,Math.PI*2);
+    starCtx.fillStyle='rgba(255,255,255,'+s.a*.5+')';starCtx.fill()
+  });
+  constellations.forEach(function(pts){
+    starCtx.strokeStyle='rgba(255,255,255,.04)';starCtx.lineWidth=.5;starCtx.beginPath();
+    pts.forEach(function(p,i){i===0?starCtx.moveTo(p.x,p.y):starCtx.lineTo(p.x,p.y)});
+    starCtx.stroke();
+    pts.forEach(function(p){starCtx.beginPath();starCtx.arc(p.x,p.y,1.5,0,Math.PI*2);starCtx.fillStyle='rgba(255,255,255,.12)';starCtx.fill()})
+  });
+  // Subtle planet
+  starCtx.beginPath();starCtx.arc(w*.82,h*.12,12,0,Math.PI*2);
+  var pg=starCtx.createRadialGradient(w*.82,h*.12,0,w*.82,h*.12,12);
+  pg.addColorStop(0,'rgba(200,210,230,.12)');pg.addColorStop(1,'rgba(200,210,230,0)');
+  starCtx.fillStyle=pg;starCtx.fill();
+  // Moon
+  starCtx.beginPath();starCtx.arc(w*.88,h*.08,6,0,Math.PI*2);starCtx.fillStyle='rgba(220,220,240,.08)';starCtx.fill();
+  starCtx.beginPath();starCtx.arc(w*.885,h*.076,5.5,0,Math.PI*2);starCtx.fillStyle='rgba(11,26,46,1)';starCtx.fill();
+  requestAnimationFrame(drawCelestial)
+}
+
+/* ═══════════════════════════════════════ */
+/* SHOOTING STARS                          */
+/* ═══════════════════════════════════════ */
+var _ssId=0;
+function spawnShootingStar(){
+  var star=document.createElement('div');
+  star.className='shooting-star';
+  var dir=Math.floor(Math.random()*4);
+  var x,y,dx,dy;
+  if(dir===0){x=Math.random()*60;y=Math.random()*30;dx=200+Math.random()*200;dy=100+Math.random()*120}
+  else if(dir===1){x=40+Math.random()*60;y=Math.random()*30;dx=-(200+Math.random()*200);dy=100+Math.random()*120}
+  else if(dir===2){x=Math.random()*100;y=Math.random()*20;dx=-(60+Math.random()*140);dy=180+Math.random()*120}
+  else{x=70+Math.random()*30;y=Math.random()*50;dx=-(250+Math.random()*150);dy=40+Math.random()*80}
+  var dur=.4+Math.random()*1.0;
+  var id='ss'+(_ssId++);
+  var kf='@keyframes '+id+'{0%{opacity:0;transform:translate(0,0)}5%{opacity:1}80%{opacity:.6}100%{opacity:0;transform:translate('+dx+'px,'+dy+'px)}}';
+  var st=document.createElement('style');st.textContent=kf;document.head.appendChild(st);
+  star.style.cssText='left:'+x+'%;top:'+y+'%;animation:'+id+' '+dur+'s linear forwards';
+  var trailLen=30+Math.random()*60;
+  var trailAngle=Math.atan2(dy,dx)*180/Math.PI;
+  var trail=document.createElement('span');
+  trail.style.cssText='position:absolute;top:0;left:0;width:'+trailLen+'px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5));transform-origin:left center;transform:rotate('+trailAngle+'deg)';
+  star.appendChild(trail);
+  document.body.appendChild(star);
+  setTimeout(function(){star.remove();st.remove()},dur*1000+100)
+}
+function shootingStarLoop(){spawnShootingStar();setTimeout(shootingStarLoop,3000+Math.random()*6000)}
+
+/* ═══════════════════════════════════════ */
+/* QUIZ DATA                               */
+/* ═══════════════════════════════════════ */
+var PILLARS={
+  nourishment:{name:'Nourishment',color:'#6ec89b',icon:'☘',desc:'How you feed and hydrate your body'},
+  purpose:{name:'Purpose',color:'#b08fd4',icon:'✦',desc:'Your sense of meaning, finances, and growth'},
+  regulate:{name:'Regulate',color:'#8bb8c9',icon:'✨',desc:'Your nervous system, sleep, and stress management'},
+  movement:{name:'Movement',color:'#e8a86d',icon:'⚡',desc:'How your body moves, strengthens, and recovers'},
+  connection:{name:'Connection',color:'#d4849a',icon:'♥',desc:'Your relationships and sense of belonging'}
+};
+
+var QUESTIONS=[
+  // ── NOURISHMENT (3 questions) ──
+  {pillar:'nourishment',q:'How would you describe your daily eating pattern?',opts:[
+    {h:'Irregular or skipping meals',d:'I often skip breakfast or eat at random times.',v:1},
+    {h:'Mostly consistent but not balanced',d:'I eat regularly but I know my nutrition could be better.',v:2},
+    {h:'Balanced and intentional',d:'I prioritize protein, vegetables, and whole foods at every meal.',v:3}
+  ]},
+  {pillar:'nourishment',q:'How much water do you drink in a typical day?',opts:[
+    {h:'Less than 4 glasses',d:'I forget to drink water most days.',v:1},
+    {h:'4 to 6 glasses',d:'I try but I know I should drink more.',v:2},
+    {h:'7+ glasses consistently',d:'Hydration is a priority. I carry water with me.',v:3}
+  ]},
+  {pillar:'nourishment',q:'How often do you cook at home with fresh ingredients?',opts:[
+    {h:'Rarely',d:'Most meals are takeout, delivery, or packaged.',v:1},
+    {h:'A few times a week',d:'I cook sometimes but rely on convenience food too.',v:2},
+    {h:'Almost every day',d:'I enjoy preparing meals with whole, fresh ingredients.',v:3}
+  ]},
+
+  // ── PURPOSE (3 questions) ──
+  {pillar:'purpose',q:'When you wake up most mornings, how do you feel about the day ahead?',opts:[
+    {h:'Dread or emptiness',d:'I struggle to find motivation or meaning.',v:1},
+    {h:'Neutral or routine',d:'I go through the motions. Some days feel meaningful.',v:2},
+    {h:'Energized and purposeful',d:'I have a sense of direction. My days feel intentional.',v:3}
+  ]},
+  {pillar:'purpose',q:'How would you describe your relationship with money?',opts:[
+    {h:'Stressful or avoidant',d:'I avoid looking at my accounts. Money causes anxiety.',v:1},
+    {h:'Aware but uncertain',d:'I know where I stand but I lack a plan.',v:2},
+    {h:'Intentional and calm',d:'I track my finances and feel in control of my financial future.',v:3}
+  ]},
+  {pillar:'purpose',q:'Do you have personal goals you are actively working toward?',opts:[
+    {h:'Not really',d:'I feel stuck or unsure of what I want.',v:1},
+    {h:'I have ideas but no plan',d:'I know what I want but I have not started yet.',v:2},
+    {h:'Yes, and I review them regularly',d:'I have clear goals with actions I take each week.',v:3}
+  ]},
+
+  // ── REGULATE (3 questions) ──
+  {pillar:'regulate',q:'How would you rate the quality of your sleep?',opts:[
+    {h:'Poor',d:'I struggle to fall asleep, wake up often, or feel exhausted.',v:1},
+    {h:'Inconsistent',d:'Some nights are fine, others are restless. No real routine.',v:2},
+    {h:'Restorative',d:'I sleep 7 to 8 hours and wake feeling rested most mornings.',v:3}
+  ]},
+  {pillar:'regulate',q:'When stress hits, what is your default response?',opts:[
+    {h:'Overwhelm or shutdown',d:'I freeze, spiral, or numb with screens, food, or alcohol.',v:1},
+    {h:'Push through',d:'I power through but I feel the tension in my body.',v:2},
+    {h:'Pause and regulate',d:'I use breathwork, walks, or quiet time to ground myself.',v:3}
+  ]},
+  {pillar:'regulate',q:'How often do you spend time in silence or stillness (no screens, no noise)?',opts:[
+    {h:'Almost never',d:'There is always background noise or a screen on.',v:1},
+    {h:'Occasionally',d:'Maybe once a week I have true quiet.',v:2},
+    {h:'Daily',d:'I protect time for silence, meditation, or calm reflection.',v:3}
+  ]},
+
+  // ── MOVEMENT (3 questions) ──
+  {pillar:'movement',q:'How many days per week do you move your body intentionally (exercise, walking, yoga)?',opts:[
+    {h:'0 to 1 day',d:'I am mostly sedentary.',v:1},
+    {h:'2 to 3 days',d:'I move sometimes but lack consistency.',v:2},
+    {h:'4+ days',d:'Movement is part of my weekly rhythm.',v:3}
+  ]},
+  {pillar:'movement',q:'Do you include resistance or weight training in your routine?',opts:[
+    {h:'No, never',d:'I only do cardio or nothing at all.',v:1},
+    {h:'Sometimes',d:'I have tried it but it is not regular.',v:2},
+    {h:'Yes, at least 2 to 3 times a week',d:'Lifting weights is part of my routine.',v:3}
+  ]},
+  {pillar:'movement',q:'How much time do you spend outdoors with natural sunlight each day?',opts:[
+    {h:'Under 10 minutes',d:'I go from home to car to office. Almost no sun.',v:1},
+    {h:'10 to 30 minutes',d:'I get some sun but it is not intentional.',v:2},
+    {h:'30+ minutes most days',d:'I make time for walks, outdoor meals, or morning sun.',v:3}
+  ]},
+
+  // ── CONNECTION (3 questions) ──
+  {pillar:'connection',q:'How often do you have meaningful, undistracted conversation with someone you care about?',opts:[
+    {h:'Rarely',d:'Most of my interactions are surface-level or digital.',v:1},
+    {h:'Once a week or less',d:'I have some deep conversations but not enough.',v:2},
+    {h:'Several times a week',d:'I prioritize quality time with people I love.',v:3}
+  ]},
+  {pillar:'connection',q:'How supported do you feel in your daily life?',opts:[
+    {h:'Isolated',d:'I feel alone in what I carry.',v:1},
+    {h:'Somewhat supported',d:'I have people around but I do not always lean on them.',v:2},
+    {h:'Deeply supported',d:'I have a circle I trust and they are there when I need them.',v:3}
+  ]},
+  {pillar:'connection',q:'When was the last time you did something playful or joyful just for the sake of it?',opts:[
+    {h:'I cannot remember',d:'Life has been all responsibility lately.',v:1},
+    {h:'Within the last month',d:'It has been a while but I have had moments.',v:2},
+    {h:'This week',d:'I make room for joy, laughter, and lightness regularly.',v:3}
+  ]}
+];
+
+/* ═══════════════════════════════════════ */
+/* QUIZ ENGINE                             */
+/* ═══════════════════════════════════════ */
+var currentQ=0;
+var answers=[];
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('app').scrollTop=0;
+}
+
+function startQuiz(){
+  currentQ=0;answers=[];
+  show('s-quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  var q=QUESTIONS[currentQ];
+  var p=PILLARS[q.pillar];
+  var pct=Math.round(((currentQ)/QUESTIONS.length)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+
+  var html='<div class="fade-enter">';
+  html+='<div class="q-num">Question '+(currentQ+1)+' of '+QUESTIONS.length+'</div>';
+  html+='<div class="q-pillar-tag" style="color:'+p.color+';background:'+p.color.replace(')',',0.08)').replace('rgb','rgba')+';border:1px solid '+p.color.replace(')',',0.2)').replace('rgb','rgba')+'"><span class="dot" style="background:'+p.color+'"></span>'+p.name.toUpperCase()+'</div>';
+  html+='<div class="q-text">'+q.q+'</div>';
+  html+='<div class="q-opts">';
+  q.opts.forEach(function(o,i){
+    html+='<div class="q-opt" onclick="selectAnswer('+i+','+o.v+',this)">';
+    html+='<div class="q-opt-circle"></div>';
+    html+='<div class="q-opt-text"><div class="q-opt-h">'+o.h+'</div><div class="q-opt-d">'+o.d+'</div></div>';
+    html+='</div>';
+  });
+  html+='</div></div>';
+  document.getElementById('questionArea').innerHTML=html;
+}
+
+function selectAnswer(idx,val,el){
+  el.parentNode.querySelectorAll('.q-opt').forEach(function(o){o.classList.remove('sel')});
+  el.classList.add('sel');
+  answers[currentQ]={pillar:QUESTIONS[currentQ].pillar,value:val};
+  setTimeout(function(){
+    currentQ++;
+    if(currentQ<QUESTIONS.length){renderQuestion()}
+    else{
+      document.getElementById('progressFill').style.width='100%';
+      setTimeout(showResults,400);
+    }
+  },400);
+}
+
+/* ═══════════════════════════════════════ */
+/* RESULTS                                 */
+/* ═══════════════════════════════════════ */
+
+/* Ritual recommendations mapped to pillar weaknesses */
+var RITUALS=[
+  {id:'mindful-eating',name:'Mindful Eating Ritual',pillars:['nourishment','movement'],desc:'Transform your relationship with food. Learn body composition science, balanced nutrition, and why lifting weights changes everything.',icon:'🌿',url:'marmaroph-ritual-mindful-eating.html'},
+  {id:'quiet-abundance',name:'Quiet Abundance Ritual',pillars:['purpose','regulate'],desc:'Build a quiet structure of wealth. 30 days of financial clarity, mindset shifts, and intentional money practices.',icon:'💰',url:'marmaroph-ritual-quiet-abundance.html'},
+  {id:'energised-mornings',name:'Energised Mornings Ritual',pillars:['movement','regulate'],desc:'Design mornings that energise body and mind. Sun exposure, hydration, movement, and breath work.',icon:'☀️',url:'marmaroph-ritual-energised-mornings.html'},
+  {id:'bloom-in-gratitude',name:'Bloom in Gratitude',pillars:['purpose','regulate'],desc:'Your mind flourishes when nourished with gratitude. Unplug, color with intention, and reflect.',icon:'🌸'},
+  {id:'sacred-connection',name:'Sacred Connection with Partner',pillars:['connection'],desc:'Strengthen and deepen the bond with your partner through intentional presence.',icon:'💑'},
+  {id:'kindred-bonds',name:'Kindred Bonds',pillars:['connection'],desc:'Nurture the relationships that shape your world. Friends, family, and colleagues.',icon:'🤝'},
+  {id:'im-enough',name:'I Am Enough',pillars:['purpose','regulate'],desc:'Reclaim your self-worth from the inside out.',icon:'💖'},
+  {id:'sanctuary-protection',name:'Sanctuary Protection',pillars:['regulate'],desc:'Create boundaries that protect your peace.',icon:'🛡️'}
+];
+
+function showResults(){
+  show('s-results');
+  var scores={nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
+  var counts={nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
+
+  answers.forEach(function(a){
+    scores[a.pillar]+=a.value;
+    counts[a.pillar]++;
+  });
+
+  // Normalize to percentage
+  var pcts={};
+  var total=0;
+  Object.keys(scores).forEach(function(k){
+    pcts[k]=Math.round((scores[k]/(counts[k]*3))*100);
+    total+=pcts[k];
+  });
+  var overall=Math.round(total/5);
+
+  // Sort pillars by score (lowest first for recommendations)
+  var sorted=Object.keys(pcts).sort(function(a,b){return pcts[a]-pcts[b]});
+
+  // Build wheel SVG
+  var wheelSvg=buildWheel(pcts);
+
+  // Build pillar bars
+  var pillarHtml='';
+  sorted.forEach(function(key){
+    var p=PILLARS[key];
+    var pct=pcts[key];
+    var needs=pct<=55;
+    pillarHtml+='<div class="pillar-row'+(needs?' needs-attention':'')+'">';
+    pillarHtml+='<div class="pillar-dot" style="background:'+p.color+'"></div>';
+    pillarHtml+='<div class="pillar-info"><div class="pillar-name">'+p.name+'</div>';
+    pillarHtml+='<div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:0%;background:'+p.color+'" data-target="'+pct+'"></div></div>';
+    if(needs)pillarHtml+='<div class="pillar-msg">'+getPillarMessage(key,pct)+'</div>';
+    pillarHtml+='</div>';
+    pillarHtml+='<div class="pillar-pct">'+pct+'%</div>';
+    pillarHtml+='</div>';
+  });
+
+  // Find recommended rituals (based on weakest pillars)
+  var weakPillars=sorted.filter(function(k){return pcts[k]<=66});
+  if(weakPillars.length===0)weakPillars=[sorted[0]]; // at least recommend one
+
+  var recommended=[];
+  RITUALS.forEach(function(r){
+    var match=r.pillars.some(function(rp){return weakPillars.indexOf(rp)>-1});
+    if(match&&recommended.length<3)recommended.push(r);
+  });
+
+  // Build recommendations
+  var recHtml='';
+  recommended.forEach(function(r,i){
+    recHtml+='<div class="rec-card fade-enter" style="animation-delay:'+(0.6+i*0.15)+'s">';
+    recHtml+='<div class="rec-label">'+(i===0?'RECOMMENDED FOR YOU':'ALSO RECOMMENDED')+'</div>';
+    recHtml+='<div class="rec-name">'+r.icon+' '+r.name+'</div>';
+    recHtml+='<div class="rec-pillars">';
+    r.pillars.forEach(function(rp){
+      var pc=PILLARS[rp];
+      recHtml+='<span class="rec-ptag" style="color:'+pc.color+';background:'+pc.color.replace(')',',0.1)').replace('rgb','rgba')+';border:1px solid '+pc.color.replace(')',',0.2)').replace('rgb','rgba')+'"><span class="rdot" style="background:'+pc.color+'"></span>'+pc.name.toUpperCase()+'</span>';
+    });
+    recHtml+='</div>';
+    recHtml+='<div class="rec-why">'+r.desc+'</div>';
+    if(r.url){
+      recHtml+='<button class="btn btn-gold" onclick="goToRitual(\''+r.url+'\')">Start This Ritual</button>';
+    }else{
+      recHtml+='<button class="btn btn-ghost" disabled>Coming Soon</button>';
+    }
+    recHtml+='</div>';
+  });
+
+  var html='<div class="fade-enter">';
+  html+='<div class="brand-logo" style="margin-bottom:4px">Marmaroph</div>';
+  html+='<div class="brand" style="margin-bottom:24px">YOUR WELLNESS DIAGNOSIS</div>';
+  html+='<div class="results-title">Your Five Pillars</div>';
+  html+='<div class="results-sub">Here is where your life is calling for attention</div>';
+  html+='<div class="wheel-wrap">'+wheelSvg+'<div class="wheel-center"><div class="wheel-score">'+overall+'</div><div class="wheel-label">OVERALL</div></div></div>';
+  html+='<div class="pillar-list">'+pillarHtml+'</div>';
+  html+='<div style="text-align:left;margin-bottom:20px"><div class="results-title" style="font-size:18px">Your Ritual Path</div><div class="results-sub" style="margin-bottom:16px">Based on your diagnosis, these rituals will have the most impact</div></div>';
+  html+=recHtml;
+  html+='<div style="margin-top:20px"><button class="btn btn-ghost" onclick="startQuiz()">Retake the Quiz</button></div>';
+  html+='<div style="margin-top:24px;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:1px">MARMAROPH HOME &amp; LIVING</div>';
+  html+='</div>';
+
+  document.getElementById('resultsArea').innerHTML=html;
+
+  // Save to localStorage
+  try{
+    localStorage.setItem('marmaroph_quiz',JSON.stringify({scores:pcts,overall:overall,date:new Date().toISOString(),weakPillars:weakPillars}));
+  }catch(e){}
+
+  // Animate bars
+  setTimeout(function(){
+    document.querySelectorAll('.pillar-bar-fill').forEach(function(b){
+      b.style.width=b.getAttribute('data-target')+'%';
+    });
+  },300);
+}
+
+function buildWheel(pcts){
+  var keys=['nourishment','purpose','regulate','movement','connection'];
+  var cx=110,cy=110,r=90;
+  var svg='<svg class="wheel-svg" viewBox="0 0 220 220">';
+  // Background ring
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="14"/>';
+  // Each pillar gets an arc
+  var gap=4; // degrees gap between arcs
+  var arcDeg=(360-gap*5)/5;
+  keys.forEach(function(key,i){
+    var startAngle=-90+i*(arcDeg+gap);
+    var pct=pcts[key]/100;
+    var color=PILLARS[key].color;
+    // Track arc
+    svg+=describeArc(cx,cy,r,startAngle,startAngle+arcDeg,14,'rgba(255,255,255,0.04)');
+    // Fill arc
+    var fillEnd=startAngle+arcDeg*pct;
+    svg+=describeArc(cx,cy,r,startAngle,fillEnd,14,color);
+    // Small dot at start
+    var dotAngle=(startAngle+fillEnd)/2;
+    var dotRad=dotAngle*Math.PI/180;
+    svg+='<circle cx="'+(cx+r*Math.cos(dotRad))+'" cy="'+(cy+r*Math.sin(dotRad))+'" r="2" fill="'+color+'" opacity="0.5"/>';
+  });
+  svg+='</svg>';
+  return svg;
+}
+
+function describeArc(cx,cy,r,startAngle,endAngle,width,color){
+  var start=polarToCartesian(cx,cy,r,endAngle);
+  var end=polarToCartesian(cx,cy,r,startAngle);
+  var largeArc=endAngle-startAngle>180?1:0;
+  return '<path d="M '+start.x+' '+start.y+' A '+r+' '+r+' 0 '+largeArc+' 0 '+end.x+' '+end.y+'" fill="none" stroke="'+color+'" stroke-width="'+width+'" stroke-linecap="round"/>';
+}
+function polarToCartesian(cx,cy,r,deg){
+  var rad=deg*Math.PI/180;
+  return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)};
+}
+
+function getPillarMessage(pillar,pct){
+  var msgs={
+    nourishment:{low:'Your body is asking for nourishment. Start with one balanced meal a day and consistent hydration.',mid:'You have awareness. Now build consistency with whole foods and water.'},
+    purpose:{low:'You are searching for direction. A structured ritual can give you the framework to find it.',mid:'The spark is there. Channel it into clear goals and financial clarity.'},
+    regulate:{low:'Your nervous system needs attention. Sleep, silence, and breathwork will change everything.',mid:'You manage, but you could thrive. Build regulation into your daily rhythm.'},
+    movement:{low:'Your body needs movement and strength. Even 15 minutes of walking and light weights can transform how you feel.',mid:'You move but could be more consistent. Add resistance training for bone density and metabolic health.'},
+    connection:{low:'Loneliness is a signal, not a sentence. Start with one honest conversation this week.',mid:'Your connections exist but need depth. Prioritize undistracted presence.'}
+  };
+  return pct<=33?msgs[pillar].low:msgs[pillar].mid;
+}
+
+function goToRitual(url){
+  window.location.href=url;
+}
+
+/* ═══════════════════════════════════════ */
+/* INIT                                    */
+/* ═══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',function(){
+  initCelestial();
+  setTimeout(shootingStarLoop,2000);
+});
+</script>
+</body>
+</html>
