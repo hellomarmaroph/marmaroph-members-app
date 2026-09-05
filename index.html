@@ -461,7 +461,8 @@
   .gift-tag-locked { background: rgba(4,65,71,0.04); color: var(--muted); }
   .gift-tag-unlocked { background: rgba(110,200,155,0.1); color: #1a7a42; }
 
-  .checkout-card {
+  /* checkout-card styles removed — subscribe flow is on Wix */
+  /* .checkout-card {
     background: linear-gradient(135deg, rgba(240,247,250,0.9), rgba(255,255,255,0.8));
     border: 1.5px solid rgba(159,214,235,0.25); border-radius: 18px;
     padding: 28px; margin-top: 16px; position: relative; overflow: hidden;
@@ -477,6 +478,7 @@
   .btn-subscribe { font-family: var(--fb); font-size: 13px; font-weight: 600; padding: 14px 32px; border-radius: 28px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1.2px; background: linear-gradient(135deg, #044147, #0a6b72); color: #e8f4f2; box-shadow: 0 6px 20px rgba(4,65,71,0.25); transition: all 0.3s; width: 100%; }
   .btn-subscribe:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(4,65,71,0.35); }
   .btn-subscribe:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  */
 
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--em2); color: #e8f4f2; padding: 14px 28px; border-radius: 14px; font-family: var(--fb); font-size: 12px; font-weight: 400; z-index: 9999; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 30px rgba(0,0,0,0.2); pointer-events: none; text-align: center; max-width: 340px; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -1058,37 +1060,6 @@
     <div class="section" id="sec-subscription">
       <div class="content-area">
         <div class="sec-title">Subscription</div><div class="sec-sub">Manage your Sanctuary Club membership.</div>
-
-        <!-- Checkout card (shown when a ritual is selected for purchase) -->
-        <div id="checkoutCard" class="checkout-card" style="display:none">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px">
-            <span style="font-size:10px;color:var(--sky);font-weight:600;letter-spacing:1px;text-transform:uppercase">Start Your Ritual</span>
-          </div>
-          <div class="checkout-ritual-name" id="checkoutRitualName"></div>
-          <div class="checkout-ritual-desc" id="checkoutRitualDesc"></div>
-          <div class="checkout-price">$29<span> / month</span></div>
-          <div style="margin:16px 0 8px">
-            <div style="font-size:11px;font-weight:500;color:var(--em2);letter-spacing:0.5px;margin-bottom:6px">CHOOSE YOUR START MONTH</div>
-            <div style="font-size:10px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:8px">Rituals begin on the 1st of each month</div>
-            <select id="startMonthSelect" style="width:100%;padding:10px 14px;border:1px solid rgba(4,65,71,0.12);border-radius:10px;font-family:var(--fb);font-size:13px;font-weight:300;color:var(--text);background:#fff;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%228%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1%201l5%205%205-5%22%20stroke%3D%22%23999%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E');background-repeat:no-repeat;background-position:right 12px center"></select>
-          </div>
-          <div style="margin:12px 0 8px">
-            <div style="font-size:11px;font-weight:500;color:var(--em2);letter-spacing:0.5px;margin-bottom:6px">WHATSAPP NUMBER <span style="font-weight:300;color:var(--muted)">(optional)</span></div>
-            <div style="font-size:10px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:8px">Join your ritual cohort on WhatsApp</div>
-            <input type="tel" id="checkoutWhatsapp" placeholder="+44 7700 123456" style="width:100%;padding:10px 14px;border:1px solid rgba(4,65,71,0.12);border-radius:10px;font-family:var(--fb);font-size:13px;font-weight:300;color:var(--text);background:#fff;outline:none;box-sizing:border-box" inputmode="tel"/>
-          </div>
-          <ul class="checkout-features">
-            <li>30-day guided ritual with daily lessons</li>
-            <li>Access to your ritual's community circle</li>
-            <li>Personalized wellness pillar tracking</li>
-            <li>Monthly gift unlocks &amp; milestone rewards</li>
-            <li>Cancel anytime</li>
-          </ul>
-          <button class="btn-subscribe" id="checkoutBtn" onclick="startCheckout()">Subscribe &amp; Start Ritual</button>
-          <div style="text-align:center;margin-top:10px">
-            <button onclick="document.getElementById('checkoutCard').style.display='none'" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;font-family:var(--fb);font-weight:300">Cancel</button>
-          </div>
-        </div>
 
         <div class="card" style="display:flex;align-items:center;gap:14px;padding:20px">
           <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,rgba(159,214,235,0.15),rgba(187,217,215,0.1));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">&#10024;</div>
@@ -2271,8 +2242,8 @@ function closeRitualEmbed(){
 }
 
 var RITUALS = {
-  'mindful-eating': { name:'Mindful Eating', desc:'Transform your relationship with food through 30 days of mindful nourishment practices.', pillars:['nourishment','regulate','connection'], html:'marmaroph-ritual-mindful-eating.html', icon:'<img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>' },
-  'energised-mornings': { name:'Energised Mornings', desc:'Design mornings that energise body and mind with movement and intention.', pillars:['movement','purpose'], html:'marmaroph-ritual-energised-mornings.html', icon:'<img src="https://static.wixstatic.com/media/00228e_3cbadc2bbc89467881e17a7794d58c4b~mv2.jpg" alt="Energised Mornings" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>' },
+  'mindful-eating': { name:'Mindful Eating', desc:'Transform your relationship with food through 30 days of mindful nourishment practices.', pillars:['nourishment','regulate','connection'], html:'marmaroph-ritual-mindful-eating.html', wixUrl:'https://www.marmaroph.com/homewellnessthemes/mindful-eating-home-wellness-ritual', icon:'<img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>' },
+  'energised-mornings': { name:'Energised Mornings', desc:'Design mornings that energise body and mind with movement and intention.', pillars:['movement','purpose'], html:'marmaroph-ritual-energised-mornings.html', wixUrl:'https://www.marmaroph.com/homewellnessthemes/essential-mornings', icon:'<img src="https://static.wixstatic.com/media/00228e_3cbadc2bbc89467881e17a7794d58c4b~mv2.jpg" alt="Energised Mornings" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>' },
   'sanctuary-protection': { name:'Sanctuary Protection', desc:'Create boundaries that protect your peace and regulate your nervous system.', pillars:['regulate'], html:'marmaroph-ritual-sanctuary-protection.html', icon:'&#128737;' },
   'im-enough': { name:'I\'m Enough', desc:'Reclaim your self-worth from the inside out through daily affirmations and reflection.', pillars:['purpose'], html:'marmaroph-ritual-im-enough.html', icon:'&#128150;' },
   'sacred-connection': { name:'Sacred Connection with Partner', desc:'Strengthen and deepen the bond with your partner through intentional practices of presence, communication, and shared rituals.', pillars:['connection'], html:'marmaroph-ritual-sacred-connection.html', icon:'&#128145;' },
@@ -2300,44 +2271,9 @@ function selectRitual(slug) {
     setTimeout(function(){ window.open(url, '_top'); }, 300);
     return;
   }
-  selectedRitualSlug = slug;
-  document.getElementById('checkoutRitualName').textContent = r.name;
-  document.getElementById('checkoutRitualDesc').textContent = r.desc;
-  populateStartMonths();
-  document.getElementById('checkoutCard').style.display = 'block';
-  navigate('subscription');
-  document.getElementById('mainArea').scrollTop = 0;
-  setTimeout(sendHeight, 100);
-}
-
-function populateStartMonths() {
-  var sel = document.getElementById('startMonthSelect');
-  if (!sel) return;
-  sel.innerHTML = '';
-  var now = new Date();
-  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var startOffset = now.getDate() <= 5 ? 0 : 1;
-  for (var i = 0; i < 6; i++) {
-    var d = new Date(now.getFullYear(), now.getMonth() + startOffset + i, 1);
-    var val = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-    var label = monthNames[d.getMonth()] + ' ' + d.getFullYear();
-    if (i === 0 && startOffset === 0) label += ' (starts now)';
-    var opt = document.createElement('option');
-    opt.value = val;
-    opt.textContent = label;
-    sel.appendChild(opt);
-  }
-}
-
-function startCheckout() {
-  if (!selectedRitualSlug) return;
-  var url = 'checkout.html?ritual=' + encodeURIComponent(selectedRitualSlug);
-  if (memberData.memberId) url += '&memberId=' + encodeURIComponent(memberData.memberId);
-  var sel = document.getElementById('startMonthSelect');
-  if (sel && sel.value) url += '&startMonth=' + encodeURIComponent(sel.value);
-  var wa = document.getElementById('checkoutWhatsapp');
-  if (wa && wa.value.trim()) url += '&whatsapp=' + encodeURIComponent(wa.value.trim());
-  window.location.href = url;
+  // Not subscribed — redirect to Wix ritual page to subscribe
+  var wixUrl = r.wixUrl || 'https://app.marmaroph.com/quiz.html';
+  window.open(wixUrl, '_blank');
 }
 
 function unlockRitualCards(currentRitual, unlockedRituals) {
