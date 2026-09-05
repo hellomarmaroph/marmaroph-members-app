@@ -801,7 +801,7 @@
       </div>
     </div>
     <div class="result-cta">
-      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessthemes/essential-mornings','_blank')">Start My Energized Mornings Ritual →</button>
+      <button class="btn-primary" onclick="goToRitual('energised-mornings')">Start My Energized Mornings Ritual →</button>
       <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
     </div>
   </div>
@@ -825,7 +825,7 @@
       </div>
     </div>
     <div class="result-cta">
-      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessthemes/mindful-eating-home-wellness-ritual','_blank')">Start My Mindful Eating Ritual →</button>
+      <button class="btn-primary" onclick="goToRitual('mindful-eating')">Start My Mindful Eating Ritual →</button>
       <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
     </div>
   </div>
@@ -1084,6 +1084,22 @@
     document.getElementById('btnReveal').classList.remove('on');
     document.getElementById('progressWrap').style.display = 'none';
     show('s-intro');
+  }
+
+  function goToRitual(slug) {
+    // Store quiz result so the dashboard can pick it up
+    try {
+      var name  = document.getElementById('fName').value.trim();
+      var email = document.getElementById('fEmail').value.trim();
+      localStorage.setItem('marmaroph_quiz_result', JSON.stringify({
+        ritual: slug,
+        name: name,
+        email: email,
+        date: new Date().toISOString()
+      }));
+    } catch(e) {}
+    // Navigate to dashboard with ritual parameter
+    window.location.href = 'index.html?ritual=' + encodeURIComponent(slug);
   }
 
   /* ── AMBIENT CALMING SOUND ── */
