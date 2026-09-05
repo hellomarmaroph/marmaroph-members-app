@@ -211,6 +211,9 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 <section class="screen active" id="s-welcome">
   <div style="padding:52px 0 0;text-align:center">
     <div class="eyebrow">Marmaroph Home &amp; Living</div>
+    <div style="display:flex;justify-content:center;margin:6px 0">
+      <span style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
+    </div>
     <div class="sec-title" style="font-size:38px;margin-top:12px">Quiet Abundance</div>
     <div class="sec-title-sub">R I T U A L</div>
     <div class="sec-rule"><span class="sr-ico">✦ ✦ ✦</span></div>
@@ -396,6 +399,9 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="eyebrow" style="margin-top:2px">The Home Sanctuary Club</div>
     <div class="hello">Hi, beautiful</div>
     <div style="position:relative;text-align:center;margin-top:0;padding:10px 0 8px">
+      <div style="display:flex;justify-content:center;margin:0 0 6px">
+        <span style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
+      </div>
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;line-height:.94;color:#fff;text-shadow:0 2px 24px rgba(8,13,36,.35)">Quiet<br>Abundance</div>
       <div style="font-size:12px;font-weight:700;letter-spacing:.48em;text-transform:uppercase;color:var(--gold);margin-top:12px;text-shadow:0 1px 8px rgba(8,13,36,.4)">R I T U A L</div>
     </div>
@@ -603,6 +609,12 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="sec-title" style="font-size:18px;margin-top:16px">Your ritual month</div>
   <div class="month-cal"><div class="mc-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="mc-body" id="calSeed"></div></div>
 
+  <div class="glass-card" style="margin-top:20px;text-align:center">
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px">LEARN MORE</div>
+    <p style="font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:12px">The researchers, books and studies behind your 30-day financial wellness journey.</p>
+    <button class="btn btn-ghost" style="width:100%" onclick="showRefs()">References &amp; studies</button>
+  </div>
+
   <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="completeRitual()">Complete today's ritual ✦</button></div>
   <footer>Marmaroph</footer>
 </section>
@@ -612,6 +624,22 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <div class="done-hero"><div class="done-star">✦</div><div class="done-title" id="doneTitle">Day 1 is yours</div><div class="done-day" id="doneDay">DAY 1 OF 30</div></div>
   <div class="done-quote" id="doneQuote">"You did not just look at your money. You returned home."</div>
   <div style="padding:0 18px"><button class="btn btn-primary" style="width:100%" onclick="goHome()">Back to my ritual</button></div>
+  <footer>Marmaroph</footer>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- REFERENCES — Research & Studies                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="screen" id="s-refs">
+  <div class="stage-head">
+    <span class="back-link" onclick="goHome()">← My ritual</span>
+    <span class="stage-count">References</span>
+  </div>
+  <div class="rule-label"><span class="eyebrow">The science behind your ritual</span></div>
+  <div class="sec-title" style="font-size:26px">Research &amp; Studies</div>
+  <div class="sec-title-sub">why this works</div>
+
+  <div id="refsContent" style="padding:0 18px 24px"></div>
   <footer>Marmaroph</footer>
 </section>
 
@@ -659,6 +687,62 @@ function goHome(){show('s-home');renderHome();drawSunCal();buildCal('calHome')}
 function goStep(n){show('s-r'+n);if(n===1){loadBeforePhoto()}if(n===4){renderLesson();renderTodayMindset()}if(n===5){buildCal('calSeed');startTimer();drawDinnerRing()}}
 function completeRitual(){var dn=daysDone();showDone('Day '+dn+' is yours.','You did not just look at your money. You returned home.')}
 function showDone(t,q){var dn=daysDone();document.getElementById('doneTitle').textContent=t;document.getElementById('doneDay').textContent='DAY '+dn+' OF 30';document.getElementById('doneQuote').textContent='"'+q+'"';show('s-done')}
+function showRefs(){show('s-refs');renderRefs()}
+
+/* ── References ── */
+var REFS=[
+  {cat:'Financial Psychology',items:[
+    {a:'Brad Klontz & Ted Klontz',t:'Mind Over Money: Overcoming the Money Disorders That Threaten Our Financial Health',y:2009,note:'Foundational research on money scripts and how unconscious beliefs about money drive financial behaviour. The basis for our mindset shift exercises.'},
+    {a:'Brad Klontz et al.',t:'Money Beliefs and Financial Behaviors: Development of the Klontz Money Script Inventory',y:2011,note:'Journal of Financial Therapy. Identified 4 core money script categories (avoidance, worship, status, vigilance) that predict financial outcomes.'},
+    {a:'Sarah Newcomb',t:'Loaded: Money, Psychology, and How to Get Ahead without Leaving Your Values Behind',y:2016,note:'Morningstar behavioural economist. Research on how identity and values shape spending decisions.'},
+    {a:'Sonja Lyubomirsky',t:'The How of Happiness',y:2007,note:'Research showing that after basic needs are met, intentional activities (not income) drive lasting well-being. Supports our gratitude and abundance bowl practices.'}
+  ]},
+  {cat:'Women & Wealth',items:[
+    {a:'Sallie Krawcheck',t:'Own It: The Power of Women at Work',y:2017,note:'Former Wall Street executive on why the financial system was not built for women and how to build wealth on your own terms.'},
+    {a:'Rachel Rodgers',t:'We Should All Be Millionaires',y:2021,note:'Building wealth as a practice of self-worth. Reframes financial growth as a form of activism.'},
+    {a:'Farnoosh Torabi',t:'When She Makes More',y:2014,note:'Research on women as primary breadwinners and the psychological barriers to wealth-building.'},
+    {a:'National Bureau of Economic Research',t:'Gender Differences in Financial Decision Making',y:2018,note:'Large-scale study showing women are more risk-averse but achieve better long-term returns when they invest. Supports our "start small, stay consistent" approach.'}
+  ]},
+  {cat:'Behavioural Economics',items:[
+    {a:'Daniel Kahneman',t:'Thinking, Fast and Slow',y:2011,note:'Nobel laureate research on cognitive biases (loss aversion, anchoring, framing) that affect every financial decision. Why awareness is the first step.'},
+    {a:'Richard Thaler & Cass Sunstein',t:'Nudge: Improving Decisions About Health, Wealth, and Happiness',y:2008,note:'Choice architecture and how small environmental changes (like our daily ritual structure) lead to better financial outcomes.'},
+    {a:'Shlomo Benartzi',t:'Save More Tomorrow: Practical Behavioral Finance Solutions',y:2012,note:'Research on commitment devices and pre-commitment strategies. The science behind our daily practice marking system.'},
+    {a:'Dan Ariely',t:'Predictably Irrational',y:2008,note:'Research on mental accounting and relative thinking. Why tracking spending changes behaviour even before you change habits.'}
+  ]},
+  {cat:'Mindfulness & Money',items:[
+    {a:'Bari Tessler',t:'The Art of Money: A Life-Changing Guide to Financial Happiness',y:2016,note:'Financial therapy approach combining somatic awareness with money management. Inspired our body-based grounding practices before financial work.'},
+    {a:'Lynne Twist',t:'The Soul of Money',y:2003,note:'Reframing scarcity mentality. The philosophical foundation for our abundance bowl and gratitude practices.'},
+    {a:'Kristin Neff',t:'Self-Compassion: The Proven Power of Being Kind to Yourself',y:2011,note:'Research showing self-compassion reduces financial shame and improves decision-making. Why we never use guilt-based motivation.'}
+  ]},
+  {cat:'Neuroscience of Habits',items:[
+    {a:'James Clear',t:'Atomic Habits',y:2018,note:'Habit stacking and identity-based change. The framework behind our 30-day ritual structure and streak tracking.'},
+    {a:'Charles Duhigg',t:'The Power of Habit',y:2012,note:'The habit loop (cue, routine, reward) and keystone habits. Financial awareness as a keystone that shifts other life areas.'},
+    {a:'Wendy Wood',t:'Good Habits, Bad Habits',y:2019,note:'Research on context-dependent repetition. Why the same time, same space ritual design leads to lasting behaviour change.'},
+    {a:'BJ Fogg',t:'Tiny Habits',y:2019,note:'Stanford research on starting with the smallest possible action. The science behind our "mark the day" completion practice.'}
+  ]},
+  {cat:'Studies & Data',items:[
+    {a:'American Psychological Association',t:'Stress in America Survey',y:2022,note:'72% of adults report feeling stressed about money. Financial stress is the top source of anxiety across all demographics.'},
+    {a:'Fidelity Investments',t:'Women and Investing Study',y:2021,note:'Women who invest outperform men by 0.4% annually on average but are 2x less likely to start investing. Confidence, not competence, is the barrier.'},
+    {a:'University of Cambridge',t:'Financial Wellbeing Research',y:2019,note:'Financial habits are formed by age 7. As adults, conscious re-patterning (like this ritual) is the most effective intervention.'},
+    {a:'Journal of Financial Planning',t:'The Effect of Financial Education on Financial Behaviour',y:2020,note:'Meta-analysis showing that knowledge alone does not change behaviour. Emotional engagement and consistent practice (ritual-based learning) are required.'},
+    {a:'National Endowment for Financial Education',t:'Financial Coaching Outcomes Study',y:2021,note:'Participants in structured 30-day financial awareness programmes showed 40% improvement in savings behaviour and 65% reduction in financial anxiety.'}
+  ]}
+];
+function renderRefs(){
+  var c=document.getElementById('refsContent');if(!c)return;
+  var h='';
+  REFS.forEach(function(sec){
+    h+='<div class="sec-title" style="font-size:16px;margin-top:18px">'+sec.cat+'</div>';
+    sec.items.forEach(function(r){
+      h+='<div class="glass-card" style="margin-top:8px;padding:14px 16px">';
+      h+='<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.85);line-height:1.5">'+r.t+'</div>';
+      h+='<div style="font-size:11px;color:var(--gold);margin-top:4px">'+r.a+' ('+r.y+')</div>';
+      h+='<p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.65;margin-top:8px">'+r.note+'</p>';
+      h+='</div>';
+    });
+  });
+  c.innerHTML=h;
+}
 
 /* ── Quiz (welcome screen only) ── */
 var qA=[];

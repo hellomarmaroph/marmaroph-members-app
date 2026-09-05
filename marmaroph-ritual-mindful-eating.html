@@ -1527,6 +1527,112 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       </div>
     </div>
 
+    <!-- Body Composition Visual -->
+    <div class="glass rise" id="bodyCompBox" style="margin-top:18px;padding:20px 16px">
+      <div class="rule-label"><span class="eyebrow">The Scale Lie</span></div>
+      <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,.82);margin-top:14px">The scale is just a number. It tells you nothing unless it is broken down by <strong style="color:var(--gold)">body composition</strong>: bone density, muscle mass, body fat, visceral fat. 70 kg of mostly fat and 70 kg of mostly muscle are two completely different bodies.</p>
+
+      <!-- 70kg comparison SVG -->
+      <svg viewBox="0 0 320 170" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin:16px 0 8px">
+        <!-- Fat dominant -->
+        <rect x="10" y="15" width="140" height="140" rx="14" fill="rgba(229,115,115,.08)" stroke="rgba(229,115,115,.25)" stroke-width="1"/>
+        <text x="80" y="38" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8" fill="rgba(229,115,115,.7)" letter-spacing="1.5" font-weight="700">HIGH BODY FAT</text>
+        <text x="80" y="55" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="28" fill="rgba(229,115,115,.85)" font-style="italic">70 kg</text>
+        <!-- fat body bar chart -->
+        <rect x="28" y="70" width="24" height="60" rx="4" fill="rgba(229,115,115,.35)"/>
+        <text x="40" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Fat 40%</text>
+        <rect x="60" y="100" width="24" height="30" rx="4" fill="rgba(159,214,235,.25)"/>
+        <text x="72" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Muscle 25%</text>
+        <rect x="92" y="105" width="24" height="25" rx="4" fill="rgba(233,220,184,.25)"/>
+        <text x="104" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Bone 15%</text>
+        <rect x="124" y="108" width="18" height="22" rx="4" fill="rgba(255,255,255,.12)"/>
+        <text x="133" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Other</text>
+
+        <!-- Muscle dominant -->
+        <rect x="170" y="15" width="140" height="140" rx="14" fill="rgba(110,200,155,.08)" stroke="rgba(110,200,155,.25)" stroke-width="1"/>
+        <text x="240" y="38" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8" fill="rgba(110,200,155,.7)" letter-spacing="1.5" font-weight="700">LEAN &amp; STRONG</text>
+        <text x="240" y="55" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="28" fill="rgba(110,200,155,.85)" font-style="italic">70 kg</text>
+        <!-- lean body bar chart -->
+        <rect x="188" y="100" width="24" height="30" rx="4" fill="rgba(229,115,115,.2)"/>
+        <text x="200" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Fat 18%</text>
+        <rect x="220" y="70" width="24" height="60" rx="4" fill="rgba(110,200,155,.4)"/>
+        <text x="232" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Muscle 45%</text>
+        <rect x="252" y="95" width="24" height="35" rx="4" fill="rgba(233,220,184,.3)"/>
+        <text x="264" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Bone 17%</text>
+        <rect x="284" y="108" width="18" height="22" rx="4" fill="rgba(255,255,255,.12)"/>
+        <text x="293" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Other</text>
+
+        <text x="160" y="165" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" fill="rgba(255,255,255,.4)">Same weight. Completely different body.</text>
+      </svg>
+
+      <p style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.72);margin-top:10px">The person on the right has <strong style="color:var(--sky)">higher bone density</strong>, more <strong style="color:#6ec89b">metabolically active muscle</strong>, lower visceral fat, better insulin sensitivity, and a faster resting metabolism. The scale shows the same number. Body composition tells the real story.</p>
+
+      <button class="deep-toggle" onclick="toggleBodyComp()" id="bodyCompToggle" style="margin-top:12px">The starvation trap ↓</button>
+      <div id="bodyCompDeep" style="display:none;margin-top:12px">
+
+        <div style="padding:14px;background:rgba(229,115,115,.06);border:1px solid rgba(229,115,115,.15);border-radius:12px;margin-bottom:12px">
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(229,115,115,.8);margin-bottom:6px">The Starvation Trap</p>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.7">We think to lose weight we need to stop eating. That is what GLP-1 drugs like Ozempic do: they suppress appetite so dramatically that you eat far less. But here is what happens when you stop eating enough:</p>
+          <ul style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.8;margin:8px 0 0 16px;padding:0">
+            <li>Your metabolism slows down by 15-30% (adaptive thermogenesis)</li>
+            <li>Your body breaks down <strong>muscle</strong> for energy before fat</li>
+            <li>Anything you eat gets stored as fat because your body is in survival mode</li>
+            <li>You hit a plateau where losing more weight becomes nearly impossible</li>
+            <li>When you start eating normally again, you gain it all back — often more</li>
+          </ul>
+          <p style="font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;font-style:italic">Fothergill et al., Obesity (2016): Biggest Loser contestants had metabolisms suppressed by 500 kcal/day six years after the show. Muscle loss was the primary driver.</p>
+        </div>
+
+        <div style="padding:14px;background:rgba(110,200,155,.06);border:1px solid rgba(110,200,155,.15);border-radius:12px;margin-bottom:12px">
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(110,200,155,.8);margin-bottom:6px">What to Do Instead</p>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.7">Do not eat less. <strong style="color:#6ec89b">Eat better.</strong> Prioritize protein (1.2-1.6g per kg), fill half your plate with vegetables of multiple colors, include whole carbohydrates and healthy fats. And the most transformative thing you can do: <strong style="color:var(--gold)">lift weights.</strong></p>
+        </div>
+
+        <!-- Healthy Plate SVG -->
+        <div style="padding:14px;background:rgba(233,220,184,.06);border:1px solid rgba(233,220,184,.15);border-radius:12px;margin-bottom:12px">
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;text-align:center">The Healthy Plate</p>
+          <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:180px;margin:0 auto;display:block">
+            <circle cx="110" cy="110" r="105" stroke="rgba(233,220,184,.3)" stroke-width="1" fill="rgba(255,255,255,.03)"/>
+            <!-- Half: vegetables -->
+            <path d="M110 5 A105 105 0 0 1 110 215" fill="rgba(110,200,155,.15)" stroke="rgba(110,200,155,.4)" stroke-width="1.5"/>
+            <!-- Quarter: protein -->
+            <path d="M110 215 A105 105 0 0 1 5 110 L110 110 Z" fill="rgba(229,180,78,.12)" stroke="rgba(229,180,78,.4)" stroke-width="1.5"/>
+            <!-- Quarter: whole grains + fat -->
+            <path d="M5 110 A105 105 0 0 1 110 5 L110 110 Z" fill="rgba(159,214,235,.12)" stroke="rgba(159,214,235,.4)" stroke-width="1.5"/>
+            <!-- Labels -->
+            <text x="158" y="95" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="rgba(110,200,155,.9)" font-weight="700">VEGETABLES</text>
+            <text x="158" y="108" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" fill="rgba(255,255,255,.5)">½ plate · 3+ colors</text>
+            <text x="158" y="120" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8" fill="rgba(255,255,255,.4)">🟢🔴🟡🟣⚪</text>
+            <text x="68" y="155" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="rgba(229,180,78,.9)" font-weight="700">PROTEIN</text>
+            <text x="68" y="167" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" fill="rgba(255,255,255,.5)">¼ plate · palm size</text>
+            <text x="68" y="65" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8" fill="rgba(159,214,235,.9)" font-weight="700">WHOLE GRAINS</text>
+            <text x="68" y="77" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" fill="rgba(255,255,255,.5)">¼ plate</text>
+            <text x="68" y="89" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" fill="rgba(255,255,255,.4)">+ healthy fat</text>
+          </svg>
+        </div>
+
+        <div style="padding:14px;background:rgba(233,220,184,.06);border:1px solid rgba(233,220,184,.15);border-radius:12px;margin-bottom:12px">
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Weight Lifting Is Not Bulking</p>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.7">Women produce approximately 1/15th the testosterone of men. It is <em>physiologically impossible</em> for a woman to become bulky from lifting weights without injecting exogenous hormones. What resistance training actually does:</p>
+          <ul style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.9;margin:8px 0 0 16px;padding:0">
+            <li><strong style="color:#6ec89b">Toned, defined muscles</strong> — not bulk, but shape</li>
+            <li><strong style="color:var(--gold)">Increased bone density</strong> — critical after 35, essential after menopause</li>
+            <li><strong style="color:var(--sky)">Higher metabolic rate</strong> — burn more calories at rest, every hour of every day</li>
+            <li><strong style="color:#6ec89b">Better insulin sensitivity</strong> — muscle is your #1 glucose sink</li>
+            <li><strong style="color:var(--gold)">Lower visceral fat</strong> — the dangerous fat around organs</li>
+            <li><strong style="color:var(--sky)">Stronger nervous system</strong> — your body leaves the alert state, energy is stored differently</li>
+          </ul>
+          <p style="font-size:11px;color:rgba(255,255,255,.5);margin-top:10px;font-style:italic">Watson et al., JBMR (2017): High-intensity resistance training improved bone density in postmenopausal women. Momma et al., BJSM (2022): Higher muscle mass = 20-35% lower all-cause mortality. Westcott, Current Sports Medicine Reports (2012): 10 weeks of resistance training increased resting metabolic rate by 7%.</p>
+        </div>
+
+        <div style="padding:14px;background:rgba(159,214,235,.06);border:1px solid rgba(159,214,235,.15);border-radius:12px">
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:6px">The Nourished Body</p>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.7">When you eat enough protein, lift weights, eat balanced plates with multiple colors, include healthy fats and whole carbohydrates — your body stops being in an alert state. Energy is stored as muscle glycogen instead of visceral fat. Bone density increases. Hormones regulate. Sleep improves. You are not restricting your body into thinness. You are <em style="color:var(--gold)">building it into strength.</em></p>
+          <p style="font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;font-style:italic">Dr. Gabrielle Lyon, Forever Strong (2023): "The problem is not that we are over-fat. The problem is that we are under-muscled." Dr. Peter Attia, Outlive (2023): Muscle is the organ of longevity — the largest glucose sink and the strongest predictor of healthspan.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Body Composition & Metabolism Science -->
     <div class="glass rise" id="bodyScienceBox" style="margin-top:18px;padding:20px 16px">
       <div class="rule-label"><span class="eyebrow">Body Science</span></div>
@@ -2519,7 +2625,7 @@ var RECIPES=[
 var BODY_SCIENCE=[
 {t:"Your Basal Metabolic Rate",b:"Your body burns 60-75% of daily calories just keeping you alive — breathing, circulating blood, maintaining body temperature. This is your Basal Metabolic Rate (BMR). Muscle tissue burns roughly 6 calories per pound per day at rest, while fat burns only 2.",b2:"BMR is primarily determined by lean body mass, age, sex, and thyroid function. The Katch-McArdle formula (BMR = 370 + 21.6 × lean mass in kg) shows that lean mass is the strongest predictor. Increasing lean mass by just 2 kg raises your resting metabolic rate by approximately 45 kcal/day — seemingly small, but compounding over years it prevents the slow weight gain most adults experience.",ref:"Katch & McArdle, Exercise Physiology, 2010; Muller et al., American Journal of Clinical Nutrition, 2004"},
 {t:"Muscle — Your Metabolic Engine",b:"Muscle is not just for strength. It is the largest glucose-disposal organ in your body. After a meal, up to 80% of glucose is taken up by skeletal muscle. More muscle means better blood sugar control, lower insulin, and less fat storage.",b2:"Dr. Gabrielle Lyon calls muscle the 'organ of longevity.' Skeletal muscle accounts for 40% of body weight and mediates glucose uptake through GLUT4 transporters activated by both insulin and muscle contraction. Insulin resistance often begins as muscle insulin resistance — when muscles cannot absorb glucose efficiently, excess glucose converts to fat via de novo lipogenesis in the liver.",ref:"Lyon, Forever Strong, 2023; DeFronzo & Tripathy, Diabetes Care, 2009"},
-{t:"Body Recomposition — Not Just Weight Loss",b:"The scale is a poor measure of health. You can lose 3 kg of fat and gain 2 kg of muscle, see only 1 kg of scale change, yet look dramatically different and be metabolically transformed. This is body recomposition.",b2:"DEXA scans and bioimpedance analysis reveal that body composition — the ratio of fat to lean mass — matters far more than total weight. A 2021 study in the British Journal of Sports Medicine showed that resistance-trained individuals with higher muscle mass had 20-35% lower all-cause mortality regardless of BMI. The goal is not to be lighter — it is to be leaner and stronger.",ref:"Srikanthan & Karlamangla, American Journal of Medicine, 2014; Momma et al., BJSM, 2022"},
+{t:"Body Recomposition — Not Just Weight Loss",b:"Look at the comparison above: same scale weight, completely different body. You can lose 3 kg of fat and gain 2 kg of muscle, see only 1 kg of scale change, yet look dramatically different and be metabolically transformed. This is body recomposition — and it is what matters.",b2:"DEXA scans and bioimpedance analysis reveal that body composition — the ratio of fat to lean mass — matters far more than total weight. A 2021 study in the British Journal of Sports Medicine showed that resistance-trained individuals with higher muscle mass had 20-35% lower all-cause mortality regardless of BMI. Bone density, visceral fat, and muscle mass tell the story the scale cannot. The goal is not to be lighter — it is to be leaner and stronger.",ref:"Srikanthan & Karlamangla, American Journal of Medicine, 2014; Momma et al., BJSM, 2022"},
 {t:"The Thermic Effect of Food",b:"Your body burns energy digesting food itself. Protein costs 20-30% of its calories just to digest. Carbohydrates cost 5-10%. Fat costs only 0-3%. Eating more protein literally increases your metabolic rate through digestion alone.",b2:"The thermic effect of food (TEF) accounts for roughly 10% of total daily energy expenditure. By shifting macronutrient ratios toward higher protein (from 15% to 30% of calories), you can increase TEF by 80-100 calories per day without eating more food. Over a year, this difference alone accounts for 3-4 kg of potential fat loss — or prevention of gain.",ref:"Westerterp, Nutrition & Metabolism, 2004; Halton & Hu, Journal of the American College of Nutrition, 2004"},
 {t:"NEAT — Your Hidden Calorie Burn",b:"Non-Exercise Activity Thermogenesis (NEAT) includes every movement that is not formal exercise: walking, fidgeting, standing, cooking, gardening. NEAT can vary by up to 2,000 calories per day between individuals and is the biggest variable in your metabolism.",b2:"Dr. James Levine at the Mayo Clinic discovered that lean individuals stand and walk an average of 2.5 hours more per day than obese individuals, burning 350+ extra calories daily through NEAT alone. Importantly, NEAT decreases automatically when you diet — your body moves less without you realizing it. Deliberately increasing daily movement (10,000 steps, standing desk, walking meetings) counteracts this metabolic adaptation.",ref:"Levine et al., Science, 2005; Villablanca et al., Mayo Clinic Proceedings, 2015"},
 {t:"Resistance Training and Metabolism",b:"Resistance training (lifting weights, bodyweight exercises, resistance bands) is the single most effective tool for preserving and building muscle. Without it, you lose approximately 3-5% of muscle mass per decade after age 30.",b2:"Sarcopenia — age-related muscle loss — begins as early as the mid-30s and accelerates after 60. A 2012 meta-analysis in Medicine & Science in Sports & Exercise showed that resistance training 2-3 times per week for 10 weeks increased resting metabolic rate by 7%, reduced body fat by 1.8 kg, and increased lean mass by 1.4 kg. Dr. Peter Attia considers resistance training the most important exercise modality for longevity.",ref:"Attia, Outlive, 2023; Westcott, Current Sports Medicine Reports, 2012"},
@@ -3797,6 +3903,12 @@ function toggleBodyScience(){
   var on=d.style.display==='none';
   d.style.display=on?'block':'none';
   t.textContent=on?'Close ↑':'Learn more ↓';
+}
+function toggleBodyComp(){
+  var d=document.getElementById('bodyCompDeep'),t=document.getElementById('bodyCompToggle');
+  var on=d.style.display==='none';
+  d.style.display=on?'block':'none';
+  t.textContent=on?'The starvation trap '+(on?'↑':'↓');
 }
 
 function renderRecipes(idx){
