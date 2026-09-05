@@ -1089,6 +1089,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <div class="day-strip">
         <div class="dn" id="dayNum">1<span>/30</span></div>
         <div class="chip" id="chipStreak">✦ 0 streak</div>
+        <div class="chip" id="chipCycle" style="display:none">Cycle 1</div>
       </div>
       <div class="pillar-row rise">
         <span class="pillar-tag p-nourish"><span class="p-dot"></span>Nourish</span>
@@ -1239,6 +1240,10 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <button class="hub-card" onclick="openLink(LINKS.PLAYLIST_URL)">
         <div class="hc-s">▶</div><div class="hc-title">Playlist</div>
         <div class="hc-sub">Music for your mindful meals</div>
+      </button>
+      <button class="hub-card" onclick="go('s-refs')">
+        <div class="hc-s">📚</div><div class="hc-title">Science &amp; References</div>
+        <div class="hc-sub">Studies, books &amp; researchers behind every lesson</div>
       </button>
       <button class="hub-card wide" id="quizCard" onclick="tryQuiz()">
         <div class="hc-title" style="color:var(--sky)">&#9680; &nbsp;Find your next ritual</div>
@@ -1521,6 +1526,15 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
         <button class="btn btn-ghost" onclick="ptSetTarget()">Set my daily target</button>
       </div>
     </div>
+
+    <!-- Body Composition & Metabolism Science -->
+    <div class="glass rise" id="bodyScienceBox" style="margin-top:18px;padding:20px 16px">
+      <div class="rule-label"><span class="eyebrow">Body Science</span></div>
+      <div id="bodyScienceContent" style="margin-top:14px"></div>
+      <button class="deep-toggle" id="bodyScienceToggle" onclick="toggleBodyScience()" style="margin-top:12px">Learn more ↓</button>
+      <div id="bodyScienceDeep" style="display:none;margin-top:12px"></div>
+    </div>
+
     <div class="btn-row"><button class="btn btn-primary" onclick="stageNext('s-r5')">Challenge done — continue</button></div>
   </section>
 
@@ -1650,8 +1664,12 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <p class="quote" style="margin-top:14px" id="doneQuote">"You did not just eat.<br>You returned home."</p>
       <p class="body-copy" style="margin-top:14px;font-size:12px" id="doneMotivate"></p>
     </div>
+    <div id="doneCycleInfo" style="display:none;text-align:center;margin-top:10px">
+      <p style="font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.08em">CYCLE <span id="doneCycleNum">1</span> COMPLETE</p>
+    </div>
     <div class="btn-row">
       <button class="btn btn-primary" id="doneQuizBtn" onclick="startQuiz()" style="display:none">✦ &nbsp;Find your next ritual — take the quiz</button>
+      <button class="btn btn-ghost" id="doneRestartBtn" onclick="confirmRestart()" style="display:none">Begin a new 30-day cycle</button>
       <button class="btn btn-primary" id="doneSeedBtn" onclick="go('s-home')">Back to my ritual</button>
     </div>
   </section>
@@ -2185,6 +2203,34 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     <footer>Marmaroph Home &amp; Living</footer>
   </section>
 
+  <!-- ============ REFERENCES & STUDIES ============ -->
+  <section class="screen" id="s-refs">
+    <img class="flower-deco" data-img="ORCHID" style="width:90px;right:-26px;top:-14px;opacity:.65" alt="">
+    <div class="stage-head">
+      <button class="back-link" onclick="go('s-home')">← Sanctuary</button>
+      <span class="stage-count">Science &amp; References</span>
+    </div>
+    <h2 class="rise" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;line-height:1.3;margin-top:8px">The science behind <em>every lesson</em></h2>
+    <p class="body-copy rise" style="font-size:12px;margin-bottom:18px;text-align:center">Every claim in this ritual is grounded in peer-reviewed research, clinical evidence, or the work of leading practitioners. This is your reading list.</p>
+
+    <div class="glass rise" style="padding:18px 16px;margin-bottom:14px">
+      <div class="rule-label"><span class="eyebrow">Key researchers</span></div>
+      <div id="refsResearchers" style="margin-top:12px"></div>
+    </div>
+
+    <div class="glass rise" style="padding:18px 16px;margin-bottom:14px">
+      <div class="rule-label"><span class="eyebrow">Books</span></div>
+      <div id="refsBooks" style="margin-top:12px"></div>
+    </div>
+
+    <div class="glass rise" style="padding:18px 16px;margin-bottom:14px">
+      <div class="rule-label"><span class="eyebrow">Peer-reviewed studies</span></div>
+      <div id="refsStudies" style="margin-top:12px"></div>
+    </div>
+
+    <div class="btn-row"><button class="btn btn-primary" onclick="go('s-home')">Back to my sanctuary</button></div>
+  </section>
+
   <!-- ============ QUIZ ============ -->
   <section class="screen light" id="s-quiz">
     <img class="flower-deco" data-img="BOUG" style="width:120px;left:-36px;top:-18px" alt="">
@@ -2469,6 +2515,40 @@ var RECIPES=[
 ]}
 ];
 
+/* ================= BODY SCIENCE — 30-day body composition & metabolism ================= */
+var BODY_SCIENCE=[
+{t:"Your Basal Metabolic Rate",b:"Your body burns 60-75% of daily calories just keeping you alive — breathing, circulating blood, maintaining body temperature. This is your Basal Metabolic Rate (BMR). Muscle tissue burns roughly 6 calories per pound per day at rest, while fat burns only 2.",b2:"BMR is primarily determined by lean body mass, age, sex, and thyroid function. The Katch-McArdle formula (BMR = 370 + 21.6 × lean mass in kg) shows that lean mass is the strongest predictor. Increasing lean mass by just 2 kg raises your resting metabolic rate by approximately 45 kcal/day — seemingly small, but compounding over years it prevents the slow weight gain most adults experience.",ref:"Katch & McArdle, Exercise Physiology, 2010; Muller et al., American Journal of Clinical Nutrition, 2004"},
+{t:"Muscle — Your Metabolic Engine",b:"Muscle is not just for strength. It is the largest glucose-disposal organ in your body. After a meal, up to 80% of glucose is taken up by skeletal muscle. More muscle means better blood sugar control, lower insulin, and less fat storage.",b2:"Dr. Gabrielle Lyon calls muscle the 'organ of longevity.' Skeletal muscle accounts for 40% of body weight and mediates glucose uptake through GLUT4 transporters activated by both insulin and muscle contraction. Insulin resistance often begins as muscle insulin resistance — when muscles cannot absorb glucose efficiently, excess glucose converts to fat via de novo lipogenesis in the liver.",ref:"Lyon, Forever Strong, 2023; DeFronzo & Tripathy, Diabetes Care, 2009"},
+{t:"Body Recomposition — Not Just Weight Loss",b:"The scale is a poor measure of health. You can lose 3 kg of fat and gain 2 kg of muscle, see only 1 kg of scale change, yet look dramatically different and be metabolically transformed. This is body recomposition.",b2:"DEXA scans and bioimpedance analysis reveal that body composition — the ratio of fat to lean mass — matters far more than total weight. A 2021 study in the British Journal of Sports Medicine showed that resistance-trained individuals with higher muscle mass had 20-35% lower all-cause mortality regardless of BMI. The goal is not to be lighter — it is to be leaner and stronger.",ref:"Srikanthan & Karlamangla, American Journal of Medicine, 2014; Momma et al., BJSM, 2022"},
+{t:"The Thermic Effect of Food",b:"Your body burns energy digesting food itself. Protein costs 20-30% of its calories just to digest. Carbohydrates cost 5-10%. Fat costs only 0-3%. Eating more protein literally increases your metabolic rate through digestion alone.",b2:"The thermic effect of food (TEF) accounts for roughly 10% of total daily energy expenditure. By shifting macronutrient ratios toward higher protein (from 15% to 30% of calories), you can increase TEF by 80-100 calories per day without eating more food. Over a year, this difference alone accounts for 3-4 kg of potential fat loss — or prevention of gain.",ref:"Westerterp, Nutrition & Metabolism, 2004; Halton & Hu, Journal of the American College of Nutrition, 2004"},
+{t:"NEAT — Your Hidden Calorie Burn",b:"Non-Exercise Activity Thermogenesis (NEAT) includes every movement that is not formal exercise: walking, fidgeting, standing, cooking, gardening. NEAT can vary by up to 2,000 calories per day between individuals and is the biggest variable in your metabolism.",b2:"Dr. James Levine at the Mayo Clinic discovered that lean individuals stand and walk an average of 2.5 hours more per day than obese individuals, burning 350+ extra calories daily through NEAT alone. Importantly, NEAT decreases automatically when you diet — your body moves less without you realizing it. Deliberately increasing daily movement (10,000 steps, standing desk, walking meetings) counteracts this metabolic adaptation.",ref:"Levine et al., Science, 2005; Villablanca et al., Mayo Clinic Proceedings, 2015"},
+{t:"Resistance Training and Metabolism",b:"Resistance training (lifting weights, bodyweight exercises, resistance bands) is the single most effective tool for preserving and building muscle. Without it, you lose approximately 3-5% of muscle mass per decade after age 30.",b2:"Sarcopenia — age-related muscle loss — begins as early as the mid-30s and accelerates after 60. A 2012 meta-analysis in Medicine & Science in Sports & Exercise showed that resistance training 2-3 times per week for 10 weeks increased resting metabolic rate by 7%, reduced body fat by 1.8 kg, and increased lean mass by 1.4 kg. Dr. Peter Attia considers resistance training the most important exercise modality for longevity.",ref:"Attia, Outlive, 2023; Westcott, Current Sports Medicine Reports, 2012"},
+{t:"Insulin — The Storage Hormone",b:"Insulin tells your cells to store energy. When insulin is chronically elevated (from constant snacking, refined carbs, and sedentary living), your body stays in permanent storage mode. You literally cannot access your fat stores for energy.",b2:"Insulin's primary role is to shuttle glucose into cells, but it also inhibits lipolysis — the breakdown of stored fat. Chronically elevated insulin (hyperinsulinemia) creates a metabolic lock: fat cells hold their contents while you feel hungry and fatigued. Muscle contraction activates GLUT4 transporters independently of insulin, allowing glucose uptake without spiking insulin — another reason exercise is essential for metabolic health.",ref:"Ludwig & Ebbeling, JAMA Internal Medicine, 2018; Petersen & Shulman, Physiological Reviews, 2018"},
+{t:"Muscle and Insulin Sensitivity",b:"Each resistance training session makes your muscles more sensitive to insulin for 24-72 hours. Your muscles act like sponges, soaking up glucose efficiently. This means less glucose floating in your blood, less insulin needed, and less fat storage.",b2:"A single bout of resistance exercise increases insulin-stimulated glucose disposal by 40% for up to 48 hours. Chronic resistance training upregulates GLUT4 protein expression in muscle by 30-50%, creating a permanent improvement in glucose handling. This is why strength training is now recommended as first-line therapy for type 2 diabetes prevention by the American Diabetes Association.",ref:"Holten et al., Diabetes, 2004; Colberg et al., Diabetes Care, 2016"},
+{t:"Cortisol and Body Composition",b:"Chronic stress keeps cortisol elevated, which breaks down muscle and promotes visceral fat storage — specifically around your abdomen. High cortisol also increases appetite, especially for sugar and refined carbs.",b2:"Cortisol is catabolic — it breaks down muscle protein to supply the liver with amino acids for gluconeogenesis (making glucose). Simultaneously, cortisol increases lipoprotein lipase activity in visceral adipose tissue, directing fat storage inward around organs. A 2017 study in Obesity linked chronic hair cortisol levels to higher BMI, larger waist circumference, and greater visceral fat deposits. Stress management is body composition management.",ref:"Jackson et al., Obesity, 2017; Epel et al., Psychoneuroendocrinology, 2000"},
+{t:"Sleep and Metabolic Rate",b:"Sleeping less than 7 hours increases ghrelin (hunger hormone) by 15%, decreases leptin (satiety hormone) by 15%, and shifts your body toward muscle loss instead of fat loss during caloric restriction. Sleep is not passive — it is when your body repairs muscle.",b2:"A landmark University of Chicago study by Nedeltcheva found that sleep-restricted dieters lost 55% more lean mass and 60% less fat than well-rested dieters eating identical calories. Growth hormone — essential for muscle repair — is released primarily during deep sleep (stages 3-4). Short sleepers also show increased insulin resistance, higher cortisol, and greater desire for high-calorie foods.",ref:"Nedeltcheva et al., Annals of Internal Medicine, 2010; Spiegel et al., The Lancet, 1999"},
+{t:"Why Women Need Resistance Training",b:"Women produce about 1/15th the testosterone of men, making it physiologically impossible to get bulky from lifting weights. Instead, resistance training gives women denser bones, a higher metabolic rate, improved body shape, and dramatically lower risk of osteoporosis.",b2:"After menopause, women lose bone density at 1-2% per year and muscle mass at an accelerated rate. Resistance training is the most effective non-pharmaceutical intervention for both. A 2017 study in the Journal of Bone and Mineral Research showed that high-intensity resistance training improved bone density in postmenopausal women with low bone mass — an outcome not achieved by walking or swimming.",ref:"Watson et al., JBMR, 2017; Layne & Nelson, Sports Medicine, 1999"},
+{t:"Protein and Muscle Protein Synthesis",b:"Eating protein triggers muscle protein synthesis (MPS) — the process of building new muscle tissue. The leucine threshold to trigger MPS is approximately 2.5 grams, found in about 25-30 grams of quality protein per meal.",b2:"Muscle is in constant flux between synthesis and breakdown. Net muscle gain occurs only when synthesis exceeds breakdown. Each protein-rich meal triggers a 1-3 hour spike in MPS. This is why protein distribution matters: three meals of 30g each trigger MPS three times, while one meal of 90g triggers it only once. Whey protein is the fastest-absorbing source; casein provides slower, sustained amino acid release — making cottage cheese or casein before bed a strategic choice.",ref:"Phillips & Van Loon, Journal of Sports Sciences, 2011; Morton et al., British Journal of Sports Medicine, 2018"},
+{t:"Creatine — The Most Studied Supplement",b:"Creatine monohydrate is the most researched supplement in sports science history. It increases strength, power, and muscle hydration. It also supports brain function. The standard dose is 3-5 grams daily — no loading phase necessary.",b2:"Over 500 studies confirm creatine's safety and efficacy. It works by replenishing phosphocreatine stores, allowing faster ATP regeneration during intense exercise. Beyond muscle, creatine crosses the blood-brain barrier and supports cognitive function under stress and sleep deprivation. The International Society of Sports Nutrition position stand (2017) states creatine is the most effective nutritional supplement for increasing high-intensity exercise capacity and lean body mass.",ref:"Kreider et al., JISSN, 2017; Buford et al., JISSN, 2007"},
+{t:"Walking — The Underrated Movement",b:"Walking 8,000-10,000 steps per day reduces all-cause mortality by 50-60% compared to 2,000 steps. Walking after meals lowers blood sugar spikes by 30%. It costs nothing, needs no equipment, and you can do it for the rest of your life.",b2:"A 2020 JAMA study of 4,840 adults found that participants walking 8,000+ steps/day had 51% lower all-cause mortality than those walking 4,000. Post-meal walking (just 10-15 minutes) activates muscle glucose uptake via GLUT4 translocation, significantly flattening postprandial glucose curves. Walking also reduces cortisol, improves mood, and enhances creative thinking — it is the perfect complement to resistance training.",ref:"Saint-Maurice et al., JAMA, 2020; Buffey et al., Sports Medicine, 2022"},
+{t:"The Myth of Spot Reduction",b:"You cannot choose where your body loses fat. Doing 500 crunches does not burn belly fat. Fat loss is systemic — it happens across your entire body based on genetics, hormones, and overall caloric balance. The most effective path is building muscle and reducing insulin.",b2:"Research consistently shows that targeted exercises do not preferentially reduce local fat deposits. A 2011 study in the Journal of Strength and Conditioning Research found no difference in subcutaneous fat loss between exercised and non-exercised limbs. Visceral fat (the dangerous kind around organs) responds best to a combination of resistance training, adequate protein, stress management, and reduced refined carbohydrates.",ref:"Vispute et al., JSCR, 2011; Ismail et al., Obesity Reviews, 2012"},
+{t:"Metabolic Adaptation — Why Diets Plateau",b:"When you lose weight, your metabolism slows down — not just because you are smaller, but because your body actively fights to return to its previous weight. This 'adaptive thermogenesis' can reduce your metabolic rate by 15% beyond what weight loss alone would predict.",b2:"The Biggest Loser study (Fothergill et al., Obesity, 2016) showed contestants' metabolisms were still suppressed 6 years after the show, burning 500 fewer calories/day than expected. The key to preventing this: preserve muscle mass through adequate protein (1.6g/kg) and resistance training during weight loss. Slow, moderate deficits (300-500 kcal/day) with high protein minimize metabolic adaptation compared to aggressive dieting.",ref:"Fothergill et al., Obesity, 2016; Trexler et al., JISSN, 2014"},
+{t:"Hormones of Movement",b:"Exercise releases a cascade of beneficial hormones: irisin converts white fat to metabolically active brown fat, myokines from contracting muscles reduce inflammation, and brain-derived neurotrophic factor (BDNF) improves mood and cognitive function.",b2:"Skeletal muscle is now recognized as an endocrine organ. During contraction, muscle releases hundreds of myokines — signaling molecules that reduce systemic inflammation (IL-6 as myokine is anti-inflammatory, unlike IL-6 from adipose tissue), improve insulin sensitivity, and stimulate fat oxidation. Irisin, discovered in 2012 by Bostrom et al. at Harvard, promotes the browning of white adipose tissue, increasing its energy expenditure capacity.",ref:"Bostrom et al., Nature, 2012; Pedersen & Febbraio, Nature Reviews Endocrinology, 2012"},
+{t:"Progressive Overload — The Growth Signal",b:"Your muscles only grow when challenged beyond what they are used to. This principle of progressive overload means gradually increasing weight, reps, or difficulty over time. Without progression, your body has no reason to adapt.",b2:"Progressive overload was formalized by Dr. Thomas DeLorme in the 1940s for rehabilitating injured soldiers. The mechanism involves mechanical tension activating mTOR signaling, which triggers muscle protein synthesis. Practical application: add 1-2 reps each session, or increase weight by 2-5% when you can complete all prescribed reps with good form. A training log is essential — you cannot progress what you do not track.",ref:"DeLorme & Watkins, Archives of Physical Medicine, 1948; Schoenfeld, JSCR, 2010"},
+{t:"Bone Density and Loading",b:"Your bones are living tissue that remodels in response to mechanical stress. Weight-bearing exercise and resistance training stimulate osteoblasts (bone-building cells). Without this stimulus, bones weaken — especially after age 40 and dramatically after menopause.",b2:"Wolff's Law states that bone adapts to the loads placed upon it. Impact and resistance exercises create micro-deformations that signal osteoblasts to lay down new mineral matrix. A 2018 systematic review in Osteoporosis International confirmed that multi-component exercise programs (combining resistance training with impact loading) were most effective at maintaining or improving bone mineral density in postmenopausal women.",ref:"Zhao et al., Osteoporosis International, 2018; Wolff, The Law of Bone Remodeling, 1892/1986"},
+{t:"The 48-Hour Recovery Window",b:"Muscle growth does not happen during exercise — it happens during recovery. After resistance training, your muscles need 48-72 hours to fully repair and grow stronger. Training the same muscles daily actually prevents growth.",b2:"Exercise creates micro-tears in muscle fibers. During recovery, satellite cells fuse with damaged fibers, and protein synthesis rebuilds them slightly thicker and stronger — a process called supercompensation. Optimal programming trains each muscle group 2-3 times per week with at least 48 hours between sessions. Sleep, protein intake, and hydration during recovery are as important as the training itself.",ref:"Schoenfeld et al., Sports Medicine, 2016; Damas et al., Sports Medicine, 2015"},
+{t:"Visceral Fat — The Dangerous Kind",b:"Not all fat is equal. Subcutaneous fat (under the skin) is relatively harmless. Visceral fat (around your organs) is metabolically active, releasing inflammatory cytokines that drive insulin resistance, heart disease, and even certain cancers.",b2:"Visceral adipose tissue (VAT) releases TNF-alpha, IL-6, and resistin — pro-inflammatory molecules that impair insulin signaling systemically. A waist circumference above 80 cm for women or 94 cm for men indicates elevated visceral fat risk. The most effective interventions for reducing VAT are: resistance training (superior to aerobic exercise for VAT reduction), adequate protein intake, stress reduction, adequate sleep, and reducing refined carbohydrates.",ref:"Despres, Nature, 2006; Ismail et al., Obesity Reviews, 2012"},
+{t:"Omega-3 and Muscle",b:"Omega-3 fatty acids (EPA and DHA from fish oil) enhance muscle protein synthesis and reduce exercise-induced inflammation. They also improve insulin sensitivity in muscle tissue and support recovery between training sessions.",b2:"A 2011 study in the American Journal of Clinical Nutrition by Smith et al. showed that omega-3 supplementation (4g/day) increased the muscle protein synthesis response to amino acids and insulin by 25-50% in older adults. Omega-3s are incorporated into muscle cell membranes, improving membrane fluidity and receptor signaling. Aim for 2-3 grams of combined EPA+DHA daily from fatty fish or supplementation.",ref:"Smith et al., AJCN, 2011; McGlory et al., Journal of Physiology, 2019"},
+{t:"Hydration and Performance",b:"A 2% loss in body weight from dehydration reduces strength by 10% and endurance by 20%. Water is essential for nutrient transport, temperature regulation, and joint lubrication. Most adults need 30-35 ml per kg of body weight daily, plus replacement for sweat.",b2:"Muscle is approximately 75% water. Dehydration reduces blood volume, impairing nutrient delivery to working muscles and waste removal. It also increases perceived exertion — the same workout feels harder when dehydrated. Electrolytes (sodium, potassium, magnesium) are equally important: they maintain fluid balance and enable muscle contraction. A practical guide: drink until your urine is pale yellow, add a pinch of salt to water during exercise, and consume electrolyte-rich foods daily.",ref:"Sawka et al., Medicine & Science in Sports & Exercise, 2007; Judelson et al., JSCR, 2007"},
+{t:"Compound vs Isolation Exercises",b:"Compound exercises (squats, deadlifts, push-ups, rows) work multiple joints and muscle groups simultaneously, burning more calories and releasing more growth hormone than isolation exercises (bicep curls). For time efficiency and metabolic impact, compound movements win.",b2:"Compound movements recruit 2-4x more muscle mass than isolation exercises, leading to greater metabolic demand and hormonal response. A 2014 study showed that multi-joint exercises produced significantly higher growth hormone and testosterone responses than single-joint exercises. For beginners, mastering 5-6 compound movements (squat, hinge, push, pull, carry, lunge) provides 90% of the benefits of resistance training.",ref:"Paoli et al., JSCR, 2017; Shaner et al., JSCR, 2014"},
+{t:"The Mind-Muscle Connection",b:"Focusing your attention on the muscle you are working — consciously feeling it contract and stretch — increases muscle activation by up to 20%. This is not mysticism. It is neuromuscular science. Your brain controls how many muscle fibers fire.",b2:"A 2016 study in the European Journal of Applied Physiology showed that internal focus (concentrating on the working muscle) increased bicep EMG activity by 22% compared to external focus. This enhanced recruitment translates to greater training stimulus and faster adaptation. Practical tip: slow down each rep, eliminate momentum, and think about squeezing the target muscle through its full range of motion.",ref:"Calatayud et al., EJAP, 2016; Schoenfeld & Contreras, Strength & Conditioning Journal, 2016"},
+{t:"Protein Timing — Does It Matter?",b:"The anabolic window — the idea that you must eat protein within 30 minutes of training — is largely overstated. What matters most is total daily protein intake and distribution across meals. That said, having protein within 2 hours of training supports recovery.",b2:"A 2013 meta-analysis by Schoenfeld et al. in JISSN found that total daily protein intake was a far stronger predictor of muscle gains than precise timing. However, training in a fasted state does benefit from post-workout protein. The practical recommendation: eat a protein-rich meal 1-2 hours before or after training, and focus your energy on hitting your total daily target distributed across 3-4 meals.",ref:"Schoenfeld et al., JISSN, 2013; Aragon & Schoenfeld, JISSN, 2013"},
+{t:"Aging and Anabolic Resistance",b:"After age 40, your muscles become less responsive to protein — a phenomenon called anabolic resistance. You need more protein per meal (35-40g vs 25-30g) and more total daily protein (1.6g/kg) to maintain the same muscle-building response as a younger person.",b2:"Anabolic resistance involves reduced mTOR signaling and decreased sensitivity to leucine in aging muscle. A 2016 study in Nutrients showed that older adults required 0.4g/kg per meal (vs 0.24g/kg for younger adults) to maximally stimulate MPS. This means a 70kg person over 50 needs approximately 28g per meal — roughly a palm-and-a-half of protein. Resistance training partially reverses anabolic resistance by sensitizing muscles to amino acids.",ref:"Moore et al., JISSN, 2015; Wall et al., Nutrition & Metabolism, 2016"},
+{t:"Metabolism Is Not Fixed",b:"Your metabolism is not something you are born with and stuck with forever. It is plastic — shaped by how much muscle you carry, how active you are, what you eat, how you sleep, and how you manage stress. Every habit in this program is a lever that moves your metabolic rate.",b2:"The four components of total daily energy expenditure are: BMR (60-75%), TEF (8-12%), NEAT (15-30%), and exercise activity thermogenesis (EAT, 5-10%). Of these, NEAT is the most variable and the most responsive to behavioral change. Building 2 kg of muscle, walking 10,000 steps daily, eating adequate protein, sleeping 7-9 hours, and managing stress can collectively increase your metabolic rate by 200-400 calories per day — the equivalent of losing 1 kg of fat every 3-4 weeks.",ref:"Pontzer, Burn, 2021; Muller et al., AJCN, 2004"},
+{t:"Your Body Composition Action Plan",b:"Knowledge without action is entertainment. Here is your body composition action plan: eat 1.2-1.6g protein per kg daily across 3-4 meals, resistance train 2-3 times per week, walk 8,000+ steps daily, sleep 7-9 hours, manage stress actively, and track your progress monthly.",b2:"The best program is the one you will actually do consistently. Start with bodyweight exercises if you have never trained before: push-ups, squats, lunges, planks, and rows using a table edge. Progress to dumbbells or resistance bands when ready. Measure progress through: how clothes fit, photos every 4 weeks, strength gains (can you do more reps or lift more weight?), energy levels, and how you feel. The scale is the least useful metric — trust the mirror and the barbell over the number.",ref:"Schoenfeld, Science and Development of Muscle Hypertrophy, 2021; Phillips, AJCN, 2014"},
+{t:"Thirty Days of Body Science — Your New Foundation",b:"Over thirty days you have learned that your body is not a fixed machine but an adaptive system. Muscle drives metabolism, protein fuels repair, sleep builds what training breaks down, and stress undoes what nutrition builds up. Your body composition is the result of daily signals, not genetic destiny.",b2:"The convergence of exercise physiology, endocrinology, and nutritional science points to one conclusion: the human body responds to consistent signals. Dr. Peter Attia frames longevity around four pillars — exercise (especially resistance training), nutrition (especially protein), sleep, and emotional health. Dr. Gabrielle Lyon emphasizes that the problem is not that we are over-fat but that we are under-muscled. The 30 days of body science you have absorbed are not abstract knowledge — they are the operating manual for your metabolism. Choose one body science insight that changed how you see your body, and let it guide your next 90 days.",ref:"Attia, Outlive, 2023; Lyon, Forever Strong, 2023; Huberman Lab, Neural Network Newsletter, 2023"}
+];
+
 /* ================= sound system ================= */
 var _sOn=true,_ac=null;
 function _gac(){
@@ -2671,6 +2751,7 @@ function go(id){
   if(id==='s-r3'){document.getElementById('dayIntention').textContent='"'+INTENTIONS[(dayIndex()-1)%30]+'"';renderFengShui((dayIndex()-1)%30);}
   if(id==='s-r4')renderLesson();
   if(id==='s-habits')renderHabits();
+  if(id==='s-refs')renderRefs();
 }
 function showRitualGuide(){
   var ov=document.createElement('div');
@@ -2745,7 +2826,13 @@ function showDone(quote){
   if(dc===7)m.textContent='One week in — your nervous system is beginning to recognise this pattern. The ease is coming.';
   else if(dc===14)m.textContent='Halfway. The habits forming now are the ones that stay. You are no longer trying — you are becoming.';
   else if(dc===21)m.textContent='21 days deep. Neural pathways are cementing. Your relationship with food has quietly, permanently shifted.';
-  else if(dc>=30)m.textContent='30 evenings of presence. From Lumi to Marmi — this transformation is yours forever.';
+  else if(dc>=30){
+    m.textContent='30 evenings of presence. From Lumi to Marmi — this transformation is yours forever.';
+    document.getElementById('doneRestartBtn').style.display='block';
+    var cn=state.cycle||1;
+    document.getElementById('doneCycleNum').textContent=cn;
+    document.getElementById('doneCycleInfo').style.display='block';
+  }
   else if(di>=25){
     m.textContent='You are '+dc+' days in — your next ritual chapter is almost ready. Finish strong.';
     document.getElementById('doneQuizBtn').style.display='block';
@@ -2771,6 +2858,32 @@ function completeRitual(){
   if(isViewingOtherDay()){showToast('You are browsing Day '+_viewDay+'. Go back to today to mark it complete.');return;}
   markToday();sndComplete();
   showDone('"You did not just eat.<br>You returned home."');
+}
+
+/* ── restart / cycle ── */
+function confirmRestart(){
+  var cn=(state.cycle||1);
+  var msg='Start Cycle '+(cn+1)+'?\n\nYour progress from Cycle '+cn+' will be saved. The 30-day journey resets to Day 1 with fresh lessons, recipes, and science.';
+  if(confirm(msg))restartRitual();
+}
+function restartRitual(){
+  var cn=(state.cycle||1);
+  /* archive current cycle */
+  var archive=load(KEY+'_archive',{});
+  archive['cycle_'+cn]={days:state.days,startDate:state.startDate,ritualMonth:state.ritualMonth,ritualYear:state.ritualYear,pTarget:state.pTarget,completedAt:todayStr()};
+  store(KEY+'_archive',archive);
+  /* reset for new cycle */
+  var today=new Date();
+  state.days=[];
+  state.startDate=today.toISOString().split('T')[0];
+  state.ritualMonth=null;
+  state.ritualYear=null;
+  state.cycle=cn+1;
+  store(KEY,state);
+  _viewDay=null;
+  showToast('Cycle '+(cn+1)+' begins today. Welcome back.');
+  go('s-home');
+  renderHome();
 }
 
 /* ── toast ── */
@@ -2824,6 +2937,8 @@ function renderHome(){
   var di=dayIndex(),dc=doneCount();
   document.getElementById('dayNum').innerHTML=di+'<span>/30</span>';
   document.getElementById('chipStreak').textContent='✦ '+streak()+' streak';
+  var cycleEl=document.getElementById('chipCycle');
+  if(cycleEl){var cn=state.cycle||1;if(cn>1){cycleEl.textContent='Cycle '+cn;cycleEl.style.display='';}else{cycleEl.style.display='none';}}
   var pct=Math.round(dc/30*100);
   document.getElementById('pctLabel').textContent=pct+'%';
   setTimeout(function(){document.getElementById('homeFill').style.width=pct+'%'},150);
@@ -2850,6 +2965,66 @@ function renderHome(){
 }
 function tryQuiz(){ if(dayIndex()>=20)startQuiz(); }
 
+/* ================= references & studies ================= */
+var _refsRendered=false;
+function renderRefs(){
+  if(_refsRendered)return;_refsRendered=true;
+  var rs=document.getElementById('refsResearchers');
+  var bk=document.getElementById('refsBooks');
+  var st=document.getElementById('refsStudies');
+  if(!rs)return;
+  var refStyle='font-size:12px;line-height:1.7;color:rgba(255,255,255,.72);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)';
+  var nameStyle='font-weight:600;color:var(--gold)';
+  var RESEARCHERS=[
+    {n:'Dr. Robert Lustig',d:'Professor of Pediatric Endocrinology, UCSF. Fructose metabolism, metabolic syndrome, and the parallels between sugar and alcohol in liver disease.'},
+    {n:'Dr. Carlos Jaramillo',d:'Functional medicine physician. Metabolic health, gut-brain axis, GLP-1 signaling, and the role of nutrition in chronic disease.'},
+    {n:'Dr. Peter Attia',d:'Longevity medicine. Muscle as the organ of longevity, insulin resistance, exercise physiology, and the four pillars of healthspan.'},
+    {n:'Dr. Gabrielle Lyon',d:'Muscle-centric medicine. Muscle as the metabolic engine, protein requirements, anabolic resistance, and body recomposition.'},
+    {n:'Dr. Mario Alonso Puig',d:'Surgeon and mind-body researcher. Stress physiology, the HPA axis, cortisol effects on gut permeability, and psychoneuroimmunology.'},
+    {n:'Dr. Andrew Huberman',d:'Neuroscientist, Stanford. Circadian biology, dopamine regulation, NEAT, stress management, and the science of habit formation.'},
+    {n:'Dr. Kristin Neff',d:'Self-compassion research. How self-kindness after dietary lapses improves long-term adherence compared to self-criticism.'},
+    {n:'Dr. Stephen Porges',d:'Polyvagal theory. Vagal nerve activation, co-regulation during shared meals, and the nervous system basis of rest-and-digest.'},
+    {n:'Dr. James Levine',d:'NEAT researcher, Mayo Clinic. Non-exercise activity thermogenesis and its role as the largest variable in daily metabolism.'},
+    {n:'Evelyn Tribole & Elyse Resch',d:'Intuitive Eating pioneers. 25 years of clinical data showing that understanding-based eating outperforms rule-based restriction.'}
+  ];
+  rs.innerHTML=RESEARCHERS.map(function(r){return '<div style="'+refStyle+'"><span style="'+nameStyle+'">'+r.n+'</span><br>'+r.d+'</div>'}).join('');
+  var BOOKS=[
+    {t:'Outlive: The Science & Art of Longevity',a:'Peter Attia, MD (2023)',d:'The definitive guide to resistance training, metabolic health, and the four pillars of longevity.'},
+    {t:'Forever Strong',a:'Gabrielle Lyon, DO (2023)',d:'Muscle-centric medicine: why being under-muscled is the real problem, and how protein + resistance training transforms body composition.'},
+    {t:'Fat Chance',a:'Robert Lustig, MD (2012)',d:'The hidden truth about sugar, fructose metabolism, and how the food industry engineered the obesity epidemic.'},
+    {t:'Metabolical',a:'Robert Lustig, MD (2021)',d:'How ultra-processed food is killing us and what to do about it.'},
+    {t:'Atomic Habits',a:'James Clear (2018)',d:'The science of habit formation, identity-based change, and how small actions compound into transformation.'},
+    {t:'The Body Keeps the Score',a:'Bessel van der Kolk, MD (2014)',d:'How stress and trauma live in the body, and the mind-body approaches that heal.'},
+    {t:'Burn',a:'Herman Pontzer, PhD (2021)',d:'Evolutionary perspective on metabolism: why calories-in-calories-out is incomplete and how total energy expenditure really works.'},
+    {t:'Science and Development of Muscle Hypertrophy',a:'Brad Schoenfeld, PhD (2021)',d:'The textbook on resistance training science: progressive overload, recovery, and evidence-based programming.'},
+    {t:'Intuitive Eating',a:'Tribole & Resch (1995, 4th ed. 2020)',d:'The original framework for understanding-based eating that replaces restriction with awareness.'},
+    {t:'El metabolismo',a:'Carlos Jaramillo, MD (2019)',d:'Metabolic health from a functional medicine perspective. GLP-1, insulin, and the gut-brain connection.'}
+  ];
+  bk.innerHTML=BOOKS.map(function(b){return '<div style="'+refStyle+'"><span style="'+nameStyle+'">'+b.t+'</span><br><span style="font-size:11px;color:rgba(255,255,255,.45)">'+b.a+'</span><br>'+b.d+'</div>'}).join('');
+  var STUDIES=[
+    {t:'Saturated fat and cardiovascular disease meta-analysis',j:'Annals of Internal Medicine, 2014',d:'Review of 72 studies found no significant association between saturated fat intake and cardiovascular disease.'},
+    {t:'Fruit juice and type 2 diabetes risk',j:'BMJ, 2013',d:'Whole fruit reduced diabetes risk while fruit juice increased it by up to 21%.'},
+    {t:'Artificial sweeteners alter gut microbiota',j:'Nature, 2014 (Suez et al.)',d:'Artificial sweeteners changed gut bacteria composition and induced glucose intolerance in mice and humans.'},
+    {t:'Maltodextrin and intestinal inflammation',j:'PLOS ONE, 2012 (Nickerson et al.)',d:'Maltodextrin suppressed Lactobacillus and promoted E. coli adhesion in the gut.'},
+    {t:'Protein-first meal sequencing',j:'Diabetes Care, 2015 (Shukla et al.)',d:'Eating protein before carbohydrates reduced postprandial glucose spikes by 29-37%.'},
+    {t:'Slow eating and body composition',j:'BMJ Open, 2018',d:'Slow eating significantly associated with lower BMI and smaller waist circumference in 60,000 participants.'},
+    {t:'Protein distribution and muscle synthesis',j:'Journal of Nutrition, 2014 (Mamerow et al.)',d:'Even protein distribution across meals increased total daily muscle protein synthesis by 25%.'},
+    {t:'High-protein breakfast reduces cravings',j:'University of Missouri, 2015',d:'35g protein breakfast reduced glucose spikes by 36% and decreased evening snacking.'},
+    {t:'Walking and all-cause mortality',j:'JAMA, 2020 (Saint-Maurice et al.)',d:'8,000+ steps per day associated with 51% lower all-cause mortality.'},
+    {t:'Resistance training and metabolic rate',j:'Current Sports Medicine Reports, 2012 (Westcott)',d:'2-3x/week resistance training for 10 weeks increased resting metabolic rate by 7%.'},
+    {t:'Muscle mass and mortality',j:'BJSM, 2022 (Momma et al.)',d:'Higher muscle mass associated with 20-35% lower all-cause mortality regardless of BMI.'},
+    {t:'Sleep restriction and body composition',j:'Annals of Internal Medicine, 2010 (Nedeltcheva et al.)',d:'Sleep-restricted dieters lost 55% more lean mass and 60% less fat than well-rested dieters.'},
+    {t:'Cortisol and visceral fat',j:'Obesity, 2017 (Jackson et al.)',d:'Chronic hair cortisol levels linked to higher BMI, larger waist circumference, and greater visceral fat.'},
+    {t:'Omega-3 and muscle protein synthesis',j:'AJCN, 2011 (Smith et al.)',d:'Omega-3 supplementation increased muscle protein synthesis response by 25-50% in older adults.'},
+    {t:'Self-compassion and dietary behavior',j:'Health Psychology Review, 2018',d:'Autonomous motivation (understanding why) predicted long-term dietary adherence; controlled motivation (rules) predicted dropout.'},
+    {t:'Metabolic adaptation after weight loss',j:'Obesity, 2016 (Fothergill et al.)',d:'Biggest Loser contestants had metabolisms still suppressed 6 years later, burning 500 fewer kcal/day than expected.'},
+    {t:'Bone density and resistance training',j:'JBMR, 2017 (Watson et al.)',d:'High-intensity resistance training improved bone density in postmenopausal women with low bone mass.'},
+    {t:'Creatine position stand',j:'JISSN, 2017 (Kreider et al.)',d:'Most effective nutritional supplement for increasing high-intensity exercise capacity and lean body mass.'},
+    {t:'Seed oil oxidation and toxic aldehydes',j:'Food Chemistry, 2012',d:'Heating sunflower oil to frying temperatures produced high levels of 4-HNE, linked to cardiovascular disease.'},
+    {t:'Nutrition label reading and diet quality',j:'Journal of the Academy of Nutrition and Dietetics, 2020',d:'Consumers who regularly read nutrition labels had significantly lower BMI and better diet quality.'}
+  ];
+  st.innerHTML=STUDIES.map(function(s){return '<div style="'+refStyle+'"><span style="'+nameStyle+'">'+s.t+'</span><br><span style="font-size:10.5px;color:rgba(159,214,235,.6);font-style:italic">'+s.j+'</span><br><span style="font-size:11.5px">'+s.d+'</span></div>'}).join('');
+}
 /* ================= retention features ================= */
 var REFLECT_KEY='marmaroph_reflection';
 var CHECKIN_KEY='marmaroph_checkins_dismissed';
@@ -3551,6 +3726,7 @@ function renderLesson(){
   renderRecipes(idx);
   renderMindset(idx);
   renderMealPrep(idx);
+  renderBodyScience();
   var rl=REMEMBER_LINES[idx%REMEMBER_LINES.length];
   var remEl=document.getElementById('lcRemember');
   if(remEl&&rl){remEl.innerHTML='<p style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:15px;line-height:1.6;color:rgba(255,255,255,.6);text-align:center;margin:0">'+rl.text+'</p>'+(rl.cite?'<p style="font-size:9px;color:rgba(255,255,255,.3);text-align:center;margin-top:6px">'+rl.cite+'</p>':'');}
@@ -3597,6 +3773,30 @@ function renderMindset(idx){
     document.getElementById('oldMindset').textContent=pair.old;
     document.getElementById('newMindset').textContent=pair.nw;
   }else{box.style.display='none';}
+}
+
+/* ================= Body Science render ================= */
+function renderBodyScience(){
+  var idx=(dayIndex()-1)%30;
+  var bs=BODY_SCIENCE[idx];
+  var box=document.getElementById('bodyScienceBox');
+  if(!bs||!box)return;
+  box.style.display='block';
+  var content=document.getElementById('bodyScienceContent');
+  var deep=document.getElementById('bodyScienceDeep');
+  var toggle=document.getElementById('bodyScienceToggle');
+  content.innerHTML='<div style="font-weight:600;font-size:15px;color:var(--gold);margin-bottom:8px">'+bs.t+'</div>'
+    +'<p style="font-size:13px;line-height:1.65;color:rgba(255,255,255,.78);margin:0">'+bs.b+'</p>';
+  deep.innerHTML='<p style="font-size:12.5px;line-height:1.65;color:rgba(255,255,255,.62);margin:0 0 10px">'+bs.b2+'</p>'
+    +'<p style="font-size:10px;color:rgba(255,255,255,.35);margin:0;font-style:italic">'+bs.ref+'</p>';
+  deep.style.display='none';
+  toggle.textContent='Learn more ↓';
+}
+function toggleBodyScience(){
+  var d=document.getElementById('bodyScienceDeep'),t=document.getElementById('bodyScienceToggle');
+  var on=d.style.display==='none';
+  d.style.display=on?'block':'none';
+  t.textContent=on?'Close ↑':'Learn more ↓';
 }
 
 function renderRecipes(idx){
