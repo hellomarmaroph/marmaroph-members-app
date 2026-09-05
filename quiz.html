@@ -2,533 +2,908 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Marmaroph — Wellness Diagnosis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marmaroph — What Does Your Home Know About You?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b1a2e;--gold:#d4b366;--gold-dim:rgba(212,179,102,.15);--serif:'Georgia',serif;--sans:system-ui,-apple-system,sans-serif;
---nourishment:#6ec89b;--purpose:#b08fd4;--regulate:#8bb8c9;--movement:#e8a86d;--connection:#d4849a}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:var(--bg);color:#fff;font-family:var(--sans);overflow:hidden}
-canvas#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
-.app{position:fixed;top:0;left:0;width:100%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:1}
-.container{max-width:440px;margin:0 auto;padding:40px 20px 60px;text-align:center;min-height:100%}
+  :root {
+    --emerald:       #044147;
+    --emerald-mid:   #065a63;
+    --emerald-light: #087a87;
+    --emerald-pale:  #e8f4f5;
+    --blue:          #88c4db;
+    --blue-light:    #b8dcea;
+    --blue-pale:     #eaf5fa;
+    --cream:         #fafafa;
+    --white:         #ffffff;
+    --text-dark:     #044147;
+    --text-mid:      #3a5a60;
+    --text-soft:     #7a9ea5;
+    --border:        rgba(4,65,71,0.10);
+    --border-hover:  rgba(136,196,219,0.5);
+  }
 
-/* Brand header */
-.brand{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px}
-.brand-logo{font-family:var(--serif);font-size:22px;color:var(--gold);margin-bottom:4px}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:auto; }
 
-/* Progress */
-.progress-bar{width:100%;height:3px;background:rgba(255,255,255,.06);border-radius:4px;margin-bottom:32px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#f0d88a);border-radius:4px;transition:width .6s ease}
+  body {
+    font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;
+    background:#fff;
+    color:var(--text-dark);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:contain;
+  }
 
-/* Screen management */
-.screen{display:none}.screen.active{display:block}
+  /* ── PROGRESS ── */
+  #progressWrap {
+    position:sticky; top:0; left:0; right:0; z-index:100;
+    display:none;
+    background:rgba(255,255,255,0.97);
+    border-bottom:1px solid var(--border);
+    padding:10px 24px;
+    margin:-60px -40px 40px;
+  }
+  .progress-inner { max-width:600px; margin:0 auto; display:flex; align-items:center; gap:12px; }
+  .progress-track { flex:1; height:3px; background:var(--emerald-pale); border-radius:2px; overflow:hidden; }
+  .progress-fill  { height:100%; background:var(--blue); border-radius:2px; transition:width 0.5s ease; will-change:width; }
+  .pct-text { font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--blue); min-width:32px; text-align:right; }
 
-/* Intro screen */
-.intro-icon{width:80px;height:80px;margin:0 auto 20px;border-radius:50%;border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:32px;background:rgba(212,179,102,.04)}
-.intro-title{font-family:var(--serif);font-size:28px;color:#fff;margin-bottom:8px;line-height:1.3}
-.intro-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:6px;max-width:340px;margin-left:auto;margin-right:auto}
-.intro-quote{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);margin:24px 0;line-height:1.6}
-.intro-note{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:28px}
+  /* ── CARD WRAPPER ── */
+  .card {
+    max-width:600px;
+    margin:0 auto;
+    padding:60px 40px 80px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+  }
 
-/* Question */
-.q-num{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-.q-pillar-tag{display:inline-flex;align-items:center;gap:5px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
-.q-pillar-tag .dot{width:6px;height:6px;border-radius:50%}
-.q-text{font-family:var(--serif);font-size:18px;color:#fff;margin-bottom:24px;line-height:1.5}
-.q-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.q-opt{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 16px;cursor:pointer;text-align:left;transition:.25s;display:flex;align-items:center;gap:12px}
-.q-opt:hover{background:rgba(255,255,255,.06)}
-.q-opt:active{transform:scale(.98)}
-.q-opt.sel{background:rgba(212,179,102,.08);border-color:var(--gold)}
-.q-opt-circle{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.25s}
-.q-opt.sel .q-opt-circle{border-color:var(--gold);background:var(--gold)}
-.q-opt.sel .q-opt-circle::after{content:'';width:6px;height:6px;border-radius:50%;background:#0b1a2e}
-.q-opt-text{flex:1}
-.q-opt-h{font-size:13px;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:2px}
-.q-opt-d{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5}
-.q-context{font-size:11px;color:rgba(255,255,255,.3);line-height:1.6;margin-top:8px;font-style:italic}
+  .screen { display:none; }
+  .screen.active { animation:fadeUp 0.38s ease both; }
+  .screen.active { display:flex; flex-direction:column; }
+  #s-intro { align-items: center; }
+    from { opacity:0; transform:translateY(18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
 
-/* Buttons */
-.btn{width:100%;padding:16px;border:none;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;transition:.25s;letter-spacing:.5px}
-.btn:active{transform:scale(.97)}
-.btn-gold{background:linear-gradient(135deg,var(--gold),#c9a44e);color:#1a1a2e}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6)}
-.btn-ghost:hover{border-color:rgba(255,255,255,.2)}
-.btn:disabled{opacity:.3;cursor:default;transform:none}
+  /* ── INTRO ── */
+  .intro-eyebrow {
+    font-size:10px; font-weight:600; letter-spacing:0.28em;
+    text-transform:uppercase; color:var(--blue);
+    margin-bottom:20px; text-align:center;
+  }
+  .intro-title {
+    font-size:clamp(26px,5vw,38px);
+    font-weight:200; line-height:1.25;
+    color:var(--emerald); margin-bottom:10px;
+    text-align:center;
+  }
+  .intro-title strong { font-weight:700; display:block; }
+  .intro-title em { font-style:italic; font-weight:300; color:var(--blue); }
+  .intro-rule { width:40px; height:2px; background:var(--blue); margin:24px auto; }
+  .intro-body {
+    font-size:14px; font-weight:300; line-height:1.85;
+    color:var(--text-mid); margin-bottom:32px;
+    text-align:center;
+  }
+  .intro-meta {
+    display:flex; gap:0; margin-bottom:36px;
+    flex-wrap:nowrap; justify-content:center;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:16px 0; width:100%;
+  }
+  .meta-item {
+    display:flex; flex-direction:column; align-items:center;
+    font-size:11px; letter-spacing:0; text-transform:none;
+    padding:0 16px; white-space:nowrap;
+    border-right:1px solid var(--border);
+  }
+  .meta-item:last-child { border-right:none; }
+  .meta-item strong { font-size:13px; font-weight:600; color:var(--emerald); letter-spacing:0; margin-bottom:3px; }
+  .meta-item span   { color:var(--text-soft); font-size:10px; }
 
-/* Transition */
-.fade-enter{animation:fadeUp .5s ease forwards}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  /* ── BUTTONS ── */
+  .btn-start {
+    display:inline-block;
+    touch-action:manipulation; padding:16px 40px;
+    background:var(--emerald); color:#fff;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px; font-weight:600; letter-spacing:0.18em;
+    text-transform:uppercase; border:none; border-radius:2px;
+    cursor:pointer; transition:background 0.2s, transform 0.15s;
+    align-self:center;
+  }
+  .btn-start:hover { background:var(--emerald-mid); transform:translateY(-1px); }
 
-/* ── Results ── */
-.results-title{font-family:var(--serif);font-size:24px;color:#fff;margin-bottom:6px}
-.results-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:28px}
+  .btn-primary {
+    display:block; width:100%; padding:16px 24px;
+    background:var(--emerald); color:#fff;
+    font-family:'Montserrat',sans-serif;
+    font-size:11px; font-weight:600; letter-spacing:0.18em;
+    text-transform:uppercase; border:none; border-radius:2px;
+    cursor:pointer; transition:background 0.2s, transform 0.15s;
+    margin-bottom:12px;
+  }
+  .btn-primary:hover { background:var(--emerald-mid); transform:translateY(-1px); }
 
-/* Pillar wheel */
-.wheel-wrap{position:relative;width:220px;height:220px;margin:0 auto 28px}
-.wheel-svg{width:100%;height:100%}
-.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.wheel-score{font-family:var(--serif);font-size:36px;color:var(--gold)}
-.wheel-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+  .btn-retake {
+    display:block; width:100%; padding:13px 24px;
+    background:transparent; color:var(--text-soft);
+    font-family:'Montserrat',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:0.15em;
+    text-transform:uppercase; border:1px solid var(--border);
+    border-radius:2px; cursor:pointer;
+    transition:border-color 0.2s, color 0.2s;
+  }
+  .btn-retake:hover { border-color:var(--blue); color:var(--emerald); }
 
-/* Pillar bars */
-.pillar-list{margin-bottom:28px}
-.pillar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04)}
-.pillar-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.pillar-info{flex:1;text-align:left}
-.pillar-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:4px}
-.pillar-bar-track{width:100%;height:5px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
-.pillar-bar-fill{height:100%;border-radius:4px;transition:width 1.2s ease}
-.pillar-pct{font-size:11px;color:rgba(255,255,255,.4);min-width:30px;text-align:right}
-.pillar-msg{font-size:10px;color:rgba(255,255,255,.35);text-align:left;margin-top:2px;line-height:1.5}
-.pillar-row.needs-attention{border-color:rgba(212,179,102,.2);background:rgba(212,179,102,.04)}
-.pillar-row.needs-attention .pillar-name::after{content:' — needs attention';font-weight:400;color:var(--gold);font-size:10px}
+  .btn-next {
+    display:inline-block; padding:14px 32px;
+    background:var(--emerald); color:#fff;
+    font-family:'Montserrat',sans-serif;
+    font-size:11px; font-weight:600; letter-spacing:0.15em;
+    text-transform:uppercase; border:none; border-radius:2px;
+    cursor:pointer; opacity:0.25; pointer-events:none;
+    transition:opacity 0.3s, background 0.2s, transform 0.15s;
+    margin-top:28px; align-self:flex-end;
+  }
+  .btn-next.on { opacity:1; pointer-events:all; }
+  .btn-next.on:hover { background:var(--emerald-mid); transform:translateY(-1px); }
 
-/* Recommendation card */
-.rec-card{background:linear-gradient(135deg,rgba(212,179,102,.06),rgba(107,159,212,.04));border:1px solid rgba(212,179,102,.15);border-radius:18px;padding:20px;margin-bottom:12px;text-align:left}
-.rec-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.rec-name{font-family:var(--serif);font-size:20px;color:#fff;margin-bottom:6px}
-.rec-why{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:14px}
-.rec-pillars{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.rec-ptag{font-size:8px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:16px;display:inline-flex;align-items:center;gap:4px}
-.rec-ptag .rdot{width:5px;height:5px;border-radius:50%}
+  .back-btn {
+    background:none; border:none; color:var(--text-soft);
+    font-family:'Montserrat',sans-serif;
+    font-size:10px; font-weight:500; letter-spacing:0.12em;
+    text-transform:uppercase; cursor:pointer;
+    padding:0; margin-bottom:28px; align-self:flex-start;
+    transition:color 0.2s;
+  }
+  .back-btn:hover { color:var(--emerald); }
 
-/* Shooting stars */
-.shooting-star{position:fixed;width:2px;height:2px;background:#fff;border-radius:50%;pointer-events:none;z-index:0;opacity:0}
+  /* ── QUESTION ── */
+  .q-eyebrow {
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:20px;
+  }
+  .q-number { font-size:10px; font-weight:600; letter-spacing:0.2em; color:var(--blue); }
+  .q-line   { flex:1; height:1px; background:var(--border); }
+  .q-tag    { font-size:10px; font-weight:500; letter-spacing:0.15em; color:var(--text-soft); text-transform:uppercase; }
+
+  .question-text {
+    font-size:clamp(18px,3.5vw,24px); font-weight:300;
+    line-height:1.4; color:var(--emerald); margin-bottom:8px;
+  }
+  .question-hint {
+    font-size:12px; font-weight:300; color:var(--text-soft);
+    margin-bottom:28px; line-height:1.6;
+  }
+
+  /* ── OPTIONS ── */
+  .options { display:flex; flex-direction:column; gap:10px; }
+
+  .opt {
+    display:flex; align-items:flex-start; gap:14px;
+    touch-action:manipulation;
+    padding:16px 18px;
+    background:#fff; border:1.5px solid var(--border);
+    border-radius:6px; cursor:pointer; text-align:left;
+    font-family:'Montserrat',sans-serif;
+    transition:border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .opt:hover {
+    border-color:var(--blue);
+    background:var(--blue-pale);
+    transform:translateX(3px);
+  }
+  .opt.selected {
+    border-color:var(--blue);
+    background:var(--blue-pale);
+    box-shadow:0 0 0 3px rgba(136,196,219,0.2);
+  }
+  .opt-dot {
+    width:16px; height:16px; min-width:16px;
+    border-radius:50%; border:1.5px solid var(--border);
+    margin-top:2px; transition:border-color 0.2s, background 0.2s;
+  }
+  .opt.selected .opt-dot { border-color:var(--blue); background:var(--blue); }
+
+  .opt-label {
+    display:block; font-size:13px; font-weight:500;
+    color:var(--emerald); line-height:1.4; margin-bottom:3px;
+  }
+  .opt-desc {
+    display:block; font-size:11px; font-weight:300;
+    color:var(--text-soft); line-height:1.5;
+  }
+
+  /* NEUTRAL option style */
+  .opt.neutral-opt {
+    border-style:dashed;
+    border-color:rgba(4,65,71,0.08);
+    background:rgba(250,250,250,0.6);
+  }
+  .opt.neutral-opt:hover { border-color:var(--blue); background:var(--blue-pale); }
+  .opt.neutral-opt .opt-label { color:var(--text-soft); font-weight:400; font-style:italic; }
+
+  /* IMAGE OPTIONS */
+  .image-options { flex-direction:row; gap:14px; }
+  .image-opt {
+    flex:1; padding:0; border-radius:8px; overflow:hidden;
+    touch-action:manipulation;
+    border:1.5px solid var(--border); background:#fff;
+    cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; text-align:center;
+    transition:border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .image-opt img { width:100%; height:170px; object-fit:cover; display:block; }
+  .image-opt .opt-label {
+    padding:12px 14px; font-size:12px; font-weight:500;
+    color:var(--emerald); line-height:1.5; display:block; margin:0;
+  }
+  .image-opt:hover { border-color:var(--blue); transform:translateY(-2px); box-shadow:0 6px 20px rgba(136,196,219,0.2); }
+  .image-opt.selected { border-color:var(--blue); box-shadow:0 0 0 3px rgba(136,196,219,0.25); }
+  @media(max-width:480px){
+    .image-options { flex-direction:column; }
+    .image-opt img { height:155px; }
+  }
+
+  /* ── EMAIL GATE ── */
+  .email-heading { font-size:22px; font-weight:300; color:var(--emerald); margin-bottom:8px; }
+  .email-heading strong { font-weight:700; }
+  .email-sub { font-size:13px; font-weight:300; color:var(--text-mid); margin-bottom:28px; line-height:1.7; }
+
+  .field-group { margin-bottom:14px; }
+  .field-group label {
+    display:block; font-size:10px; font-weight:600;
+    letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--text-soft); margin-bottom:6px;
+  }
+  .field-group input {
+    width:100%; padding:13px 16px;
+    border:1.5px solid var(--border); border-radius:4px;
+    font-family:'Montserrat',sans-serif; font-size:13px;
+    color:var(--text-dark); background:#fff;
+    transition:border-color 0.2s, box-shadow 0.2s; outline:none;
+  }
+  .field-group input:focus {
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(136,196,219,0.15);
+  }
+
+  .consent-wrap { display:flex; align-items:flex-start; gap:10px; margin:18px 0 24px; }
+  .consent-wrap input[type="checkbox"] { width:16px; height:16px; min-width:16px; margin-top:2px; accent-color:var(--blue); }
+  .consent-wrap span { font-size:11px; font-weight:300; color:var(--text-soft); line-height:1.6; }
+
+  .btn-reveal {
+    width:100%; padding:16px;
+    background:var(--emerald); color:#fff;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px; font-weight:600; letter-spacing:0.18em;
+    text-transform:uppercase; border:none; border-radius:2px;
+    cursor:pointer; opacity:0.25; pointer-events:none;
+    transition:opacity 0.3s, background 0.2s;
+  }
+  .btn-reveal.on { opacity:1; pointer-events:all; }
+  .btn-reveal.on:hover { background:var(--emerald-mid); }
+
+  /* ── RESULT ── */
+  .result-ribbon {
+    display:flex; align-items:center; gap:10px; margin-bottom:20px;
+  }
+  .ribbon-dot { width:8px; height:8px; border-radius:50%; background:var(--blue); }
+  .ribbon-text { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--blue); }
+
+  .result-title {
+    font-size:clamp(30px,6vw,46px); font-weight:200;
+    line-height:1.1; color:var(--emerald); margin-bottom:6px;
+  }
+  .result-title strong { font-weight:700; display:block; }
+  .result-title em { font-style:italic; }
+
+  .result-sub {
+    font-size:10px; font-weight:500; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--text-soft); margin-bottom:20px;
+  }
+  .result-rule { width:40px; height:2px; background:var(--blue); margin-bottom:22px; }
+
+  .result-desc {
+    font-size:14px; font-weight:300; line-height:1.85;
+    color:var(--text-mid); margin-bottom:24px;
+  }
+
+  .pillars { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px; }
+  .pill {
+    padding:6px 14px; border:1px solid var(--blue);
+    border-radius:40px; font-size:10px; font-weight:600;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--emerald);
+  }
+
+  .method-box {
+    background:var(--emerald-pale); border-radius:8px;
+    padding:22px 22px 18px; margin-bottom:28px;
+  }
+  .method-heading {
+    font-size:10px; font-weight:700; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--blue); margin-bottom:16px;
+  }
+  .method-steps { display:flex; flex-direction:column; gap:14px; }
+  .m-step { display:flex; align-items:flex-start; gap:12px; }
+  .m-icon { font-size:18px; min-width:24px; margin-top:1px; }
+  .m-label { display:block; font-size:12px; font-weight:600; color:var(--emerald); margin-bottom:2px; }
+  .m-desc  { display:block; font-size:11px; font-weight:300; color:var(--text-mid); line-height:1.6; }
+
+  .coming-soon-box {
+    background:var(--blue-pale); border:1px solid var(--blue-light);
+    border-radius:8px; padding:20px 22px; margin-bottom:24px;
+  }
+  .coming-soon-box h4 {
+    font-size:11px; font-weight:700; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--emerald); margin-bottom:12px;
+  }
+  .ritual-preview {
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .ritual-tag {
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:400; color:var(--text-mid);
+  }
+  .ritual-tag-dot { width:6px; height:6px; border-radius:50%; background:var(--blue); min-width:6px; }
+
+  .result-cta { display:flex; flex-direction:column; gap:0; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:520px){
+    .card { padding:50px 22px 70px; }
+    .intro-meta { gap:16px; }
+    .image-options { flex-direction:column; }
+  }
 </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
-<div class="app" id="app">
-<div class="container">
 
-<!-- ── INTRO SCREEN ── -->
-<div class="screen active" id="s-intro">
-  <div style="padding-top:20px" class="fade-enter">
-    <div class="brand-logo">Marmaroph</div>
-    <div class="brand">THE HOME SANCTUARY CLUB</div>
-    <div class="intro-icon">&#9827;</div>
-    <div class="intro-title">Your Wellness Diagnosis</div>
-    <div class="intro-sub">
-      15 questions across the five pillars of holistic wellness.
-      At the end, you will see exactly where your life is thriving and where it is calling for attention.
-    </div>
-    <div class="intro-quote">"You cannot pour from an empty cup. First, understand the cup."</div>
-    <div class="intro-note">Takes about 3 minutes. Your answers stay private on your device.</div>
-    <button class="btn btn-gold" onclick="startQuiz()">Begin My Diagnosis</button>
+<div id="progressWrap">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+    <div class="pct-text" id="pctText">0%</div>
   </div>
 </div>
 
-<!-- ── QUESTION SCREEN ── -->
-<div class="screen" id="s-quiz">
-  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-  <div id="questionArea" class="fade-enter"></div>
-</div>
+<div class="card">
 
-<!-- ── RESULTS SCREEN ── -->
-<div class="screen" id="s-results">
-  <div id="resultsArea"></div>
-</div>
+  <!-- ═══ INTRO ═══ -->
+  <div class="screen active" id="s-intro">
+    
+    <div class="intro-eyebrow">Marmaroph · Home Wellness</div>
+    <h1 class="intro-title">
+      <em>What does your home</em>
+      <strong>know about you<br>that you don't?</strong>
+    </h1>
+    <div class="intro-rule"></div>
+    <p class="intro-body">
+      The spaces we live in quietly shape how we feel, eat, sleep, love and move — every single day. This quiz looks at your daily patterns, your home habits and what your body is telling you, to reveal the one ritual your life is quietly asking for right now.<br><br>
+      <strong>No wrong answers. No pressure.</strong> Some of you might already be thriving — and that's worth knowing too.
+    </p>
+    <div class="intro-meta">
+      <div class="meta-item"><strong>15</strong><span>Questions</span></div>
+      <div class="meta-item"><strong>4 Min</strong><span>To Complete</span></div>
+      <div class="meta-item"><strong>Free</strong><span>Always</span></div>
+      <div class="meta-item"><strong>1 Ritual</strong><span>Matched To Start</span></div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Discover My Ritual →</button>
+  </div>
 
-</div>
-</div>
+  <!-- ═══ Q1 ═══ -->
+  <div class="screen" id="s-q1">
+    <button class="back-btn" onclick="goBack(1)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">01 / 15</span><div class="q-line"></div><span class="q-tag">Morning</span></div>
+    <h2 class="question-text">What does your morning actually look like — not the one you wish you had?</h2>
+    <p class="question-hint">Be honest with yourself. This is where your day is really being built.</p>
+    <div class="options" id="o-q1">
+      <button class="opt" onclick="pick('q1','A',this)"><span class="opt-dot"></span><span><span class="opt-label">I reach for my phone before I'm fully awake</span><span class="opt-desc">The day begins in reaction mode before I've had a single moment to myself</span></span></button>
+      <button class="opt" onclick="pick('q1','M',this)"><span class="opt-dot"></span><span><span class="opt-label">I skip breakfast or eat it standing, rushing, barely tasting it</span><span class="opt-desc">Food feels like a box to tick, not something I actually enjoy</span></span></button>
+      <button class="opt" onclick="pick('q1','B',this)"><span class="opt-dot"></span><span><span class="opt-label">I usually wake up with my partner but we're already in separate worlds</span><span class="opt-desc">We're in the same room but not really present with each other</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q1','N',this)"><span class="opt-dot"></span><span><span class="opt-label">None of these — my mornings feel pretty intentional already</span><span class="opt-desc">I have a rhythm that works for me</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q1" onclick="goNext(2)">Next →</button>
+  </div>
+
+  <!-- ═══ Q2 ═══ -->
+  <div class="screen" id="s-q2">
+    <button class="back-btn" onclick="goBack(2)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">02 / 15</span><div class="q-line"></div><span class="q-tag">Energy</span></div>
+    <h2 class="question-text">How would you honestly describe your energy levels most days?</h2>
+    <p class="question-hint">Not on your best day — on a regular Tuesday.</p>
+    <div class="options" id="o-q2">
+      <button class="opt" onclick="pick('q2','A',this)"><span class="opt-dot"></span><span><span class="opt-label">Borrowed — I run on caffeine and willpower and crash by afternoon</span><span class="opt-desc">There's no real fuel underneath, just momentum</span></span></button>
+      <button class="opt" onclick="pick('q2','M',this)"><span class="opt-dot"></span><span><span class="opt-label">Heavy and foggy, especially in the first half of the day</span><span class="opt-desc">I wonder if what I'm eating has something to do with it</span></span></button>
+      <button class="opt" onclick="pick('q2','B',this)"><span class="opt-dot"></span><span><span class="opt-label">Drained from giving — I give energy all day and have nothing left for myself or my relationship</span><span class="opt-desc">By evening I'm too tired to truly connect with anyone</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q2','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Actually pretty good — I feel mostly energised and balanced</span><span class="opt-desc">This one doesn't resonate with me right now</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q2" onclick="goNext(3)">Next →</button>
+  </div>
+
+  <!-- ═══ Q3 ═══ -->
+  <div class="screen" id="s-q3">
+    <button class="back-btn" onclick="goBack(3)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">03 / 15</span><div class="q-line"></div><span class="q-tag">Your Home</span></div>
+    <h2 class="question-text">When you walk into your home at the end of the day, what do you feel?</h2>
+    <p class="question-hint">Your home sends your nervous system a message the second you walk in. What's it saying?</p>
+    <div class="options" id="o-q3">
+      <button class="opt" onclick="pick('q3','A',this)"><span class="opt-dot"></span><span><span class="opt-label">Slightly overwhelmed — it feels like another thing I need to manage</span><span class="opt-desc">The space adds to my stress rather than relieving it</span></span></button>
+      <button class="opt" onclick="pick('q3','M',this)"><span class="opt-dot"></span><span><span class="opt-label">I go straight to the kitchen out of habit, not hunger</span><span class="opt-desc">Eating at home often feels mindless, automatic</span></span></button>
+      <button class="opt" onclick="pick('q3','B',this)"><span class="opt-dot"></span><span><span class="opt-label">Like we share a space but not a moment — we're both home but disconnected</span><span class="opt-desc">We exist in parallel rather than together</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q3','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Relief and calm — my home genuinely feels like a sanctuary</span><span class="opt-desc">I've worked on this and it shows</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q3" onclick="goNext(4)">Next →</button>
+  </div>
+
+  <!-- ═══ Q4 ═══ -->
+  <div class="screen" id="s-q4">
+    <button class="back-btn" onclick="goBack(4)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">04 / 15</span><div class="q-line"></div><span class="q-tag">Body</span></div>
+    <h2 class="question-text">How does your body feel in the morning when you first wake up?</h2>
+    <p class="question-hint">Your body is communicating something. What is it?</p>
+    <div class="options" id="o-q4">
+      <button class="opt" onclick="pick('q4','A',this)"><span class="opt-dot"></span><span><span class="opt-label">Heavy, stiff, or slow — it takes time before I feel present in it</span><span class="opt-desc">Like I need a warmup just to feel like myself</span></span></button>
+      <button class="opt" onclick="pick('q4','M',this)"><span class="opt-dot"></span><span><span class="opt-label">Bloated, uncomfortable, or still tired from yesterday's eating</span><span class="opt-desc">My body is giving me feedback I tend to ignore</span></span></button>
+      <button class="opt" onclick="pick('q4','B',this)"><span class="opt-dot"></span><span><span class="opt-label">Fine physically, but emotionally flat or a little empty</span><span class="opt-desc">The body is okay but something deeper feels off</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q4','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Rested, present, ready — I feel good in my body most mornings</span><span class="opt-desc">I wake up feeling like myself</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q4" onclick="goNext(5)">Next →</button>
+  </div>
+
+  <!-- ═══ Q5 ═══ -->
+  <div class="screen" id="s-q5">
+    <button class="back-btn" onclick="goBack(5)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">05 / 15</span><div class="q-line"></div><span class="q-tag">Food</span></div>
+    <h2 class="question-text">What is your honest relationship with food right now?</h2>
+    <p class="question-hint">No judgment. This is just data about where you are.</p>
+    <div class="options" id="o-q5">
+      <button class="opt" onclick="pick('q5','A',this)"><span class="opt-dot"></span><span><span class="opt-label">I eat to fuel and function, not really to enjoy or savour</span><span class="opt-desc">Food is practical, not a moment of care</span></span></button>
+      <button class="opt" onclick="pick('q5','M',this)"><span class="opt-dot"></span><span><span class="opt-label">Complicated — there's guilt, mindless eating, or a cycle I want to break</span><span class="opt-desc">I want to rebuild trust with my body through food</span></span></button>
+      <button class="opt" onclick="pick('q5','B',this)"><span class="opt-dot"></span><span><span class="opt-label">Food at home is rushed or eaten separately — we don't have shared meals anymore</span><span class="opt-desc">Eating together used to feel like connection; now it barely happens</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q5','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Pretty balanced — I eat mindfully and enjoy food without much guilt</span><span class="opt-desc">This area of my life feels good</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q5" onclick="goNext(6)">Next →</button>
+  </div>
+
+  <!-- ═══ Q6 ═══ -->
+  <div class="screen" id="s-q6">
+    <button class="back-btn" onclick="goBack(6)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">06 / 15</span><div class="q-line"></div><span class="q-tag">Rituals</span></div>
+    <h2 class="question-text">Do you have any intentional daily rituals right now?</h2>
+    <p class="question-hint">A ritual is any moment you've deliberately created for yourself — big or small.</p>
+    <div class="options" id="o-q6">
+      <button class="opt" onclick="pick('q6','A',this)"><span class="opt-dot"></span><span><span class="opt-label">I want one but can't seem to create the habit — especially in the mornings</span><span class="opt-desc">The intention is there but the structure isn't</span></span></button>
+      <button class="opt" onclick="pick('q6','M',this)"><span class="opt-dot"></span><span><span class="opt-label">I want to slow down around meals but always end up rushing</span><span class="opt-desc">I know meals could be more intentional, I just don't know how</span></span></button>
+      <button class="opt" onclick="pick('q6','B',this)"><span class="opt-dot"></span><span><span class="opt-label">I'd love to create a shared ritual with my partner but we never prioritise it</span><span class="opt-desc">We keep saying "we should do that" and never do</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q6','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Yes — I have rituals I do consistently and they genuinely help me</span><span class="opt-desc">This is already a strength of mine</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q6" onclick="goNext(7)">Next →</button>
+  </div>
+
+  <!-- ═══ Q7 ═══ -->
+  <div class="screen" id="s-q7">
+    <button class="back-btn" onclick="goBack(7)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">07 / 15</span><div class="q-line"></div><span class="q-tag">Mind</span></div>
+    <h2 class="question-text">When do you feel most out of balance during the day?</h2>
+    <p class="question-hint">Patterns reveal where the real gap is.</p>
+    <div class="options" id="o-q7">
+      <button class="opt" onclick="pick('q7','A',this)"><span class="opt-dot"></span><span><span class="opt-label">First thing in the morning — before I've had a chance to ground myself</span><span class="opt-desc">The day hijacks me before I've chosen how I want to feel</span></span></button>
+      <button class="opt" onclick="pick('q7','M',this)"><span class="opt-dot"></span><span><span class="opt-label">Around mealtimes — I eat on autopilot and feel worse afterward</span><span class="opt-desc">Food becomes stress relief, not nourishment</span></span></button>
+      <button class="opt" onclick="pick('q7','B',this)"><span class="opt-dot"></span><span><span class="opt-label">In the evenings — I'm physically home but emotionally somewhere else</span><span class="opt-desc">I can't seem to fully arrive and be present with my partner</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q7','N',this)"><span class="opt-dot"></span><span><span class="opt-label">I feel mostly balanced throughout my day — no real pattern of imbalance</span><span class="opt-desc">I manage my energy and stress fairly well</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q7" onclick="goNext(8)">Next →</button>
+  </div>
+
+  <!-- ═══ Q8 ═══ -->
+  <div class="screen" id="s-q8">
+    <button class="back-btn" onclick="goBack(8)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">08 / 15</span><div class="q-line"></div><span class="q-tag">Space</span></div>
+    <h2 class="question-text">If you could change one thing about your home environment, what would it be?</h2>
+    <p class="question-hint">Your answer might surprise you.</p>
+    <div class="options" id="o-q8">
+      <button class="opt" onclick="pick('q8','A',this)"><span class="opt-dot"></span><span><span class="opt-label">A dedicated calm corner just for me — to start the day without noise or interruption</span><span class="opt-desc">A space that belongs to me before the world needs me</span></span></button>
+      <button class="opt" onclick="pick('q8','M',this)"><span class="opt-dot"></span><span><span class="opt-label">A beautiful, peaceful dining area that makes mealtimes feel intentional and restorative</span><span class="opt-desc">Eating deserves a space that honours it</span></span></button>
+      <button class="opt" onclick="pick('q8','B',this)"><span class="opt-dot"></span><span><span class="opt-label">A cosy corner that's just for us — where my partner and I can actually slow down together</span><span class="opt-desc">A space that invites presence, not screens</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q8','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Honestly, my home already feels the way I want it to feel</span><span class="opt-desc">I've created a space that supports me</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q8" onclick="goNext(9)">Next →</button>
+  </div>
+
+  <!-- ═══ Q9 ═══ -->
+  <div class="screen" id="s-q9">
+    <button class="back-btn" onclick="goBack(9)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">09 / 15</span><div class="q-line"></div><span class="q-tag">Self-Care</span></div>
+    <h2 class="question-text">How do you typically treat yourself when you're feeling stressed or depleted?</h2>
+    <p class="question-hint">No judgment — this is just useful information about your current patterns.</p>
+    <div class="options" id="o-q9">
+      <button class="opt" onclick="pick('q9','A',this)"><span class="opt-dot"></span><span><span class="opt-label">I push through — rest feels like something I haven't earned yet</span><span class="opt-desc">Slowing down feels almost impossible even when I'm exhausted</span></span></button>
+      <button class="opt" onclick="pick('q9','M',this)"><span class="opt-dot"></span><span><span class="opt-label">I eat — and often regret it, or feel guilty about it afterward</span><span class="opt-desc">Food is my comfort and my conflict</span></span></button>
+      <button class="opt" onclick="pick('q9','B',this)"><span class="opt-dot"></span><span><span class="opt-label">I withdraw — I isolate instead of reaching out to my partner</span><span class="opt-desc">Connection would help but I can't seem to initiate it</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q9','N',this)"><span class="opt-dot"></span><span><span class="opt-label">I have healthy go-to's — I know how to care for myself when I need it</span><span class="opt-desc">I've built these tools and they actually work for me</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q9" onclick="goNext(10)">Next →</button>
+  </div>
+
+  <!-- ═══ Q10 ═══ -->
+  <div class="screen" id="s-q10">
+    <button class="back-btn" onclick="goBack(10)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">10 / 15</span><div class="q-line"></div><span class="q-tag">Awareness</span></div>
+    <h2 class="question-text">Which of these thoughts sounds most like your inner monologue lately?</h2>
+    <p class="question-hint">Pick the one that you've actually had — even if you wouldn't say it out loud.</p>
+    <div class="options" id="o-q10">
+      <button class="opt" onclick="pick('q10','A',this)"><span class="opt-dot"></span><span><span class="opt-label">"I want to start my days differently but I can never seem to make it happen"</span><span class="opt-desc">The desire for a better morning routine is real and recurring</span></span></button>
+      <button class="opt" onclick="pick('q10','M',this)"><span class="opt-dot"></span><span><span class="opt-label">"I wish I had a better relationship with food — not a diet, just peace"</span><span class="opt-desc">The goal is balance and trust, not restriction</span></span></button>
+      <button class="opt" onclick="pick('q10','B',this)"><span class="opt-dot"></span><span><span class="opt-label">"We used to be more connected — I miss feeling close to my partner"</span><span class="opt-desc">The distance has crept in and I want to close it</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q10','N',this)"><span class="opt-dot"></span><span><span class="opt-label">"I actually feel pretty good about where I am right now"</span><span class="opt-desc">None of these feel like my current reality</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q10" onclick="goNext(11)">Next →</button>
+  </div>
+
+  <!-- ═══ Q11 ═══ -->
+  <div class="screen" id="s-q11">
+    <button class="back-btn" onclick="goBack(11)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">11 / 15</span><div class="q-line"></div><span class="q-tag">Nervous System</span></div>
+    <h2 class="question-text">How often do you feel genuinely calm — not just distracted, actually calm?</h2>
+    <p class="question-hint">There's a difference between busy-calm and true rest. Which do you know?</p>
+    <div class="options" id="o-q11">
+      <button class="opt" onclick="pick('q11','A',this)"><span class="opt-dot"></span><span><span class="opt-label">Rarely — I'm always half-on, half-preparing for the next thing</span><span class="opt-desc">True stillness feels almost foreign to me now</span></span></button>
+      <button class="opt" onclick="pick('q11','M',this)"><span class="opt-dot"></span><span><span class="opt-label">After I eat sometimes — but only if it was a "good" eating day</span><span class="opt-desc">My calm is conditional on how I feel about my food choices</span></span></button>
+      <button class="opt" onclick="pick('q11','B',this)"><span class="opt-dot"></span><span><span class="opt-label">When I'm with my partner and we're actually present — but that's rare lately</span><span class="opt-desc">Connection used to be easy; now it takes effort</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q11','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Often — I've built a life where calm is accessible to me</span><span class="opt-desc">I know how to regulate and I do it regularly</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q11" onclick="goNext(12)">Next →</button>
+  </div>
+
+  <!-- ═══ Q12 ═══ -->
+  <div class="screen" id="s-q12">
+    <button class="back-btn" onclick="goBack(12)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">12 / 15</span><div class="q-line"></div><span class="q-tag">The Object</span></div>
+    <h2 class="question-text">Which object feels most like something your home is missing right now?</h2>
+    <p class="question-hint">Let your gut answer this one — not your head.</p>
+    <div class="options image-options" id="o-q12">
+      <button class="opt image-opt" onclick="pick('q12','A',this)">
+        <img src="https://static.wixstatic.com/media/00228e_fe7977f27fa14937b578382df7a4bf9e~mv2.jpg/v1/fill/w_450,h_450,q_90,enc_avif,quality_auto/00228e_fe7977f27fa14937b578382df7a4bf9e~mv2.jpg" alt="Yoga Mat" loading="lazy" width="400" height="170" />
+        <span class="opt-label">A yoga mat — a daily anchor to move, breathe and begin</span>
+      </button>
+      <button class="opt image-opt" onclick="pick('q12','M',this)">
+        <img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg/v1/fill/w_450,h_450,q_90,enc_avif,quality_auto/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Healthy Plate" loading="lazy" width="400" height="170" />
+        <span class="opt-label">A beautiful plate — a reminder to nourish with intention</span>
+      </button>
+    </div>
+    <button class="btn-next" id="nx-q12" onclick="goNext(13)">Next →</button>
+  </div>
+
+  <!-- ═══ Q13 ═══ -->
+  <div class="screen" id="s-q13">
+    <button class="back-btn" onclick="goBack(13)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">13 / 15</span><div class="q-line"></div><span class="q-tag">Vision</span></div>
+    <h2 class="question-text">Which scene feels like the version of your life you're quietly reaching for?</h2>
+    <p class="question-hint">Imagine it fully. Which one gives you a little pull in the chest?</p>
+    <div class="options" id="o-q13">
+      <button class="opt" onclick="pick('q13','A',this)"><span class="opt-dot"></span><span><span class="opt-label">Waking up before the noise, moving slowly in a calm space, starting the day as mine before anyone else's</span><span class="opt-desc">Mornings that feel like a gift you gave yourself</span></span></button>
+      <button class="opt" onclick="pick('q13','M',this)"><span class="opt-dot"></span><span><span class="opt-label">Sitting at a beautiful table, eating slowly, tasting every bite, feeling completely at peace with food</span><span class="opt-desc">Meals that feel like genuine acts of self-care</span></span></button>
+      <button class="opt" onclick="pick('q13','B',this)"><span class="opt-dot"></span><span><span class="opt-label">An evening where we actually talk, laugh, put the phones away and feel close again</span><span class="opt-desc">Intimacy that doesn't require effort to find</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q13','N',this)"><span class="opt-dot"></span><span><span class="opt-label">Honestly — this already sounds like my life and I feel grateful for it</span><span class="opt-desc">I'm in a good place and I know it</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q13" onclick="goNext(14)">Next →</button>
+  </div>
+
+  <!-- ═══ Q14 ═══ -->
+  <div class="screen" id="s-q14">
+    <button class="back-btn" onclick="goBack(14)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">14 / 15</span><div class="q-line"></div><span class="q-tag">Readiness</span></div>
+    <h2 class="question-text">If someone handed you a ritual to follow for the next 30 days, which one would you actually do?</h2>
+    <p class="question-hint">Not which you think you should do — which one you'd genuinely commit to.</p>
+    <div class="options" id="o-q14">
+      <button class="opt" onclick="pick('q14','A',this)"><span class="opt-dot"></span><span><span class="opt-label">A morning ritual — breathwork, movement, intention-setting before the day starts</span><span class="opt-desc">10–20 minutes every morning just for me</span></span></button>
+      <button class="opt" onclick="pick('q14','M',this)"><span class="opt-dot"></span><span><span class="opt-label">A mindful eating ritual — slow down, set the table, breathe before meals, no screens</span><span class="opt-desc">Building a new relationship with food one meal at a time</span></span></button>
+      <button class="opt" onclick="pick('q14','B',this)"><span class="opt-dot"></span><span><span class="opt-label">A couple's evening ritual — a protected window for just us, to reconnect and be present</span><span class="opt-desc">Something simple we could do together every night</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q14','N',this)"><span class="opt-dot"></span><span><span class="opt-label">I already have a ritual practice and I'm more interested in deepening than starting</span><span class="opt-desc">I'm not looking to add, I'm looking to go further</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q14" onclick="goNext(15)">Next →</button>
+  </div>
+
+  <!-- ═══ Q15 ═══ -->
+  <div class="screen" id="s-q15">
+    <button class="back-btn" onclick="goBack(15)">← Back</button>
+    <div class="q-eyebrow"><span class="q-number">15 / 15</span><div class="q-line"></div><span class="q-tag">The Feeling</span></div>
+    <h2 class="question-text">What feeling do you most want to experience more of at home?</h2>
+    <p class="question-hint">This is the one that matters most. Take a breath before you answer.</p>
+    <div class="options" id="o-q15">
+      <button class="opt" onclick="pick('q15','A',this)"><span class="opt-dot"></span><span><span class="opt-label">Clarity and energy — waking up feeling ready, grounded, like myself</span><span class="opt-desc">The feeling that the day ahead is mine</span></span></button>
+      <button class="opt" onclick="pick('q15','M',this)"><span class="opt-dot"></span><span><span class="opt-label">Peace with my body — eating without guilt, nourishing without rules</span><span class="opt-desc">Freedom from the food noise in my head</span></span></button>
+      <button class="opt" onclick="pick('q15','B',this)"><span class="opt-dot"></span><span><span class="opt-label">Closeness — the feeling of truly being known and present with my partner</span><span class="opt-desc">Intimacy that doesn't have to be earned</span></span></button>
+      <button class="opt neutral-opt" onclick="pick('q15','N',this)"><span class="opt-dot"></span><span><span class="opt-label">I already feel this — my home and my life feel genuinely aligned right now</span><span class="opt-desc">I'm grateful and I know it</span></span></button>
+    </div>
+    <button class="btn-next" id="nx-q15" onclick="goNext('email')">See My Result →</button>
+  </div>
+
+  <!-- ═══ EMAIL GATE ═══ -->
+  <div class="screen" id="s-email">
+    <button class="back-btn" onclick="goBack('email')">← Back</button>
+    <h2 class="email-heading">Your ritual is <strong>ready.</strong></h2>
+    <p class="email-sub">Enter your name and email to reveal your personalised result — and receive it directly in your inbox so you can come back to it anytime.</p>
+    <div class="field-group">
+      <label for="fName">First Name</label>
+      <input type="text" id="fName" placeholder="Your first name" oninput="checkForm()" autocomplete="given-name">
+    </div>
+    <div class="field-group">
+      <label for="fEmail">Email Address</label>
+      <input type="email" id="fEmail" placeholder="your@email.com" oninput="checkForm()" autocomplete="email">
+    </div>
+    <div class="consent-wrap">
+      <input type="checkbox" id="fConsent" onchange="checkForm()">
+      <span>I agree to receive my ritual result and wellness insights from Marmaroph. No spam, ever. Unsubscribe at any time.</span>
+    </div>
+    <button class="btn-reveal" id="btnReveal" onclick="reveal()">Reveal My Ritual →</button>
+  </div>
+
+  <!-- ═══ RESULT A — ENERGIZED MORNINGS ═══ -->
+  <div class="screen" id="s-result-A">
+    <div class="result-ribbon"><div class="ribbon-dot"></div><span class="ribbon-text">Your Ritual Match</span></div>
+    <h2 class="result-title"><em>Energized</em><strong>Mornings</strong></h2>
+    <div class="result-sub">Morning Ritual &nbsp;·&nbsp; Nervous System &nbsp;·&nbsp; Intention Setting</div>
+    <div class="result-rule"></div>
+    <p class="result-desc">Your answers paint a clear picture: your days are starting before you're ready for them. The world pulls you into reaction mode before you've had a single moment to arrive in yourself. Your energy is borrowed — built on caffeine and willpower rather than genuine restoration. The Energized Mornings ritual was designed exactly for this. It creates a protected, beautiful window at the start of every day: a space to ground your nervous system, move your body with intention, and decide how you want to feel before anyone else gets to decide for you. This is not about discipline. It's about design.</p>
+    <div class="pillars">
+      <span class="pill">Regulate</span>
+      <span class="pill">Move</span>
+      <span class="pill">Expand</span>
+    </div>
+    <div class="method-box">
+      <div class="method-heading">The Marmaroph Method™ — How Your Ritual Works</div>
+      <div class="method-steps">
+        <div class="m-step"><span class="m-icon">🪴</span><div><span class="m-label">Space</span><span class="m-desc">Design your sunrise corner — a calm zone your nervous system learns to trust every morning.</span></div></div>
+        <div class="m-step"><span class="m-icon">🌬</span><div><span class="m-label">Ground</span><span class="m-desc">A short breathwork sequence to shift your body out of survival mode and into presence.</span></div></div>
+        <div class="m-step"><span class="m-icon">🧘</span><div><span class="m-label">Symbolism</span><span class="m-desc">Your personalised yoga mat — customised with your name or mantra — becomes a daily anchor. Every time you step on it, you remind yourself: this time is mine.</span></div></div>
+        <div class="m-step"><span class="m-icon">✨</span><div><span class="m-label">Sense + Seed</span><span class="m-desc">Guided movement, meditation audio, and a morning intention to plant the energy you want to carry through the day.</span></div></div>
+      </div>
+    </div>
+    <div class="result-cta">
+      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessthemes/essential-mornings','_blank')">Start My Energized Mornings Ritual →</button>
+      <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
+    </div>
+  </div>
+
+  <!-- ═══ RESULT M — MINDFUL EATING ═══ -->
+  <div class="screen" id="s-result-M">
+    <div class="result-ribbon"><div class="ribbon-dot"></div><span class="ribbon-text">Your Ritual Match</span></div>
+    <h2 class="result-title"><em>Mindful</em><strong>Eating</strong></h2>
+    <div class="result-sub">Nourishment Ritual &nbsp;·&nbsp; Body Trust &nbsp;·&nbsp; Sacred Presence</div>
+    <div class="result-rule"></div>
+    <p class="result-desc">Your answers reveal a relationship with food that has become something to manage rather than something to enjoy. Whether it's guilt, rushing, eating on autopilot or simply never sitting down for a real meal — your body is asking for something you haven't given it yet: presence. The Mindful Eating ritual doesn't give you another diet. It gives you a beautiful eating sanctuary, a ritual of breathing before you begin, and a Healthy Plate custom-made with your name — a daily, tangible reminder that nourishing yourself is an act of self-love, not a reward for being good enough. Every bite becomes a healing conversation with your body.</p>
+    <div class="pillars">
+      <span class="pill">Nourish</span>
+      <span class="pill">Regulate</span>
+      <span class="pill">Connect</span>
+    </div>
+    <div class="method-box">
+      <div class="method-heading">The Marmaroph Method™ — How Your Ritual Works</div>
+      <div class="method-steps">
+        <div class="m-step"><span class="m-icon">🕯</span><div><span class="m-label">Space</span><span class="m-desc">Design a calm, intentional eating sanctuary using interior design and Feng Shui principles — your dining space becomes a place of restoration, not rush.</span></div></div>
+        <div class="m-step"><span class="m-icon">🌬</span><div><span class="m-label">Ground</span><span class="m-desc">Three breaths before every meal to activate rest-and-digest mode. Eating in a stressed body is not nourishment — it's just consumption.</span></div></div>
+        <div class="m-step"><span class="m-icon">🍽</span><div><span class="m-label">Symbolism</span><span class="m-desc">Your custom Healthy Plate — made from Premium Bone China and personalised with your name or mantra — visually guides balanced eating without counting a single calorie.</span></div></div>
+        <div class="m-step"><span class="m-icon">💚</span><div><span class="m-label">Sense + Seed</span><span class="m-desc">Mindful eating meditation, curated playlists, a 30-day challenge and reflection prompts to rewire the guilt cycle — meal by meal.</span></div></div>
+      </div>
+    </div>
+    <div class="result-cta">
+      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessthemes/mindful-eating-home-wellness-ritual','_blank')">Start My Mindful Eating Ritual →</button>
+      <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
+    </div>
+  </div>
+
+  <!-- ═══ RESULT B — SACRED CONNECTION (coming soon) ═══ -->
+  <div class="screen" id="s-result-B">
+    <div class="result-ribbon"><div class="ribbon-dot"></div><span class="ribbon-text">Your Ritual Match</span></div>
+    <h2 class="result-title"><em>Sacred</em><strong>Connection</strong></h2>
+    <div class="result-sub">Couple's Ritual &nbsp;·&nbsp; Emotional Intimacy &nbsp;·&nbsp; Shared Presence</div>
+    <div class="result-rule"></div>
+    <p class="result-desc">Your answers reveal something quietly important: you and your partner are sharing a home but not always sharing a moment. The daily busyness has slowly created distance, and you've noticed. You miss the closeness. The Sacred Connection ritual is built to give couples a protected evening space — free of devices, full of presence — to rediscover each other through shared rituals, meaningful conversation and a home environment designed to invite intimacy. Your home can be the bridge back to each other.</p>
+    <div class="pillars">
+      <span class="pill">Connect</span>
+      <span class="pill">Regulate</span>
+      <span class="pill">Integrate</span>
+    </div>
+    <div class="coming-soon-box">
+      <h4>🌙 This ritual is launching very soon</h4>
+      <p style="font-size:13px;font-weight:300;color:var(--text-mid);line-height:1.7;margin-bottom:16px;">
+        The Sacred Connection ritual — with custom personalised velvet throw pillows, a HeartSync couples game, guided reconnection audio and an evening sanctuary design guide — is almost ready. We'll send it directly to your inbox the moment it launches.
+      </p>
+      <p style="font-size:12px;font-weight:500;color:var(--emerald);">You're already on the list. ✓</p>
+    </div>
+    <div class="result-cta">
+      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessthemes/sacred-connection-wellness-theme','_blank')">Preview Sacred Connection →</button>
+      <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
+    </div>
+  </div>
+
+  <!-- ═══ RESULT N — ALREADY THRIVING ═══ -->
+  <div class="screen" id="s-result-N">
+    <div class="result-ribbon"><div class="ribbon-dot"></div><span class="ribbon-text">Your Result</span></div>
+    <h2 class="result-title"><em>You're Already</em><strong>Thriving</strong></h2>
+    <div class="result-sub">Awareness &nbsp;·&nbsp; Integration &nbsp;·&nbsp; Expansion</div>
+    <div class="result-rule"></div>
+    <p class="result-desc">Your answers show something genuinely rare: you are already living with intention. Your home supports you. Your body feels heard. Your daily patterns are working. This is not a small thing — most people are not here yet. You don't need a ritual to fix something. But you might be exactly the person who would appreciate one to go deeper. Marmaroph's rituals are not only for those who are struggling — they're for women who already understand that the environment shapes the life, and want to keep building consciously.</p>
+    <div class="pillars">
+      <span class="pill">Integrate</span>
+      <span class="pill">Expand</span>
+      <span class="pill">Purpose</span>
+    </div>
+    <div class="coming-soon-box">
+      <h4>✨ More rituals are coming — and they're for women like you</h4>
+      <div class="ritual-preview">
+        <div class="ritual-tag"><div class="ritual-tag-dot"></div><span><strong>Sacred Connection</strong> — Rebuild emotional intimacy with your partner through a shared evening ritual</span></div>
+        <div class="ritual-tag"><div class="ritual-tag-dot"></div><span><strong>I'm Enough</strong> — A ritual to reconnect with your self-worth and the version of you becoming</span></div>
+        <div class="ritual-tag"><div class="ritual-tag-dot"></div><span><strong>Sanctuary Protection</strong> — Clear the energy of your home and create a space that only lets goodness in</span></div>
+      </div>
+      <p style="font-size:12px;font-weight:300;color:var(--text-soft);margin-top:14px;line-height:1.6;">We'll let you know the moment any of these land. You're already on the list.</p>
+    </div>
+    <div class="result-cta">
+      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessrituals','_blank')">Explore All Rituals →</button>
+      <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
+    </div>
+  </div>
+
+</div><!-- /card -->
 
 <script>
-/* ═══════════════════════════════════════ */
-/* CELESTIAL BACKGROUND                    */
-/* ═══════════════════════════════════════ */
-var starCanvas,starCtx,stars=[],constellations=[];
-function initCelestial(){
-  starCanvas=document.getElementById('stars');
-  starCtx=starCanvas.getContext('2d');
-  function resize(){starCanvas.width=window.innerWidth;starCanvas.height=window.innerHeight}
-  resize();window.addEventListener('resize',resize);
-  for(var i=0;i<160;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.2+.3,a:Math.random(),s:Math.random()*.003+.001,p:Math.random()*Math.PI*2});
-  var cx=starCanvas.width,cy=starCanvas.height;
-  for(var c=0;c<4;c++){var pts=[];var bx=Math.random()*cx,by=Math.random()*cy;for(var p=0;p<Math.floor(Math.random()*4)+3;p++)pts.push({x:bx+Math.random()*180-90,y:by+Math.random()*180-90});constellations.push(pts)}
-  drawCelestial()
-}
-function drawCelestial(){
-  var w=starCanvas.width,h=starCanvas.height;
-  starCtx.clearRect(0,0,w,h);
-  stars.forEach(function(s){
-    s.p+=s.s;s.a=.3+Math.sin(s.p)*.7;
-    starCtx.beginPath();starCtx.arc(s.x*w,s.y*h,s.r,0,Math.PI*2);
-    starCtx.fillStyle='rgba(255,255,255,'+s.a*.5+')';starCtx.fill()
-  });
-  constellations.forEach(function(pts){
-    starCtx.strokeStyle='rgba(255,255,255,.04)';starCtx.lineWidth=.5;starCtx.beginPath();
-    pts.forEach(function(p,i){i===0?starCtx.moveTo(p.x,p.y):starCtx.lineTo(p.x,p.y)});
-    starCtx.stroke();
-    pts.forEach(function(p){starCtx.beginPath();starCtx.arc(p.x,p.y,1.5,0,Math.PI*2);starCtx.fillStyle='rgba(255,255,255,.12)';starCtx.fill()})
-  });
-  // Subtle planet
-  starCtx.beginPath();starCtx.arc(w*.82,h*.12,12,0,Math.PI*2);
-  var pg=starCtx.createRadialGradient(w*.82,h*.12,0,w*.82,h*.12,12);
-  pg.addColorStop(0,'rgba(200,210,230,.12)');pg.addColorStop(1,'rgba(200,210,230,0)');
-  starCtx.fillStyle=pg;starCtx.fill();
-  // Moon
-  starCtx.beginPath();starCtx.arc(w*.88,h*.08,6,0,Math.PI*2);starCtx.fillStyle='rgba(220,220,240,.08)';starCtx.fill();
-  starCtx.beginPath();starCtx.arc(w*.885,h*.076,5.5,0,Math.PI*2);starCtx.fillStyle='rgba(11,26,46,1)';starCtx.fill();
-  requestAnimationFrame(drawCelestial)
-}
+  const TOTAL = 15;
+  const scores = { A: 0, M: 0, B: 0, N: 0 };
+  const answers = {};
 
-/* ═══════════════════════════════════════ */
-/* SHOOTING STARS                          */
-/* ═══════════════════════════════════════ */
-var _ssId=0;
-function spawnShootingStar(){
-  var star=document.createElement('div');
-  star.className='shooting-star';
-  var dir=Math.floor(Math.random()*4);
-  var x,y,dx,dy;
-  if(dir===0){x=Math.random()*60;y=Math.random()*30;dx=200+Math.random()*200;dy=100+Math.random()*120}
-  else if(dir===1){x=40+Math.random()*60;y=Math.random()*30;dx=-(200+Math.random()*200);dy=100+Math.random()*120}
-  else if(dir===2){x=Math.random()*100;y=Math.random()*20;dx=-(60+Math.random()*140);dy=180+Math.random()*120}
-  else{x=70+Math.random()*30;y=Math.random()*50;dx=-(250+Math.random()*150);dy=40+Math.random()*80}
-  var dur=.4+Math.random()*1.0;
-  var id='ss'+(_ssId++);
-  var kf='@keyframes '+id+'{0%{opacity:0;transform:translate(0,0)}5%{opacity:1}80%{opacity:.6}100%{opacity:0;transform:translate('+dx+'px,'+dy+'px)}}';
-  var st=document.createElement('style');st.textContent=kf;document.head.appendChild(st);
-  star.style.cssText='left:'+x+'%;top:'+y+'%;animation:'+id+' '+dur+'s linear forwards';
-  var trailLen=30+Math.random()*60;
-  var trailAngle=Math.atan2(dy,dx)*180/Math.PI;
-  var trail=document.createElement('span');
-  trail.style.cssText='position:absolute;top:0;left:0;width:'+trailLen+'px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5));transform-origin:left center;transform:rotate('+trailAngle+'deg)';
-  star.appendChild(trail);
-  document.body.appendChild(star);
-  setTimeout(function(){star.remove();st.remove()},dur*1000+100)
-}
-function shootingStarLoop(){spawnShootingStar();setTimeout(shootingStarLoop,3000+Math.random()*6000)}
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    // Scroll the card container, not window — avoids freezing Wix page scroll
+    try {
+      document.querySelector('.card').scrollIntoView({ block: 'start', behavior: 'instant' });
+    } catch(e) {}
+  }
 
-/* ═══════════════════════════════════════ */
-/* QUIZ DATA                               */
-/* ═══════════════════════════════════════ */
-var PILLARS={
-  nourishment:{name:'Nourishment',color:'#6ec89b',icon:'☘',desc:'How you feed and hydrate your body'},
-  purpose:{name:'Purpose',color:'#b08fd4',icon:'✦',desc:'Your sense of meaning, finances, and growth'},
-  regulate:{name:'Regulate',color:'#8bb8c9',icon:'✨',desc:'Your nervous system, sleep, and stress management'},
-  movement:{name:'Movement',color:'#e8a86d',icon:'⚡',desc:'How your body moves, strengthens, and recovers'},
-  connection:{name:'Connection',color:'#d4849a',icon:'♥',desc:'Your relationships and sense of belonging'}
-};
+  function setProgress(q) {
+    const pct = Math.round((q / TOTAL) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('pctText').textContent = pct + '%';
+  }
 
-var QUESTIONS=[
-  // ── NOURISHMENT (3 questions) ──
-  {pillar:'nourishment',q:'How would you describe your daily eating pattern?',opts:[
-    {h:'Irregular or skipping meals',d:'I often skip breakfast or eat at random times.',v:1},
-    {h:'Mostly consistent but not balanced',d:'I eat regularly but I know my nutrition could be better.',v:2},
-    {h:'Balanced and intentional',d:'I prioritize protein, vegetables, and whole foods at every meal.',v:3}
-  ]},
-  {pillar:'nourishment',q:'How much water do you drink in a typical day?',opts:[
-    {h:'Less than 4 glasses',d:'I forget to drink water most days.',v:1},
-    {h:'4 to 6 glasses',d:'I try but I know I should drink more.',v:2},
-    {h:'7+ glasses consistently',d:'Hydration is a priority. I carry water with me.',v:3}
-  ]},
-  {pillar:'nourishment',q:'How often do you cook at home with fresh ingredients?',opts:[
-    {h:'Rarely',d:'Most meals are takeout, delivery, or packaged.',v:1},
-    {h:'A few times a week',d:'I cook sometimes but rely on convenience food too.',v:2},
-    {h:'Almost every day',d:'I enjoy preparing meals with whole, fresh ingredients.',v:3}
-  ]},
+  function startQuiz() {
+    show('s-q1');
+    document.getElementById('progressWrap').style.display = 'block';
+    setProgress(1);
+  }
 
-  // ── PURPOSE (3 questions) ──
-  {pillar:'purpose',q:'When you wake up most mornings, how do you feel about the day ahead?',opts:[
-    {h:'Dread or emptiness',d:'I struggle to find motivation or meaning.',v:1},
-    {h:'Neutral or routine',d:'I go through the motions. Some days feel meaningful.',v:2},
-    {h:'Energized and purposeful',d:'I have a sense of direction. My days feel intentional.',v:3}
-  ]},
-  {pillar:'purpose',q:'How would you describe your relationship with money?',opts:[
-    {h:'Stressful or avoidant',d:'I avoid looking at my accounts. Money causes anxiety.',v:1},
-    {h:'Aware but uncertain',d:'I know where I stand but I lack a plan.',v:2},
-    {h:'Intentional and calm',d:'I track my finances and feel in control of my financial future.',v:3}
-  ]},
-  {pillar:'purpose',q:'Do you have personal goals you are actively working toward?',opts:[
-    {h:'Not really',d:'I feel stuck or unsure of what I want.',v:1},
-    {h:'I have ideas but no plan',d:'I know what I want but I have not started yet.',v:2},
-    {h:'Yes, and I review them regularly',d:'I have clear goals with actions I take each week.',v:3}
-  ]},
+  function pick(q, type, el) {
+    document.getElementById('o-' + q).querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    answers[q] = type;
+    document.getElementById('nx-' + q).classList.add('on');
+  }
 
-  // ── REGULATE (3 questions) ──
-  {pillar:'regulate',q:'How would you rate the quality of your sleep?',opts:[
-    {h:'Poor',d:'I struggle to fall asleep, wake up often, or feel exhausted.',v:1},
-    {h:'Inconsistent',d:'Some nights are fine, others are restless. No real routine.',v:2},
-    {h:'Restorative',d:'I sleep 7 to 8 hours and wake feeling rested most mornings.',v:3}
-  ]},
-  {pillar:'regulate',q:'When stress hits, what is your default response?',opts:[
-    {h:'Overwhelm or shutdown',d:'I freeze, spiral, or numb with screens, food, or alcohol.',v:1},
-    {h:'Push through',d:'I power through but I feel the tension in my body.',v:2},
-    {h:'Pause and regulate',d:'I use breathwork, walks, or quiet time to ground myself.',v:3}
-  ]},
-  {pillar:'regulate',q:'How often do you spend time in silence or stillness (no screens, no noise)?',opts:[
-    {h:'Almost never',d:'There is always background noise or a screen on.',v:1},
-    {h:'Occasionally',d:'Maybe once a week I have true quiet.',v:2},
-    {h:'Daily',d:'I protect time for silence, meditation, or calm reflection.',v:3}
-  ]},
-
-  // ── MOVEMENT (3 questions) ──
-  {pillar:'movement',q:'How many days per week do you move your body intentionally (exercise, walking, yoga)?',opts:[
-    {h:'0 to 1 day',d:'I am mostly sedentary.',v:1},
-    {h:'2 to 3 days',d:'I move sometimes but lack consistency.',v:2},
-    {h:'4+ days',d:'Movement is part of my weekly rhythm.',v:3}
-  ]},
-  {pillar:'movement',q:'Do you include resistance or weight training in your routine?',opts:[
-    {h:'No, never',d:'I only do cardio or nothing at all.',v:1},
-    {h:'Sometimes',d:'I have tried it but it is not regular.',v:2},
-    {h:'Yes, at least 2 to 3 times a week',d:'Lifting weights is part of my routine.',v:3}
-  ]},
-  {pillar:'movement',q:'How much time do you spend outdoors with natural sunlight each day?',opts:[
-    {h:'Under 10 minutes',d:'I go from home to car to office. Almost no sun.',v:1},
-    {h:'10 to 30 minutes',d:'I get some sun but it is not intentional.',v:2},
-    {h:'30+ minutes most days',d:'I make time for walks, outdoor meals, or morning sun.',v:3}
-  ]},
-
-  // ── CONNECTION (3 questions) ──
-  {pillar:'connection',q:'How often do you have meaningful, undistracted conversation with someone you care about?',opts:[
-    {h:'Rarely',d:'Most of my interactions are surface-level or digital.',v:1},
-    {h:'Once a week or less',d:'I have some deep conversations but not enough.',v:2},
-    {h:'Several times a week',d:'I prioritize quality time with people I love.',v:3}
-  ]},
-  {pillar:'connection',q:'How supported do you feel in your daily life?',opts:[
-    {h:'Isolated',d:'I feel alone in what I carry.',v:1},
-    {h:'Somewhat supported',d:'I have people around but I do not always lean on them.',v:2},
-    {h:'Deeply supported',d:'I have a circle I trust and they are there when I need them.',v:3}
-  ]},
-  {pillar:'connection',q:'When was the last time you did something playful or joyful just for the sake of it?',opts:[
-    {h:'I cannot remember',d:'Life has been all responsibility lately.',v:1},
-    {h:'Within the last month',d:'It has been a while but I have had moments.',v:2},
-    {h:'This week',d:'I make room for joy, laughter, and lightness regularly.',v:3}
-  ]}
-];
-
-/* ═══════════════════════════════════════ */
-/* QUIZ ENGINE                             */
-/* ═══════════════════════════════════════ */
-var currentQ=0;
-var answers=[];
-
-function show(id){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
-  document.getElementById(id).classList.add('active');
-  document.getElementById('app').scrollTop=0;
-}
-
-function startQuiz(){
-  currentQ=0;answers=[];
-  show('s-quiz');
-  renderQuestion();
-}
-
-function renderQuestion(){
-  var q=QUESTIONS[currentQ];
-  var p=PILLARS[q.pillar];
-  var pct=Math.round(((currentQ)/QUESTIONS.length)*100);
-  document.getElementById('progressFill').style.width=pct+'%';
-
-  var html='<div class="fade-enter">';
-  html+='<div class="q-num">Question '+(currentQ+1)+' of '+QUESTIONS.length+'</div>';
-  html+='<div class="q-pillar-tag" style="color:'+p.color+';background:'+p.color.replace(')',',0.08)').replace('rgb','rgba')+';border:1px solid '+p.color.replace(')',',0.2)').replace('rgb','rgba')+'"><span class="dot" style="background:'+p.color+'"></span>'+p.name.toUpperCase()+'</div>';
-  html+='<div class="q-text">'+q.q+'</div>';
-  html+='<div class="q-opts">';
-  q.opts.forEach(function(o,i){
-    html+='<div class="q-opt" onclick="selectAnswer('+i+','+o.v+',this)">';
-    html+='<div class="q-opt-circle"></div>';
-    html+='<div class="q-opt-text"><div class="q-opt-h">'+o.h+'</div><div class="q-opt-d">'+o.d+'</div></div>';
-    html+='</div>';
-  });
-  html+='</div></div>';
-  document.getElementById('questionArea').innerHTML=html;
-}
-
-function selectAnswer(idx,val,el){
-  el.parentNode.querySelectorAll('.q-opt').forEach(function(o){o.classList.remove('sel')});
-  el.classList.add('sel');
-  answers[currentQ]={pillar:QUESTIONS[currentQ].pillar,value:val};
-  setTimeout(function(){
-    currentQ++;
-    if(currentQ<QUESTIONS.length){renderQuestion()}
-    else{
-      document.getElementById('progressFill').style.width='100%';
-      setTimeout(showResults,400);
+  function goNext(next) {
+    if (next === 'email') {
+      calcScores();
+      show('s-email');
+      document.getElementById('progressWrap').style.display = 'none';
+    } else {
+      show('s-q' + next);
+      setProgress(next);
     }
-  },400);
-}
+  }
 
-/* ═══════════════════════════════════════ */
-/* RESULTS                                 */
-/* ═══════════════════════════════════════ */
-
-/* Ritual recommendations mapped to pillar weaknesses */
-var RITUALS=[
-  {id:'mindful-eating',name:'Mindful Eating Ritual',pillars:['nourishment','movement'],desc:'Transform your relationship with food. Learn body composition science, balanced nutrition, and why lifting weights changes everything.',icon:'🌿',url:'marmaroph-ritual-mindful-eating.html'},
-  {id:'quiet-abundance',name:'Quiet Abundance Ritual',pillars:['purpose','regulate'],desc:'Build a quiet structure of wealth. 30 days of financial clarity, mindset shifts, and intentional money practices.',icon:'💰',url:'marmaroph-ritual-quiet-abundance.html'},
-  {id:'energised-mornings',name:'Energised Mornings Ritual',pillars:['movement','regulate'],desc:'Design mornings that energise body and mind. Sun exposure, hydration, movement, and breath work.',icon:'☀️',url:'marmaroph-ritual-energised-mornings.html'},
-  {id:'bloom-in-gratitude',name:'Bloom in Gratitude',pillars:['purpose','regulate'],desc:'Your mind flourishes when nourished with gratitude. Unplug, color with intention, and reflect.',icon:'🌸'},
-  {id:'sacred-connection',name:'Sacred Connection with Partner',pillars:['connection'],desc:'Strengthen and deepen the bond with your partner through intentional presence.',icon:'💑'},
-  {id:'kindred-bonds',name:'Kindred Bonds',pillars:['connection'],desc:'Nurture the relationships that shape your world. Friends, family, and colleagues.',icon:'🤝'},
-  {id:'im-enough',name:'I Am Enough',pillars:['purpose','regulate'],desc:'Reclaim your self-worth from the inside out.',icon:'💖'},
-  {id:'sanctuary-protection',name:'Sanctuary Protection',pillars:['regulate'],desc:'Create boundaries that protect your peace.',icon:'🛡️'}
-];
-
-function showResults(){
-  show('s-results');
-  var scores={nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
-  var counts={nourishment:0,purpose:0,regulate:0,movement:0,connection:0};
-
-  answers.forEach(function(a){
-    scores[a.pillar]+=a.value;
-    counts[a.pillar]++;
-  });
-
-  // Normalize to percentage
-  var pcts={};
-  var total=0;
-  Object.keys(scores).forEach(function(k){
-    pcts[k]=Math.round((scores[k]/(counts[k]*3))*100);
-    total+=pcts[k];
-  });
-  var overall=Math.round(total/5);
-
-  // Sort pillars by score (lowest first for recommendations)
-  var sorted=Object.keys(pcts).sort(function(a,b){return pcts[a]-pcts[b]});
-
-  // Build wheel SVG
-  var wheelSvg=buildWheel(pcts);
-
-  // Build pillar bars
-  var pillarHtml='';
-  sorted.forEach(function(key){
-    var p=PILLARS[key];
-    var pct=pcts[key];
-    var needs=pct<=55;
-    pillarHtml+='<div class="pillar-row'+(needs?' needs-attention':'')+'">';
-    pillarHtml+='<div class="pillar-dot" style="background:'+p.color+'"></div>';
-    pillarHtml+='<div class="pillar-info"><div class="pillar-name">'+p.name+'</div>';
-    pillarHtml+='<div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:0%;background:'+p.color+'" data-target="'+pct+'"></div></div>';
-    if(needs)pillarHtml+='<div class="pillar-msg">'+getPillarMessage(key,pct)+'</div>';
-    pillarHtml+='</div>';
-    pillarHtml+='<div class="pillar-pct">'+pct+'%</div>';
-    pillarHtml+='</div>';
-  });
-
-  // Find recommended rituals (based on weakest pillars)
-  var weakPillars=sorted.filter(function(k){return pcts[k]<=66});
-  if(weakPillars.length===0)weakPillars=[sorted[0]]; // at least recommend one
-
-  var recommended=[];
-  RITUALS.forEach(function(r){
-    var match=r.pillars.some(function(rp){return weakPillars.indexOf(rp)>-1});
-    if(match&&recommended.length<3)recommended.push(r);
-  });
-
-  // Build recommendations
-  var recHtml='';
-  recommended.forEach(function(r,i){
-    recHtml+='<div class="rec-card fade-enter" style="animation-delay:'+(0.6+i*0.15)+'s">';
-    recHtml+='<div class="rec-label">'+(i===0?'RECOMMENDED FOR YOU':'ALSO RECOMMENDED')+'</div>';
-    recHtml+='<div class="rec-name">'+r.icon+' '+r.name+'</div>';
-    recHtml+='<div class="rec-pillars">';
-    r.pillars.forEach(function(rp){
-      var pc=PILLARS[rp];
-      recHtml+='<span class="rec-ptag" style="color:'+pc.color+';background:'+pc.color.replace(')',',0.1)').replace('rgb','rgba')+';border:1px solid '+pc.color.replace(')',',0.2)').replace('rgb','rgba')+'"><span class="rdot" style="background:'+pc.color+'"></span>'+pc.name.toUpperCase()+'</span>';
-    });
-    recHtml+='</div>';
-    recHtml+='<div class="rec-why">'+r.desc+'</div>';
-    if(r.url){
-      recHtml+='<button class="btn btn-gold" onclick="goToRitual(\''+r.url+'\')">Start This Ritual</button>';
-    }else{
-      recHtml+='<button class="btn btn-ghost" disabled>Coming Soon</button>';
+  function goBack(q) {
+    if (q === 1) {
+      show('s-intro');
+      document.getElementById('progressWrap').style.display = 'none';
+    } else if (q === 'email') {
+      show('s-q15');
+      document.getElementById('progressWrap').style.display = 'block';
+      setProgress(15);
+    } else {
+      show('s-q' + (q - 1));
+      setProgress(q - 1);
     }
-    recHtml+='</div>';
-  });
+  }
 
-  var html='<div class="fade-enter">';
-  html+='<div class="brand-logo" style="margin-bottom:4px">Marmaroph</div>';
-  html+='<div class="brand" style="margin-bottom:24px">YOUR WELLNESS DIAGNOSIS</div>';
-  html+='<div class="results-title">Your Five Pillars</div>';
-  html+='<div class="results-sub">Here is where your life is calling for attention</div>';
-  html+='<div class="wheel-wrap">'+wheelSvg+'<div class="wheel-center"><div class="wheel-score">'+overall+'</div><div class="wheel-label">OVERALL</div></div></div>';
-  html+='<div class="pillar-list">'+pillarHtml+'</div>';
-  html+='<div style="text-align:left;margin-bottom:20px"><div class="results-title" style="font-size:18px">Your Ritual Path</div><div class="results-sub" style="margin-bottom:16px">Based on your diagnosis, these rituals will have the most impact</div></div>';
-  html+=recHtml;
-  html+='<div style="margin-top:20px"><button class="btn btn-ghost" onclick="startQuiz()">Retake the Quiz</button></div>';
-  html+='<div style="margin-top:24px;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:1px">MARMAROPH HOME &amp; LIVING</div>';
-  html+='</div>';
+  function calcScores() {
+    scores.A = 0; scores.M = 0; scores.B = 0; scores.N = 0;
+    Object.values(answers).forEach(v => { if (v in scores) scores[v]++; });
+  }
 
-  document.getElementById('resultsArea').innerHTML=html;
+  function checkForm() {
+    const name    = document.getElementById('fName').value.trim();
+    const email   = document.getElementById('fEmail').value.trim();
+    const consent = document.getElementById('fConsent').checked;
+    const valid   = name.length > 0 && email.includes('@') && consent;
+    const btn = document.getElementById('btnReveal');
+    if (valid) btn.classList.add('on'); else btn.classList.remove('on');
+  }
 
-  // Save to localStorage
-  try{
-    localStorage.setItem('marmaroph_quiz',JSON.stringify({scores:pcts,overall:overall,date:new Date().toISOString(),weakPillars:weakPillars}));
-  }catch(e){}
+  function sendToWixCRM(name, email, ritualLabel) {
+    const WIX_API_KEY = "IST.eyJraWQiOiJQb3pIX2FDMiIsImFsZyI6IlJTMjU2In0.eyJkYXRhIjoie1wiaWRcIjpcIjViMzY0Zjk0LWIyZjYtNDA0Ni05MmJiLWVmZTIzMjcwM2EwMlwiLFwiaWRlbnRpdHlcIjp7XCJ0eXBlXCI6XCJhcHBsaWNhdGlvblwiLFwiaWRcIjpcIjUxMzJmZjUyLTBhNjItNDE2Ny1hMTBhLTRlODk3Y2FiZmU1N1wifSxcInRlbmFudFwiOntcInR5cGVcIjpcImFjY291bnRcIixcImlkXCI6XCIwMDIyOGU4Yi1iN2VlLTRmOGYtODI1Mi1hNDM3NGUyOWI4NDRcIn19IiwiaWF0IjoxNzczMzg3OTE2fQ.WVE6OYcugbx4bV33WVArDNBRV2WcVX-O5_lYG-6z99jLoyMiDNJg8sujDPTl8L1C_CoY1y7Wst1NL3-W8NG8uDxsrgUfxkaf28l_4t5Fs7CZQFCWZGo6l-bQfoSwDKoXswHqanfT2WdH-D_903AhxiA7WhJ6QpSttbSQO5_8i8MBD3NtuO9xHKFl0NvZp2yaQKJcc_iLLZnZBhpn33gKnjO0fzardHhSYOjS0_RLPIU5MaGFoYlx8wbUxih5Bh9rrydYWDaTwm1MaJyLoSTERwtW8MfvRlIsdqrovyx3DvzKTi0J3_JTJwEClSzE9rR5X9hLmMrpK_gpYoT9azVJNA";
+    const SITE_ID = "ae0d6059-3fb7-4441-a5f1-8426358c7c0d";
+    const [firstName, ...rest] = name.trim().split(' ');
+    const lastName = rest.join(' ') || '';
+    try {
+      fetch('https://www.wixapis.com/contacts/v4/contacts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': WIX_API_KEY,
+          'wix-site-id': SITE_ID
+        },
+        body: JSON.stringify({
+          info: {
+            name: { first: firstName, last: lastName },
+            emails: { items: [{ email, tag: 'MAIN' }] },
+            extendedFields: {
+              items: {
+                'custom.ritual': ritualLabel,
+                'custom.quiz-source': 'Home Wellness Quiz'
+              }
+            }
+          }
+        })
+      });
+    } catch (err) {
+      console.error('Wix CRM error:', err);
+    }
+  }
 
-  // Animate bars
-  setTimeout(function(){
-    document.querySelectorAll('.pillar-bar-fill').forEach(function(b){
-      b.style.width=b.getAttribute('data-target')+'%';
-    });
-  },300);
-}
+  function reveal() {
+    const name  = document.getElementById('fName').value.trim();
+    const email = document.getElementById('fEmail').value.trim();
+    calcScores();
 
-function buildWheel(pcts){
-  var keys=['nourishment','purpose','regulate','movement','connection'];
-  var cx=110,cy=110,r=90;
-  var svg='<svg class="wheel-svg" viewBox="0 0 220 220">';
-  // Background ring
-  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="14"/>';
-  // Each pillar gets an arc
-  var gap=4; // degrees gap between arcs
-  var arcDeg=(360-gap*5)/5;
-  keys.forEach(function(key,i){
-    var startAngle=-90+i*(arcDeg+gap);
-    var pct=pcts[key]/100;
-    var color=PILLARS[key].color;
-    // Track arc
-    svg+=describeArc(cx,cy,r,startAngle,startAngle+arcDeg,14,'rgba(255,255,255,0.04)');
-    // Fill arc
-    var fillEnd=startAngle+arcDeg*pct;
-    svg+=describeArc(cx,cy,r,startAngle,fillEnd,14,color);
-    // Small dot at start
-    var dotAngle=(startAngle+fillEnd)/2;
-    var dotRad=dotAngle*Math.PI/180;
-    svg+='<circle cx="'+(cx+r*Math.cos(dotRad))+'" cy="'+(cy+r*Math.sin(dotRad))+'" r="2" fill="'+color+'" opacity="0.5"/>';
-  });
-  svg+='</svg>';
-  return svg;
-}
+    // Determine winner
+    let ritual = 'N';
+    const maxScore = Math.max(scores.A, scores.M, scores.B, scores.N);
+    // N only wins if it's the clear majority (more than A+M+B combined could suggest)
+    // If N ties with another, go with the non-N result
+    if (scores.N === maxScore && scores.A === 0 && scores.M === 0 && scores.B === 0) {
+      ritual = 'N';
+    } else {
+      // Find highest non-N score
+      const primary = { A: scores.A, M: scores.M, B: scores.B };
+      const topNonN = Object.entries(primary).sort((a,b) => b[1]-a[1])[0];
+      if (scores.N > topNonN[1] * 1.5) {
+        // N dominates heavily — truly thriving
+        ritual = 'N';
+      } else {
+        ritual = topNonN[0];
+      }
+    }
 
-function describeArc(cx,cy,r,startAngle,endAngle,width,color){
-  var start=polarToCartesian(cx,cy,r,endAngle);
-  var end=polarToCartesian(cx,cy,r,startAngle);
-  var largeArc=endAngle-startAngle>180?1:0;
-  return '<path d="M '+start.x+' '+start.y+' A '+r+' '+r+' 0 '+largeArc+' 0 '+end.x+' '+end.y+'" fill="none" stroke="'+color+'" stroke-width="'+width+'" stroke-linecap="round"/>';
-}
-function polarToCartesian(cx,cy,r,deg){
-  var rad=deg*Math.PI/180;
-  return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)};
-}
+    const labels = {
+      A: 'Energized Mornings',
+      M: 'Mindful Eating',
+      B: 'Sacred Connection',
+      N: 'Thriving — Already Well'
+    };
 
-function getPillarMessage(pillar,pct){
-  var msgs={
-    nourishment:{low:'Your body is asking for nourishment. Start with one balanced meal a day and consistent hydration.',mid:'You have awareness. Now build consistency with whole foods and water.'},
-    purpose:{low:'You are searching for direction. A structured ritual can give you the framework to find it.',mid:'The spark is there. Channel it into clear goals and financial clarity.'},
-    regulate:{low:'Your nervous system needs attention. Sleep, silence, and breathwork will change everything.',mid:'You manage, but you could thrive. Build regulation into your daily rhythm.'},
-    movement:{low:'Your body needs movement and strength. Even 15 minutes of walking and light weights can transform how you feel.',mid:'You move but could be more consistent. Add resistance training for bone density and metabolic health.'},
-    connection:{low:'Loneliness is a signal, not a sentence. Start with one honest conversation this week.',mid:'Your connections exist but need depth. Prioritize undistracted presence.'}
-  };
-  return pct<=33?msgs[pillar].low:msgs[pillar].mid;
-}
+    sendToWixCRM(name, email, labels[ritual]); // fire-and-forget
+    show('s-result-' + ritual);
+  }
 
-function goToRitual(url){
-  window.location.href=url;
-}
-
-/* ═══════════════════════════════════════ */
-/* INIT                                    */
-/* ═══════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded',function(){
-  initCelestial();
-  setTimeout(shootingStarLoop,2000);
-});
+  function retake() {
+    scores.A = 0; scores.M = 0; scores.B = 0; scores.N = 0;
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.btn-next').forEach(b => b.classList.remove('on'));
+    document.getElementById('fName').value = '';
+    document.getElementById('fEmail').value = '';
+    document.getElementById('fConsent').checked = false;
+    document.getElementById('btnReveal').classList.remove('on');
+    document.getElementById('progressWrap').style.display = 'none';
+    show('s-intro');
+  }
 </script>
 </body>
 </html>
