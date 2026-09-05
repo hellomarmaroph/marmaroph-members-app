@@ -6,7 +6,7 @@
 <title>Marmaroph — Your Home Wellness Diagnosis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
     --emerald:       #044147;
@@ -23,6 +23,14 @@
     --text-soft:     #7a9ea5;
     --border:        rgba(4,65,71,0.10);
     --border-hover:  rgba(136,196,219,0.5);
+    /* Pillar colors */
+    --p-nourishment: #88c4db;
+    --p-purpose:     #b08fd4;
+    --p-regulate:    #e8a86d;
+    --p-movement:    #6ec89b;
+    --p-connection:  #d4849a;
+    /* Gradient */
+    --grad: linear-gradient(135deg, #044147 0%, #087a87 50%, #88c4db 100%);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -35,6 +43,18 @@
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
     overscroll-behavior:contain;
+    overflow-x:hidden;
+  }
+
+  /* ── SHOOTING STARS ── */
+  .shooting-star-container { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .sstar {
+    position:absolute;
+    width:2px; height:2px;
+    background:#88c4db;
+    border-radius:50%;
+    opacity:0;
+    box-shadow:0 0 4px 1px rgba(136,196,219,0.3);
   }
 
   /* ── PROGRESS ── */
@@ -48,7 +68,7 @@
   }
   .progress-inner { max-width:600px; margin:0 auto; display:flex; align-items:center; gap:12px; }
   .progress-track { flex:1; height:3px; background:var(--emerald-pale); border-radius:2px; overflow:hidden; }
-  .progress-fill  { height:100%; background:var(--blue); border-radius:2px; transition:width 0.5s ease; will-change:width; }
+  .progress-fill  { height:100%; background:var(--grad); border-radius:2px; transition:width 0.5s ease; will-change:width; }
   .pct-text { font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--blue); min-width:32px; text-align:right; }
 
   /* ── CARD WRAPPER ── */
@@ -60,31 +80,49 @@
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
+    position:relative;
+    z-index:1;
   }
 
   .screen { display:none; }
   .screen.active { animation:fadeUp 0.38s ease both; }
   .screen.active { display:flex; flex-direction:column; }
   #s-intro { align-items: center; }
+  @keyframes fadeUp {
     from { opacity:0; transform:translateY(18px); }
     to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── BRAND LOGO ── */
+  .brand-logo {
+    width:110px; margin-bottom:22px;
+    opacity:0.85;
+    filter:drop-shadow(0 2px 8px rgba(4,65,71,0.08));
   }
 
   /* ── INTRO ── */
   .intro-eyebrow {
     font-size:10px; font-weight:600; letter-spacing:0.28em;
     text-transform:uppercase; color:var(--blue);
-    margin-bottom:20px; text-align:center;
+    margin-bottom:14px; text-align:center;
   }
   .intro-title {
-    font-size:clamp(26px,5vw,38px);
-    font-weight:200; line-height:1.25;
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(32px,6vw,48px);
+    font-weight:300; font-style:italic;
+    line-height:1.2;
     color:var(--emerald); margin-bottom:10px;
     text-align:center;
   }
-  .intro-title strong { font-weight:700; display:block; }
-  .intro-title em { font-style:italic; font-weight:300; color:var(--blue); }
-  .intro-rule { width:40px; height:2px; background:var(--blue); margin:24px auto; }
+  .intro-title strong {
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-weight:500; display:block; font-style:normal;
+  }
+  .intro-title em {
+    font-style:italic; font-weight:300;
+    color:var(--emerald-light);
+  }
+  .intro-rule { width:40px; height:2px; background:var(--grad); margin:24px auto; }
   .intro-body {
     font-size:14px; font-weight:300; line-height:1.85;
     color:var(--text-mid); margin-bottom:32px;
@@ -107,29 +145,29 @@
   .meta-item strong { font-size:13px; font-weight:600; color:var(--emerald); letter-spacing:0; margin-bottom:3px; }
   .meta-item span   { color:var(--text-soft); font-size:10px; }
 
-  /* ── BUTTONS ── */
+  /* ── BUTTONS (gradient) ── */
   .btn-start {
     display:inline-block;
     touch-action:manipulation; padding:16px 40px;
-    background:var(--emerald); color:#fff;
+    background:var(--grad); color:#fff;
     font-family:'Montserrat',sans-serif;
     font-size:12px; font-weight:600; letter-spacing:0.18em;
-    text-transform:uppercase; border:none; border-radius:2px;
-    cursor:pointer; transition:background 0.2s, transform 0.15s;
+    text-transform:uppercase; border:none; border-radius:6px;
+    cursor:pointer; transition:opacity 0.2s, transform 0.15s;
     align-self:center;
   }
-  .btn-start:hover { background:var(--emerald-mid); transform:translateY(-1px); }
+  .btn-start:hover { opacity:0.9; transform:translateY(-1px); }
 
   .btn-primary {
     display:block; width:100%; padding:16px 24px;
-    background:var(--emerald); color:#fff;
+    background:var(--grad); color:#fff;
     font-family:'Montserrat',sans-serif;
     font-size:11px; font-weight:600; letter-spacing:0.18em;
-    text-transform:uppercase; border:none; border-radius:2px;
-    cursor:pointer; transition:background 0.2s, transform 0.15s;
+    text-transform:uppercase; border:none; border-radius:6px;
+    cursor:pointer; transition:opacity 0.2s, transform 0.15s;
     margin-bottom:12px;
   }
-  .btn-primary:hover { background:var(--emerald-mid); transform:translateY(-1px); }
+  .btn-primary:hover { opacity:0.9; transform:translateY(-1px); }
 
   .btn-retake {
     display:block; width:100%; padding:13px 24px;
@@ -137,23 +175,35 @@
     font-family:'Montserrat',sans-serif;
     font-size:10px; font-weight:500; letter-spacing:0.15em;
     text-transform:uppercase; border:1px solid var(--border);
-    border-radius:2px; cursor:pointer;
+    border-radius:6px; cursor:pointer;
     transition:border-color 0.2s, color 0.2s;
   }
   .btn-retake:hover { border-color:var(--blue); color:var(--emerald); }
 
   .btn-next {
     display:inline-block; padding:14px 32px;
-    background:var(--emerald); color:#fff;
+    background:var(--grad); color:#fff;
     font-family:'Montserrat',sans-serif;
     font-size:11px; font-weight:600; letter-spacing:0.15em;
-    text-transform:uppercase; border:none; border-radius:2px;
+    text-transform:uppercase; border:none; border-radius:6px;
     cursor:pointer; opacity:0.25; pointer-events:none;
-    transition:opacity 0.3s, background 0.2s, transform 0.15s;
+    transition:opacity 0.3s, transform 0.15s;
     margin-top:28px; align-self:flex-end;
   }
   .btn-next.on { opacity:1; pointer-events:all; }
-  .btn-next.on:hover { background:var(--emerald-mid); transform:translateY(-1px); }
+  .btn-next.on:hover { opacity:0.9; transform:translateY(-1px); }
+
+  .btn-reveal {
+    width:100%; padding:16px;
+    background:var(--grad); color:#fff;
+    font-family:'Montserrat',sans-serif;
+    font-size:12px; font-weight:600; letter-spacing:0.18em;
+    text-transform:uppercase; border:none; border-radius:6px;
+    cursor:pointer; opacity:0.25; pointer-events:none;
+    transition:opacity 0.3s;
+  }
+  .btn-reveal.on { opacity:1; pointer-events:all; }
+  .btn-reveal.on:hover { opacity:0.9; }
 
   .back-btn {
     background:none; border:none; color:var(--text-soft);
@@ -175,8 +225,10 @@
   .q-tag    { font-size:10px; font-weight:500; letter-spacing:0.15em; color:var(--text-soft); text-transform:uppercase; }
 
   .question-text {
-    font-size:clamp(18px,3.5vw,24px); font-weight:300;
-    line-height:1.4; color:var(--emerald); margin-bottom:8px;
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(20px,4vw,28px); font-weight:400;
+    font-style:italic;
+    line-height:1.35; color:var(--emerald); margin-bottom:8px;
   }
   .question-hint {
     font-size:12px; font-weight:300; color:var(--text-soft);
@@ -253,8 +305,12 @@
   }
 
   /* ── EMAIL GATE ── */
-  .email-heading { font-size:22px; font-weight:300; color:var(--emerald); margin-bottom:8px; }
-  .email-heading strong { font-weight:700; }
+  .email-heading {
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:28px; font-weight:300; font-style:italic;
+    color:var(--emerald); margin-bottom:8px;
+  }
+  .email-heading strong { font-weight:500; font-style:normal; }
   .email-sub { font-size:13px; font-weight:300; color:var(--text-mid); margin-bottom:28px; line-height:1.7; }
 
   .field-group { margin-bottom:14px; }
@@ -265,7 +321,7 @@
   }
   .field-group input {
     width:100%; padding:13px 16px;
-    border:1.5px solid var(--border); border-radius:4px;
+    border:1.5px solid var(--border); border-radius:6px;
     font-family:'Montserrat',sans-serif; font-size:13px;
     color:var(--text-dark); background:#fff;
     transition:border-color 0.2s, box-shadow 0.2s; outline:none;
@@ -279,18 +335,6 @@
   .consent-wrap input[type="checkbox"] { width:16px; height:16px; min-width:16px; margin-top:2px; accent-color:var(--blue); }
   .consent-wrap span { font-size:11px; font-weight:300; color:var(--text-soft); line-height:1.6; }
 
-  .btn-reveal {
-    width:100%; padding:16px;
-    background:var(--emerald); color:#fff;
-    font-family:'Montserrat',sans-serif;
-    font-size:12px; font-weight:600; letter-spacing:0.18em;
-    text-transform:uppercase; border:none; border-radius:2px;
-    cursor:pointer; opacity:0.25; pointer-events:none;
-    transition:opacity 0.3s, background 0.2s;
-  }
-  .btn-reveal.on { opacity:1; pointer-events:all; }
-  .btn-reveal.on:hover { background:var(--emerald-mid); }
-
   /* ── RESULT ── */
   .result-ribbon {
     display:flex; align-items:center; gap:10px; margin-bottom:20px;
@@ -299,17 +343,22 @@
   .ribbon-text { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--blue); }
 
   .result-title {
-    font-size:clamp(30px,6vw,46px); font-weight:200;
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(36px,7vw,52px); font-weight:300;
+    font-style:italic;
     line-height:1.1; color:var(--emerald); margin-bottom:6px;
   }
-  .result-title strong { font-weight:700; display:block; }
+  .result-title strong {
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-weight:500; display:block; font-style:normal;
+  }
   .result-title em { font-style:italic; }
 
   .result-sub {
     font-size:10px; font-weight:500; letter-spacing:0.2em;
     text-transform:uppercase; color:var(--text-soft); margin-bottom:20px;
   }
-  .result-rule { width:40px; height:2px; background:var(--blue); margin-bottom:22px; }
+  .result-rule { width:40px; height:2px; background:var(--grad); margin-bottom:22px; }
 
   .result-desc {
     font-size:14px; font-weight:300; line-height:1.85;
@@ -333,7 +382,8 @@
   }
   .method-steps { display:flex; flex-direction:column; gap:14px; }
   .m-step { display:flex; align-items:flex-start; gap:12px; }
-  .m-icon { font-size:18px; min-width:24px; margin-top:1px; }
+  .m-icon { min-width:28px; width:28px; height:28px; margin-top:1px; display:flex; align-items:center; justify-content:center; }
+  .m-icon svg { width:22px; height:22px; }
   .m-label { display:block; font-size:12px; font-weight:600; color:var(--emerald); margin-bottom:2px; }
   .m-desc  { display:block; font-size:11px; font-weight:300; color:var(--text-mid); line-height:1.6; }
 
@@ -356,11 +406,28 @@
 
   .result-cta { display:flex; flex-direction:column; gap:0; }
 
-  /* ── BRAND LOGO ── */
-  .brand-logo {
-    width:110px; margin-bottom:22px;
-    opacity:0.85;
-    filter:drop-shadow(0 2px 8px rgba(4,65,71,0.08));
+  /* ── PILLAR WELLNESS WHEEL ── */
+  .pillar-graphic {
+    background:#fff; border:1px solid var(--border);
+    border-radius:10px; padding:22px 20px 18px; margin-bottom:28px;
+  }
+  .pillar-graphic-title {
+    font-size:10px; font-weight:700; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--emerald); margin-bottom:8px;
+    text-align:center;
+  }
+  .pillar-wheel-wrap { display:flex; justify-content:center; align-items:center; }
+  .pillar-wheel-wrap svg text { font-family:'Montserrat',sans-serif; }
+  .pillar-wheel-legend {
+    display:flex; flex-wrap:wrap; justify-content:center; gap:10px 16px;
+    margin-top:8px;
+  }
+  .pillar-legend-item {
+    display:flex; align-items:center; gap:5px;
+    font-size:10px; font-weight:600; color:var(--text-mid);
+  }
+  .pillar-legend-dot {
+    width:8px; height:8px; border-radius:50%;
   }
 
   /* ── FLOATING FLOWERS ── */
@@ -379,25 +446,24 @@
     animation:floatIn 1.5s ease-out 0.5s forwards;
     filter:drop-shadow(0 4px 16px rgba(4,65,71,0.06));
   }
-  .flower-3 {
-    top:32%; left:-30px; width:170px;
-    animation:floatIn 1.5s ease-out 0.7s forwards, gentleFloat 8s ease-in-out 2.5s infinite;
-    transform:scaleX(-1);
-    filter:drop-shadow(0 4px 12px rgba(4,65,71,0.04));
-  }
-  .flower-4 {
-    top:58%; right:-28px; width:150px;
-    animation:floatIn 1.5s ease-out 0.9s forwards, gentleFloat 10s ease-in-out 3s infinite;
-    filter:drop-shadow(0 4px 12px rgba(4,65,71,0.04));
-  }
   @keyframes floatIn {
     0%   { opacity:0; transform:translateY(20px) scale(0.9); }
-    100% { opacity:0.35; transform:translateY(0) scale(1); }
+    100% { opacity:0.4; transform:translateY(0) scale(1); }
   }
-  @keyframes gentleFloat {
-    0%,100% { transform:translateY(0) rotate(0deg); }
-    50%     { transform:translateY(-10px) rotate(1.5deg); }
+
+  /* ── SOUND TOGGLE ── */
+  .sound-toggle {
+    position:fixed; bottom:20px; right:20px; z-index:200;
+    width:40px; height:40px; border-radius:50%;
+    background:rgba(255,255,255,0.85); border:1px solid var(--border);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:opacity 0.3s, transform 0.2s, box-shadow 0.2s;
+    box-shadow:0 2px 12px rgba(4,65,71,0.08);
   }
+  .sound-toggle:hover { transform:scale(1.08); box-shadow:0 4px 16px rgba(4,65,71,0.12); }
+  .sound-toggle svg { width:18px; height:18px; }
+  .sound-toggle .muted-line { transition:opacity 0.2s; }
 
   /* ── RESPONSIVE ── */
   @media(max-width:520px){
@@ -407,26 +473,33 @@
     .brand-logo { width:88px; }
     .flower-1 { width:150px; top:-10px; right:-22px; }
     .flower-2 { width:160px; }
-    .flower-3 { width:110px; }
-    .flower-4 { width:100px; }
-    .floating-flower { animation-fill-mode:forwards !important; }
+    .pillar-label { min-width:75px; font-size:10px; }
   }
   @media(min-width:768px){
     .flower-1 { width:280px; top:-24px; right:-36px; }
     .flower-2 { width:300px; }
-    .flower-3 { width:210px; }
-    .flower-4 { width:190px; }
     .brand-logo { width:120px; }
   }
 </style>
 </head>
 <body>
 
+<!-- ═══ SHOOTING STARS ═══ -->
+<div class="shooting-star-container" id="starField"></div>
+
 <!-- ═══ FLOATING FLOWERS ═══ -->
 <img class="floating-flower flower-1" src="https://static.wixstatic.com/media/00228e_22eff6136de2418a96dbf2b074ae2586~mv2.png/v1/fill/w_500,h_500,al_c,q_85/flowers.png" alt="" loading="lazy"/>
 <img class="floating-flower flower-2" src="https://static.wixstatic.com/media/00228e_0911417b663942e6984eb073e505406b~mv2.png/v1/fill/w_500,h_500,al_c,q_85/orchids.png" alt="" loading="lazy"/>
-<img class="floating-flower flower-3" src="https://static.wixstatic.com/media/00228e_d56dbb9c226d4340ada9e06470311032~mv2.png/v1/fill/w_400,h_400,al_c,q_85/flowers3.png" alt="" loading="lazy"/>
-<img class="floating-flower flower-4" src="https://static.wixstatic.com/media/00228e_3ed2e67b51264d05ae3b70e3514b7097~mv2.png/v1/fill/w_400,h_400,al_c,q_85/flowers1.png" alt="" loading="lazy"/>
+
+<!-- ═══ SOUND TOGGLE ═══ -->
+<button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Toggle ambient sound">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#7a9ea5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" id="soundWave1"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" id="soundWave2"/>
+    <line x1="2" y1="2" x2="22" y2="22" class="muted-line" id="mutedLine" opacity="0"/>
+  </svg>
+</button>
 
 <div id="progressWrap">
   <div class="progress-inner">
@@ -505,7 +578,7 @@
     <button class="btn-next" id="nx-q3" onclick="goNext(4)">Next →</button>
   </div>
 
-  <!-- ═══ Q4 ═══ -->
+  <!-- ═══ Q4–Q15 (same as before, abbreviated for readability — keeping all questions) ═══ -->
   <div class="screen" id="s-q4">
     <button class="back-btn" onclick="goBack(4)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">04 / 15</span><div class="q-line"></div><span class="q-tag">Body</span></div>
@@ -520,7 +593,6 @@
     <button class="btn-next" id="nx-q4" onclick="goNext(5)">Next →</button>
   </div>
 
-  <!-- ═══ Q5 ═══ -->
   <div class="screen" id="s-q5">
     <button class="back-btn" onclick="goBack(5)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">05 / 15</span><div class="q-line"></div><span class="q-tag">Food</span></div>
@@ -535,7 +607,6 @@
     <button class="btn-next" id="nx-q5" onclick="goNext(6)">Next →</button>
   </div>
 
-  <!-- ═══ Q6 ═══ -->
   <div class="screen" id="s-q6">
     <button class="back-btn" onclick="goBack(6)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">06 / 15</span><div class="q-line"></div><span class="q-tag">Rituals</span></div>
@@ -550,7 +621,6 @@
     <button class="btn-next" id="nx-q6" onclick="goNext(7)">Next →</button>
   </div>
 
-  <!-- ═══ Q7 ═══ -->
   <div class="screen" id="s-q7">
     <button class="back-btn" onclick="goBack(7)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">07 / 15</span><div class="q-line"></div><span class="q-tag">Mind</span></div>
@@ -565,7 +635,6 @@
     <button class="btn-next" id="nx-q7" onclick="goNext(8)">Next →</button>
   </div>
 
-  <!-- ═══ Q8 ═══ -->
   <div class="screen" id="s-q8">
     <button class="back-btn" onclick="goBack(8)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">08 / 15</span><div class="q-line"></div><span class="q-tag">Space</span></div>
@@ -580,7 +649,6 @@
     <button class="btn-next" id="nx-q8" onclick="goNext(9)">Next →</button>
   </div>
 
-  <!-- ═══ Q9 ═══ -->
   <div class="screen" id="s-q9">
     <button class="back-btn" onclick="goBack(9)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">09 / 15</span><div class="q-line"></div><span class="q-tag">Self-Care</span></div>
@@ -595,7 +663,6 @@
     <button class="btn-next" id="nx-q9" onclick="goNext(10)">Next →</button>
   </div>
 
-  <!-- ═══ Q10 ═══ -->
   <div class="screen" id="s-q10">
     <button class="back-btn" onclick="goBack(10)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">10 / 15</span><div class="q-line"></div><span class="q-tag">Awareness</span></div>
@@ -610,7 +677,6 @@
     <button class="btn-next" id="nx-q10" onclick="goNext(11)">Next →</button>
   </div>
 
-  <!-- ═══ Q11 ═══ -->
   <div class="screen" id="s-q11">
     <button class="back-btn" onclick="goBack(11)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">11 / 15</span><div class="q-line"></div><span class="q-tag">Nervous System</span></div>
@@ -625,7 +691,6 @@
     <button class="btn-next" id="nx-q11" onclick="goNext(12)">Next →</button>
   </div>
 
-  <!-- ═══ Q12 ═══ -->
   <div class="screen" id="s-q12">
     <button class="back-btn" onclick="goBack(12)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">12 / 15</span><div class="q-line"></div><span class="q-tag">The Object</span></div>
@@ -644,7 +709,6 @@
     <button class="btn-next" id="nx-q12" onclick="goNext(13)">Next →</button>
   </div>
 
-  <!-- ═══ Q13 ═══ -->
   <div class="screen" id="s-q13">
     <button class="back-btn" onclick="goBack(13)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">13 / 15</span><div class="q-line"></div><span class="q-tag">Vision</span></div>
@@ -659,7 +723,6 @@
     <button class="btn-next" id="nx-q13" onclick="goNext(14)">Next →</button>
   </div>
 
-  <!-- ═══ Q14 ═══ -->
   <div class="screen" id="s-q14">
     <button class="back-btn" onclick="goBack(14)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">14 / 15</span><div class="q-line"></div><span class="q-tag">Readiness</span></div>
@@ -674,7 +737,6 @@
     <button class="btn-next" id="nx-q14" onclick="goNext(15)">Next →</button>
   </div>
 
-  <!-- ═══ Q15 ═══ -->
   <div class="screen" id="s-q15">
     <button class="back-btn" onclick="goBack(15)">← Back</button>
     <div class="q-eyebrow"><span class="q-number">15 / 15</span><div class="q-line"></div><span class="q-tag">The Feeling</span></div>
@@ -716,18 +778,15 @@
     <div class="result-sub">Morning Ritual &nbsp;·&nbsp; Nervous System &nbsp;·&nbsp; Intention Setting</div>
     <div class="result-rule"></div>
     <p class="result-desc">Your answers paint a clear picture: your days are starting before you're ready for them. The world pulls you into reaction mode before you've had a single moment to arrive in yourself. Your energy is borrowed — built on caffeine and willpower rather than genuine restoration. The Energized Mornings ritual was designed exactly for this. It creates a protected, beautiful window at the start of every day: a space to ground your nervous system, move your body with intention, and decide how you want to feel before anyone else gets to decide for you. This is not about discipline. It's about design.</p>
-    <div class="pillars">
-      <span class="pill">Regulate</span>
-      <span class="pill">Move</span>
-      <span class="pill">Expand</span>
-    </div>
+    <div id="pillarGraphicA" class="pillar-graphic"></div>
     <div class="method-box">
       <div class="method-heading">The Marmaroph Method™ — How Your Ritual Works</div>
       <div class="method-steps">
-        <div class="m-step"><span class="m-icon">🪴</span><div><span class="m-label">Space</span><span class="m-desc">Design your sunrise corner — a calm zone your nervous system learns to trust every morning.</span></div></div>
-        <div class="m-step"><span class="m-icon">🌬</span><div><span class="m-label">Ground</span><span class="m-desc">A short breathwork sequence to shift your body out of survival mode and into presence.</span></div></div>
-        <div class="m-step"><span class="m-icon">🧘</span><div><span class="m-label">Symbolism</span><span class="m-desc">Your personalised yoga mat — customised with your name or mantra — becomes a daily anchor. Every time you step on it, you remind yourself: this time is mine.</span></div></div>
-        <div class="m-step"><span class="m-icon">✨</span><div><span class="m-label">Sense + Seed</span><span class="m-desc">Guided movement, meditation audio, and a morning intention to plant the energy you want to carry through the day.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></span><div><span class="m-label">Space</span><span class="m-desc">Design your sunrise corner — a calm zone your nervous system learns to trust every morning.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8c3-3 6-3 9 0s6 3 9 0"/><path d="M3 14c3-3 6-3 9 0s6 3 9 0"/><path d="M3 20c3-3 6-3 9 0s6 3 9 0"/></svg></span><div><span class="m-label">Ground</span><span class="m-desc">A short breathwork sequence to shift your body out of survival mode and into presence.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span><div><span class="m-label">Symbolism</span><span class="m-desc">Your personalised yoga mat — customised with your name or mantra — becomes a daily anchor. Every time you step on it, you remind yourself: this time is mine.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></span><div><span class="m-label">Sense</span><span class="m-desc">Guided movement, meditation audio and sensory cues to anchor the ritual in your body.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c0-6 6-8 6-14a6 6 0 0 0-12 0c0 6 6 8 6 14z"/><path d="M12 22c0-3-2-4.5-2-7a2 2 0 0 1 4 0c0 2.5-2 4-2 7z"/></svg></span><div><span class="m-label">Seed</span><span class="m-desc">A morning intention to plant the energy you want to carry through the day.</span></div></div>
       </div>
     </div>
     <div class="result-cta">
@@ -743,18 +802,15 @@
     <div class="result-sub">Nourishment Ritual &nbsp;·&nbsp; Body Trust &nbsp;·&nbsp; Sacred Presence</div>
     <div class="result-rule"></div>
     <p class="result-desc">Your answers reveal a relationship with food that has become something to manage rather than something to enjoy. Whether it's guilt, rushing, eating on autopilot or simply never sitting down for a real meal — your body is asking for something you haven't given it yet: presence. The Mindful Eating ritual doesn't give you another diet. It gives you a beautiful eating sanctuary, a ritual of breathing before you begin, and a Healthy Plate custom-made with your name — a daily, tangible reminder that nourishing yourself is an act of self-love, not a reward for being good enough. Every bite becomes a healing conversation with your body.</p>
-    <div class="pillars">
-      <span class="pill">Nourish</span>
-      <span class="pill">Regulate</span>
-      <span class="pill">Connect</span>
-    </div>
+    <div id="pillarGraphicM" class="pillar-graphic"></div>
     <div class="method-box">
       <div class="method-heading">The Marmaroph Method™ — How Your Ritual Works</div>
       <div class="method-steps">
-        <div class="m-step"><span class="m-icon">🕯</span><div><span class="m-label">Space</span><span class="m-desc">Design a calm, intentional eating sanctuary using interior design and Feng Shui principles — your dining space becomes a place of restoration, not rush.</span></div></div>
-        <div class="m-step"><span class="m-icon">🌬</span><div><span class="m-label">Ground</span><span class="m-desc">Three breaths before every meal to activate rest-and-digest mode. Eating in a stressed body is not nourishment — it's just consumption.</span></div></div>
-        <div class="m-step"><span class="m-icon">🍽</span><div><span class="m-label">Symbolism</span><span class="m-desc">Your custom Healthy Plate — made from Premium Bone China and personalised with your name or mantra — visually guides balanced eating without counting a single calorie.</span></div></div>
-        <div class="m-step"><span class="m-icon">💚</span><div><span class="m-label">Sense + Seed</span><span class="m-desc">Mindful eating meditation, curated playlists, a 30-day challenge and reflection prompts to rewire the guilt cycle — meal by meal.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></span><div><span class="m-label">Space</span><span class="m-desc">Design a calm, intentional eating sanctuary using interior design and Feng Shui principles — your dining space becomes a place of restoration, not rush.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8c3-3 6-3 9 0s6 3 9 0"/><path d="M3 14c3-3 6-3 9 0s6 3 9 0"/><path d="M3 20c3-3 6-3 9 0s6 3 9 0"/></svg></span><div><span class="m-label">Ground</span><span class="m-desc">Three breaths before every meal to activate rest-and-digest mode. Eating in a stressed body is not nourishment — it's just consumption.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span><div><span class="m-label">Symbolism</span><span class="m-desc">Your custom Healthy Plate — made from Premium Bone China and personalised with your name or mantra — visually guides balanced eating without counting a single calorie.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></span><div><span class="m-label">Sense</span><span class="m-desc">Mindful eating meditation, curated playlists and sensory cues to reconnect you with each meal.</span></div></div>
+        <div class="m-step"><span class="m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#88c4db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c0-6 6-8 6-14a6 6 0 0 0-12 0c0 6 6 8 6 14z"/><path d="M12 22c0-3-2-4.5-2-7a2 2 0 0 1 4 0c0 2.5-2 4-2 7z"/></svg></span><div><span class="m-label">Seed</span><span class="m-desc">A 30-day challenge and reflection prompts to rewire the guilt cycle — meal by meal.</span></div></div>
       </div>
     </div>
     <div class="result-cta">
@@ -763,76 +819,57 @@
     </div>
   </div>
 
-  <!-- ═══ RESULT B — SACRED CONNECTION (coming soon) ═══ -->
-  <div class="screen" id="s-result-B">
-    <div class="result-ribbon"><div class="ribbon-dot"></div><span class="ribbon-text">Your Ritual Match</span></div>
-    <h2 class="result-title"><em>Sacred</em><strong>Connection</strong></h2>
-    <div class="result-sub">Couple's Ritual &nbsp;·&nbsp; Emotional Intimacy &nbsp;·&nbsp; Shared Presence</div>
-    <div class="result-rule"></div>
-    <p class="result-desc">Your answers reveal something quietly important: you and your partner are sharing a home but not always sharing a moment. The daily busyness has slowly created distance, and you've noticed. You miss the closeness. The Sacred Connection ritual is built to give couples a protected evening space — free of devices, full of presence — to rediscover each other through shared rituals, meaningful conversation and a home environment designed to invite intimacy. Your home can be the bridge back to each other.</p>
-    <div class="pillars">
-      <span class="pill">Connect</span>
-      <span class="pill">Regulate</span>
-      <span class="pill">Integrate</span>
-    </div>
-    <div class="coming-soon-box">
-      <h4>🌙 This ritual is launching very soon</h4>
-      <p style="font-size:13px;font-weight:300;color:var(--text-mid);line-height:1.7;margin-bottom:16px;">
-        The Sacred Connection ritual — with custom personalised velvet throw pillows, a HeartSync couples game, guided reconnection audio and an evening sanctuary design guide — is almost ready. We'll send it directly to your inbox the moment it launches.
-      </p>
-      <p style="font-size:12px;font-weight:500;color:var(--emerald);">You're already on the list. ✓</p>
-    </div>
-    <div class="result-cta">
-      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessthemes/sacred-connection-wellness-theme','_blank')">Preview Sacred Connection →</button>
-      <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
-    </div>
-  </div>
-
-  <!-- ═══ RESULT N — ALREADY THRIVING ═══ -->
-  <div class="screen" id="s-result-N">
-    <div class="result-ribbon"><div class="ribbon-dot"></div><span class="ribbon-text">Your Result</span></div>
-    <h2 class="result-title"><em>You're Already</em><strong>Thriving</strong></h2>
-    <div class="result-sub">Awareness &nbsp;·&nbsp; Integration &nbsp;·&nbsp; Expansion</div>
-    <div class="result-rule"></div>
-    <p class="result-desc">Your answers show something genuinely rare: you are already living with intention. Your home supports you. Your body feels heard. Your daily patterns are working. This is not a small thing — most people are not here yet. You don't need a ritual to fix something. But you might be exactly the person who would appreciate one to go deeper. Marmaroph's rituals are not only for those who are struggling — they're for women who already understand that the environment shapes the life, and want to keep building consciously.</p>
-    <div class="pillars">
-      <span class="pill">Integrate</span>
-      <span class="pill">Expand</span>
-      <span class="pill">Purpose</span>
-    </div>
-    <div class="coming-soon-box">
-      <h4>✨ More rituals are coming — and they're for women like you</h4>
-      <div class="ritual-preview">
-        <div class="ritual-tag"><div class="ritual-tag-dot"></div><span><strong>Sacred Connection</strong> — Rebuild emotional intimacy with your partner through a shared evening ritual</span></div>
-        <div class="ritual-tag"><div class="ritual-tag-dot"></div><span><strong>I'm Enough</strong> — A ritual to reconnect with your self-worth and the version of you becoming</span></div>
-        <div class="ritual-tag"><div class="ritual-tag-dot"></div><span><strong>Sanctuary Protection</strong> — Clear the energy of your home and create a space that only lets goodness in</span></div>
-      </div>
-      <p style="font-size:12px;font-weight:300;color:var(--text-soft);margin-top:14px;line-height:1.6;">We'll let you know the moment any of these land. You're already on the list.</p>
-    </div>
-    <div class="result-cta">
-      <button class="btn-primary" onclick="window.open('https://www.marmaroph.com/homewellnessrituals','_blank')">Explore All Rituals →</button>
-      <button class="btn-retake" onclick="retake()">Retake the Quiz</button>
-    </div>
-  </div>
 
 </div><!-- /card -->
 
 <script>
-  const TOTAL = 15;
-  const scores = { A: 0, M: 0, B: 0, N: 0 };
-  const answers = {};
+  /* ── SHOOTING STARS ── */
+  (function(){
+    var field = document.getElementById('starField');
+    var _id = 0;
+    function spawnStar(){
+      var star = document.createElement('div');
+      star.className = 'sstar';
+      var dir = Math.floor(Math.random()*4);
+      var x, y, dx, dy;
+      if(dir===0){ x=Math.random()*80; y=Math.random()*40; dx=120+Math.random()*180; dy=60+Math.random()*100; }
+      else if(dir===1){ x=30+Math.random()*70; y=Math.random()*30; dx=-(120+Math.random()*180); dy=60+Math.random()*100; }
+      else if(dir===2){ x=Math.random()*100; y=Math.random()*20; dx=-(40+Math.random()*100); dy=120+Math.random()*100; }
+      else{ x=60+Math.random()*40; y=Math.random()*50; dx=-(180+Math.random()*120); dy=30+Math.random()*60; }
+      var dur = 0.6 + Math.random()*1.2;
+      var id = 'ss'+(_id++);
+      star.style.left = x+'%';
+      star.style.top = y+'%';
+      var kf = '@keyframes '+id+'{0%{opacity:0;transform:translate(0,0)}8%{opacity:0.7}70%{opacity:0.4}100%{opacity:0;transform:translate('+dx+'px,'+dy+'px)}}';
+      var angle = Math.atan2(dy,dx)*180/Math.PI;
+      var trail = document.createElement('div');
+      trail.style.cssText='position:absolute;top:0;left:0;width:40px;height:1px;background:linear-gradient(90deg,rgba(136,196,219,0.35),transparent);transform-origin:0 50%;transform:rotate('+(angle+180)+'deg);pointer-events:none';
+      star.appendChild(trail);
+      var st = document.createElement('style'); st.textContent = kf; document.head.appendChild(st);
+      star.style.animation = id+' '+dur+'s linear forwards';
+      field.appendChild(star);
+      setTimeout(function(){ star.remove(); st.remove(); }, dur*1000+200);
+    }
+    function loop(){
+      spawnStar();
+      setTimeout(loop, 2000 + Math.random()*4000);
+    }
+    setTimeout(loop, 1000);
+  })();
+
+  /* ── QUIZ LOGIC ── */
+  var TOTAL = 15;
+  var scores = { A: 0, M: 0, B: 0, N: 0 };
+  var answers = {};
 
   function show(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
     document.getElementById(id).classList.add('active');
-    // Scroll the card container, not window — avoids freezing Wix page scroll
-    try {
-      document.querySelector('.card').scrollIntoView({ block: 'start', behavior: 'instant' });
-    } catch(e) {}
+    try { document.querySelector('.card').scrollIntoView({ block: 'start', behavior: 'instant' }); } catch(e) {}
   }
 
   function setProgress(q) {
-    const pct = Math.round((q / TOTAL) * 100);
+    var pct = Math.round((q / TOTAL) * 100);
     document.getElementById('progressBar').style.width = pct + '%';
     document.getElementById('pctText').textContent = pct + '%';
   }
@@ -844,7 +881,7 @@
   }
 
   function pick(q, type, el) {
-    document.getElementById('o-' + q).querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+    document.getElementById('o-' + q).querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
     el.classList.add('selected');
     answers[q] = type;
     document.getElementById('nx-' + q).classList.add('on');
@@ -877,89 +914,159 @@
 
   function calcScores() {
     scores.A = 0; scores.M = 0; scores.B = 0; scores.N = 0;
-    Object.values(answers).forEach(v => { if (v in scores) scores[v]++; });
+    Object.values(answers).forEach(function(v){ if (v in scores) scores[v]++; });
   }
 
   function checkForm() {
-    const name    = document.getElementById('fName').value.trim();
-    const email   = document.getElementById('fEmail').value.trim();
-    const consent = document.getElementById('fConsent').checked;
-    const valid   = name.length > 0 && email.includes('@') && consent;
-    const btn = document.getElementById('btnReveal');
+    var name    = document.getElementById('fName').value.trim();
+    var email   = document.getElementById('fEmail').value.trim();
+    var consent = document.getElementById('fConsent').checked;
+    var valid   = name.length > 0 && email.includes('@') && consent;
+    var btn = document.getElementById('btnReveal');
     if (valid) btn.classList.add('on'); else btn.classList.remove('on');
   }
 
   function sendToWixCRM(name, email, ritualLabel) {
-    const WIX_API_KEY = "IST.eyJraWQiOiJQb3pIX2FDMiIsImFsZyI6IlJTMjU2In0.eyJkYXRhIjoie1wiaWRcIjpcIjViMzY0Zjk0LWIyZjYtNDA0Ni05MmJiLWVmZTIzMjcwM2EwMlwiLFwiaWRlbnRpdHlcIjp7XCJ0eXBlXCI6XCJhcHBsaWNhdGlvblwiLFwiaWRcIjpcIjUxMzJmZjUyLTBhNjItNDE2Ny1hMTBhLTRlODk3Y2FiZmU1N1wifSxcInRlbmFudFwiOntcInR5cGVcIjpcImFjY291bnRcIixcImlkXCI6XCIwMDIyOGU4Yi1iN2VlLTRmOGYtODI1Mi1hNDM3NGUyOWI4NDRcIn19IiwiaWF0IjoxNzczMzg3OTE2fQ.WVE6OYcugbx4bV33WVArDNBRV2WcVX-O5_lYG-6z99jLoyMiDNJg8sujDPTl8L1C_CoY1y7Wst1NL3-W8NG8uDxsrgUfxkaf28l_4t5Fs7CZQFCWZGo6l-bQfoSwDKoXswHqanfT2WdH-D_903AhxiA7WhJ6QpSttbSQO5_8i8MBD3NtuO9xHKFl0NvZp2yaQKJcc_iLLZnZBhpn33gKnjO0fzardHhSYOjS0_RLPIU5MaGFoYlx8wbUxih5Bh9rrydYWDaTwm1MaJyLoSTERwtW8MfvRlIsdqrovyx3DvzKTi0J3_JTJwEClSzE9rR5X9hLmMrpK_gpYoT9azVJNA";
-    const SITE_ID = "ae0d6059-3fb7-4441-a5f1-8426358c7c0d";
-    const [firstName, ...rest] = name.trim().split(' ');
-    const lastName = rest.join(' ') || '';
+    var WIX_API_KEY = "IST.eyJraWQiOiJQb3pIX2FDMiIsImFsZyI6IlJTMjU2In0.eyJkYXRhIjoie1wiaWRcIjpcIjViMzY0Zjk0LWIyZjYtNDA0Ni05MmJiLWVmZTIzMjcwM2EwMlwiLFwiaWRlbnRpdHlcIjp7XCJ0eXBlXCI6XCJhcHBsaWNhdGlvblwiLFwiaWRcIjpcIjUxMzJmZjUyLTBhNjItNDE2Ny1hMTBhLTRlODk3Y2FiZmU1N1wifSxcInRlbmFudFwiOntcInR5cGVcIjpcImFjY291bnRcIixcImlkXCI6XCIwMDIyOGU4Yi1iN2VlLTRmOGYtODI1Mi1hNDM3NGUyOWI4NDRcIn19IiwiaWF0IjoxNzczMzg3OTE2fQ.WVE6OYcugbx4bV33WVArDNBRV2WcVX-O5_lYG-6z99jLoyMiDNJg8sujDPTl8L1C_CoY1y7Wst1NL3-W8NG8uDxsrgUfxkaf28l_4t5Fs7CZQFCWZGo6l-bQfoSwDKoXswHqanfT2WdH-D_903AhxiA7WhJ6QpSttbSQO5_8i8MBD3NtuO9xHKFl0NvZp2yaQKJcc_iLLZnZBhpn33gKnjO0fzardHhSYOjS0_RLPIU5MaGFoYlx8wbUxih5Bh9rrydYWDaTwm1MaJyLoSTERwtW8MfvRlIsdqrovyx3DvzKTi0J3_JTJwEClSzE9rR5X9hLmMrpK_gpYoT9azVJNA";
+    var SITE_ID = "ae0d6059-3fb7-4441-a5f1-8426358c7c0d";
+    var parts = name.trim().split(' ');
+    var firstName = parts[0];
+    var lastName = parts.slice(1).join(' ') || '';
     try {
       fetch('https://www.wixapis.com/contacts/v4/contacts', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': WIX_API_KEY,
-          'wix-site-id': SITE_ID
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': WIX_API_KEY, 'wix-site-id': SITE_ID },
         body: JSON.stringify({
           info: {
             name: { first: firstName, last: lastName },
-            emails: { items: [{ email, tag: 'MAIN' }] },
-            extendedFields: {
-              items: {
-                'custom.ritual': ritualLabel,
-                'custom.quiz-source': 'Home Wellness Quiz'
-              }
-            }
+            emails: { items: [{ email: email, tag: 'MAIN' }] },
+            extendedFields: { items: { 'custom.ritual': ritualLabel, 'custom.quiz-source': 'Home Wellness Quiz' } }
           }
         })
       });
-    } catch (err) {
-      console.error('Wix CRM error:', err);
+    } catch (err) { console.error('Wix CRM error:', err); }
+  }
+
+  /* ── PILLAR WELLNESS GRAPHIC ── */
+  var PILLARS = [
+    { key:'nourishment', label:'Nourishment', color:'#88c4db' },
+    { key:'purpose',     label:'Purpose',     color:'#b08fd4' },
+    { key:'regulate',    label:'Regulate',    color:'#e8a86d' },
+    { key:'movement',    label:'Movement',    color:'#6ec89b' },
+    { key:'connection',  label:'Connection',  color:'#d4849a' }
+  ];
+
+  function calcPillarScores() {
+    // Map answer types to pillar weakness
+    // A = mornings/energy → regulate & movement weak
+    // M = food/eating → nourishment weak
+    // B = partner/connection → connection weak
+    // N = neutral, all good
+    var base = 85; // baseline wellness
+    var penalty = 8; // per answer of that type
+    var p = {
+      nourishment: base - scores.M * penalty + scores.N * 2,
+      purpose:     base - Math.floor((scores.A + scores.M + scores.B) * 2) + scores.N * 3,
+      regulate:    base - scores.A * penalty + scores.N * 2,
+      movement:    base - scores.A * (penalty - 2) - scores.M * 2 + scores.N * 2,
+      connection:  base - scores.B * penalty + scores.N * 2
+    };
+    // Clamp 15–100
+    Object.keys(p).forEach(function(k){ p[k] = Math.max(15, Math.min(100, p[k])); });
+    return p;
+  }
+
+  function renderPillars(containerId) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    var ps = calcPillarScores();
+    var sorted = PILLARS.slice().sort(function(a,b){ return ps[a.key] - ps[b.key]; });
+    var lowest = sorted[0].key;
+    var secondLowest = sorted[1].key;
+
+    // Pentagon wheel
+    var cx = 150, cy = 140, R = 100;
+    var n = 5;
+    // Angles: start from top (-90deg), go clockwise
+    function angle(i) { return (Math.PI * 2 * i / n) - Math.PI / 2; }
+    function pt(i, r) {
+      return [(cx + r * Math.cos(angle(i))).toFixed(1), (cy + r * Math.sin(angle(i))).toFixed(1)];
     }
+
+    // Grid rings at 25%, 50%, 75%, 100%
+    var rings = '';
+    [0.25, 0.5, 0.75, 1].forEach(function(f) {
+      var pts = [];
+      for (var i = 0; i < n; i++) pts.push(pt(i, R * f).join(','));
+      rings += '<polygon points="' + pts.join(' ') + '" fill="none" stroke="rgba(4,65,71,0.06)" stroke-width="0.8"/>';
+    });
+
+    // Axis lines
+    var axes = '';
+    for (var i = 0; i < n; i++) {
+      var p = pt(i, R);
+      axes += '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0] + '" y2="' + p[1] + '" stroke="rgba(4,65,71,0.06)" stroke-width="0.8"/>';
+    }
+
+    // Data polygon
+    var dataPoints = [];
+    var dots = '';
+    PILLARS.forEach(function(p, i) {
+      var val = ps[p.key] / 100;
+      var dp = pt(i, R * val);
+      dataPoints.push(dp.join(','));
+      var needsAttention = (p.key === lowest || p.key === secondLowest) && ps[p.key] < 70;
+      var dotR = needsAttention ? 5 : 3.5;
+      dots += '<circle cx="' + dp[0] + '" cy="' + dp[1] + '" r="' + dotR + '" fill="' + p.color + '" stroke="#fff" stroke-width="1.5"/>';
+    });
+
+    // Labels
+    var labels = '';
+    var labelR = R + 22;
+    PILLARS.forEach(function(p, i) {
+      var lp = pt(i, labelR);
+      var anchor = 'middle';
+      var dx = parseFloat(lp[0]) - cx;
+      if (dx > 5) anchor = 'start';
+      else if (dx < -5) anchor = 'end';
+      var val = ps[p.key];
+      var needsAttention = (p.key === lowest || p.key === secondLowest) && val < 70;
+      labels += '<text x="' + lp[0] + '" y="' + lp[1] + '" text-anchor="' + anchor + '" dominant-baseline="middle" fill="' + p.color + '" font-size="9" font-weight="600" letter-spacing="0.05em">' + p.label.toUpperCase() + '</text>';
+      labels += '<text x="' + lp[0] + '" y="' + (parseFloat(lp[1]) + 12) + '" text-anchor="' + anchor + '" dominant-baseline="middle" fill="' + (needsAttention ? '#e8a86d' : p.color) + '" font-size="8" font-weight="' + (needsAttention ? '700' : '400') + '">' + val + '%' + (needsAttention ? ' needs attention' : '') + '</text>';
+    });
+
+    var svg = '<svg viewBox="0 0 300 290" width="300" height="290" xmlns="http://www.w3.org/2000/svg">'
+      + rings + axes
+      + '<polygon points="' + dataPoints.join(' ') + '" fill="rgba(136,196,219,0.15)" stroke="rgba(136,196,219,0.6)" stroke-width="1.5"/>'
+      + dots + labels
+      + '</svg>';
+
+    container.innerHTML = '<div class="pillar-graphic-title">Your Wellness Pillars</div>'
+      + '<div class="pillar-wheel-wrap">' + svg + '</div>';
   }
 
   function reveal() {
-    const name  = document.getElementById('fName').value.trim();
-    const email = document.getElementById('fEmail').value.trim();
+    var name  = document.getElementById('fName').value.trim();
+    var email = document.getElementById('fEmail').value.trim();
     calcScores();
 
-    // Determine winner
-    let ritual = 'N';
-    const maxScore = Math.max(scores.A, scores.M, scores.B, scores.N);
-    // N only wins if it's the clear majority (more than A+M+B combined could suggest)
-    // If N ties with another, go with the non-N result
-    if (scores.N === maxScore && scores.A === 0 && scores.M === 0 && scores.B === 0) {
-      ritual = 'N';
-    } else {
-      // Find highest non-N score
-      const primary = { A: scores.A, M: scores.M, B: scores.B };
-      const topNonN = Object.entries(primary).sort((a,b) => b[1]-a[1])[0];
-      if (scores.N > topNonN[1] * 1.5) {
-        // N dominates heavily — truly thriving
-        ritual = 'N';
-      } else {
-        ritual = topNonN[0];
-      }
-    }
+    // Only two active rituals: A (Energized Mornings) and M (Mindful Eating)
+    // B and N answers count toward the closest available ritual
+    var aScore = scores.A + Math.floor(scores.B * 0.5) + Math.floor(scores.N * 0.3);
+    var mScore = scores.M + Math.ceil(scores.B * 0.5) + Math.ceil(scores.N * 0.7);
+    var ritual = aScore >= mScore ? 'A' : 'M';
 
-    const labels = {
-      A: 'Energized Mornings',
-      M: 'Mindful Eating',
-      B: 'Sacred Connection',
-      N: 'Thriving — Already Well'
-    };
-
-    sendToWixCRM(name, email, labels[ritual]); // fire-and-forget
+    var labels = { A: 'Energized Mornings', M: 'Mindful Eating' };
+    sendToWixCRM(name, email, labels[ritual]);
     show('s-result-' + ritual);
+    renderPillars('pillarGraphic' + ritual);
   }
 
   function retake() {
     scores.A = 0; scores.M = 0; scores.B = 0; scores.N = 0;
-    Object.keys(answers).forEach(k => delete answers[k]);
-    document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
-    document.querySelectorAll('.btn-next').forEach(b => b.classList.remove('on'));
+    Object.keys(answers).forEach(function(k){ delete answers[k]; });
+    document.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
+    document.querySelectorAll('.btn-next').forEach(function(b){ b.classList.remove('on'); });
     document.getElementById('fName').value = '';
     document.getElementById('fEmail').value = '';
     document.getElementById('fConsent').checked = false;
@@ -967,6 +1074,109 @@
     document.getElementById('progressWrap').style.display = 'none';
     show('s-intro');
   }
+
+  /* ── AMBIENT CALMING SOUND ── */
+  var ambientCtx = null;
+  var ambientGain = null;
+  var ambientPlaying = false;
+  var ambientStarted = false;
+
+  function createAmbient() {
+    try {
+      ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
+      ambientGain = ambientCtx.createGain();
+      ambientGain.gain.value = 0;
+      ambientGain.connect(ambientCtx.destination);
+
+      // Warm pad: 3 detuned oscillators for a soft, dreamy chord
+      var notes = [174.61, 220, 261.63]; // F3, A3, C4 (F major)
+      var oscs = [];
+      notes.forEach(function(freq, idx) {
+        // Main tone
+        var osc = ambientCtx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        var g = ambientCtx.createGain();
+        g.gain.value = 0.012;
+        osc.connect(g);
+        g.connect(ambientGain);
+        osc.start();
+        oscs.push(osc);
+
+        // Slightly detuned copy for warmth
+        var osc2 = ambientCtx.createOscillator();
+        osc2.type = 'sine';
+        osc2.frequency.value = freq * 1.003;
+        var g2 = ambientCtx.createGain();
+        g2.gain.value = 0.008;
+        osc2.connect(g2);
+        g2.connect(ambientGain);
+        osc2.start();
+        oscs.push(osc2);
+      });
+
+      // Soft filtered noise layer for atmosphere
+      var bufSize = ambientCtx.sampleRate * 2;
+      var buf = ambientCtx.createBuffer(1, bufSize, ambientCtx.sampleRate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+      var noise = ambientCtx.createBufferSource();
+      noise.buffer = buf;
+      noise.loop = true;
+      var noiseFilter = ambientCtx.createBiquadFilter();
+      noiseFilter.type = 'lowpass';
+      noiseFilter.frequency.value = 300;
+      noiseFilter.Q.value = 0.5;
+      var noiseGain = ambientCtx.createGain();
+      noiseGain.gain.value = 0.015;
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(ambientGain);
+      noise.start();
+
+      // Gentle LFO on noise filter for movement
+      var lfo = ambientCtx.createOscillator();
+      lfo.type = 'sine';
+      lfo.frequency.value = 0.08;
+      var lfoGain = ambientCtx.createGain();
+      lfoGain.gain.value = 100;
+      lfo.connect(lfoGain);
+      lfoGain.connect(noiseFilter.frequency);
+      lfo.start();
+
+      ambientStarted = true;
+    } catch(e) { console.log('Ambient sound not supported'); }
+  }
+
+  function toggleSound() {
+    if (!ambientStarted) {
+      createAmbient();
+      if (!ambientCtx) return;
+    }
+    if (ambientCtx.state === 'suspended') ambientCtx.resume();
+
+    ambientPlaying = !ambientPlaying;
+    var now = ambientCtx.currentTime;
+    if (ambientPlaying) {
+      ambientGain.gain.cancelScheduledValues(now);
+      ambientGain.gain.setValueAtTime(ambientGain.gain.value, now);
+      ambientGain.gain.linearRampToValueAtTime(1, now + 2);
+    } else {
+      ambientGain.gain.cancelScheduledValues(now);
+      ambientGain.gain.setValueAtTime(ambientGain.gain.value, now);
+      ambientGain.gain.linearRampToValueAtTime(0, now + 1);
+    }
+
+    // Update icon
+    document.getElementById('soundWave1').style.opacity = ambientPlaying ? '1' : '0.3';
+    document.getElementById('soundWave2').style.opacity = ambientPlaying ? '1' : '0.3';
+    document.getElementById('mutedLine').setAttribute('opacity', ambientPlaying ? '0' : '1');
+  }
+
+  // Start with muted appearance
+  document.getElementById('soundWave1').style.opacity = '0.3';
+  document.getElementById('soundWave2').style.opacity = '0.3';
+  document.getElementById('mutedLine').setAttribute('opacity', '1');
 </script>
 </body>
 </html>
