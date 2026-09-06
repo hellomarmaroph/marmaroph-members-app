@@ -804,7 +804,7 @@
         <img class="addon-img" id="addonImg" src="" alt="Anchor Object"/>
         <div class="addon-info">
           <div class="addon-label" id="addonLabel"></div>
-          <div class="addon-sublabel">One-time purchase &#8226; ships to USA only</div>
+          <div class="addon-sublabel">One-time purchase &#8226; ships to USA only &#127482;&#127480;</div>
         </div>
         <div class="addon-price" id="addonPrice"></div>
         <div class="toggle-switch"></div>
@@ -871,7 +871,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">Country</label>
-        <select class="form-input" id="clientCountry">
+        <select class="form-input" id="clientCountry" onchange="onCountryChange()">
           <option value="">Select your country</option>
           <option value="US">United States</option>
           <option value="CA">Canada</option>
@@ -1531,6 +1531,50 @@ function toggleWhatsappOptIn() {
   selections.whatsappOptIn = toggle.classList.contains('active');
 }
 
+function onCountryChange() {
+  var country = document.getElementById('clientCountry').value;
+  selections.clientCountry = country;
+  var addressFields = document.getElementById('addressFields');
+  var addonSection = document.querySelector('.addon-section');
+  var nonUsNote = document.getElementById('nonUsAnchorNote');
+
+  if (country && country !== 'US') {
+    // Non-US: disable anchor object, hide address fields
+    if (selections.addProduct) {
+      // Turn off the addon
+      var toggle = document.getElementById('addonToggle');
+      toggle.classList.remove('active');
+      selections.addProduct = false;
+      document.getElementById('addonDetails').classList.remove('visible');
+      selections.collection = '';
+      selections.collectionName = '';
+      updatePriceDisplay();
+    }
+    addressFields.style.display = 'none';
+    document.getElementById('step1Title').textContent = 'Your Details';
+    document.getElementById('step1Desc').textContent = 'Enter your details to set up your subscription';
+    // Show a note if not already there
+    if (!nonUsNote) {
+      var note = document.createElement('div');
+      note.id = 'nonUsAnchorNote';
+      note.style.cssText = 'background:rgba(4,65,71,0.04);border:1px solid rgba(4,65,71,0.1);border-radius:10px;padding:14px 18px;margin-top:12px;font-size:12px;color:rgba(4,65,71,0.6);line-height:1.6;text-align:center';
+      note.innerHTML = '&#127758; The anchor object (physical product) is currently available for shipping within the <strong>United States only</strong>. Your digital ritual subscription works worldwide!';
+      addressFields.parentNode.insertBefore(note, addressFields);
+    } else {
+      nonUsNote.style.display = 'block';
+    }
+  } else if (country === 'US') {
+    // US: show address if product selected, hide non-US note
+    if (nonUsNote) nonUsNote.style.display = 'none';
+    if (selections.addProduct) {
+      addressFields.style.display = 'block';
+      document.getElementById('step1Title').textContent = 'Shipping & Details';
+      document.getElementById('step1Desc').textContent = 'Where should we send your ' + ritualConfig.anchor.toLowerCase() + '?';
+    }
+  }
+  sendHeight();
+}
+
 function goToStep(step) {
   // Validate step 0
   if (step > 0 && selections.addProduct && !selections.collection) {
@@ -1543,10 +1587,11 @@ function goToStep(step) {
     populateSummary();
   }
 
-  // Show/hide address fields and update title based on product
+  // Show/hide address fields and update title based on product + country
   if (step === 1) {
     var addressFields = document.getElementById('addressFields');
-    if (selections.addProduct) {
+    var country = document.getElementById('clientCountry').value;
+    if (selections.addProduct && (!country || country === 'US')) {
       addressFields.style.display = 'block';
       document.getElementById('step1Title').textContent = 'Shipping & Details';
       document.getElementById('step1Desc').textContent = 'Where should we send your ' + ritualConfig.anchor.toLowerCase() + '?';
@@ -1668,6 +1713,15 @@ function submitAndCheckout() {
     btn.textContent = 'Proceed to Payment';
     btn.disabled = false;
     return;
+  }
+
+  // Safety check: anchor object only ships to USA
+  var selectedCountry = document.getElementById('clientCountry').value;
+  if (selections.addProduct && selectedCountry && selectedCountry !== 'US') {
+    selections.addProduct = false;
+    selections.collection = '';
+    selections.collectionName = '';
+    updatePriceDisplay();
   }
 
   var payload = {
