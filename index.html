@@ -1463,6 +1463,19 @@ function showLoginScreen() {
     + '<p style="margin-top:20px;font-size:10px;color:rgba(159,214,235,0.4);font-family:Montserrat,sans-serif;line-height:1.7;text-align:center;max-width:320px;margin-left:auto;margin-right:auto">If you used your Google email at checkout, tap <strong style="color:rgba(159,214,235,0.65)">Continue with Google</strong>. If you used a different email, tap <strong style="color:rgba(159,214,235,0.65)">Sign Up</strong> with the same email you entered at checkout and create a password.</p>'
     + '</div>';
   authMode = 'login';
+  // Pre-fill email if coming from checkout
+  try {
+    var pendingRaw = localStorage.getItem('marmaroph_checkout_pending');
+    if (pendingRaw) {
+      var pending = JSON.parse(pendingRaw);
+      if (pending && pending.email) {
+        setTimeout(function() {
+          var emailField = document.getElementById('authEmail');
+          if (emailField && !emailField.value) emailField.value = pending.email;
+        }, 100);
+      }
+    }
+  } catch(e) {}
   // Render cosmos on the login canvas
   setTimeout(renderLoginCosmos, 50);
 }
@@ -1630,6 +1643,19 @@ function doAuth() {
         photo: res.data.photo || '',
         slug: res.data.slug || ''
       };
+      // Restore checkout info if user just came from Stripe payment
+      try {
+        var pendingRaw = localStorage.getItem('marmaroph_checkout_pending');
+        if (pendingRaw) {
+          var pending = JSON.parse(pendingRaw);
+          // Only use if recent (within 1 hour)
+          if (pending && pending.ts && (Date.now() - pending.ts) < 3600000) {
+            memberData.checkoutSuccess = 'true';
+            memberData.checkoutRitual = pending.ritual || '';
+          }
+          localStorage.removeItem('marmaroph_checkout_pending');
+        }
+      } catch(e) {}
       saveMemberData();
       initApp();
     })
@@ -2486,6 +2512,10 @@ function showSubscribeBanner() {
 }
 
 function showPostCheckoutWelcome(email, ritual) {
+  // Store checkout info so it persists through signup/login
+  try {
+    localStorage.setItem('marmaroph_checkout_pending', JSON.stringify({ email: email, ritual: ritual, ts: Date.now() }));
+  } catch(e) {}
   var loading = document.getElementById('loading');
   if (loading) loading.style.display = 'none';
   var overlay = document.createElement('div');
