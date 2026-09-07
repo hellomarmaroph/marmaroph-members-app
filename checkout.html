@@ -732,6 +732,83 @@
     margin-bottom: 8px;
   }
 
+  .promo-section {
+    margin: 18px 0 8px;
+    padding: 16px 18px;
+    background: rgba(4,65,71,0.03);
+    border: 1px solid rgba(4,65,71,0.08);
+    border-radius: 12px;
+  }
+  .promo-section label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(4,65,71,0.5);
+    margin-bottom: 8px;
+  }
+  .promo-row {
+    display: flex;
+    gap: 8px;
+  }
+  .promo-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid rgba(4,65,71,0.12);
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #044147;
+    background: #fff;
+    outline: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .promo-row input:focus { border-color: #044147; }
+  .promo-row button {
+    padding: 10px 18px;
+    background: linear-gradient(135deg,#044147,#0a6b72);
+    color: #e8f4f2;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .promo-row button:hover { opacity: 0.9; }
+  .promo-msg {
+    font-size: 11px;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .promo-msg.success { color: #2e7d32; }
+  .promo-msg.error { color: #c62828; }
+  .promo-applied {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(46,125,50,0.06);
+    border: 1px solid rgba(46,125,50,0.15);
+    border-radius: 8px;
+    font-size: 12px;
+    color: #2e7d32;
+    font-weight: 500;
+  }
+  .promo-applied .promo-remove {
+    margin-left: auto;
+    cursor: pointer;
+    font-size: 10px;
+    color: rgba(4,65,71,0.4);
+    text-decoration: underline;
+  }
+  .promo-applied .promo-remove:hover { color: #c62828; }
+  .summary-row .discount-value { color: #2e7d32; font-weight: 600; }
+
   .footer-note {
     text-align: center;
     font-family: 'Cormorant Garamond', serif;
@@ -1041,7 +1118,29 @@
       <div class="summary-total-label">Total due today</div>
       <div class="summary-total-amount" id="sumTotal"></div>
     </div>
+    <div class="summary-row" id="sumDiscountRow" style="display:none;">
+      <span class="summary-label" id="sumDiscountLabel">Discount</span>
+      <span class="summary-value discount-value" id="sumDiscount"></span>
+    </div>
+
     <div class="summary-note" id="sumNote"></div>
+
+    <div class="promo-section">
+      <label>Promo Code</label>
+      <div id="promoInputArea">
+        <div class="promo-row">
+          <input type="text" id="promoInput" placeholder="Enter code" autocomplete="off"/>
+          <button onclick="applyPromoCode()">Apply</button>
+        </div>
+      </div>
+      <div id="promoAppliedArea" style="display:none;">
+        <div class="promo-applied">
+          <span>&#10003; <strong id="promoAppliedCode"></strong> &mdash; <span id="promoAppliedDesc"></span></span>
+          <span class="promo-remove" onclick="removePromoCode()">Remove</span>
+        </div>
+      </div>
+      <div class="promo-msg" id="promoMsg"></div>
+    </div>
 
     <div class="nav-buttons" style="justify-content: flex-start;">
       <button class="btn-back" onclick="goToStep(1)">&larr; Edit Details</button>
@@ -1057,6 +1156,23 @@
 <script>
 var WIX_API = 'https://www.marmaroph.com/_functions';
 var SUBSCRIPTION_PRICE = 29;
+
+/* ── Promo code system ── */
+var PROMO_CODES = {
+  'FOUNDINGMEMBERS1': {
+    type: 'forever_free',
+    discountPercent: 100,
+    description: 'Founding member: forever free',
+    appliesTo: 'subscription'
+  },
+  'FOUNDINGMEMBERS2026': {
+    type: 'first_month_free',
+    discountPercent: 100,
+    description: 'First month free',
+    appliesTo: 'subscription'
+  }
+};
+var appliedPromo = null; // { code, type, discountPercent, description }
 var currentStep = 0;
 
 var urlParams = new URLSearchParams(window.location.search);
@@ -1322,8 +1438,14 @@ function sendHeight() {
   window.parent.postMessage({ type: 'checkoutHeight', height: h }, '*');
 }
 
+function getSubscriptionDiscount() {
+  if (!appliedPromo) return 0;
+  return SUBSCRIPTION_PRICE * (appliedPromo.discountPercent / 100);
+}
+
 function getTotal() {
-  var total = SUBSCRIPTION_PRICE;
+  var subPrice = SUBSCRIPTION_PRICE - getSubscriptionDiscount();
+  var total = subPrice;
   if (selections.addProduct) total += ritualConfig.anchorPrice;
   return total;
 }
@@ -1332,11 +1454,63 @@ function updatePriceDisplay() {
   var total = getTotal();
   document.getElementById('totalPrice').textContent = '$' + total.toFixed(2);
 
-  var breakdown = 'Subscription: $' + SUBSCRIPTION_PRICE.toFixed(2) + '/month';
+  var discount = getSubscriptionDiscount();
+  var subDisplay = discount > 0 ? '$0.00' : '$' + SUBSCRIPTION_PRICE.toFixed(2);
+  var breakdown = 'Subscription: ' + subDisplay + '/month';
+  if (appliedPromo && appliedPromo.type === 'first_month_free') {
+    breakdown = 'Subscription: $0.00 first month (then $' + SUBSCRIPTION_PRICE.toFixed(2) + '/month)';
+  } else if (appliedPromo && appliedPromo.type === 'forever_free') {
+    breakdown = 'Subscription: FREE (founding member)';
+  }
   if (selections.addProduct) {
     breakdown += ' + ' + ritualConfig.anchor + ': $' + ritualConfig.anchorPrice.toFixed(2);
   }
   document.getElementById('priceBreakdown').textContent = breakdown;
+}
+
+function applyPromoCode() {
+  var input = document.getElementById('promoInput');
+  var code = input.value.trim().toUpperCase();
+  var msgEl = document.getElementById('promoMsg');
+
+  if (!code) {
+    msgEl.className = 'promo-msg error';
+    msgEl.textContent = 'Please enter a promo code.';
+    return;
+  }
+
+  var promo = PROMO_CODES[code];
+  if (!promo) {
+    msgEl.className = 'promo-msg error';
+    msgEl.textContent = 'Invalid promo code. Please check and try again.';
+    return;
+  }
+
+  appliedPromo = { code: code, type: promo.type, discountPercent: promo.discountPercent, description: promo.description };
+  msgEl.className = 'promo-msg';
+  msgEl.textContent = '';
+
+  // Show applied state
+  document.getElementById('promoInputArea').style.display = 'none';
+  document.getElementById('promoAppliedArea').style.display = 'block';
+  document.getElementById('promoAppliedCode').textContent = code;
+  document.getElementById('promoAppliedDesc').textContent = promo.description;
+
+  // Update pricing
+  updatePriceDisplay();
+  populateSummary();
+  sendHeight();
+}
+
+function removePromoCode() {
+  appliedPromo = null;
+  document.getElementById('promoInputArea').style.display = 'block';
+  document.getElementById('promoAppliedArea').style.display = 'none';
+  document.getElementById('promoInput').value = '';
+  document.getElementById('promoMsg').textContent = '';
+  updatePriceDisplay();
+  populateSummary();
+  sendHeight();
 }
 
 /* ── Celestial background ── */
@@ -1706,8 +1880,26 @@ function populateSummary() {
     shipRow.style.display = 'none';
   }
 
+  // Discount row
+  var discountRow = document.getElementById('sumDiscountRow');
+  if (appliedPromo) {
+    discountRow.style.display = 'flex';
+    var discount = getSubscriptionDiscount();
+    document.getElementById('sumDiscountLabel').textContent = appliedPromo.description;
+    document.getElementById('sumDiscount').textContent = '-$' + discount.toFixed(2);
+  } else {
+    discountRow.style.display = 'none';
+  }
+
   // Note
-  var note = 'Subscription renews at $29/month.';
+  var note = '';
+  if (appliedPromo && appliedPromo.type === 'forever_free') {
+    note = 'Founding member: subscription is free forever.';
+  } else if (appliedPromo && appliedPromo.type === 'first_month_free') {
+    note = 'First month free. Subscription renews at $29/month after that.';
+  } else {
+    note = 'Subscription renews at $29/month.';
+  }
   if (selections.addProduct) note += ' ' + ritualConfig.anchor + ' is a one-time charge.';
   document.getElementById('sumNote').textContent = note;
 }
@@ -1739,6 +1931,35 @@ function submitAndCheckout() {
     updatePriceDisplay();
   }
 
+  // Forever-free promo: skip Stripe, go straight to success
+  if (appliedPromo && appliedPromo.type === 'forever_free' && !selections.addProduct) {
+    var successUrl = 'https://app.marmaroph.com/index.html?checkout=success&email=' + encodeURIComponent(email) + '&ritual=' + encodeURIComponent(selections.ritual);
+    // Save selections first, then redirect
+    fetch(WIX_API + '/saveCheckoutSelections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        memberId: memberId,
+        ritual: selections.ritual,
+        ritualName: selections.ritualName,
+        addProduct: false,
+        shipEmail: email,
+        shipName: selections.shipName,
+        totalAmount: 0,
+        promoCode: appliedPromo.code,
+        promoType: appliedPromo.type,
+        promoDescription: appliedPromo.description,
+        clientCountry: selections.clientCountry,
+        birthDate: selections.birthDate,
+        whatsappNumber: selections.whatsappNumber,
+        whatsappOptIn: selections.whatsappOptIn,
+        referralSource: selections.referralSource
+      })
+    }).catch(function() {});
+    window.location.href = successUrl;
+    return;
+  }
+
   var payload = {
     memberId: memberId,
     ritual: selections.ritual,
@@ -1766,7 +1987,10 @@ function submitAndCheckout() {
     whatsappNumber: selections.whatsappNumber,
     whatsappOptIn: selections.whatsappOptIn,
     clientCountry: selections.clientCountry,
-    referralSource: selections.referralSource
+    referralSource: selections.referralSource,
+    promoCode: appliedPromo ? appliedPromo.code : '',
+    promoType: appliedPromo ? appliedPromo.type : '',
+    promoDescription: appliedPromo ? appliedPromo.description : ''
   };
 
   // Save selections (non-blocking — don't let this prevent checkout)
@@ -1797,7 +2021,10 @@ function submitAndCheckout() {
       giftName: selections.giftName || '',
       giftMessage: selections.giftMessage || '',
       collectionName: selections.collectionName || '',
-      customText: selections.customText || ''
+      customText: selections.customText || '',
+      promoCode: appliedPromo ? appliedPromo.code : '',
+      promoType: appliedPromo ? appliedPromo.type : '',
+      promoDiscountPercent: appliedPromo ? appliedPromo.discountPercent : 0
     })
   })
   .then(function(r) { return r.json(); })
@@ -1844,6 +2071,15 @@ window.addEventListener('load', function() {
   if (urlWa) {
     var waField = document.getElementById('whatsappNumber');
     if (waField && !waField.value) waField.value = urlWa;
+  }
+  // Auto-apply promo code from URL parameter
+  var urlPromo = urlParams.get('promo') || urlParams.get('code') || '';
+  if (urlPromo) {
+    var promoInput = document.getElementById('promoInput');
+    if (promoInput) {
+      promoInput.value = urlPromo.toUpperCase();
+      setTimeout(function() { applyPromoCode(); }, 300);
+    }
   }
 });
 
