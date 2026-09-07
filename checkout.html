@@ -1931,35 +1931,6 @@ function submitAndCheckout() {
     updatePriceDisplay();
   }
 
-  // Forever-free promo: skip Stripe, go straight to success
-  if (appliedPromo && appliedPromo.type === 'forever_free' && !selections.addProduct) {
-    var successUrl = 'https://app.marmaroph.com/index.html?checkout=success&email=' + encodeURIComponent(email) + '&ritual=' + encodeURIComponent(selections.ritual);
-    // Save selections first, then redirect
-    fetch(WIX_API + '/saveCheckoutSelections', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        memberId: memberId,
-        ritual: selections.ritual,
-        ritualName: selections.ritualName,
-        addProduct: false,
-        shipEmail: email,
-        shipName: selections.shipName,
-        totalAmount: 0,
-        promoCode: appliedPromo.code,
-        promoType: appliedPromo.type,
-        promoDescription: appliedPromo.description,
-        clientCountry: selections.clientCountry,
-        birthDate: selections.birthDate,
-        whatsappNumber: selections.whatsappNumber,
-        whatsappOptIn: selections.whatsappOptIn,
-        referralSource: selections.referralSource
-      })
-    }).catch(function() {});
-    window.location.href = successUrl;
-    return;
-  }
-
   var payload = {
     memberId: memberId,
     ritual: selections.ritual,
