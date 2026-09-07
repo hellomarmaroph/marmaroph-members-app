@@ -1102,6 +1102,7 @@ var RITUAL_CONFIGS = {
   },
   'sacred-connection': {
     name: 'RE CONNECT : SACRED CONNECTION',
+    comingSoon: true,
     ritualSlug: 'sacred-connection',
     anchor: 'Connection Pillow Set',
     anchorPrice: 42,
@@ -1119,6 +1120,7 @@ var RITUAL_CONFIGS = {
   },
   'im-enough': {
     name: 'COMING HOME TO ME: YOU ARE ENOUGH',
+    comingSoon: true,
     ritualSlug: 'im-enough',
     anchor: 'Wall Art Frame',
     anchorPrice: 48,
@@ -1137,6 +1139,7 @@ var RITUAL_CONFIGS = {
   },
   'sanctuary-protection': {
     name: 'BAD VIBES STAY OUT: SANCTUARY PROTECTION',
+    comingSoon: true,
     ritualSlug: 'sanctuary-protection',
     anchor: 'Protection Bowl',
     anchorPrice: 38,
@@ -1287,6 +1290,18 @@ var selections = {
 
 function loadRitualConfig() {
   var config = RITUAL_CONFIGS[ritualSlug];
+  if (config && config.comingSoon) {
+    document.querySelector('.content-wrap').innerHTML =
+      '<div style="text-align:center;padding:60px 20px;max-width:440px;margin:0 auto">' +
+      '<div style="font-size:56px;margin-bottom:20px">&#10024;</div>' +
+      '<h2 style="font-family:Cormorant Garamond,serif;color:#044147;font-size:28px;font-weight:400;font-style:italic;margin-bottom:12px">' + config.name + '</h2>' +
+      '<div style="display:inline-block;padding:6px 20px;background:rgba(4,65,71,0.06);border-radius:20px;font-size:11px;font-weight:600;letter-spacing:2px;color:#044147;text-transform:uppercase;margin-bottom:24px">Coming Soon</div>' +
+      '<p style="font-family:Montserrat,sans-serif;font-size:13px;color:rgba(4,65,71,0.55);line-height:1.8;margin-bottom:28px;font-weight:300">This ritual is being carefully crafted and will be available soon. Join the waitlist to be the first to know when it launches.</p>' +
+      '<a href="https://www.marmaroph.com/homewellnessthemes" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#044147,#0a6b72);color:#e8f4f2;border-radius:12px;font-family:Montserrat,sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-decoration:none;box-shadow:0 4px 16px rgba(4,65,71,0.25);transition:transform 0.2s">EXPLORE OTHER RITUALS</a>' +
+      '<p style="font-family:Montserrat,sans-serif;font-size:11px;color:rgba(4,65,71,0.35);margin-top:20px;font-weight:300;line-height:1.6">In the meantime, explore our available rituals:<br><strong>Mindful Eating</strong> &bull; <strong>Energised Mornings</strong> &bull; <strong>Quiet Abundance</strong></p>' +
+      '</div>';
+    return;
+  }
   if (config) {
     ritualConfig = config;
     selections.ritualName = ritualConfig.name;
