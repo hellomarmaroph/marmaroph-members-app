@@ -214,6 +214,15 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .pri-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:4px;}
 .pri-body{font-size:10px;line-height:1.75;color:var(--tx2);clear:both;}
 .pri-tag{display:inline-block;background:var(--accent-light);border:1px solid var(--accent-bd);border-radius:4px;padding:2px 6px;font-size:8px;font-weight:600;color:var(--accent);margin-top:6px;text-transform:uppercase;letter-spacing:.04em;}
+.pri-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.pri-col{border-radius:10px;padding:10px 12px;}
+.pri-col-problem{background:rgba(192,96,64,.06);border:1px solid rgba(192,96,64,.15);}
+.pri-col-fix{background:rgba(4,65,71,.04);border:1px solid rgba(159,214,235,.2);}
+.pri-col-tag{font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.pri-col-problem .pri-col-tag{color:#a05030;}
+.pri-col-fix .pri-col-tag{color:var(--accent);}
+.pri-col-text{font-size:10px;line-height:1.7;color:var(--tx2);}
+@media(max-width:360px){.pri-cols{grid-template-columns:1fr;}}
 
 /* ── MATERIALS ── */
 .mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -425,7 +434,30 @@ Select the aesthetic that resonates with your space. This shapes the colour pale
         Stand at the <strong>geometric centre of your home</strong>. Hold the compass flat, needle settled.<br>
         Now face toward your movement or yoga space. <strong>Which direction are you facing?</strong>
       </div>
-      <div class="comp-lbl">Select the direction of your sanctuary</div>
+      <!-- Compass Graphic -->
+      <div style="text-align:center;margin-bottom:1.25rem;">
+        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="80" cy="80" r="72" stroke="var(--bd)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="56" stroke="var(--bd2)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="6" fill="var(--accent)" opacity=".3"/>
+          <circle cx="80" cy="80" r="3" fill="var(--accent)"/>
+          <line x1="80" y1="8" x2="80" y2="20" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="80" y1="140" x2="80" y2="152" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="8" y1="80" x2="20" y2="80" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="140" y1="80" x2="152" y2="80" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="29" y1="29" x2="37" y2="37" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="123" y1="29" x2="131" y2="37" stroke="var(--bd)" stroke-width="1" stroke-linecap="round" transform="rotate(90 127 33)"/>
+          <line x1="131" y1="123" x2="123" y2="131" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="29" y1="131" x2="37" y2="123" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <polygon points="80,18 76,80 84,80" fill="var(--accent)" opacity=".8"/>
+          <polygon points="80,142 76,80 84,80" fill="var(--tx4)" opacity=".3"/>
+          <text x="80" y="7" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" font-weight="700" fill="var(--accent)" letter-spacing=".1em">N</text>
+          <text x="80" y="159" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">S</text>
+          <text x="159" y="83" text-anchor="end" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">E</text>
+          <text x="3" y="83" text-anchor="start" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">W</text>
+        </svg>
+      </div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);text-align:center;margin-bottom:1rem;">Select the direction of your sanctuary</div>
       <div class="dir-grid">
         <div class="dir-btn" onclick="selectDir('N')"><div class="dir-code">N</div><div class="dir-name">North</div></div>
         <div class="dir-btn" onclick="selectDir('NE')"><div class="dir-code">NE</div><div class="dir-name">N·East</div></div>
@@ -1188,9 +1220,9 @@ function renderResults(analysis, sec){
     ?`<div class="priority-list">${prItems.map((it,i)=>`
       <div class="pr-item">
         <div class="pr-hdr"><div class="pr-num">${i+1}</div><div class="pr-label">${it.label.replace(/\*\*/g,'')}</div></div>
-        <div class="pr-body">
-          ${it.mistake?`<div class="pr-mistake"><span class="pr-icon"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><div class="pr-text"><div class="pr-tag pr-tag-err">THE PROBLEM</div>${it.mistake.replace(/\*\*/g,'')}</div></div>`:''}
-          <div class="pr-fix"><span class="pr-icon">✓</span><div class="pr-text"><div class="pr-tag pr-tag-fix">THE FIX</div>${it.fix.replace(/\*\*/g,'')}</div></div>
+        <div class="pri-cols">
+          ${it.mistake?`<div class="pri-col pri-col-problem"><div class="pri-col-tag">The Problem</div><div class="pri-col-text">${it.mistake.replace(/\*\*/g,'')}</div></div>`:''}
+          <div class="pri-col pri-col-fix"><div class="pri-col-tag">The Fix</div><div class="pri-col-text">${it.fix.replace(/\*\*/g,'')}</div></div>
         </div>
       </div>`).join('')}</div>`
     :renderText(sec.priority);
@@ -1316,7 +1348,15 @@ async function startAnalysis(){
     renderResults(analysis, parsedSections);
     showPanel(5);
 
-    // Step 4 — Generate after image
+  }catch(err){
+    showPanel(3);
+    alert('Something went wrong: '+err.message+'\n\nPlease check your API key and try again.');
+    console.error(err);
+    return;
+  }
+
+  // Step 4 — Generate after image (non-blocking)
+  try{
     lightStep(4);
     const imgSrc=await generateImage(buildImagePrompt(state._directives));
     if(imgSrc){
@@ -1330,11 +1370,9 @@ async function startAnalysis(){
       ai.src=imgSrc;
       ai.classList.remove('hidden');
     }
-
-  }catch(err){
-    showPanel(3);
-    alert('Something went wrong: '+err.message+'\n\nPlease check your API key and try again.');
-    console.error(err);
+  }catch(imgErr){
+    console.error('After-image generation failed:',imgErr);
+    document.getElementById('afterLabel').textContent='image unavailable';
   }
 }
 

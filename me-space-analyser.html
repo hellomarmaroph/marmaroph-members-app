@@ -202,13 +202,22 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .layer-icon{font-size:14px;}
 .layer-body{font-size:10px;line-height:1.75;color:var(--tx2);}
 
-/* ── PRIORITY CHANGES ── */
+/* ── PRIORITY CHANGES (two-column problem/fix) ── */
 .pri-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden;}
 .pri-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,#9fd6eb,#044147);}
 .pri-num{font-family:Georgia,serif;font-size:22px;font-style:italic;color:var(--accent-pop);float:left;margin-right:12px;line-height:1;}
 .pri-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:4px;}
 .pri-body{font-size:10px;line-height:1.75;color:var(--tx2);clear:both;}
+.pri-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.pri-col{border-radius:10px;padding:10px 12px;}
+.pri-col-problem{background:rgba(192,96,64,.06);border:1px solid rgba(192,96,64,.15);}
+.pri-col-fix{background:rgba(4,65,71,.04);border:1px solid rgba(159,214,235,.2);}
+.pri-col-tag{font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.pri-col-problem .pri-col-tag{color:#a05030;}
+.pri-col-fix .pri-col-tag{color:var(--accent);}
+.pri-col-text{font-size:10px;line-height:1.7;color:var(--tx2);}
 .pri-tag{display:inline-block;background:var(--accent-light);border:1px solid var(--accent-bd);border-radius:4px;padding:2px 6px;font-size:8px;font-weight:600;color:var(--accent);margin-top:6px;text-transform:uppercase;letter-spacing:.04em;}
+@media(max-width:360px){.pri-cols{grid-template-columns:1fr;}}
 
 /* ── MATERIALS ── */
 .mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -322,6 +331,8 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
     <div class="sdot" id="d2"></div>
     <div class="sline"></div>
     <div class="sdot" id="d3"></div>
+    <div class="sline"></div>
+    <div class="sdot" id="d4"></div>
   </div>
 
   <!-- PANEL 1 — PHOTO -->
@@ -400,18 +411,67 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
       <div class="limit-text" id="limitText"></div>
     </div>
 
-    <button class="btn btn-p" id="p1btn" onclick="goToCompass()" disabled>Both uploaded — continue <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    <button class="btn btn-p" id="p1btn" onclick="goToStyle()" disabled>Both uploaded — continue <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
   </div>
 
-  <!-- PANEL 2 — COMPASS -->
+  <!-- PANEL 2 — STYLE SELECTION -->
   <div class="panel" id="p2">
+    <div class="comp-card">
+      <div class="dual-hdr-ico"><svg style="display:inline-block;vertical-align:middle" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2"/><circle cx="17.5" cy="10.5" r="2"/><circle cx="8.5" cy="7.5" r="2"/><circle cx="6.5" cy="12" r="2"/><path d="M12 2a10 10 0 00-1 19.9c.6.1 1-.4 1-1v-1.3a1.3 1.3 0 011.3-1.3h1.4a3 3 0 003-3 1 1 0 00-.8-1A10 10 0 0012 2z"/></svg></div>
+      <div class="dual-hdr-txt">Choose your style</div>
+      <div class="dual-hdr-sub">Select the interior design style that inspires you most. This guides your after-vision image and recommendations.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:1rem 0">
+      <div class="tod-btn" id="sty-minimal" onclick="selectStyle('minimal')"><span class="tod-icon">&#9723;</span><div class="tod-label">Minimal</div><div style="font-size:9px;color:var(--tx3)">Clean lines, neutral tones</div></div>
+      <div class="tod-btn" id="sty-warm" onclick="selectStyle('warm')"><span class="tod-icon"><svg style="display:inline-block;vertical-align:middle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span><div class="tod-label">Warm &amp; Layered</div><div style="font-size:9px;color:var(--tx3)">Natural textures, earth tones</div></div>
+      <div class="tod-btn" id="sty-botanical" onclick="selectStyle('botanical')"><span class="tod-icon"><svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34M4 4s2.7 1 6.28 5.17C14.14 13.5 17 20 17 20s3-3 3-7-4-11-16-9z"/></svg></span><div class="tod-label">Botanical</div><div style="font-size:9px;color:var(--tx3)">Plants, organic shapes</div></div>
+      <div class="tod-btn" id="sty-luxe" onclick="selectStyle('luxe')"><span class="tod-icon">&#10022;</span><div class="tod-label">Modern Luxe</div><div style="font-size:9px;color:var(--tx3)">Rich accents, statement pieces</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.2rem">
+      <div class="tod-btn" id="sty-scandi" onclick="selectStyle('scandi')"><span class="tod-icon">&#9651;</span><div class="tod-label">Scandinavian</div><div style="font-size:9px;color:var(--tx3)">Light wood, white, functional</div></div>
+      <div class="tod-btn" id="sty-eclectic" onclick="selectStyle('eclectic')"><span class="tod-icon"><svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="13.5" cy="6.5" r="2"/><circle cx="17.5" cy="10.5" r="2"/><circle cx="8.5" cy="7.5" r="2"/><circle cx="6.5" cy="12" r="2"/><path d="M12 2a10 10 0 00-1 19.9c.6.1 1-.4 1-1v-1.3a1.3 1.3 0 011.3-1.3h1.4a3 3 0 003-3 1 1 0 00-.8-1A10 10 0 0012 2z"/></svg></span><div class="tod-label">Eclectic</div><div style="font-size:9px;color:var(--tx3)">Mixed eras, curated personality</div></div>
+    </div>
+    <button class="btn" id="styleNextBtn" onclick="showPanel(3)" disabled style="opacity:.45">Continue to compass <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    <button class="btn btn-s" onclick="goBack(1)"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+  </div>
+
+  <!-- PANEL 3 — COMPASS -->
+  <div class="panel" id="p3">
     <div class="comp-card">
       <div class="comp-intro">
         <strong>Take your compass</strong> (or open your phone's Compass app).<br>
         Stand at the <strong>geometric centre of your home</strong>. Hold the compass flat, needle settled.<br>
         Now face toward your dining space. <strong>Which direction are you facing?</strong>
       </div>
-      <div class="comp-lbl">Select the direction of your space</div>
+      <!-- Compass Graphic -->
+      <div style="text-align:center;margin-bottom:1.25rem;">
+        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="80" cy="80" r="72" stroke="var(--bd)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="56" stroke="var(--bd2)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="6" fill="var(--accent)" opacity=".3"/>
+          <circle cx="80" cy="80" r="3" fill="var(--accent)"/>
+          <!-- Cardinal ticks -->
+          <line x1="80" y1="8" x2="80" y2="20" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="80" y1="140" x2="80" y2="152" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="8" y1="80" x2="20" y2="80" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="140" y1="80" x2="152" y2="80" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Ordinal ticks -->
+          <line x1="29" y1="29" x2="37" y2="37" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="123" y1="29" x2="131" y2="37" stroke="var(--bd)" stroke-width="1" stroke-linecap="round" transform="rotate(90 127 33)"/>
+          <line x1="131" y1="123" x2="123" y2="131" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="29" y1="131" x2="37" y2="123" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <!-- Needle -->
+          <polygon points="80,18 76,80 84,80" fill="var(--accent)" opacity=".8"/>
+          <polygon points="80,142 76,80 84,80" fill="var(--tx4)" opacity=".3"/>
+          <!-- Labels -->
+          <text x="80" y="7" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" font-weight="700" fill="var(--accent)" letter-spacing=".1em">N</text>
+          <text x="80" y="159" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">S</text>
+          <text x="159" y="83" text-anchor="end" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">E</text>
+          <text x="3" y="83" text-anchor="start" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">W</text>
+        </svg>
+      </div>
+
+      <div style="font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--tx3);text-transform:uppercase;text-align:center;margin-bottom:10px;">Select the direction of your space</div>
       <div class="dir-grid">
         <div class="dir-btn" onclick="selectDir('N')"><div class="dir-code">N</div><div class="dir-name">North</div></div>
         <div class="dir-btn" onclick="selectDir('NE')"><div class="dir-code">NE</div><div class="dir-name">N·East</div></div>
@@ -436,12 +496,12 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
       </div>
     </div>
     <div id="householdSection"></div>
-    <button class="btn btn-p" id="p2btn" onclick="startAnalysis()" disabled>Analyse My Space <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-    <button class="btn btn-s" onclick="goBack(1)"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+    <button class="btn btn-p" id="p3btn" onclick="startAnalysis()" disabled>Analyse My Space <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    <button class="btn btn-s" onclick="goBack(2)"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
   </div>
 
-  <!-- PANEL 3 — LOADING -->
-  <div class="panel" id="p3">
+  <!-- PANEL 4 — LOADING -->
+  <div class="panel" id="p4">
     <div class="load-wrap">
       <div class="load-orb"></div>
       <div class="load-title">Reading your space</div>
@@ -455,8 +515,8 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
     </div>
   </div>
 
-  <!-- PANEL 4 — RESULTS -->
-  <div class="panel" id="p4">
+  <!-- PANEL 5 — RESULTS -->
+  <div class="panel" id="p5">
 
     <div class="res-eyebrow" id="resEyebrow">MARMAROPH RITUAL SPACE ANALYSIS</div>
     <h2 class="res-title" id="resTitle">Your Space <em>Transformed</em></h2>
@@ -695,7 +755,7 @@ function renderUsageBar(){
 
 // ── UI HELPERS ────────────────────────────────────────────────────
 function showPanel(n){
-  [1,2,3,4].forEach(i=>{
+  [1,2,3,4,5].forEach(i=>{
     document.getElementById('p'+i).classList.toggle('show',i===n);
     const d=document.getElementById('d'+i);
     if(d){d.className='sdot'+(i<n?' done':i===n?' on':'');}
@@ -758,7 +818,7 @@ function selectDir(d){
   const pills=document.getElementById('fspPills');
   pills.innerHTML=fs.plants.map(p=>`<span class="fsp-pill"><svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34M4 4s2.7 1 6.28 5.17C14.14 13.5 17 20 17 20s3-3 3-7-4-11-16-9z"/></svg> ${p}</span>`).join('');
   document.getElementById('fsPreview').style.display='block';
-  document.getElementById('p2btn').disabled=false;
+  document.getElementById('p3btn').disabled=false;
 }
 
 var sliderActive=false;
@@ -779,9 +839,25 @@ function sliderMove(e){
 }
 function sliderEnd(){sliderActive=false;}
 
-function goToCompass(){
+var selectedStyle='';
+
+function selectStyle(s){
+  selectedStyle=s;
+  ['minimal','warm','botanical','luxe','scandi','eclectic'].forEach(function(k){
+    var el=document.getElementById('sty-'+k);
+    if(el)el.classList.toggle('sel',k===s);
+  });
+  var btn=document.getElementById('styleNextBtn');
+  if(btn){btn.disabled=false;btn.style.opacity='1';}
+}
+
+function goToStyle(){
   if(!checkUsageLimit()) return;
   showPanel(2);
+}
+
+function goToCompass(){
+  showPanel(3);
 }
 
 function goBack(n){showPanel(n);}
@@ -1192,9 +1268,9 @@ function renderResults(analysis, sec){
     ?`<div class="priority-list">${prItems.map((it,i)=>`
       <div class="pr-item">
         <div class="pr-hdr"><div class="pr-num">${i+1}</div><div class="pr-label">${it.label.replace(/\*\*/g,'')}</div></div>
-        <div class="pr-body">
-          ${it.mistake?`<div class="pr-mistake"><span class="pr-icon"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><div class="pr-text"><div class="pr-tag pr-tag-err">THE PROBLEM</div>${it.mistake.replace(/\*\*/g,'')}</div></div>`:''}
-          <div class="pr-fix"><span class="pr-icon">✓</span><div class="pr-text"><div class="pr-tag pr-tag-fix">THE FIX</div>${it.fix.replace(/\*\*/g,'')}</div></div>
+        <div class="pri-cols">
+          ${it.mistake?`<div class="pri-col pri-col-problem"><div class="pri-col-tag">The Problem</div><div class="pri-col-text">${it.mistake.replace(/\*\*/g,'')}</div></div>`:''}
+          <div class="pri-col pri-col-fix"><div class="pri-col-tag">The Fix</div><div class="pri-col-text">${it.fix.replace(/\*\*/g,'')}</div></div>
         </div>
       </div>`).join('')}</div>`
     :renderText(sec.priority);
@@ -1282,7 +1358,7 @@ function renderResults(analysis, sec){
 async function startAnalysis(){
   if(!checkUsageLimit()) return;
 
-  showPanel(3);
+  showPanel(4);
   lightStep(1);
 
   try{
@@ -1318,24 +1394,31 @@ async function startAnalysis(){
     renderUsageBar();
 
     renderResults(analysis, parsedSections);
-    showPanel(4);
+    showPanel(5);
 
-    // Step 4 — Generate after image
-    lightStep(4);
-    const imgSrc=await generateImage(buildImagePrompt(state._directives));
-    if(imgSrc){
-      state.afterB64=imgSrc;
-      document.getElementById('afterLabel').textContent='after';
-      document.getElementById('moodBlock').style.display='block';
-      generateMoodboard(state._directives);
-      var ag=document.getElementById('afterGen'); if(ag) ag.style.display='none';
-      const ai=document.getElementById('afterImg');
-      ai.src=imgSrc;
-      ai.classList.remove('hidden');
+    // Step 4 — Generate after image (non-blocking)
+    try{
+      lightStep(4);
+      const imgSrc=await generateImage(buildImagePrompt(state._directives));
+      if(imgSrc){
+        state.afterB64=imgSrc;
+        document.getElementById('afterLabel').textContent='after';
+        document.getElementById('moodBlock').style.display='block';
+        generateMoodboard(state._directives);
+        var ag=document.getElementById('afterGen'); if(ag) ag.style.display='none';
+        const ai=document.getElementById('afterImg');
+        ai.src=imgSrc;
+        ai.classList.remove('hidden');
+      } else {
+        document.getElementById('afterLabel').textContent='image unavailable';
+      }
+    }catch(imgErr){
+      console.error('After image failed:',imgErr);
+      document.getElementById('afterLabel').textContent='image unavailable';
     }
 
   }catch(err){
-    showPanel(2);
+    showPanel(3);
     alert('Something went wrong: '+err.message+'\n\nPlease check your API key and try again.');
     console.error(err);
   }
@@ -1355,7 +1438,7 @@ async function generateMoodboard(directives){
   const labels=['Textures & Materials','Lighting & Warmth','Colour Palette','Table Styling'];
   for(let i=0;i<4;i++){
     try{
-      const p=`Interior design moodboard detail photo ${i+1} of 4 for a ${state.spaceType}. Focus: ${labels[i]}. Show: `+
+      const p=`Interior design moodboard detail photo ${i+1} of 4 for a ${state.spaceType}. Focus: ${labels[i]}. Style: ${selectedStyle||'warm natural'}. Show: `+
         (i===0?'close-up of natural dining table materials (wood grain, linen napkins, stone, ceramic) in warm light':i===1?'warm dining ambience, candle glow on table setting, golden hour through window':i===2?'curated arrangement in earthy dining palette, copper accents, ceramics, glassware':' styled dining vignette with plants, table runner, beautiful objects, soft textiles')+
         `. Architectural Digest quality. No text, no watermarks.`;
       const src=await generateImage(p);
@@ -1369,10 +1452,13 @@ async function generateMoodboard(directives){
 
 function resetAll(){
   state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'dining room',afterB64:null};
+  selectedStyle='';
   
   document.querySelectorAll('.dir-btn').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.tod-btn[id^="sty-"]').forEach(b=>b.classList.remove('sel'));
+  var snb=document.getElementById('styleNextBtn'); if(snb){snb.disabled=true;snb.style.opacity='.45';}
   document.getElementById('fsPreview').style.display='none';
-  document.getElementById('p2btn').disabled=true;
+  document.getElementById('p3btn').disabled=true;
   document.getElementById('tod-day').classList.add('sel');
   document.getElementById('tod-night').classList.remove('sel');
   document.getElementById('scoreBlock').style.display='none';

@@ -265,6 +265,15 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
 .pri-mistake::before{content:'✕ ';font-weight:700}
 .pri-fix{font-size:10px;font-weight:300;color:var(--success);line-height:1.6}
 .pri-fix::before{content:'✓ ';font-weight:700}
+.pri-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.pri-col{border-radius:10px;padding:10px 12px;}
+.pri-col-problem{background:rgba(192,96,64,.06);border:1px solid rgba(192,96,64,.15);}
+.pri-col-fix{background:rgba(4,65,71,.04);border:1px solid rgba(159,214,235,.2);}
+.pri-col-tag{font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.pri-col-problem .pri-col-tag{color:#a05030;}
+.pri-col-fix .pri-col-tag{color:var(--accent);}
+.pri-col-text{font-size:10px;line-height:1.7;color:var(--tx2);}
+@media(max-width:360px){.pri-cols{grid-template-columns:1fr;}}
 
 /* MINI CARDS */
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
@@ -359,7 +368,30 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
         Stand at the <strong>geometric centre of your home</strong>. Hold the compass flat, needle settled.<br>
         Now face toward your abundance corner. <strong>Which direction are you facing?</strong>
       </div>
-      <div class="comp-lbl">Select the direction of your space</div>
+      <!-- Compass Graphic -->
+      <div style="text-align:center;margin-bottom:1.25rem;">
+        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="80" cy="80" r="72" stroke="var(--bd)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="56" stroke="var(--bd2)" stroke-width="1"/>
+          <circle cx="80" cy="80" r="6" fill="var(--accent)" opacity=".3"/>
+          <circle cx="80" cy="80" r="3" fill="var(--accent)"/>
+          <line x1="80" y1="8" x2="80" y2="20" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="80" y1="140" x2="80" y2="152" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="8" y1="80" x2="20" y2="80" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="140" y1="80" x2="152" y2="80" stroke="var(--tx4)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="29" y1="29" x2="37" y2="37" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="123" y1="29" x2="131" y2="37" stroke="var(--bd)" stroke-width="1" stroke-linecap="round" transform="rotate(90 127 33)"/>
+          <line x1="131" y1="123" x2="123" y2="131" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="29" y1="131" x2="37" y2="123" stroke="var(--bd)" stroke-width="1" stroke-linecap="round"/>
+          <polygon points="80,18 76,80 84,80" fill="var(--accent)" opacity=".8"/>
+          <polygon points="80,142 76,80 84,80" fill="var(--tx4)" opacity=".3"/>
+          <text x="80" y="7" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" font-weight="700" fill="var(--accent)" letter-spacing=".1em">N</text>
+          <text x="80" y="159" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">S</text>
+          <text x="159" y="83" text-anchor="end" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">E</text>
+          <text x="3" y="83" text-anchor="start" font-family="Montserrat,sans-serif" font-size="8" fill="var(--tx4)">W</text>
+        </svg>
+      </div>
+      <div style="font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--tx3);text-transform:uppercase;text-align:center;margin-bottom:10px;">Select the direction of your space</div>
       <div class="dir-grid">
         <div class="dir-btn" onclick="selectDir('N')"><div class="dir-code">N</div><div class="dir-name">North</div></div>
         <div class="dir-btn" onclick="selectDir('NE')"><div class="dir-code">NE</div><div class="dir-name">N·East</div></div>
@@ -923,8 +955,10 @@ function renderResults(analysis,sec){
     changes.forEach(function(c,i){
       html+='<div class="pri-item"><div class="pri-head"><div class="pri-num">'+(i+1)+'</div><div class="pri-label">'+c.label+'</div></div>';
       html+='<div class="pri-body">';
-      if(c.mistake)html+='<div class="pri-mistake">'+c.mistake+'</div>';
-      if(c.fix)html+='<div class="pri-fix">'+c.fix+'</div>';
+      html+='<div class="pri-cols">';
+      if(c.mistake)html+='<div class="pri-col pri-col-problem"><div class="pri-col-tag">The Problem</div><div class="pri-col-text">'+c.mistake+'</div></div>';
+      html+='<div class="pri-col pri-col-fix"><div class="pri-col-tag">The Fix</div><div class="pri-col-text">'+c.fix+'</div></div>';
+      html+='</div>';
       html+='</div></div>';
     });
     html+='</div></div></div>';
@@ -1007,22 +1041,34 @@ async function startAnalysis(){
 
     // Step 4: Generate DAY image
     lightStep(4);
-    var dayImg=await generateImage(buildImagePrompt(state._directives,false));
-    if(dayImg){
-      state.afterDayB64=dayImg;
-      document.getElementById('afterGenDay').style.display='none';
-      var ai=document.getElementById('afterImgDay');
-      ai.src=dayImg;ai.classList.remove('hidden');
+    try{
+      var dayImg=await generateImage(buildImagePrompt(state._directives,false));
+      if(dayImg){
+        state.afterDayB64=dayImg;
+        document.getElementById('afterGenDay').style.display='none';
+        var ai=document.getElementById('afterImgDay');
+        ai.src=dayImg;ai.classList.remove('hidden');
+      }
+    }catch(imgErr){
+      console.error('Day image generation failed:',imgErr);
+      var dg=document.getElementById('afterGenDay');
+      dg.innerHTML='<div style="padding:1rem;text-align:center;font-size:10px;color:var(--tx3);line-height:1.6">Day vision could not be generated.<br>Your full analysis is still available below.</div>';
     }
 
     // Step 5: Generate NIGHT image
     lightStep(5);
-    var nightImg=await generateImage(buildImagePrompt(state._directives,true));
-    if(nightImg){
-      state.afterNightB64=nightImg;
-      document.getElementById('afterGenNight').style.display='none';
-      var ni=document.getElementById('afterImgNight');
-      ni.src=nightImg;ni.classList.remove('hidden');
+    try{
+      var nightImg=await generateImage(buildImagePrompt(state._directives,true));
+      if(nightImg){
+        state.afterNightB64=nightImg;
+        document.getElementById('afterGenNight').style.display='none';
+        var ni=document.getElementById('afterImgNight');
+        ni.src=nightImg;ni.classList.remove('hidden');
+      }
+    }catch(imgErr){
+      console.error('Night image generation failed:',imgErr);
+      var ng=document.getElementById('afterGenNight');
+      ng.innerHTML='<div style="padding:1rem;text-align:center;font-size:10px;color:var(--tx3);line-height:1.6">Night vision could not be generated.<br>Your full analysis is still available below.</div>';
     }
 
   }catch(err){
