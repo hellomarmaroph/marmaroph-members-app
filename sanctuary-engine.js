@@ -8,7 +8,7 @@ var SanctuaryEngine = (function(){
 'use strict';
 
 // ── API ─────────────────────────────────────────────────────────
-var API_KEY = 'AQ.Ab8RN6IElbvJwanL7Rw7XdTVqwv2bOYZEFcQ_DFAvvde5gZNmg';
+var API_KEY = 'AQ.Ab8RN6IqEC5QZjntZK_2XAPeDoUwPBKbW2Xz4-HeW__063D_og';
 var VISION_MODEL = 'gemini-2.5-flash';
 var IMAGE_MODEL_A = 'imagen-4.0-generate-001';
 var IMAGE_MODEL_B = 'gemini-2.5-flash-image';
