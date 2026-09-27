@@ -193,11 +193,34 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
 .bm.act .bm-dir{color:var(--gold)}
 .bm-elem{font-size:8px;font-weight:300;color:var(--tx3)}
 
-/* PALETTE */
-.palette-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:.85rem}
-.sw{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
-.sw-col{height:48px}
-.sw-lbl{font-size:8px;font-weight:500;color:var(--tx2);padding:4px 6px 5px;background:var(--card);line-height:1.3}
+/* PALETTE — circles */
+.palette-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:.85rem}
+.sw{display:flex;flex-direction:column;align-items:center;gap:4px;width:60px}
+.sw-circle{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.1);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.sw-lbl{font-size:7px;font-weight:500;color:var(--tx2);text-align:center;line-height:1.3}
+.sw-elem-tag{font-size:6px;font-weight:600;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase}
+
+/* ELEMENT BALANCE */
+.elem-balance{margin-bottom:1rem}
+.elem-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.elem-bar-icon{font-size:12px;width:20px;text-align:center;flex-shrink:0}
+.elem-bar-name{font-size:9px;font-weight:600;width:40px;flex-shrink:0}
+.elem-bar-track{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.elem-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.elem-bar-pct{font-size:8px;font-weight:700;width:28px;flex-shrink:0;text-align:right}
+.elem-bar-status{font-size:7px;font-weight:600;width:52px;flex-shrink:0;text-align:right}
+
+/* PLANT RX */
+.plant-rx{display:flex;flex-direction:column;gap:7px;margin-bottom:.85rem}
+.plant-card{background:var(--card);border:1px solid var(--card-bd);border-radius:9px;padding:.7rem .8rem;display:flex;gap:9px;align-items:flex-start}
+.plant-icon{font-size:20px;flex-shrink:0}
+.plant-name{font-size:11px;font-weight:700;color:var(--gold)}
+.plant-latin{font-size:9px;font-style:italic;color:var(--sky);margin-bottom:2px}
+.plant-desc{font-size:10px;font-weight:300;color:var(--tx2);line-height:1.55}
+.plant-place{display:inline-block;margin-top:3px;background:rgba(212,179,102,.1);border:1px solid var(--card-bd);border-radius:4px;padding:2px 7px;font-size:7px;font-weight:600;color:var(--gold);letter-spacing:.05em}
+
+/* FLOOR PLAN */
+.floor-plan-wrap{display:flex;justify-content:center;margin-bottom:.85rem}
 
 /* ANALYSIS TEXT */
 .analysis-section{margin-bottom:1.1rem}
@@ -249,6 +272,7 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
 .mc-lbl{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--tx3);text-transform:uppercase;margin-bottom:.35rem}
 .mc-val{font-size:11px;font-weight:400;color:var(--tx2);line-height:1.5}
 </style>
+<style id="hpCSS"></style>
 </head>
 <body>
 <div class="wrap">
@@ -256,7 +280,7 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
   <div class="hdr">
     <div class="hdr-logo">MARMAROPH HOME &amp; LIVING</div>
     <h1 class="hdr-title">Your Abundance <em>Corner</em></h1>
-    <p class="hdr-sub">Upload a photo of your ritual space. We will analyse it through Feng Shui, healthy home criteria, and interior design principles, then show you how to transform it.</p>
+    <p class="hdr-sub">Upload a photo of your abundance corner, home office, or ritual space. We analyse it through Feng Shui, healthy home criteria, and interior design principles, then show you how to transform it.</p>
   </div>
 
   <div class="usage-bar" id="usageBar"></div>
@@ -293,7 +317,7 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
         </div>
       </div>
       <div class="tips-grid">
-        <div class="tip"><span class="tip-e">📍</span><div class="tip-t"><strong>Show the full area</strong>Stand back enough to capture the desk, shelf, or table corner and its surroundings.</div></div>
+        <div class="tip"><span class="tip-e">📍</span><div class="tip-t"><strong>Show the full area</strong>Stand back enough to capture the desk, home office, shelf, or table corner and its surroundings.</div></div>
         <div class="tip"><span class="tip-e">📏</span><div class="tip-t"><strong>Chest height</strong>Hold at chest height, not above. This shows the space as you experience it sitting.</div></div>
         <div class="tip"><span class="tip-e">🖼</span><div class="tip-t"><strong>Include context</strong>Walls behind, nearby window, floor, any objects already placed. More context = better advice.</div></div>
         <div class="tip"><span class="tip-e">🚫</span><div class="tip-t"><strong>Be honest</strong>Do not tidy or style it first. No flash, no filters. The before must be truthful.</div></div>
@@ -304,7 +328,7 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
       <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this.files[0])">
       <span class="up-icon">⬆</span>
       <span class="up-label">Tap to upload your photo</span>
-      <span class="up-hint">JPG · PNG · HEIC — your abundance corner, desk, or shelf</span>
+      <span class="up-hint">JPG · PNG · HEIC — your abundance corner, home office, desk, or shelf</span>
     </div>
 
     <div class="preview-wrap" id="previewWrap">
@@ -382,7 +406,35 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
       </div>
     </div>
 
-    <!-- Personality Questions (from abundance corner) -->
+    <!-- Abundance Corner Diagnostic -->
+    <div class="pq-card" style="margin-top:1.25rem">
+      <div class="pq-label">Do you have a dedicated spot for financial work?</div>
+      <div class="pq-opts" id="pqSpot">
+        <div class="pq-opt" onclick="selectPQ(this,'spot')">No, I do finances anywhere</div>
+        <div class="pq-opt" onclick="selectPQ(this,'spot')">Sort of — the kitchen table or couch</div>
+        <div class="pq-opt" onclick="selectPQ(this,'spot')">Yes, I have a specific place</div>
+      </div>
+    </div>
+
+    <div class="pq-card">
+      <div class="pq-label">How does your financial space feel?</div>
+      <div class="pq-opts" id="pqFeel">
+        <div class="pq-opt" onclick="selectPQ(this,'feel')">Cluttered or stressful</div>
+        <div class="pq-opt" onclick="selectPQ(this,'feel')">Neutral — functional but not calming</div>
+        <div class="pq-opt" onclick="selectPQ(this,'feel')">Calm, clean, and intentional</div>
+      </div>
+    </div>
+
+    <div class="pq-card">
+      <div class="pq-label">Do you feel calm when you sit down with money?</div>
+      <div class="pq-opts" id="pqCalm">
+        <div class="pq-opt" onclick="selectPQ(this,'calm')">No — anxiety or avoidance</div>
+        <div class="pq-opt" onclick="selectPQ(this,'calm')">Sometimes — depends on the day</div>
+        <div class="pq-opt" onclick="selectPQ(this,'calm')">Yes — I approach it with presence</div>
+      </div>
+    </div>
+
+    <!-- Personality Questions -->
     <div class="pq-card">
       <div class="pq-label">What does money feel like in your body right now?</div>
       <div class="pq-opts" id="pqMoney">
@@ -413,6 +465,7 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
       </div>
     </div>
 
+    <div id="householdSection"></div>
     <button class="btn btn-p" id="p2btn" onclick="startAnalysis()" disabled>Analyse My Abundance Corner →</button>
     <button class="btn btn-s" onclick="goBack(1)">← Back</button>
   </div>
@@ -504,92 +557,26 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
 
 </div>
 
+<script src="sanctuary-engine.js"></script>
 <script>
-// ── CONFIG ───────────────────────────────────────────────────────
-const API_KEY='AQ.Ab8RN6J3yhzUPLjTaOJ91MFBDTZbQ6ALhh_FrSdQmBTTkNk5WQ';
-const VISION_MODEL='gemini-2.5-flash';
-const IMAGE_MODEL_A='imagen-4.0-generate-001';
-const IMAGE_MODEL_B='gemini-2.5-flash-image';
-const LIMIT=3;
+// ── CONFIG (from shared engine) ─────────────────────────────────
+var SE=SanctuaryEngine;
+var cfg=SE.getConfig('quietAbundance');
+var LIMIT=cfg.limit;
 
 // ── STATE ────────────────────────────────────────────────────────
 let state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',
-  spaceType:'abundance corner',style:null,money:null,safe:null,goal:null,
+  spaceType:'abundance corner',style:null,spot:null,feel:null,calm:null,
+  money:null,safe:null,goal:null,
   afterDayB64:null,afterNightB64:null};
 
-// ── FENG SHUI DATA (Wealth/Abundance focus) ─────────────────────
-const FS={
-  N:{trig:'Kan',elem:'Water',chi:'水',energy:'Career & Life Path',fit:'supportive',
-    emoji:'💧',note:'Water energy brings flow and opportunity. For an abundance corner facing North, activate the productive cycle: Water feeds Wood. Add a living plant and solid wood elements to channel career wealth.',
-    colors:['Warm Ivory','Midnight Navy','Forest Green','Dark Walnut'],
-    palette:[{name:'Warm Ivory',hex:'#f5f0e6'},{name:'Midnight Navy',hex:'#1e2f4a'},{name:'Forest Green',hex:'#2a5438'},{name:'Dark Walnut',hex:'#3a2010'}],
-    plants:['Lucky Bamboo','Peace Lily','Money Tree'],
-    desk:'Natural wood with oil finish',light_day:'2700K warm, maximize natural light.',
-    light_night:'Desk lamp + candle at 2200K amber. Warm and intimate.',
-    scents:['Frankincense','Sandalwood','Vetiver']},
-  NE:{trig:'Gen',elem:'Earth',chi:'土',energy:'Knowledge & Wisdom',fit:'moderate',
-    emoji:'🏔',note:'Earth energy grounds financial decisions in wisdom. Activate with Fire touches: copper, amber light, warm ceramics. Clarity before spending.',
-    colors:['Sandy Beige','Warm Terracotta','Yellow Ochre','Sage Green'],
-    palette:[{name:'Sandy Beige',hex:'#c8b090'},{name:'Terracotta',hex:'#b85c2a'},{name:'Warm Ochre',hex:'#c09040'},{name:'Sage Green',hex:'#7a9870'}],
-    plants:['Aloe Vera','Jade Plant','Lavender'],
-    desk:'Stone or ceramic surfaces',light_day:'2700K warm, natural light dominant.',
-    light_night:'Copper desk lamp + beeswax candle at 2200K.',
-    scents:['Cedarwood','Bergamot','Clary Sage']},
-  E:{trig:'Zhen',elem:'Wood',chi:'木',energy:'Health & New Beginnings',fit:'strong',
-    emoji:'🌿',note:'Wood energy supports growth and new financial chapters. This direction is powerful for starting fresh with money. Strengthen with living plants, natural wood, and Water accents.',
-    colors:['Sage Green','Forest Green','Warm Oak','Cream'],
-    palette:[{name:'Sage Green',hex:'#8faa8a'},{name:'Forest Green',hex:'#2a5438'},{name:'Warm Oak',hex:'#b08050'},{name:'Cream',hex:'#f5efe0'}],
-    plants:['Rubber Plant','Pothos','Money Tree'],
-    desk:'Solid hardwood, light oak or ash',light_day:'Full natural light, green filtered through plants.',
-    light_night:'Brass desk lamp + green-tinted glass candle holder.',
-    scents:['Eucalyptus','Rosemary','Lemongrass']},
-  SE:{trig:'Xun',elem:'Wood',chi:'木',energy:'Wealth & Prosperity',fit:'ideal',
-    emoji:'🍀',note:'THE wealth corner in Feng Shui. Southeast is the most powerful direction for abundance. Activate fully with lush plants, flowing water features, and Wood element. This is your golden direction.',
-    colors:['Emerald Green','Gold','Warm Wood','Deep Plum'],
-    palette:[{name:'Emerald',hex:'#2d6a4f'},{name:'Gold',hex:'#d4b366'},{name:'Warm Wood',hex:'#8b6914'},{name:'Deep Plum',hex:'#5c374c'}],
-    plants:['Money Tree (Pachira)','Jade Plant','Golden Pothos'],
-    desk:'Rich wood with brass accents',light_day:'Abundant natural light, windows unobstructed.',
-    light_night:'Warm brass lamp + cluster of beeswax candles.',
-    scents:['Cinnamon','Orange','Ylang Ylang']},
-  S:{trig:'Li',elem:'Fire',chi:'火',energy:'Fame & Recognition',fit:'strong',
-    emoji:'🔥',note:'Fire energy drives recognition and reputation: your financial confidence becomes visible. Activate with warm reds, candles, and pointed upward energy.',
-    colors:['Warm Red','Coral','Gold','Ivory'],
-    palette:[{name:'Warm Red',hex:'#a0382e'},{name:'Coral',hex:'#c06048'},{name:'Gold',hex:'#d4b366'},{name:'Ivory',hex:'#f5f0e6'}],
-    plants:['Fiddle Leaf Fig','Bird of Paradise','Red Anthurium'],
-    desk:'Dark wood with copper accents',light_day:'Bright, warm natural light.',
-    light_night:'Statement desk lamp + taper candles.',
-    scents:['Cinnamon','Clove','Rose']},
-  SW:{trig:'Kun',elem:'Earth',chi:'土',energy:'Relationships & Partnership',fit:'moderate',
-    emoji:'🤝',note:'Earth energy here governs partnerships and shared finances. Ground it with ceramics, stone, and warm textiles. Ideal for couples managing money together.',
-    colors:['Warm Pink','Terracotta','Sandy Beige','Soft Gold'],
-    palette:[{name:'Warm Pink',hex:'#c09088'},{name:'Terracotta',hex:'#b85c2a'},{name:'Sandy Beige',hex:'#c8b090'},{name:'Soft Gold',hex:'#d4b366'}],
-    plants:['Orchid','Peace Lily','Jade Plant'],
-    desk:'Marble or stone top, warm wood legs',light_day:'Soft warm light, gentle not harsh.',
-    light_night:'Paired table lamps + floating candles.',
-    scents:['Rose','Jasmine','Sandalwood']},
-  W:{trig:'Dui',elem:'Metal',chi:'金',energy:'Children & Creativity',fit:'supportive',
-    emoji:'⚙️',note:'Metal energy brings precision, clarity, and creative solutions to finances. Activate with metallic accents (brass, copper, gold), round shapes, and white/cream tones.',
-    colors:['White','Silver Grey','Warm Gold','Cream'],
-    palette:[{name:'Off White',hex:'#f0ece4'},{name:'Warm Grey',hex:'#a0998e'},{name:'Brass',hex:'#c0a040'},{name:'Cream',hex:'#f5efe0'}],
-    plants:['White Orchid','Air Plant','Eucalyptus'],
-    desk:'Metal-framed desk or polished wood',light_day:'Clean bright light, crisp and clear.',
-    light_night:'Brushed brass desk lamp + single pillar candle.',
-    scents:['Peppermint','Tea Tree','Lemon']},
-  NW:{trig:'Qian',elem:'Metal',chi:'金',energy:'Mentors & Helpful People',fit:'strong',
-    emoji:'🧭',note:'Metal energy in the NW attracts mentors and financial guidance. Perfect for seeking advisors, learning from experts. Strengthen with gold/silver objects and clear organization.',
-    colors:['Charcoal','Gold','Silver','Cream'],
-    palette:[{name:'Charcoal',hex:'#2a2a2a'},{name:'Gold',hex:'#d4b366'},{name:'Silver',hex:'#b0b0b0'},{name:'Cream',hex:'#f0ece4'}],
-    plants:['ZZ Plant','Snake Plant','White Peace Lily'],
-    desk:'Dark wood or metal with gold accents',light_day:'Strong natural light, organized clarity.',
-    light_night:'Architectural desk lamp + gold-rimmed candle holder.',
-    scents:['Frankincense','Myrrh','White Sage']}
-};
+// ── FENG SHUI DATA (built from shared engine + abundance extras) ─
+var FS=SE.buildFS(cfg);
 
-// ── USAGE ────────────────────────────────────────────────────────
-function getUsage(){try{return JSON.parse(localStorage.getItem('qa_space_usage'))||{}}catch(e){return{}}}
-function saveUsage(u){try{localStorage.setItem('qa_space_usage',JSON.stringify(u))}catch(e){}}
-function remainingCount(tod){var u=getUsage();return Math.max(0,LIMIT-(u[tod]||0))}
-function incrementUsage(tod){var u=getUsage();u[tod]=(u[tod]||0)+1;saveUsage(u)}
+// ── USAGE (delegated to engine) ──────────────────────────────────
+function getUsage(){return SE.getUsage(cfg.usageKey)}
+function remainingCount(tod){return SE.remainingCount(cfg.usageKey,tod,LIMIT)}
+function incrementUsage(tod){SE.incrementUsage(cfg.usageKey,tod)}
 
 function checkUsageLimit(){
   var r=remainingCount(state.tod);
@@ -706,45 +693,14 @@ function lightStep(n){
   }
 }
 
-// ── API CALLS ────────────────────────────────────────────────────
-async function geminiVision(prompt){
-  var body={contents:[{parts:[
-    {inline_data:{mime_type:state.imgMime,data:state.imgB64}},
-    {text:prompt}
-  ]}]};
-  var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+VISION_MODEL+':generateContent?key='+API_KEY,
-    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  var d=await r.json();
-  if(d.error)throw new Error(d.error.message);
-  return d.candidates[0].content.parts[0].text;
-}
-
-async function generateImage(prompt){
-  try{
-    var body={instances:[{prompt:prompt}],parameters:{sampleCount:1,aspectRatio:'3:4',outputMimeType:'image/jpeg'}};
-    var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+IMAGE_MODEL_A+':predict?key='+API_KEY,
-      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    var d=await r.json();
-    if(d.predictions&&d.predictions[0]&&d.predictions[0].bytesBase64Encoded){
-      return 'data:image/jpeg;base64,'+d.predictions[0].bytesBase64Encoded;
-    }
-  }catch(e){}
-  var body2={contents:[{parts:[{text:prompt}]}],
-    generationConfig:{responseModalities:['IMAGE','TEXT']}};
-  var r2=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+IMAGE_MODEL_B+':generateContent?key='+API_KEY,
-    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body2)});
-  var d2=await r2.json();
-  if(d2.error)throw new Error(d2.error.message);
-  var parts=(d2.candidates&&d2.candidates[0]&&d2.candidates[0].content&&d2.candidates[0].content.parts)||[];
-  var imgP=parts.find(function(p){return p.inlineData});
-  if(imgP)return 'data:'+imgP.inlineData.mimeType+';base64,'+imgP.inlineData.data;
-  return null;
-}
+// ── API CALLS (delegated to engine) ──────────────────────────────
+function geminiVision(prompt){return SE.geminiVision(state.imgB64,state.imgMime,prompt)}
+function generateImage(prompt){return SE.generateImage(prompt)}
 
 // ── PROMPTS ──────────────────────────────────────────────────────
 function buildValidationPrompt(){
   return 'You are a professional interior design analyst. Look at this image.\n'+
-    'Valid spaces: desk, writing table, shelf area, console table, side table, nightstand used as workspace, dedicated corner of a room, home office nook, vanity table used for finances.\n'+
+    'Valid spaces: desk, writing table, shelf area, console table, side table, nightstand used as workspace, dedicated corner of a room, home office, home office nook, study, vanity table used for finances.\n'+
     'Invalid spaces: full kitchen, bathroom, outdoor area with no desk/table, gym, garage, an extremely blurry or dark image.\n'+
     'Respond ONLY in this JSON format:\n'+
     '{"is_valid":true or false,"space_type":"brief label like desk corner or shelf area","rejection_reason":"If not valid: one warm friendly sentence. If valid: empty string."}';
@@ -757,12 +713,18 @@ function buildAnalysisPrompt(){
     warm:'layered warmth, rich textures, candles, woolen throws, aged wood patina',
     botanical:'lush greenery, terracotta, natural fibres, living walls, biophilic design'}[state.style]||'warm natural';
   var personality='';
+  if(state.spot)personality+='Dedicated financial spot: '+state.spot+'. ';
+  if(state.feel)personality+='Space feeling: '+state.feel+'. ';
+  if(state.calm)personality+='Calm with money: '+state.calm+'. ';
   if(state.money)personality+='Money feeling: '+state.money+'. ';
   if(state.safe)personality+='Needs to feel safe: '+state.safe+'. ';
   if(state.goal)personality+='Financial goal: '+state.goal+'. ';
 
+  var householdCtx=SE.buildHouseholdPromptContext('quietAbundance');
+
   return 'You are a certified Marmaroph Healthy Home designer, Compass Feng Shui expert, and abundance mindset coach. Analyse this '+tod+' photo of a '+state.spaceType+' being used as an Abundance Corner for a financial wellness ritual.\n\n'+
     'COMPASS CONTEXT: Direction '+state.dir+' — '+fs.trig+' ('+fs.chi+') · '+fs.elem+' element · '+fs.energy+'\n'+fs.note+'\n\n'+
+    (householdCtx?householdCtx+'\n\n':'')+
     'STYLE PREFERENCE: '+styleDesc+'\n\n'+
     'PERSONALITY CONTEXT: '+personality+'\n\n'+
     'MARMAROPH FRAMEWORK:\n'+
@@ -802,6 +764,13 @@ function buildAnalysisPrompt(){
     '## WHAT TO KEEP\nBullet points. Be generous where warranted.\n\n'+
     '## MATERIALS SPECIFICATION\n'+
     'List exactly 5-7 natural materials. Format per line:\nMATERIAL_NAME | where_to_use | why_chosen | product_spec\n\n'+
+    '## FIVE ELEMENT BALANCE\n'+
+    'Analyse the five feng shui elements (Wood, Fire, Earth, Metal, Water) present in this space based on colours, materials, shapes, and objects you observe. Reply with ONLY a single-line JSON:\n'+
+    '{"wood":0,"fire":0,"earth":0,"metal":0,"water":0,"dominant":"element_name","deficient":"element_name","diagnosis":"One sentence describing the imbalance and its effect on the occupant."}\n'+
+    'Each value is a percentage (0-100) representing how much of that element is present. All five must sum to 100.\n\n'+
+    '## PLANT PRESCRIPTIONS\n'+
+    'Based on the element balance and compass direction, recommend 2-3 specific plants. Reply with ONLY a single-line JSON array:\n'+
+    '[{"name":"Common Name","latin":"Latin name","icon":"emoji","element":"wood/fire/earth/metal/water","placement":"compass direction and specific spot","reason":"Why this plant for this space"}]\n\n'+
     '## SPACE SCORE\n'+
     'Score BEFORE transformation. Reply with ONLY a single-line JSON:\n'+
     '{"overall":0,"materials":0,"lighting":0,"feng_shui":0,"ritual":0,"abundance":0}\n'+
@@ -847,8 +816,8 @@ function buildImagePrompt(directives,isNight){
 
 // ── PARSE ────────────────────────────────────────────────────────
 function parseAnalysis(raw){
-  var sections={before:'',feng:'',abundance:'',priority:'',keep:'',materials:'',shopping:null,score:null,directives:null};
-  var rx=/##\s*(THE BEFORE STATE|FENG SHUI READING[^#]*|ABUNDANCE DESIGN ANALYSIS|THE FIVE PRIORITY CHANGES|WHAT TO KEEP|MATERIALS SPECIFICATION|SPACE SCORE|SHOPPING LIST|AFTER VISION DIRECTIVES)([\s\S]*?)(?=##|$)/gi;
+  var sections={before:'',feng:'',abundance:'',priority:'',keep:'',materials:'',shopping:null,score:null,directives:null,elemBalance:null,plants:null};
+  var rx=/##\s*(THE BEFORE STATE|FENG SHUI READING[^#]*|ABUNDANCE DESIGN ANALYSIS|THE FIVE PRIORITY CHANGES|WHAT TO KEEP|MATERIALS SPECIFICATION|FIVE ELEMENT BALANCE|PLANT PRESCRIPTIONS|SPACE SCORE|SHOPPING LIST|AFTER VISION DIRECTIVES)([\s\S]*?)(?=##|$)/gi;
   var m;
   while((m=rx.exec(raw))!==null){
     var h=m[1].trim().toUpperCase(),body=m[2].trim();
@@ -858,6 +827,8 @@ function parseAnalysis(raw){
     else if(h.startsWith('THE FIVE'))sections.priority=body;
     else if(h.startsWith('WHAT'))sections.keep=body;
     else if(h.startsWith('MATERIALS'))sections.materials=body;
+    else if(h.startsWith('FIVE ELEMENT')){var jm=body.match(/\{[^}]+\}/);if(jm){try{sections.elemBalance=JSON.parse(jm[0])}catch(e){}}}
+    else if(h.startsWith('PLANT PRESC')){var jm=body.match(/\[[\s\S]*\]/);if(jm){try{sections.plants=JSON.parse(jm[0])}catch(e){}}}
     else if(h.startsWith('SPACE SCORE')){var jm=body.match(/\{[^}]+\}/);if(jm){try{sections.score=JSON.parse(jm[0])}catch(e){}}}
     else if(h.startsWith('SHOPPING')){var jm=body.match(/\[[\s\S]*\]/);if(jm){try{sections.shopping=JSON.parse(jm[0])}catch(e){}}}
     else if(h.startsWith('AFTER VISION')){var jm=body.match(/\{[\s\S]*\}/);if(jm){try{sections.directives=JSON.parse(jm[0])}catch(e){}}}
@@ -869,50 +840,12 @@ function parseAnalysis(raw){
   return sections;
 }
 
-function parseMaterials(raw){
-  return raw.split('\n').map(function(l){return l.trim()}).filter(function(l){return l.includes('|')}).map(function(l){
-    var p=l.split('|').map(function(s){return s.trim()});
-    return{name:p[0]||'',where:p[1]||'',why:p[2]||'',spec:p[3]||''};
-  }).filter(function(m){return m.name&&m.name.length>1}).slice(0,7);
-}
+var parseMaterials=SE.parseMaterials;
+var parsePriorityChanges=SE.parsePriorityChanges;
+var renderText=SE.renderText;
 
-function parsePriorityChanges(text){
-  var items=[];
-  var rx=/^\s*(\d+)[\.\)]\s*([\s\S]*?)(?=\n\s*\d+[\.\)]|\n\n\n|$)/gm;
-  var match;
-  while((match=rx.exec(text))!==null){
-    var block=match[2].trim();
-    var mistakeM=block.match(/MISTAKE[:\s]+([^\n]+(?:\n(?!FIX)[^\n]+)*)/i);
-    var fixM=block.match(/FIX[:\s]+([^\n]+(?:\n[^\n]+)*)/i);
-    var firstLine=block.split('\n')[0].replace(/MISTAKE.*/i,'').replace(/^\*+/,'').trim();
-    items.push({label:firstLine||'Change '+match[1],mistake:mistakeM?mistakeM[1].trim():'',fix:fixM?fixM[1].trim():block});
-  }
-  if(!items.length){
-    text.split(/\n\n+/).forEach(function(p,i){
-      var c=p.replace(/^\d+[\.\)]\s*/,'').replace(/\*\*/g,'').trim();
-      if(c)items.push({label:'Change '+(i+1),mistake:'',fix:c});
-    });
-  }
-  return items.slice(0,5);
-}
-
-function renderText(t){
-  if(!t)return '';
-  var lines=t.split('\n'),html='',inList=false;
-  for(var i=0;i<lines.length;i++){
-    var trimmed=lines[i].trim();
-    var isBullet=/^[-•*]\s+/.test(trimmed);
-    if(isBullet){
-      if(!inList){html+='<ul>';inList=true}
-      html+='<li>'+trimmed.replace(/^[-•*]\s+/,'').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>')+'</li>';
-    }else{
-      if(inList){html+='</ul>';inList=false}
-      if(trimmed)html+='<p>'+trimmed.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>')+'</p>';
-    }
-  }
-  if(inList)html+='</ul>';
-  return '<div class="as-text">'+html+'</div>';
-}
+// ── FLOOR PLAN SVG (delegated to engine) ────────────────────────
+function buildFloorPlanSVG(eb){return SE.buildFloorPlanSVG(eb,state.dir)}
 
 // ── RENDER RESULTS ───────────────────────────────────────────────
 function renderResults(analysis,sec){
@@ -922,6 +855,9 @@ function renderResults(analysis,sec){
   var beforeSrc='data:'+state.imgMime+';base64,'+state.imgB64;
   document.getElementById('beforeImg').src=beforeSrc;
   document.getElementById('beforeImg2').src=beforeSrc;
+
+  // Save before photo for the Space page in the ritual
+  try{localStorage.setItem('qa_space_before',beforeSrc)}catch(e){}
 
   // Score
   var sc=sec.score;
@@ -963,14 +899,13 @@ function renderResults(analysis,sec){
     html+='</div>';
     html+='<div class="fs-note-box">'+fs.note+'</div>';
     html+=renderText(sec.feng);
-    // Palette
-    html+='<div style="margin-top:.8rem"><div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">RECOMMENDED PALETTE</div>';
-    html+='<div class="palette-row">';
+    // Element Balance, Palette, Plants, Floor Plan (from engine)
+    html+=SE.renderElemBalance(sec.elemBalance);
     var pal=sec.directives&&sec.directives.custom_palette?sec.directives.custom_palette:fs.palette;
-    pal.forEach(function(c){
-      html+='<div class="sw"><div class="sw-col" style="background:'+c.hex+'"></div><div class="sw-lbl">'+c.name+'</div></div>';
-    });
-    html+='</div></div>';
+    html+=SE.renderPaletteCircles(pal);
+    html+=SE.renderPlantCards(sec.plants);
+    html+=SE.renderFloorPlanSection(sec.elemBalance,state.dir);
+
     html+='</div></div>';
   }
 
@@ -1099,7 +1034,7 @@ async function startAnalysis(){
 
 // ── RESET ────────────────────────────────────────────────────────
 function resetAll(){
-  state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'abundance corner',style:null,money:null,safe:null,goal:null,afterDayB64:null,afterNightB64:null};
+  state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'abundance corner',style:null,spot:null,feel:null,calm:null,money:null,safe:null,goal:null,afterDayB64:null,afterNightB64:null};
   resetUpload();
   document.querySelectorAll('.dir-btn,.style-btn,.pq-opt').forEach(function(b){b.classList.remove('sel')});
   document.getElementById('fsPreview').style.display='none';
@@ -1115,6 +1050,9 @@ function resetAll(){
 
 // ── INIT ─────────────────────────────────────────────────────────
 renderUsageBar();
+document.getElementById('hpCSS').textContent=SE.HOUSEHOLD_CSS;
+document.getElementById('householdSection').innerHTML=SE.buildHouseholdHTML('hpContainer');
+SE.initHouseholdUI();
 </script>
 </body>
 </html>

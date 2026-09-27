@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ritual Space Analyser · Marmaroph</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#ffffff;--bg2:#f5fafc;--card:rgba(255,255,255,.82);--off:#f5fafc;
+  --tx:#0c1e22;--tx2:#3a5a62;--tx3:#6a8a92;--tx4:#9ab0b8;
+  --bd:rgba(159,214,235,.25);--bd2:rgba(159,214,235,.14);
+  --accent:#044147;--accent-mid:#9fd6eb;--accent-pop:#9fd6eb;
+  --accent-soft:#c8e8f3;--accent-light:rgba(159,214,235,.08);--accent-bd:rgba(159,214,235,.20);
+}
+html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:600px;margin:0 auto;padding:2rem 1.25rem 5rem;}
+
+/* ── HEADER ── */
+.hdr{text-align:center;padding:2.5rem 0 2rem;margin-bottom:2rem;}
+.hdr-logo{font-size:8px;font-weight:600;letter-spacing:.6em;color:var(--tx4);text-transform:uppercase;margin-bottom:1.2rem;}
+.hdr-icon{display:none;}
+.hdr-title{font-family:Georgia,'Times New Roman',serif;font-size:32px;font-weight:400;font-style:italic;letter-spacing:-.02em;color:var(--tx);line-height:1.15;margin-bottom:.6rem;}
+.hdr-title em{font-style:italic;color:var(--accent-pop);}
+.hdr-sub{font-size:11px;font-weight:300;color:var(--tx3);line-height:1.9;max-width:360px;margin:.8rem auto 0;}
+.hdr-rule{width:40px;height:1px;background:var(--bd);margin:1.5rem auto 0;}
+
+/* ── USAGE ── */
+.usage-bar{display:flex;gap:8px;justify-content:center;margin-bottom:1.6rem;}
+.usage-chip{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:5px 14px;font-size:8px;font-weight:600;letter-spacing:.06em;color:var(--tx3);display:flex;align-items:center;gap:5px;text-transform:uppercase;}
+.usage-dot{width:5px;height:5px;border-radius:50%;background:var(--bd);display:inline-block;}
+.usage-dot.used{background:linear-gradient(135deg,#9fd6eb,#7ec4de);}
+.usage-chip.exhausted{border-color:#e8c8c8;background:#fdf8f8;color:#9a4040;}
+
+/* ── STEPS ── */
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:2rem;}
+.sdot{width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;letter-spacing:.04em;color:var(--tx4);transition:all .35s;}
+.sdot.on{background:linear-gradient(135deg,#044147,#0a6e78);border-color:transparent;color:#fff;transform:scale(1.1);box-shadow:0 2px 8px rgba(4,65,71,.3);}
+.sdot.done{background:linear-gradient(135deg,#9fd6eb,#7ec4de);border-color:transparent;color:#044147;}
+.sline{width:36px;height:1px;background:var(--bd);}
+
+/* ── PANELS ── */
+.panel{display:none;animation:fi .4s ease;}
+.panel.show{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── DUAL PHOTO HEADER ── */
+.dual-hdr{text-align:center;margin-bottom:1.5rem;padding:1.25rem;background:linear-gradient(135deg,rgba(159,214,235,.1),rgba(4,65,71,.04));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(159,214,235,.2);border-radius:16px;}
+.dual-hdr-ico{font-size:20px;margin-bottom:6px;}
+.dual-hdr-txt{font-family:Georgia,serif;font-style:italic;font-size:18px;color:var(--accent);margin-bottom:6px;}
+.dual-hdr-sub{font-size:10px;color:var(--tx3);line-height:1.6;}
+
+/* ── TIPS ── */
+.tips-card{background:rgba(255,255,255,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(159,214,235,.18);box-shadow:0 8px 32px rgba(4,65,71,.06);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;}
+.tips-hdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
+.tips-ico{font-size:18px;line-height:1;}
+.tips-title{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--tx);}
+.tips-sub{font-size:9px;color:var(--tx3);margin-top:2px;}
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tip{background:var(--off);border:1px solid var(--bd2);border-radius:10px;padding:10px 12px;}
+.tip-e{font-size:13px;display:block;margin-bottom:4px;}
+.tip-t{font-size:10px;line-height:1.6;color:var(--tx2);}
+.tip-t strong{display:block;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--tx);margin-bottom:2px;text-transform:uppercase;}
+
+/* ── UPLOAD ── */
+.dual-upload{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;}
+.dual-slot{background:rgba(255,255,255,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(159,214,235,.18);box-shadow:0 4px 20px rgba(4,65,71,.05);border-radius:14px;padding:14px;text-align:center;}
+.dual-slot-label{font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--accent);}
+.dual-slot-sub{font-size:8px;color:var(--tx4);margin-top:3px;letter-spacing:.02em;}
+.dual-slot .upzone{min-height:110px;margin:10px 0 0;padding:1rem .75rem;}
+.dual-slot .preview-wrap{margin:10px 0 0;border-radius:10px;}
+.upzone{border:1.5px dashed var(--bd);border-radius:12px;padding:2rem 1rem;text-align:center;cursor:pointer;background:var(--off);position:relative;transition:all .2s;}
+.upzone:hover,.upzone.over{border-color:var(--accent-pop);background:var(--accent-light);}
+.upzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.up-icon{font-size:18px;display:block;color:var(--tx4);margin-bottom:6px;}
+.up-label{font-size:11px;font-weight:500;color:var(--tx2);display:block;}
+.up-hint{font-size:9px;color:var(--tx4);display:block;margin-top:4px;}
+.preview-wrap{display:none;margin-bottom:1.25rem;border-radius:12px;overflow:hidden;border:1px solid var(--bd);position:relative;}
+.preview-wrap img{width:100%;max-height:300px;object-fit:contain;display:block;background:var(--off);}
+.preview-tag{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);color:#fff;font-size:8px;font-weight:700;letter-spacing:.14em;padding:4px 10px;border-radius:4px;text-transform:uppercase;}
+.preview-change{position:absolute;bottom:10px;right:10px;background:var(--card);border:1px solid var(--bd);padding:5px 12px;border-radius:6px;font-size:9px;font-weight:600;color:var(--tx2);cursor:pointer;transition:.2s;}
+.preview-change:hover{background:var(--off);border-color:var(--accent-pop);}
+
+/* ── REJECTION / LIMIT ── */
+.reject-card{display:none;background:#fdf6f0;border:1px solid #e8d0c0;border-radius:12px;padding:1rem;text-align:center;margin-bottom:1rem;}
+.reject-icon{font-size:18px;color:#c06040;display:block;margin-bottom:6px;}
+.reject-title{font-size:12px;font-weight:700;color:#8a4020;margin-bottom:4px;}
+.reject-text{font-size:10px;color:#6a4030;line-height:1.7;}
+.limit-card{display:none;background:#fef8f0;border:1px solid #e8d8c0;border-radius:12px;padding:1rem;text-align:center;margin-bottom:1rem;}
+.limit-title{font-size:12px;font-weight:700;color:#8a6020;}
+.limit-text{font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.7;}
+
+/* ── COMPASS ── */
+.comp-card{background:rgba(255,255,255,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(159,214,235,.18);box-shadow:0 8px 32px rgba(4,65,71,.06);border-radius:16px;padding:1.5rem;margin-bottom:1.25rem;}
+.comp-intro{font-size:10px;line-height:1.8;color:var(--tx2);margin-bottom:1.25rem;}
+.comp-intro strong{color:var(--accent);font-weight:700;}
+.dir-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem;}
+.dir-btn{background:var(--off);border:1.5px solid var(--bd);border-radius:10px;padding:10px 4px;text-align:center;cursor:pointer;transition:all .2s;}
+.dir-btn:hover{border-color:var(--accent-pop);}
+.dir-btn.sel{border-color:var(--accent-mid);background:linear-gradient(135deg,rgba(159,214,235,.12),rgba(4,65,71,.04));box-shadow:0 0 0 1px rgba(159,214,235,.3);}
+.dir-label{font-size:10px;font-weight:600;color:var(--tx);display:block;}
+.dir-sub{font-size:8px;color:var(--tx3);margin-top:2px;}
+.dir-emoji{font-size:18px;display:block;margin-bottom:4px;}
+
+/* Feng Shui Preview */
+.fsp{display:none;margin-top:1.25rem;background:var(--off);border:1px solid var(--bd2);border-radius:12px;padding:1rem;}
+.fsp-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fsp-badge{background:var(--accent);color:#fff;font-size:9px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:6px;}
+.fsp-dir{font-size:11px;font-weight:600;color:var(--tx);}
+.fsp-elem{font-size:10px;color:var(--tx3);margin-bottom:8px;line-height:1.6;}
+.fsp-fit{font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--accent-pop);margin-bottom:6px;}
+.fsp-note{font-size:10px;color:var(--tx2);line-height:1.7;margin-bottom:8px;}
+.fsp-pills{display:flex;flex-wrap:wrap;gap:4px;}
+.fsp-pill{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:3px 8px;font-size:8px;color:var(--tx3);}
+
+/* Style selection */
+.tod-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.4rem;}
+.tod-btn{background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:.9rem .75rem;text-align:center;cursor:pointer;transition:all .22s;user-select:none;}
+.tod-btn:hover{border-color:var(--accent-pop);}
+.tod-btn.sel{border-color:var(--accent-mid);background:linear-gradient(135deg,rgba(159,214,235,.12),rgba(4,65,71,.04));box-shadow:0 0 0 1px rgba(159,214,235,.3);}
+.tod-icon{font-size:18px;display:block;margin-bottom:.35rem;}
+.tod-name,.tod-label{font-size:10px;font-weight:700;letter-spacing:.03em;color:var(--tx);}
+.tod-hint{font-size:8px;font-weight:300;color:var(--tx4);margin-top:2px;}
+
+/* ── BUTTONS ── */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
+.btn-p{background:linear-gradient(135deg,#044147,#065a62);color:#fff;box-shadow:0 4px 15px rgba(4,65,71,.25);}
+.btn-p:hover:not(:disabled){opacity:.9;}
+.btn-p:disabled{opacity:.35;cursor:not-allowed;}
+.btn-s{background:var(--card);border:1px solid var(--bd);color:var(--tx2);margin-top:8px;}
+.btn-s:hover{border-color:var(--accent-pop);}
+.btn-ghost{background:transparent;border:1px solid var(--bd);color:var(--tx3);margin-top:6px;font-size:9px;padding:10px;}
+
+/* ── LOADING ── */
+.load-wrap{text-align:center;padding:4rem 1rem;}
+.load-orb{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,rgba(159,214,235,.15),rgba(4,65,71,.08));border:2px solid var(--accent-mid);margin:0 auto 1.5rem;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.15);opacity:1}}
+.load-title{font-family:Georgia,serif;font-style:italic;font-size:18px;color:var(--tx);margin-bottom:.5rem;}
+.load-sub{font-size:10px;color:var(--tx3);line-height:1.7;}
+.load-steps{margin-top:2rem;display:flex;flex-direction:column;gap:10px;text-align:left;max-width:280px;margin-left:auto;margin-right:auto;}
+.load-step{display:flex;align-items:center;gap:10px;font-size:10px;color:var(--tx3);}
+.load-step .ls-dot{width:8px;height:8px;border-radius:50%;background:var(--bd);flex-shrink:0;transition:.4s;}
+.load-step .ls-dot.lit{background:var(--accent-pop);}
+
+/* ── RESULTS ── */
+.res-eyebrow{font-size:8px;font-weight:600;letter-spacing:.5em;color:var(--tx4);text-transform:uppercase;text-align:center;margin-bottom:.5rem;}
+.res-title{font-family:Georgia,serif;font-size:28px;font-weight:400;font-style:italic;color:var(--tx);text-align:center;line-height:1.2;margin-bottom:1.75rem;}
+.res-title em{color:var(--accent-pop);}
+
+/* ── BEFORE / AFTER SLIDER ── */
+.ba-slider-wrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--bd);aspect-ratio:3/4;max-width:100%;touch-action:none;user-select:none;-webkit-user-select:none;cursor:col-resize;margin-bottom:1.5rem;}
+.ba-slider-wrap img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+.ba-slider-wrap .ba-after-img{clip-path:inset(0 0 0 50%);}
+.ba-slider-line{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;z-index:3;transform:translateX(-50%);pointer-events:none;}
+.ba-slider-knob{position:absolute;top:50%;left:50%;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.95);border:1.5px solid #9fd6eb;z-index:4;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--tx);box-shadow:0 2px 10px rgba(4,65,71,.2);pointer-events:none;letter-spacing:-2px;}
+.ba-slider-label{position:absolute;bottom:12px;padding:4px 10px;border-radius:4px;font-size:7px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;z-index:2;}
+.ba-slider-label.lbl-before{left:12px;background:rgba(0,0,0,.5);}
+.ba-slider-label.lbl-after{right:12px;background:rgba(0,0,0,.5);}
+
+/* old ba-grid fallback */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
+.ba-panel{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--bd);background:var(--off);}
+.ba-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;}
+.ba-tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.5);color:#fff;font-size:7px;font-weight:700;letter-spacing:.14em;padding:3px 8px;border-radius:4px;text-transform:uppercase;}
+.ba-gen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--off);z-index:2;}
+.ba-gen-orb{width:24px;height:24px;border-radius:50%;background:var(--accent-light);border:1.5px solid var(--accent-pop);animation:pulse 2s ease infinite;margin-bottom:8px;}
+.ba-gen-text{font-size:10px;color:var(--tx3);text-align:center;}
+.hidden{display:none;}
+
+/* ── MOODBOARD ── */
+.mood-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.mood-cell{border-radius:10px;overflow:hidden;aspect-ratio:1;position:relative;border:1px solid var(--bd);background:var(--off);}
+.mood-cell img{width:100%;height:100%;object-fit:cover;}
+.mood-cell .mood-label{position:absolute;bottom:0;left:0;right:0;padding:8px 10px;background:linear-gradient(transparent,rgba(0,0,0,.55));font-size:8px;font-weight:600;letter-spacing:.06em;color:#fff;text-transform:uppercase;}
+.mood-gen{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--tx4);font-size:9px;height:100%;}
+
+/* ── SECTION BLOCKS ── */
+.sec-block{margin-bottom:1.5rem;}
+.sec-hdr{display:flex;align-items:flex-start;gap:12px;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid var(--bd2);}
+.sh-num{font-family:Georgia,serif;font-size:20px;font-weight:400;font-style:italic;color:var(--accent-pop);min-width:28px;}
+.sh-lbl{font-size:7px;font-weight:700;letter-spacing:.4em;color:var(--tx4);text-transform:uppercase;margin-bottom:2px;}
+.sh-title{font-family:Georgia,serif;font-size:16px;font-weight:400;font-style:italic;color:var(--tx);}
+.sec-body{font-size:11px;line-height:1.85;color:var(--tx2);}
+.sec-body p{margin-bottom:.75rem;}
+.sec-body ul{margin:0 0 .75rem 1.25rem;}
+.sec-body li{margin-bottom:.4rem;}
+.sec-body strong{color:var(--tx);font-weight:600;}
+
+/* ── BAGUA ── */
+.bagua-mini{max-width:260px;margin:0 auto 1rem;}
+.fs-note-box{background:var(--off);border:1px solid var(--bd2);border-radius:10px;padding:12px;margin-bottom:10px;font-size:10px;line-height:1.7;color:var(--tx2);}
+.palette-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.palette-chip{width:32px;height:32px;border-radius:8px;border:1px solid var(--bd);}
+.row2{display:flex;flex-wrap:wrap;gap:6px;}
+
+/* ── ANALYSIS ITEMS ── */
+.layer-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px;}
+.layer-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.layer-icon{font-size:14px;}
+.layer-body{font-size:10px;line-height:1.75;color:var(--tx2);}
+
+/* ── PRIORITY CHANGES ── */
+.pri-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.pri-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,#9fd6eb,#044147);}
+.pri-num{font-family:Georgia,serif;font-size:22px;font-style:italic;color:var(--accent-pop);float:left;margin-right:12px;line-height:1;}
+.pri-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:4px;}
+.pri-body{font-size:10px;line-height:1.75;color:var(--tx2);clear:both;}
+.pri-tag{display:inline-block;background:var(--accent-light);border:1px solid var(--accent-bd);border-radius:4px;padding:2px 6px;font-size:8px;font-weight:600;color:var(--accent);margin-top:6px;text-transform:uppercase;letter-spacing:.04em;}
+
+/* ── MATERIALS ── */
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mat-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;text-align:center;}
+.mat-icon{font-size:20px;margin-bottom:6px;}
+.mat-name{font-size:10px;font-weight:700;color:var(--tx);margin-bottom:2px;}
+.mat-desc{font-size:9px;color:var(--tx3);line-height:1.5;}
+
+/* ── FLOOR PLAN ── */
+.floorplan-wrap{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;min-height:200px;}
+.floorplan-wrap svg{max-width:100%;height:auto;}
+
+/* ── SCENTS ── */
+.scent-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.scent-card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px;text-align:center;}
+.scent-icon{font-size:20px;margin-bottom:4px;}
+.scent-name{font-size:9px;font-weight:700;color:var(--tx);margin-bottom:2px;}
+.scent-note{font-size:8px;color:var(--tx3);line-height:1.5;}
+
+/* ── SHOPPING ── */
+.shop-grid{display:flex;flex-direction:column;gap:8px;}
+.shop-card{display:flex;gap:12px;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px;align-items:center;}
+.shop-icon{font-size:24px;flex-shrink:0;}
+.shop-name{font-size:10px;font-weight:600;color:var(--tx);}
+.shop-desc{font-size:9px;color:var(--tx3);margin-top:2px;line-height:1.5;}
+.shop-price{font-size:9px;font-weight:700;color:var(--accent-pop);margin-top:2px;}
+
+/* ── SCORE ── */
+.score-wrap{display:flex;align-items:center;gap:1.25rem;padding:.5rem 0;}
+.score-circ{position:relative;width:76px;height:76px;flex-shrink:0;}
+.score-svg{width:100%;height:100%;transform:rotate(-90deg);}
+.score-trk{fill:none;stroke:var(--bd);stroke-width:4;}
+.score-ring{fill:none;stroke:#9fd6eb;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1.2s ease;}
+.score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-n{font-family:Georgia,serif;font-size:22px;font-weight:400;color:var(--tx);}
+.score-d{font-size:8px;color:var(--tx4);}
+.score-bars{flex:1;display:flex;flex-direction:column;gap:6px;}
+.score-bar-row{display:flex;align-items:center;gap:8px;}
+.score-bar-label{font-size:8px;color:var(--tx3);width:50px;text-align:right;}
+.score-bar-track{flex:1;height:4px;background:var(--bd2);border-radius:2px;overflow:hidden;}
+.score-bar-fill{height:100%;background:var(--accent-pop);border-radius:2px;transition:width 1s ease;}
+
+/* ── DOWNLOAD ── */
+.dl-row{display:flex;gap:8px;margin-top:1.5rem;}
+.dl-row .btn{flex:1;}
+
+
+/* ── EXAMPLES ── */
+.ex-section{margin-bottom:1.5rem;}
+.ex-title{font-size:9px;font-weight:600;letter-spacing:.12em;color:var(--tx4);text-transform:uppercase;text-align:center;margin-bottom:12px;}
+.ex-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.ex-card{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--bd);aspect-ratio:4/5;}
+.ex-card img{width:100%;height:100%;object-fit:cover;display:block;}
+.ex-label{position:absolute;bottom:0;left:0;right:0;padding:8px 6px;background:linear-gradient(transparent,rgba(4,65,71,.7));font-size:7px;font-weight:600;letter-spacing:.08em;color:#fff;text-transform:uppercase;text-align:center;}
+.hero-circle{width:120px;height:120px;border-radius:50%;margin:0 auto 1.2rem;overflow:hidden;border:3px solid rgba(159,214,235,.35);box-shadow:0 8px 32px rgba(4,65,71,.12),0 0 0 6px rgba(159,214,235,.08);position:relative;}.hero-circle img{width:100%;height:100%;object-fit:cover;display:block;}.hero-circle::after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,rgba(159,214,235,.15),transparent 60%);pointer-events:none;}
+/* ── UTILITY ── */
+.hidden{display:none;}
+.text-center{text-align:center;}
+@media(max-width:400px){
+  .dir-grid{grid-template-columns:repeat(2,1fr);}
+  .mat-grid,.mood-grid{grid-template-columns:1fr 1fr;}
+  .scent-grid{grid-template-columns:1fr 1fr;}
+  .tips-grid{grid-template-columns:1fr;}
+  .dual-upload{grid-template-columns:1fr;}
+}
+
+
+/* PALETTE — circles */
+.sw-circle{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.1);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.sw-elem-tag{font-size:6px;font-weight:600;color:var(--tx2);letter-spacing:.08em;text-transform:uppercase}
+/* ELEMENT BALANCE */
+.elem-balance{margin-bottom:1rem}
+.elem-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.elem-bar-icon{font-size:12px;width:20px;text-align:center;flex-shrink:0}
+.elem-bar-name{font-size:9px;font-weight:600;width:40px;flex-shrink:0}
+.elem-bar-track{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.elem-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.elem-bar-pct{font-size:8px;font-weight:700;width:28px;flex-shrink:0;text-align:right}
+.elem-bar-status{font-size:7px;font-weight:600;width:52px;flex-shrink:0;text-align:right}
+/* PLANT PRESCRIPTIONS */
+.plant-rx{display:flex;flex-direction:column;gap:7px;margin-bottom:.85rem}
+.plant-card{background:var(--card);border:1px solid var(--card-bd);border-radius:9px;padding:.7rem .8rem;display:flex;gap:9px;align-items:flex-start}
+.plant-icon{font-size:20px;flex-shrink:0}
+.plant-name{font-size:11px;font-weight:700;color:var(--gold)}
+.plant-latin{font-size:9px;font-style:italic;color:var(--sky);margin-bottom:2px}
+.plant-desc{font-size:10px;font-weight:300;color:var(--tx2);line-height:1.55}
+.plant-place{display:inline-block;margin-top:3px;background:rgba(212,179,102,.1);border:1px solid var(--card-bd);border-radius:4px;padding:2px 7px;font-size:7px;font-weight:600;color:var(--gold);letter-spacing:.05em}
+/* FLOOR PLAN */
+.floor-plan-wrap{display:flex;justify-content:center;margin-bottom:.85rem}
+</style>
+<style id="hpCSS"></style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hero-circle"><img src="img/me/17.jpg" alt="Dining Space"></div>
+<div class="hdr-logo">Marmaroph &mdash; Home &amp; Living</div>
+    <div class="hdr-title">Ritual Space <em>Analyser</em></div>
+    <div class="hdr-sub">Upload two photos of your dining room, kitchen table, or balcony eating area. We analyse it through the Marmaroph Healthy Home Framework and Compass Feng Shui &mdash; then generate your personalised space vision.</div>
+    <div class="hdr-rule"></div>
+  </div>
+
+  <div class="usage-bar" id="usageBar"></div>
+
+  <!-- STEP DOTS -->
+  <div class="steps" id="stepDots">
+    <div class="sdot on" id="d1"></div>
+    <div class="sline"></div>
+    <div class="sdot" id="d2"></div>
+    <div class="sline"></div>
+    <div class="sdot" id="d3"></div>
+  </div>
+
+  <!-- PANEL 1 — PHOTO -->
+  <div class="panel show" id="p1">
+
+    <div style="text-align:center;margin-bottom:14px;padding:14px;background:linear-gradient(135deg,rgba(159,214,235,.1),rgba(4,65,71,.04));border:1px solid var(--bd);border-radius:14px;">
+      <div style="font-size:24px;margin-bottom:4px;"><svg style="display:inline-block;vertical-align:middle" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+      <div style="font-family:Georgia,serif;font-style:italic;font-size:17px;color:var(--accent);margin-bottom:4px;">Two photos of the same space</div>
+      <div style="font-size:10px;color:var(--tx3);line-height:1.5;">Same angle, same position. One in natural daylight, one with your evening lights on.</div>
+    </div>
+
+<div class="ex-section">
+      <div class="ex-title">Spaces we analyse for this ritual</div>
+      <div class="ex-grid">
+      <div class="ex-card"><img src="img/me/16.jpg" alt="Dining Room" loading="lazy"><div class="ex-label">Dining Room</div></div>
+      <div class="ex-card"><img src="img/me/kitchen.png" alt="Kitchen Table" loading="lazy"><div class="ex-label">Kitchen Table</div></div>
+      <div class="ex-card"><img src="img/me/balcony.png" alt="Balcony Dining" loading="lazy"><div class="ex-label">Balcony Dining</div></div>
+    </div>
+    </div>
+
+    <div class="tips-card">
+      <div class="tips-hdr">
+        <div class="tips-ico"><svg style="display:inline-block;vertical-align:middle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+        <div>
+          <div class="tips-title">How to take your photo</div>
+          <div class="tips-sub">Same angle for both photos — it makes a real difference</div>
+        </div>
+      </div>
+      <div class="tips-grid">
+        <div class="tip"><span class="tip-e"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div class="tip-t"><strong>Position</strong>Stand in the corner farthest from the table, or in the doorway. Show the full room.</div></div>
+        <div class="tip"><span class="tip-e"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12h20M6 8v8M10 9v6M14 9v6M18 8v8"/></svg></span><div class="tip-t"><strong>Height</strong>Hold at chest height — not eye level, not the ground. Shows the space naturally.</div></div>
+        <div class="tip"><span class="tip-e"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span><div class="tip-t"><strong>Include</strong>Full table, at least two walls, any windows. The more context, the better.</div></div>
+        <div class="tip"><span class="tip-e"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span><div class="tip-t"><strong>Don't</strong>Style the space first. No flash. No filters. The before must be honest.</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+<div style="background:var(--off);border:1px solid var(--bd);border-radius:14px;padding:10px;text-align:center;">
+<div style="font-size:13px;font-weight:600;color:var(--accent);"><svg style="display:inline-block;vertical-align:middle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Natural Light</div>
+<div style="font-size:9px;color:var(--tx3);margin-top:2px;">Daytime, all artificial lights off</div>
+<div class="upzone" id="upzoneDay" onclick="document.getElementById('filDay').click()" style="min-height:120px;margin:8px 0 0;padding:16px 10px;">
+<input type="file" accept="image/*" id="filDay" onchange="handleDualFile('day',this.files[0])" style="display:none">
+<span class="up-icon"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+<span class="up-label">Tap to upload</span>
+</div>
+<div class="preview-wrap" id="prevDay" style="display:none;margin:8px 0 0;">
+<img id="prevDayImg" src="" alt="Day photo">
+<div class="preview-tag">DAY</div>
+<div class="preview-change" onclick="resetSlot('day')">Change <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></div>
+</div>
+</div>
+<div style="background:var(--off);border:1px solid var(--bd);border-radius:14px;padding:10px;text-align:center;">
+<div style="font-size:13px;font-weight:600;color:var(--accent);"><svg style="display:inline-block;vertical-align:middle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> Artificial Light</div>
+<div style="font-size:9px;color:var(--tx3);margin-top:2px;">Evening, your normal lights on</div>
+<div class="upzone" id="upzoneNight" onclick="document.getElementById('filNight').click()" style="min-height:120px;margin:8px 0 0;padding:16px 10px;">
+<input type="file" accept="image/*" id="filNight" onchange="handleDualFile('night',this.files[0])" style="display:none">
+<span class="up-icon"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+<span class="up-label">Tap to upload</span>
+</div>
+<div class="preview-wrap" id="prevNight" style="display:none;margin:8px 0 0;">
+<img id="prevNightImg" src="" alt="Night photo">
+<div class="preview-tag" style="background:rgba(30,30,60,.8);color:#fff;">NIGHT</div>
+<div class="preview-change" onclick="resetSlot('night')">Change <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></div>
+</div>
+</div>
+</div>
+      <div class="reject-text" id="rejectText"></div>
+    </div>
+
+    <div class="limit-card" id="limitCard">
+      <div class="limit-title">Daily limit reached</div>
+      <div class="limit-text" id="limitText"></div>
+    </div>
+
+    <button class="btn btn-p" id="p1btn" onclick="goToCompass()" disabled>Both uploaded — continue <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+  </div>
+
+  <!-- PANEL 2 — COMPASS -->
+  <div class="panel" id="p2">
+    <div class="comp-card">
+      <div class="comp-intro">
+        <strong>Take your compass</strong> (or open your phone's Compass app).<br>
+        Stand at the <strong>geometric centre of your home</strong>. Hold the compass flat, needle settled.<br>
+        Now face toward your dining space. <strong>Which direction are you facing?</strong>
+      </div>
+      <div class="comp-lbl">Select the direction of your space</div>
+      <div class="dir-grid">
+        <div class="dir-btn" onclick="selectDir('N')"><div class="dir-code">N</div><div class="dir-name">North</div></div>
+        <div class="dir-btn" onclick="selectDir('NE')"><div class="dir-code">NE</div><div class="dir-name">N·East</div></div>
+        <div class="dir-btn" onclick="selectDir('E')"><div class="dir-code">E</div><div class="dir-name">East</div></div>
+        <div class="dir-btn" onclick="selectDir('SE')"><div class="dir-code">SE</div><div class="dir-name">S·East</div></div>
+        <div class="dir-btn" onclick="selectDir('S')"><div class="dir-code">S</div><div class="dir-name">South</div></div>
+        <div class="dir-btn" onclick="selectDir('SW')"><div class="dir-code">SW</div><div class="dir-name">S·West</div></div>
+        <div class="dir-btn" onclick="selectDir('W')"><div class="dir-code">W</div><div class="dir-name">West</div></div>
+        <div class="dir-btn" onclick="selectDir('NW')"><div class="dir-code">NW</div><div class="dir-name">N·West</div></div>
+      </div>
+      <div class="fs-preview" id="fsPreview">
+        <div class="fsp-top">
+          <div class="fsp-badge" id="fspBadge">N</div>
+          <div>
+            <div class="fsp-dir" id="fspDir">North — Kan · Water</div>
+            <div class="fsp-elem" id="fspElem">Career &amp; Life Path</div>
+          </div>
+        </div>
+        <div class="fsp-fit" id="fspFit">◌ Moderate</div>
+        <div class="fsp-note" id="fspNote"></div>
+        <div class="fsp-pills" id="fspPills"></div>
+      </div>
+    </div>
+    <div id="householdSection"></div>
+    <button class="btn btn-p" id="p2btn" onclick="startAnalysis()" disabled>Analyse My Space <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    <button class="btn btn-s" onclick="goBack(1)"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+  </div>
+
+  <!-- PANEL 3 — LOADING -->
+  <div class="panel" id="p3">
+    <div class="load-wrap">
+      <div class="load-orb"></div>
+      <div class="load-title">Reading your space</div>
+      <div class="load-sub">Marmaroph Healthy Home Framework · Compass Feng Shui</div>
+      <div class="load-steps">
+        <div class="lsr lit" id="ls1"><div class="lspip"></div>Validating your space</div>
+        <div class="lsr" id="ls2"><div class="lspip"></div>Running Feng Shui analysis</div>
+        <div class="lsr" id="ls3"><div class="lspip"></div>Building your recommendations</div>
+        <div class="lsr" id="ls4"><div class="lspip"></div>Generating your after vision</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4 — RESULTS -->
+  <div class="panel" id="p4">
+
+    <div class="res-eyebrow" id="resEyebrow">MARMAROPH RITUAL SPACE ANALYSIS</div>
+    <h2 class="res-title" id="resTitle">Your Space <em>Transformed</em></h2>
+
+    <!-- Before / After Slider -->
+    <div class="ba-slider-wrap" id="baSlider" onpointerdown="sliderStart(event)" onpointermove="sliderMove(event)" onpointerup="sliderEnd(event)">
+      <img class="ba-before-img" id="beforeImg" src="" alt="Before">
+      <img class="ba-after-img" id="afterImg" src="" alt="After">
+      <div class="ba-slider-line" id="baLine"></div>
+      <div class="ba-slider-knob" id="baKnob"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="19 18 13 12 19 6"/></svg></div>
+      <div class="ba-slider-label lbl-before">before</div>
+      <div class="ba-slider-label lbl-after" id="afterLabel">generating…</div>
+    </div>
+
+    <!-- Moodboard -->
+    <div class="sec-block" id="moodBlock" style="display:none;">
+      <div class="sec-hdr">
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" opacity="0.15"/></svg></div>
+        <div><div class="sh-lbl">Curated Vision</div><div class="sh-title">Your Space Moodboard</div></div>
+      </div>
+      <div class="sec-body">
+        <div class="mood-grid">
+          <div class="mood-cell" id="mood1"><div class="mood-gen">Generating</div></div>
+          <div class="mood-cell" id="mood2"><div class="mood-gen">Generating</div></div>
+          <div class="mood-cell" id="mood3"><div class="mood-gen">Generating</div></div>
+          <div class="mood-cell" id="mood4"><div class="mood-gen">Generating</div></div>
+        </div>
+      </div>
+    </div>>
+
+    <!-- Space Score -->
+    <div class="sec-block" id="scoreBlock" style="display:none;">
+      <div class="sec-hdr">
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg></div>
+        <div><div class="sh-lbl">Before Transformation</div><div class="sh-title">Space Score</div></div>
+      </div>
+      <div class="sec-body">
+        <div class="score-wrap">
+          <div class="score-circ">
+            <svg class="score-svg" viewBox="0 0 76 76">
+              <circle class="score-trk" cx="38" cy="38" r="32"/>
+              <circle class="score-ring" id="scoreRing" cx="38" cy="38" r="32"
+                stroke-dasharray="201" stroke-dashoffset="201"/>
+            </svg>
+            <div class="score-inner">
+              <div class="score-n" id="scoreNum">0</div>
+              <div class="score-d">/ 100</div>
+            </div>
+          </div>
+          <div class="score-bars" id="scoreBars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feng Shui -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" opacity="0.15"/></svg></div>
+        <div><div class="sh-lbl">Compass School · Ba Zhai</div><div class="sh-title" id="fsTitle">Feng Shui Profile</div></div>
+      </div>
+      <div class="sec-body">
+        <div class="bagua-mini" id="baguaMini"></div>
+        <div class="fs-note-box" id="fsNoteBox"></div>
+        <div class="palette-row" id="paletteRow"></div>
+        <div class="row2" id="fsRow2"></div>
+        <div id="elemBalanceSection" style="display:none;margin-top:1rem">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:8px">FIVE ELEMENT BALANCE</div>
+          <div class="elem-balance" id="elemBars"></div>
+          <div class="fs-note-box" id="elemDiagnosis" style="margin-top:6px"></div>
+        </div>
+        <div id="plantsSection" style="display:none;margin-top:.8rem">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:8px">PLANT PRESCRIPTIONS</div>
+          <div class="plant-rx" id="plantCards"></div>
+        </div>
+        <div id="elemFloorPlan" style="display:none;margin-top:.8rem">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:8px">ELEMENTAL FLOOR PLAN</div>
+          <div class="floor-plan-wrap" id="elemFloorPlanSVG"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Before state -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">01</div>
+        <div><div class="sh-lbl">Marmaroph Framework</div><div class="sh-title">Before — What We See</div></div>
+      </div>
+      <div class="sec-body" id="beforeSection"></div>
+    </div>
+
+    <!-- Layer by Layer -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">02</div>
+        <div><div class="sh-lbl">Light · Colour · Texture</div><div class="sh-title">Layer by Layer</div></div>
+      </div>
+      <div class="sec-body" id="layersSection"></div>
+    </div>
+
+    <!-- Priority changes -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">03</div>
+        <div><div class="sh-lbl">What to Fix &amp; How</div><div class="sh-title">Your 5 Priority Changes</div></div>
+      </div>
+      <div class="sec-body" id="prioritySection"></div>
+    </div>
+
+    <!-- What to keep -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">04</div>
+        <div><div class="sh-lbl">What's Already Working</div><div class="sh-title">Keep &amp; Build On</div></div>
+      </div>
+      <div class="sec-body" id="keepSection"></div>
+    </div>
+
+    <!-- Materials -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">05</div>
+        <div><div class="sh-lbl">Natural &amp; Intentional</div><div class="sh-title">Materials Specification</div></div>
+      </div>
+      <div class="sec-body">
+        <div class="mat-grid" id="materialsSection"></div>
+      </div>
+    </div>
+
+    <!-- Illumination Floor Plan -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">06</div>
+        <div><div class="sh-lbl">Top-Down View</div><div class="sh-title">Illumination Floor Plan</div></div>
+      </div>
+      <div class="sec-body">
+        <div class="floorplan-wrap" id="floorPlanSection"></div>
+      </div>
+    </div>
+
+    <!-- Scents -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">07</div>
+        <div><div class="sh-lbl">Mindful Eating Ritual</div><div class="sh-title">Scents &amp; Essential Oils</div></div>
+      </div>
+      <div class="sec-body" id="scentsSection"></div>
+    </div>
+
+    <!-- Shopping List -->
+    <div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sh-num">08</div>
+        <div><div class="sh-lbl">Where to Buy</div><div class="sh-title">Your Shopping List</div></div>
+      </div>
+      <div class="sec-body">
+        <div class="shop-grid" id="shoppingSection"></div>
+      </div>
+    </div>
+
+    <!-- Vision quote -->
+    <div class="vision-dark" id="visionDark" style="display:none;">
+      <div class="vd-lbl">YOUR MARMAROPH AFTER VISION</div>
+      <div class="vd-text" id="visionText"></div>
+    </div>
+
+    <!-- Actions -->
+    <div class="dl-row">
+      <button class="btn btn-dl" onclick="downloadAfter()"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download After Image</button>
+      <button class="btn btn-s" style="margin:0;" onclick="resetAll()"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> Analyse Another</button>
+    </div>
+
+  </div><!-- /p4 -->
+
+</div><!-- /wrap -->
+
+<script src="sanctuary-engine.js"></script>
+<script>
+// ── CONFIG (from shared engine) ─────────────────────────────────
+var SE=SanctuaryEngine;
+var cfg=SE.getConfig('mindfulEating');
+
+// ── STATE ─────────────────────────────────────────────────────────
+let state = { tod:'day',dayB64:null,nightB64:null,dayMime:null,nightMime:null, dir:null, imgB64:null, imgMime:'image/jpeg',
+              spaceType:'dining room', afterB64:null };
+
+// ── FENG SHUI DATA (built from shared engine + dining extras) ────
+var FS=SE.buildFS(cfg);
+var DIR_ELEMS=SE.DIR_ELEMS;
+var LIMIT=cfg.limit;
+
+// ── USAGE (date-based daily reset, differs from engine pattern) ──
+function getUsage(){
+  const today=new Date().toISOString().slice(0,10);
+  try{
+    const raw=localStorage.getItem('mma_usage');
+    if(raw){
+      const d=JSON.parse(raw);
+      if(d.date===today) return d;
+    }
+  }catch(e){}
+  return {date:today,day:0,night:0};
+}
+function saveUsage(u){ try{localStorage.setItem('mma_usage',JSON.stringify(u));}catch(e){} }
+function remainingCount(tod){ const u=getUsage(); return Math.max(0,LIMIT-(u[tod]||0)); }
+function incrementUsage(tod){ const u=getUsage(); u[tod]=(u[tod]||0)+1; saveUsage(u); }
+
+function checkUsageLimit(){
+  const rem=remainingCount(state.tod);
+  if(rem<=0){
+    document.getElementById('limitCard').style.display='block';
+    document.getElementById('limitText').textContent=
+      `You've used both ${state.tod} analyses for today. ${state.tod==='day'?'Switch to Night mode or':'Switch to Day mode or'} come back tomorrow — the counter resets at midnight.`;
+    return false;
+  }
+  document.getElementById('limitCard').style.display='none';
+  return true;
+}
+
+function renderUsageBar(){
+  const u=getUsage();
+  const dayRem=LIMIT-(u.day||0);
+  const nightRem=LIMIT-(u.night||0);
+  const bar=document.getElementById('usageBar');
+  bar.innerHTML=`
+    <div class="usage-chip${dayRem<=0?' exhausted':''}">
+      <svg style="display:inline-block;vertical-align:middle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> <span>Day</span>
+      ${[0,1].map(i=>`<div class="usage-dot${i<(u.day||0)?' used':''}"></div>`).join('')}
+      <span>${dayRem} left</span>
+    </div>
+    <div class="usage-chip${nightRem<=0?' exhausted':''}">
+      <svg style="display:inline-block;vertical-align:middle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> <span>Night</span>
+      ${[0,1].map(i=>`<div class="usage-dot${i<(u.night||0)?' used':''}"></div>`).join('')}
+      <span>${nightRem} left</span>
+    </div>`;
+}
+
+// ── UI HELPERS ────────────────────────────────────────────────────
+function showPanel(n){
+  [1,2,3,4].forEach(i=>{
+    document.getElementById('p'+i).classList.toggle('show',i===n);
+    const d=document.getElementById('d'+i);
+    if(d){d.className='sdot'+(i<n?' done':i===n?' on':'');}
+  });
+  renderUsageBar();
+}
+
+function handleDualFile(slot,f){
+  if(!f)return;
+  const mime=f.type||'image/jpeg';
+  const r=new FileReader();
+  r.onload=e=>{
+    const full=e.target.result;
+    const b64=full.split(',')[1];
+    if(slot==='day'){
+      state.dayB64=b64;state.dayMime=mime;state.imgB64=b64;state.imgMime=mime;
+      document.getElementById('prevDayImg').src=full;
+      document.getElementById('prevDay').style.display='block';
+      document.getElementById('upzoneDay').style.display='none';
+    }else{
+      state.nightB64=b64;state.nightMime=mime;
+      document.getElementById('prevNightImg').src=full;
+      document.getElementById('prevNight').style.display='block';
+      document.getElementById('upzoneNight').style.display='none';
+    }
+    document.getElementById('rejectCard').style.display='none';
+    checkDualReady();
+  };
+  r.readAsDataURL(f);
+}
+function resetSlot(slot){
+  if(slot==='day'){
+    state.dayB64=null;state.imgB64=null;state.dayB64=null;state.nightB64=null;state.dayMime=null;state.nightMime=null;
+    document.getElementById('prevDay').style.display='none';
+    document.getElementById('upzoneDay').style.display='block';
+    document.getElementById('filDay').value='';
+  }else{
+    state.nightB64=null;
+    document.getElementById('prevNight').style.display='none';
+    document.getElementById('upzoneNight').style.display='block';
+    document.getElementById('filNight').value='';
+  }
+  document.getElementById('p1btn').disabled=true;
+}
+function checkDualReady(){
+  document.getElementById('p1btn').disabled=!(state.dayB64&&state.nightB64);
+}
+function selectDir(d){
+  state.dir=d;
+  document.querySelectorAll('.dir-btn').forEach(b=>{
+    b.classList.toggle('sel', b.onclick.toString().includes("'"+d+"'"));
+  });
+  const fs=FS[d];
+  document.getElementById('fspBadge').textContent=d;
+  document.getElementById('fspDir').textContent=d+' — '+fs.trig+' · '+fs.elem;
+  document.getElementById('fspElem').textContent=fs.energy;
+  const fitMap={ideal:'<svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> IDEAL',good:'<svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Good',moderate:'<svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg> Moderate'};
+  document.getElementById('fspFit').textContent=fitMap[fs.fit]||fs.fit;
+  document.getElementById('fspNote').textContent=fs.note;
+  const pills=document.getElementById('fspPills');
+  pills.innerHTML=fs.plants.map(p=>`<span class="fsp-pill"><svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 21.34M4 4s2.7 1 6.28 5.17C14.14 13.5 17 20 17 20s3-3 3-7-4-11-16-9z"/></svg> ${p}</span>`).join('');
+  document.getElementById('fsPreview').style.display='block';
+  document.getElementById('p2btn').disabled=false;
+}
+
+var sliderActive=false;
+function sliderStart(e){
+  sliderActive=true;
+  e.target.setPointerCapture&&e.target.setPointerCapture(e.pointerId);
+  sliderMove(e);
+}
+function sliderMove(e){
+  if(!sliderActive)return;
+  const wrap=document.getElementById('baSlider');
+  const rect=wrap.getBoundingClientRect();
+  let pct=((e.clientX-rect.left)/rect.width)*100;
+  pct=Math.max(2,Math.min(98,pct));
+  document.getElementById('baLine').style.left=pct+'%';
+  document.getElementById('baKnob').style.left=pct+'%';
+  document.getElementById('afterImg').style.clipPath='inset(0 0 0 '+pct+'%)';
+}
+function sliderEnd(){sliderActive=false;}
+
+function goToCompass(){
+  if(!checkUsageLimit()) return;
+  showPanel(2);
+}
+
+function goBack(n){showPanel(n);}
+
+function lightStep(n){
+  for(let i=1;i<=4;i++) document.getElementById('ls'+i).classList.toggle('lit',i<=n);
+}
+
+// ── API CALLS ─────────────────────────────────────────────────────
+async function geminiVision(prompt,dual){
+  const parts=[
+    {inline_data:{mime_type:state.dayMime||state.imgMime,data:state.dayB64||state.imgB64}},
+  ];
+  if(dual&&state.nightB64){
+    parts.push({inline_data:{mime_type:state.nightMime||'image/jpeg',data:state.nightB64}});
+  }
+  parts.push({text:prompt});
+  const body={contents:[{parts}]};
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${VISION_MODEL}:generateContent?key=${API_KEY}`,
+    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d=await r.json();
+  if(d.error) throw new Error(d.error.message);
+  return d.candidates[0].content.parts[0].text;
+}
+
+async function generateImage(prompt){
+  try{
+    const body={instances:[{prompt}],parameters:{sampleCount:1,aspectRatio:'3:4',outputMimeType:'image/jpeg'}};
+    const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${IMAGE_MODEL_A}:predict?key=${API_KEY}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(d.predictions?.[0]?.bytesBase64Encoded){
+      return 'data:image/jpeg;base64,'+d.predictions[0].bytesBase64Encoded;
+    }
+  }catch(e){}
+  const body2={contents:[{parts:[{text:prompt}]}],
+    generationConfig:{responseModalities:['IMAGE','TEXT']}};
+  const r2=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${IMAGE_MODEL_B}:generateContent?key=${API_KEY}`,
+    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body2)});
+  const d2=await r2.json();
+  if(d2.error) throw new Error(d2.error.message);
+  const parts=d2.candidates?.[0]?.content?.parts||[];
+  const imgP=parts.find(p=>p.inlineData);
+  if(imgP) return `data:${imgP.inlineData.mimeType};base64,${imgP.inlineData.data}`;
+  return null;
+}
+
+// ── PROMPTS ───────────────────────────────────────────────────────
+function buildValidationPrompt(){
+  return `You are a professional interior design analyst. Look at this image.
+Valid spaces: dining room, kitchen with dining table, breakfast nook, balcony eating area, kitchen table area, any room primarily used for meals and mindful eating. The space should show a dining table or eating surface.
+Invalid spaces: yoga rooms, bedrooms without dining area, bathrooms, garages, offices, cluttered storage rooms, hallways.
+Respond ONLY in this JSON format:
+{"is_valid":true or false,"space_type":"brief label","rejection_reason":"If not valid: one warm friendly sentence telling user what this space is and what to photograph instead. If valid: empty string."}`;
+}
+
+function buildAnalysisPrompt(){
+  const fs=FS[state.dir];
+  const tod=state.tod==='day'?'morning/midday':'evening';
+  const householdCtx=SE.buildHouseholdPromptContext('mindfulEating');
+  return `You are a certified Marmaroph Healthy Home designer and Compass Feng Shui expert. Analyse these two photos of the same ${state.spaceType}. Photo 1 shows the space in natural daylight. Photo 2 shows it under artificial evening lighting. Compare both lighting conditions.
+
+COMPASS CONTEXT: Direction ${state.dir} — ${fs.trig} (${fs.chi}) · ${fs.elem} element · ${fs.energy}
+${fs.note}
+
+${householdCtx}
+
+MARMAROPH FRAMEWORK (your bible):
+APPROVED MATERIALS: Solid hardwoods with natural oil/beeswax finish, honed natural stone, terracotta, unglazed ceramic, linen/wool/cotton, rattan/bamboo, copper/brass.
+ELIMINATE: MDF, particle board, vinyl, polyurethane foam, plastic laminates, synthetic fragrance, artificial plants, high-gloss polished stone.
+LIGHTING: Day 2700-3000K max. Evening ≤2700K transitioning to ≤2200K candlelight. 4000K+ banned.
+COLOURS: 60% warm ivory base, 30% natural mid-tone, 10% accent. Never cool greys, stark white, neons.
+PLANTS: Must be living, healthy, tended. Never artificial.
+QUIET LUXURY: Matte natural finishes, aged brass/copper patina, linen/wool textiles, lime/clay plaster, terracotta.
+
+Structure your response with EXACTLY these section headers (use ##):
+
+## THE BEFORE STATE
+Bullet-point inventory of everything you observe. Each bullet = one specific observation. Format:
+- Table: [shape · material · colour · condition]
+- Chairs: [material · style · number]
+- Lighting: [type · estimated CCT · quality]
+- Floor: [material · condition]
+- Walls: [colour · texture · condition]
+- Plants: [present/absent · type · condition]
+- Colour palette: [dominant tones]
+- Clutter or issues: [specific items]
+- Windows: [visible or not · estimated natural light level]
+Be specific and observational — name what you see.
+
+## FENG SHUI READING — ${state.dir} · ${fs.elem}
+Use bullet points. Address:
+- What supports the ${fs.elem} element in this space
+- What conflicts with or drains the ${fs.elem} energy
+- Energy blockages or stagnant corners you observe
+- How the current arrangement serves or undermines ${fs.energy}
+- One sentence of encouragement — what's already aligned
+
+## LIGHT · COLOUR · TEXTURE
+Address each layer with bullet points. Use the exact numbered heading:
+1. NATURAL LIGHT: Is the natural light in this ${tod} photo sufficient? If dim for daytime: explain WHY natural light is non-negotiable (circadian health, emotional regulation, living quality of a nourishment space) and give 2-3 practical solutions for this specific space.
+2. COLOUR BALANCE: Is this space too monochromatic? If yes: which specific textile tones, ceramic glazes, plant colours, or art shades would bring depth and Feng Shui balance for ${state.dir} · ${fs.elem}. Be specific: "terracotta linen table runner" not "add colour".
+3. LIGHTING LAYERS: Name which light sources are missing. Explain the role each plays — floor lamp (ambient warmth from below), table lamp (intimate focus), wall sconce (indirect wash), sunset lamp (ritual warmth ≤2200K), candle (ceremony). Explain WHY layered light matters for a mindful eating ritual.
+4. RUG: Does this floor need a rug? If yes: recommend specific material (wool, jute, hand-knotted cotton), weave, colour and pattern, approximate size. Explain why. If no: say why the floor is working.
+5. WALL ART: Are the walls too bare? If yes: describe exactly what would work — canvas size, style (abstract, botanical, landscape), woven wall hanging, ceramic piece, or gallery wall. If no: say why.
+
+## THE FIVE PRIORITY CHANGES
+Number 1-5. For each change, structure it as TWO parts:
+MISTAKE: [What's wrong — be specific, name the exact object/issue]
+FIX: [Exact solution — material, size, placement. "Replace the plastic IKEA chair with a natural rattan armchair, seat height 46cm, with a wool cushion in warm ivory"]
+These must reflect lighting, colour, materials, rug, and art as valid priorities.
+
+## WHAT TO KEEP
+Bullet points only. Be generous where warranted. Each bullet = one specific thing that's working.
+
+## MATERIALS SPECIFICATION
+List exactly 5-7 natural materials for this space. For each, use this exact pipe-separated format on one line:
+MATERIAL_NAME | where_to_use | why_chosen_for_this_space_and_direction | specific_product_spec
+Example: Honed Travertine | dining table top or side table | warm ivory tones support ${fs.elem} element, matte finish eliminates harshness | 30mm honed slab, unfilled, sealed with natural beeswax
+
+
+## FIVE ELEMENT BALANCE
+Analyse the five feng shui elements (Wood, Fire, Earth, Metal, Water) present in this dining/eating space based on colours, materials, shapes, and objects you observe. Reply with ONLY a single-line JSON:
+{"wood":0,"fire":0,"earth":0,"metal":0,"water":0,"dominant":"element_name","deficient":"element_name","diagnosis":"One sentence describing the imbalance and its effect on mindful eating."}
+Each value is a percentage (0-100) representing how much of that element is present. All five must sum to 100.
+
+## PLANT PRESCRIPTIONS
+Based on the element balance, compass direction, and that this is a mindful eating space (dining room, kitchen table, balcony, terrace), recommend 2-3 specific plants. Reply with ONLY a single-line JSON array:
+[{"name":"Common Name","latin":"Latin name","icon":"emoji","element":"wood/fire/earth/metal/water","placement":"compass direction and specific spot near the dining area","reason":"Why this plant for a mindful eating space"}]
+
+## SPACE SCORE
+Score this space before transformation. Reply with ONLY a single-line JSON object — no other text:
+{"overall":0,"materials":0,"lighting":0,"feng_shui":0,"ritual":0}
+Scoring: each sub-score out of 25. overall = sum of four. materials = natural material quality; lighting = quality and CCT; feng_shui = alignment with ${state.dir} · ${fs.elem}; ritual = readiness for mindful eating ritual right now.
+
+## SHOPPING LIST
+Reply with ONLY a single-line JSON array — no other text, no markdown:
+[{"n":"item name","c":"category","s":"etsy/amazon search query","t":"why they need this — one sentence","p":"high or medium"}]
+Include 6-10 items. Categories: lighting, textiles, plants, ceramics, furniture, art, storage, fragrance. Search queries must be specific enough to find real products (e.g. "rattan floor lamp natural woven shade" not "floor lamp").
+
+## AFTER VISION DIRECTIVES
+Study the image carefully. Reply with ONLY a single-line JSON — no other text, no markdown:
+{"windows_visible":true,"space_is_dark":false,"natural_light_low":false,"space_is_monochromatic":false,"chandelier_suits":false,"mirror_needed":false,"mirror_type":"floor","rug_needed":false,"rug_description":"","wall_art_needed":false,"wall_art_description":"","light_layers":["floor lamp","wall sconce","table lamp"],"furniture_keep":"","furniture_change":"","camera_angle":"describe exact camera position, height, and framing","custom_palette":[{"name":"Name","hex":"#hex"},{"name":"Name","hex":"#hex"},{"name":"Name","hex":"#hex"},{"name":"Name","hex":"#hex"}]}
+
+Tone: Marmaroph voice — warm, intelligent, authoritative. Never generic. Address the reader directly. Use bullet points throughout — never write long unbroken paragraphs.`;
+}
+
+function buildImagePrompt(directives){
+  const fs=FS[state.dir];
+  const isDay=state.tod==='day';
+  const d=directives||{windows_visible:true,space_is_dark:false,chandelier_suits:false,mirror_needed:false,mirror_type:'floor',rug_needed:false,rug_description:'',wall_art_needed:false,wall_art_description:'',light_layers:['floor lamp','wall sconce','table lamp'],custom_palette:null};
+  const palette=(d.custom_palette||fs.palette).map(p=>p.name).join(', ');
+  const curtainLine=d.windows_visible
+    ?(isDay?'CURTAINS: floor-to-ceiling sheer linen curtains, slightly pooling, filtering warm golden natural light. Full height — visible ceiling to floor.'
+      :'CURTAINS: floor-to-ceiling heavy linen curtains fully drawn, ivory or warm stone, creating intimate enclosure. Full height.')
+    :'// No curtains — no windows. Walls dressed with texture, art, or a large mirror instead.';
+  const mirrorLine=(d.mirror_needed||(!d.windows_visible&&d.space_is_dark))
+    ?(d.mirror_type==='wall'
+      ?'MIRROR: oversized full-length wall mirror in thin aged brass or natural wood frame, mounted on one wall to amplify light.'
+      :'MIRROR: large leaning floor mirror with thin aged brass or natural wood frame, propped against one wall, reflecting warmth.')
+    :'';
+  const chandelierType=(['SE','E'].includes(state.dir))?'rattan globe chandelier':(['S','SW'].includes(state.dir))?'branching aged brass chandelier':'woven linen shade pendant chandelier';
+  const chandelierLine=d.chandelier_suits
+    ?(isDay?`CHANDELIER: a ${chandelierType} above the table, switched off but architecturally present as a sculptural statement.`
+      :`CHANDELIER: a ${chandelierType} above the table, dimmed to ≤2200K, glowing warmly as centrepiece.`)
+    :'';
+  const layers=d.light_layers||['floor lamp','wall sconce','table lamp'];
+  const lightMap={
+    'floor lamp':'a tall sculptural floor lamp casting ambient warmth from below',
+    'table lamp':'a small ceramic or brass table lamp on a sideboard for intimate focus',
+    'wall sconce':'a wall-mounted bronze or aged brass sconce washing wall with indirect light',
+    'chandelier':chandelierLine||'a statement chandelier above the table',
+    'pendant':'a linen or rattan pendant above the table',
+    'focal spot':'a discreet focal spotlight aimed at the table centrepiece',
+    'sunset lamp':'an amber sunset-tone lamp (≤1800K) creating ritual warmth glow in one corner',
+    'candle':'one or two taper candles in a simple ceramic or metal holder as ceremony accent'
+  };
+  const layerDesc=layers.filter(l=>l!=='chandelier').map(l=>lightMap[l]||l).join(', ');
+  const baseLighting=isDay
+    ?`NATURAL LIGHT IS THE PRIMARY SOURCE — ${d.windows_visible?'bright warm daylight flooding through windows and sheer linen curtains':'soft ambient daylight fills the space'}. Secondary layers visible but subordinate to daylight: ${layerDesc} — all at 2700K. The room feels alive with natural warmth.`
+    :`ALL LIGHTS ON — every single light source is switched on and glowing: ${layerDesc} — every source at ≤2200K warm amber. Total warm layered illumination from multiple directions. No darkness anywhere.`;
+  const rugLine=d.rug_needed&&d.rug_description?`RUG: ${d.rug_description}. Placed under table and chairs, grounding the dining zone.`:'';
+  const artLine=d.wall_art_needed&&d.wall_art_description?`WALL ART: ${d.wall_art_description}. Positioned on the most prominent wall visible.`:'';
+  return `Professional interior design editorial photograph. Minimalist, stylish, modern, elegant, cozy. A beautifully transformed ${state.spaceType}.
+COMPASS FENG SHUI: ${state.dir} sector · ${fs.trig} · ${fs.elem} element · ${fs.energy}
+${curtainLine}
+FURNITURE — CRITICAL: ${d.furniture_keep?`Preserve existing furniture as closely as possible: ${d.furniture_keep}. Style it beautifully but do NOT replace it.`:'Keep existing furniture, styled and well-lit.'}${d.furniture_change?' Only replace: '+d.furniture_change+'.':''}
+LIGHTING — FULLY LAYERED: ${baseLighting}
+${chandelierLine?'\n'+chandelierLine:''}${mirrorLine?'\n'+mirrorLine:''}${rugLine?'\n'+rugLine:''}${artLine?'\n'+artLine:''}
+PLANTS: ONE statement tall floor plant (${fs.plants[0]}) in a large sculptural unglazed stone or terracotta floor vessel on the floor only — NEVER on the table. Maximum two plants total.
+TABLE STYLING: A single elegant glass or ceramic vase with fresh flowers as centrepiece. NO plant pots on the table. Clean linen place settings. ${fs.table} in solid natural wood, matte oil finish.
+COLOUR PALETTE: ${palette}, warm ivory plaster walls. Nothing saturated or neon.
+MATERIALS — ALL MATTE: beige stone or travertine · natural wood grain · rattan woven accent · woven linen or cotton · wool throw on chair · aged brass or bronze metal. Zero synthetic. Zero high-gloss.
+DO NOT INCLUDE: plant pots on table, plastic, synthetic fabrics, artificial plants, high-gloss or chrome surfaces, clutter, cold overhead lighting.
+CAMERA ANGLE — CRITICAL: Reproduce the exact same perspective as the original photo: ${d.camera_angle||'slightly elevated angle from the doorway showing full table and two walls'}. Same position, same height, same framing.
+QUALITY: Architectural Digest or Kinfolk editorial photography. Portrait 3:4. Sharp focus. Every light source visibly glowing.`;
+}
+
+// ── PARSE ANALYSIS ────────────────────────────────────────────────
+function parseAnalysis(raw){
+  const sections={before:'',feng:'',layers:'',priority:'',keep:'',materials:'',shopping:null,score:null,directives:null,elemBalance:null,plants:null};
+  const rx=/##\s*(THE BEFORE STATE|FENG SHUI READING[^#]*|LIGHT · COLOUR · TEXTURE|LIGHT . COLOUR . TEXTURE|LIGHT.*COLOUR.*TEXTURE|THE FIVE PRIORITY CHANGES|WHAT TO KEEP|MATERIALS SPECIFICATION|FIVE ELEMENT BALANCE|PLANT PRESCRIPTIONS|SPACE SCORE|SHOPPING LIST|AFTER VISION DIRECTIVES)([\s\S]*?)(?=##|$)/gi;
+  let m;
+  while((m=rx.exec(raw))!==null){
+    const h=m[1].trim().toUpperCase();
+    const body=m[2].trim();
+    if(h.startsWith('THE BEFORE'))sections.before=body;
+    else if(h.startsWith('FENG SHUI'))sections.feng=body;
+    else if(h.startsWith('LIGHT'))sections.layers=body;
+    else if(h.startsWith('THE FIVE'))sections.priority=body;
+    else if(h.startsWith('WHAT'))sections.keep=body;
+    else if(h.startsWith('MATERIALS'))sections.materials=body;
+    else if(h.startsWith('SPACE SCORE')){
+      const jm=body.match(/\{[^}]+\}/);
+      if(jm){try{sections.score=JSON.parse(jm[0]);}catch(e){}}
+    }
+    else if(h.startsWith('FIVE ELEMENT')){
+      try{sections.elemBalance=JSON.parse(body.trim().split('\n')[0])}catch(e){sections.elemBalance=null}
+    }
+    else if(h.startsWith('PLANT PRESC')){
+      try{sections.plants=JSON.parse(body.trim().split('\n')[0])}catch(e){sections.plants=null}
+    }
+    else if(h.startsWith('SHOPPING')){
+      const jm=body.match(/\[[\s\S]*\]/);
+      if(jm){try{sections.shopping=JSON.parse(jm[0]);}catch(e){}}
+    }
+    else if(h.startsWith('AFTER VISION')){
+      const jm=body.match(/\{[\s\S]*\}/);
+      if(jm){try{sections.directives=JSON.parse(jm[0]);}catch(e){}}
+    }
+  }
+  if(!sections.score){
+    const jm=raw.match(/\{"overall"\s*:\s*\d+[^}]+\}/);
+    if(jm){try{sections.score=JSON.parse(jm[0]);}catch(e){}}
+  }
+  if(!sections.score) sections.score={overall:0,materials:0,lighting:0,feng_shui:0,ritual:0};
+  if(!sections.directives) sections.directives={windows_visible:true,space_is_dark:false,natural_light_low:false,space_is_monochromatic:false,chandelier_suits:false,mirror_needed:false,mirror_type:'floor',rug_needed:false,rug_description:'',wall_art_needed:false,wall_art_description:'',light_layers:['floor lamp','wall sconce','table lamp'],furniture_keep:'',furniture_change:'',camera_angle:'slightly elevated angle from the doorway showing the full table and two walls',custom_palette:null};
+  if(!sections.before && !sections.priority) sections.before=raw;
+  return sections;
+}
+
+var parseMaterials=SE.parseMaterials;
+var parsePriorityChanges=SE.parsePriorityChanges;
+var renderText=SE.renderText;
+
+// ── FLOOR PLAN SVG ────────────────────────────────────────────────
+function generateFloorPlan(directives, spaceType){
+  const layers=(directives&&directives.light_layers)||['floor lamp','wall sconce','table lamp'];
+  const hasChande=layers.includes('chandelier')||directives?.chandelier_suits;
+  const hasFloor=layers.includes('floor lamp');
+  const hasTable=layers.includes('table lamp');
+  const hasSconce=layers.includes('wall sconce');
+  const hasCandle=layers.includes('candle');
+  const hasSunset=layers.includes('sunset lamp');
+  const fs=FS[state.dir];
+  const isRound=fs.table.toLowerCase().includes('round')||fs.table.toLowerCase().includes('oval');
+
+  const W=280,H=320;
+  const rW=210,rH=240,rX=35,rY=40;
+  const tX=rX+rW/2,tY=rY+rH/2;
+  const tableRx=isRound?36:42,tableRy=isRound?30:24;
+
+  // Chair positions around table
+  const chairs=isRound?[
+    {cx:tX,cy:tY-tableRy-14},{cx:tX,cy:tY+tableRy+14},
+    {cx:tX-tableRx-14,cy:tY},{cx:tX+tableRx+14,cy:tY}
+  ]:[
+    {cx:tX-22,cy:tY-tableRy-14},{cx:tX+22,cy:tY-tableRy-14},
+    {cx:tX-22,cy:tY+tableRy+14},{cx:tX+22,cy:tY+tableRy+14},
+    {cx:tX-tableRx-14,cy:tY},{cx:tX+tableRx+14,cy:tY}
+  ];
+
+  // Light source positions
+  const lights=[];
+  if(hasChande) lights.push({x:tX,y:tY,type:'chandelier',label:'Chandelier',color:'#c0a030'});
+  if(hasFloor) lights.push({x:rX+18,y:rY+rH-20,type:'floor',label:'Floor Lamp',color:'#b87333'});
+  if(hasTable) lights.push({x:rX+rW-20,y:rY+rH-30,type:'table',label:'Table Lamp',color:'#b07030'});
+  if(hasSconce) lights.push({x:rX+rW-6,y:rY+60,type:'sconce',label:'Wall Sconce',color:'#8a9070'});
+  if(hasSunset) lights.push({x:rX+18,y:rY+50,type:'sunset',label:'Sunset Lamp',color:'#c84820'});
+  if(hasCandle) lights.push({x:tX,y:tY,type:'candle',label:'Candle',color:'#d4a020'});
+
+  const glow=(l)=>{
+    const r=l.type==='chandelier'?55:l.type==='floor'||l.type==='sunset'?45:l.type==='sconce'?30:20;
+    return `<circle cx="${l.x}" cy="${l.y}" r="${r}" fill="${l.color}" opacity=".09"/>`;
+  };
+  const icon=(l)=>{
+    const icons={chandelier:'<svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg>',floor:'↟',table:'☾',sconce:'◗',sunset:'◕',candle:'✦',pendant:'<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" opacity="0.15"/></svg>'};
+    return `<circle cx="${l.x}" cy="${l.y}" r="8" fill="${l.color}" opacity=".9"/>
+      <text x="${l.x}" y="${l.y+4}" text-anchor="middle" font-size="8" fill="#fff" font-family="sans-serif">${icons[l.type]||'●'}</text>`;
+  };
+
+  // Compass indicator
+  const dirs={N:270,NE:315,E:0,SE:45,S:90,SW:135,W:180,NW:225};
+  const angle=(dirs[state.dir]||0)*Math.PI/180;
+  const cx2=W-22,cy2=rY+18;
+  const dx=Math.cos(angle)*10,dy=Math.sin(angle)*10;
+
+  const chairsSVG=chairs.map(c=>`<ellipse cx="${c.cx}" cy="${c.cy}" rx="9" ry="7" fill="#bbd9d7" stroke="#8ab8b4" stroke-width="1"/>`).join('');
+  const glowsSVG=lights.map(glow).join('');
+  const iconsSVG=lights.map(icon).join('');
+
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+  <!-- Room -->
+  <rect x="${rX}" y="${rY}" width="${rW}" height="${rH}" rx="6" fill="#f8fafa" stroke="#d4e8e6" stroke-width="2"/>
+  <!-- Door -->
+  <line x1="${rX+rW*0.3}" y1="${rY+rH}" x2="${rX+rW*0.55}" y2="${rY+rH}" stroke="#0a7063" stroke-width="3" stroke-linecap="round"/>
+  <!-- Glow halos -->
+  ${glowsSVG}
+  <!-- Chairs -->
+  ${chairsSVG}
+  <!-- Table -->
+  <ellipse cx="${tX}" cy="${tY}" rx="${tableRx}" ry="${tableRy}" fill="#c8b090" stroke="#a08060" stroke-width="1.5"/>
+  <ellipse cx="${tX}" cy="${tY}" rx="${tableRx-6}" ry="${tableRy-6}" fill="none" stroke="#d4c0a0" stroke-width=".5" stroke-dasharray="3,2"/>
+  <!-- Light icons -->
+  ${iconsSVG}
+  <!-- Compass -->
+  <circle cx="${cx2}" cy="${cy2}" r="12" fill="white" stroke="#d4e8e6" stroke-width="1"/>
+  <line x1="${cx2}" y1="${cy2}" x2="${cx2+dx}" y2="${cy2+dy}" stroke="#0a7063" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="${cx2}" cy="${cy2}" r="2" fill="#044147"/>
+  <text x="${cx2}" y="${cy2-14}" text-anchor="middle" font-size="7" fill="#3d5a59" font-family="sans-serif" font-weight="700">${state.dir}</text>
+  <!-- Labels -->
+  <text x="${rX+rW/2}" y="${rY+rH+14}" text-anchor="middle" font-size="7.5" fill="#7a9e9c" font-family="sans-serif">↑ Entry / Doorway</text>
+  <text x="${rX+rW/2}" y="${rY-8}" text-anchor="middle" font-size="8" fill="#044147" font-family="sans-serif" font-weight="600">YOUR ${state.spaceType.toUpperCase()} — ${state.tod.toUpperCase()}</text>
+</svg>`;
+}
+
+// ── BUILD RESULTS UI ──────────────────────────────────────────────
+
+function buildFloorPlanSVG(eb){return SE.buildFloorPlanSVG(eb,state.dir)}
+
+function renderResults(analysis, sec){
+  const fs=FS[state.dir];
+  if(!sec) sec=parseAnalysis(analysis);
+
+  document.getElementById('resEyebrow').textContent=`${state.dir} · ${fs.elem} Element · ${state.tod.toUpperCase()}`;
+  document.getElementById('beforeImg').src=`data:${state.imgMime};base64,${state.imgB64}`;
+
+  // Score
+  const sc=sec.score;
+  if(sc && sc.overall>0){
+    document.getElementById('scoreBlock').style.display='block';
+    document.getElementById('scoreNum').textContent=sc.overall;
+    const offset=201-(201*sc.overall/100);
+    document.getElementById('scoreRing').style.strokeDashoffset=offset;
+    document.getElementById('scoreBars').innerHTML=[
+      {lbl:'Natural Materials',val:sc.materials},
+      {lbl:'Lighting Quality',val:sc.lighting},
+      {lbl:'Feng Shui Alignment',val:sc.feng_shui},
+      {lbl:'Ritual Readiness',val:sc.ritual}
+    ].map(b=>`<div class="sbar">
+      <div class="sbar-lbl">${b.lbl}</div>
+      <div class="sbar-trk"><div class="sbar-fill" style="width:${(b.val/25)*100}%"></div></div>
+      <div class="sbar-val">${b.val}/25</div>
+    </div>`).join('');
+  }
+
+  // Feng Shui
+  document.getElementById('fsTitle').textContent=`${state.dir} — ${fs.trig} ${fs.chi} · ${fs.energy}`;
+  document.getElementById('baguaMini').innerHTML=['N','NE','E','SE','S','SW','W','NW'].map(d=>`
+    <div class="bm${d===state.dir?' act':''}">
+      <div class="bm-dir">${d}</div>
+      <div class="bm-elem">${DIR_ELEMS[d]}</div>
+    </div>`).join('');
+  document.getElementById('fsNoteBox').textContent=fs.note;
+  const paletteData=(sec.directives?.custom_palette?.length===4) ? sec.directives.custom_palette : fs.palette;
+  document.getElementById('paletteRow').innerHTML=paletteData.map(p=>`
+    <div class="sw"><div class="sw-circle" style="background:${p.hex}"></div><div class="sw-lbl">${p.name}</div></div>`).join('');
+  document.getElementById('fsRow2').innerHTML=`
+    <div class="mini-card"><div class="mc-lbl">Table Shape</div><div class="mc-val">${fs.table}</div></div>
+    <div class="mini-card"><div class="mc-lbl">Floor Plant</div><div class="mc-val">${fs.plants[0]}</div></div>
+    <div class="mini-card"><div class="mc-lbl">${state.tod==='day'?'Day':'Night'} Light</div><div class="mc-val">${state.tod==='day'?fs.light_day:fs.light_night}</div></div>
+    <div class="mini-card"><div class="mc-lbl">Core Colours</div><div class="mc-val">${fs.colors.slice(0,2).join(' · ')}</div></div>`;
+
+  
+  // Element balance
+  if(sec.elemBalance){
+    const eb=sec.elemBalance;
+    const ebd=[
+      {key:'wood',name:'Wood',color:'#4a7c59',icon:'🌿'},
+      {key:'fire',name:'Fire',color:'#c0392b',icon:'🔥'},
+      {key:'earth',name:'Earth',color:'#c9912a',icon:'🏔️'},
+      {key:'metal',name:'Metal',color:'#b0b0b0',icon:'⚙️'},
+      {key:'water',name:'Water',color:'#2c3e6b',icon:'💧'}
+    ];
+    document.getElementById('elemBalanceSection').style.display='';
+    document.getElementById('elemBars').innerHTML=ebd.map(e=>{
+      const pct=eb[e.key]||0;
+      const st=pct>35?'<span style="color:rgba(255,150,150,.8)">Excess</span>':pct>25?'<span style="color:var(--warn)">High</span>':pct>=15?'<span style="color:var(--success)">Balanced</span>':pct>=5?'<span style="color:var(--warn)">Low</span>':'<span style="color:rgba(255,150,150,.8)">Deficient</span>';
+      return `<div class="elem-bar-row"><div class="elem-bar-icon">${e.icon}</div><div class="elem-bar-name" style="color:${e.color}">${e.name}</div><div class="elem-bar-track"><div class="elem-bar-fill" style="width:${pct}%;background:${e.color}"></div></div><div class="elem-bar-pct" style="color:${e.color}">${pct}%</div><div class="elem-bar-status">${st}</div></div>`;
+    }).join('');
+    if(eb.diagnosis)document.getElementById('elemDiagnosis').textContent=eb.diagnosis;
+    document.getElementById('elemFloorPlan').style.display='';
+    document.getElementById('elemFloorPlanSVG').innerHTML=buildFloorPlanSVG(eb);
+  }
+
+  // Plants
+  if(sec.plants&&sec.plants.length){
+    document.getElementById('plantsSection').style.display='';
+    document.getElementById('plantCards').innerHTML=sec.plants.map(p=>`
+      <div class="plant-card"><div class="plant-icon">${p.icon||'🌿'}</div><div><div class="plant-name">${p.name}</div><div class="plant-latin">${p.latin||''}</div><div class="plant-desc">${p.reason||''}</div><div class="plant-place">📍 ${p.placement||''}</div></div></div>
+    `).join('');
+  }
+
+// Before state
+  document.getElementById('beforeSection').innerHTML=renderText(sec.before||sec.feng);
+
+  // Layer by layer
+  const layersEl=document.getElementById('layersSection');
+  if(sec.layers){
+    const layerItems=sec.layers.split(/\n(?=\d+\.\s+[A-Z])/g).map(chunk=>{
+      const titleMatch=chunk.match(/^\d+\.\s+([^\n:]+)/);
+      const title=titleMatch?titleMatch[1].trim():'';
+      const body=chunk.replace(/^\d+\.\s+[^\n:]+[:\n]*/,'').trim();
+      const icons={'NATURAL LIGHT':'<svg style="display:inline-block;vertical-align:middle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>','COLOUR BALANCE':'<svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="13.5" cy="6.5" r="2"/><circle cx="17.5" cy="10.5" r="2"/><circle cx="8.5" cy="7.5" r="2"/><circle cx="6.5" cy="12" r="2"/><path d="M12 2a10 10 0 00-1 19.9c.6.1 1-.4 1-1v-1.3a1.3 1.3 0 011.3-1.3h1.4a3 3 0 003-3 1 1 0 00-.8-1A10 10 0 0012 2z"/></svg>','LIGHTING LAYERS':'<svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>','RUG':'▭','WALL ART':'<svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>'};
+      const icon=Object.entries(icons).find(([k])=>title.toUpperCase().startsWith(k))?.[1]||'<svg style="display:inline-block;vertical-align:middle" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity="0.6"><circle cx="12" cy="12" r="6"/></svg>';
+      return title?`<div class="layer-item"><div class="layer-hdr"><span class="layer-icon">${icon}</span><span class="layer-title">${title}</span></div><div class="layer-body">${renderText(body)}</div></div>`:'';
+    }).filter(Boolean).join('');
+    layersEl.innerHTML=layerItems||renderText(sec.layers);
+  } else {
+    layersEl.innerHTML='<div class="as-text" style="color:var(--tx3);font-size:11px;">Layer observations included in sections above and below.</div>';
+  }
+
+  // Priority changes — mistake/fix card format
+  const prItems=parsePriorityChanges(sec.priority);
+  document.getElementById('prioritySection').innerHTML=prItems.length
+    ?`<div class="priority-list">${prItems.map((it,i)=>`
+      <div class="pr-item">
+        <div class="pr-hdr"><div class="pr-num">${i+1}</div><div class="pr-label">${it.label.replace(/\*\*/g,'')}</div></div>
+        <div class="pr-body">
+          ${it.mistake?`<div class="pr-mistake"><span class="pr-icon"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><div class="pr-text"><div class="pr-tag pr-tag-err">THE PROBLEM</div>${it.mistake.replace(/\*\*/g,'')}</div></div>`:''}
+          <div class="pr-fix"><span class="pr-icon">✓</span><div class="pr-text"><div class="pr-tag pr-tag-fix">THE FIX</div>${it.fix.replace(/\*\*/g,'')}</div></div>
+        </div>
+      </div>`).join('')}</div>`
+    :renderText(sec.priority);
+
+  // What to keep
+  document.getElementById('keepSection').innerHTML=renderText(sec.keep);
+
+  // Materials
+  const mats=parseMaterials(sec.materials||'');
+  const swatchColors={'travertine':'#c8b8a0','wood':'#8b6040','rattan':'#c0a060','linen':'#e8dcc8','wool':'#c8b8a8','cotton':'#e0d8cc','leather':'#8a5030','stone':'#b8b0a0','terracotta':'#c07050','ceramic':'#c0b090','brass':'#c0a030','copper':'#b87333','bamboo':'#a0b060','plaster':'#e0d8cc'};
+  function getSwatch(name){
+    const key=name.toLowerCase();
+    return Object.entries(swatchColors).find(([k])=>key.includes(k))?.[1]||fs.matSwatch||'#b0a090';
+  }
+  document.getElementById('materialsSection').innerHTML=mats.length
+    ?mats.map(m=>`<div class="mat-card">
+      <div class="mat-swatch" style="background:${getSwatch(m.name)}"></div>
+      <div class="mat-info">
+        <div class="mat-name">${m.name}</div>
+        <div class="mat-where">${m.where}</div>
+        <div class="mat-why">${m.why}</div>
+        ${m.spec?`<div class="mat-spec">${m.spec}</div>`:''}
+      </div>
+    </div>`).join('')
+    :`<div class="as-text" style="color:var(--tx3)">Material specifications will appear here after analysis.</div>`;
+
+  // Floor plan
+  document.getElementById('floorPlanSection').innerHTML=generateFloorPlan(sec.directives,state.spaceType)
+    +`<div class="fp-legend">
+      <div class="fp-leg-item"><div class="fp-leg-dot" style="background:#c0a030"></div>Ceiling/Chandelier</div>
+      <div class="fp-leg-item"><div class="fp-leg-dot" style="background:#b87333"></div>Floor Lamp</div>
+      <div class="fp-leg-item"><div class="fp-leg-dot" style="background:#8a9070"></div>Wall Sconce</div>
+      <div class="fp-leg-item"><div class="fp-leg-dot" style="background:#b07030"></div>Table Lamp</div>
+      <div class="fp-leg-item"><div class="fp-leg-dot" style="background:#c84820"></div>Sunset Lamp</div>
+      <div class="fp-leg-item"><div class="fp-leg-dot" style="background:#bbd9d7"></div>Chair</div>
+    </div>`;
+
+  // Scents — direction defaults + any from analysis
+  const scentData=fs.scents;
+  const scentColors=['#c8b090','#8a9870','#c0a030'];
+  document.getElementById('scentsSection').innerHTML=`
+    <div class="scent-grid">
+      ${scentData.map((s,i)=>`<div class="scent-card">
+        <div class="scent-orb" style="background:${scentColors[i%3]}20;border:1px solid ${scentColors[i%3]}40">${s.emoji}</div>
+        <div class="scent-info">
+          <div class="scent-name">${s.name}</div>
+          <div class="scent-note">${s.note}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div class="scent-blend">
+      <div class="scent-blend-lbl">Ritual Blend</div>
+      <div class="scent-blend-text">${fs.scent_blend}</div>
+    </div>`;
+
+  // Shopping list
+  const shopItems=sec.shopping||[];
+  document.getElementById('shoppingSection').innerHTML=shopItems.length
+    ?shopItems.map(it=>{
+      const q=encodeURIComponent(it.s||it.n||'');
+      return `<div class="shop-item">
+        <div class="shop-item-top">
+          <div class="shop-name">${it.n}</div>
+          <div class="shop-priority ${it.p==='high'?'high':'medium'}">${it.p==='high'?'PRIORITY':'OPTIONAL'}</div>
+        </div>
+        <div class="shop-cat">${it.c}</div>
+        <div class="shop-note">${it.t}</div>
+        <div class="shop-links">
+          <a class="shop-link shop-link-etsy" href="https://www.etsy.com/search?q=${q}" target="_blank" rel="noopener">Etsy <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+          <a class="shop-link shop-link-amazon" href="https://www.amazon.com/s?k=${q}" target="_blank" rel="noopener">Amazon <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+        </div>
+      </div>`;
+    }).join('')
+    :`<div class="as-text" style="color:var(--tx3)">Shopping recommendations will appear here after analysis.</div>`;
+
+  // Vision quote
+  if(sec.feng && sec.feng.length>80){
+    document.getElementById('visionDark').style.display='block';
+    const snippet=sec.feng.replace(/\*\*/g,'').replace(/[-•]\s/g,'').split(/[.\n]/).filter(s=>s.trim().length>20).slice(0,3).join('. ')+'.';
+    document.getElementById('visionText').textContent=snippet;
+  }
+}
+
+// ── MAIN ANALYSIS FLOW ────────────────────────────────────────────
+async function startAnalysis(){
+  if(!checkUsageLimit()) return;
+
+  showPanel(3);
+  lightStep(1);
+
+  try{
+    // Step 1 — Validate
+    const validRaw=await geminiVision(buildValidationPrompt(),true);
+    let parsed;
+    try{
+      const clean=validRaw.replace(/```json\n?/g,'').replace(/```/g,'').trim();
+      parsed=JSON.parse(clean);
+    }catch(e){parsed={is_valid:true,space_type:'dining room',rejection_reason:''};}
+
+    if(!parsed.is_valid){
+      showPanel(1);
+      document.getElementById('rejectCard').style.display='block';
+      document.getElementById('rejectText').innerHTML=
+        `${parsed.rejection_reason||'Please photograph a dining room, kitchen table, or balcony dining area.'}<br><br>
+        <strong>Valid spaces:</strong> indoor dining room · kitchen with dining table · balcony / terrace table`;
+      document.getElementById('p1btn').disabled=true;
+      return;
+    }
+    state.spaceType=parsed.space_type||'dining room';
+
+    // Step 2 — Full analysis
+    lightStep(2);
+    const analysis=await geminiVision(buildAnalysisPrompt(),true);
+    lightStep(3);
+
+    // Parse, increment usage, render
+    const parsedSections=parseAnalysis(analysis);
+    state._directives=parsedSections.directives;
+
+    incrementUsage(state.tod);
+    renderUsageBar();
+
+    renderResults(analysis, parsedSections);
+    showPanel(4);
+
+    // Step 4 — Generate after image
+    lightStep(4);
+    const imgSrc=await generateImage(buildImagePrompt(state._directives));
+    if(imgSrc){
+      state.afterB64=imgSrc;
+      document.getElementById('afterLabel').textContent='after';
+      document.getElementById('moodBlock').style.display='block';
+      generateMoodboard(state._directives);
+      document.getElementById('afterGen').style.display='none';
+      const ai=document.getElementById('afterImg');
+      ai.src=imgSrc;
+      ai.classList.remove('hidden');
+    }
+
+  }catch(err){
+    showPanel(2);
+    alert('Something went wrong: '+err.message+'\n\nPlease check your API key and try again.');
+    console.error(err);
+  }
+}
+
+// ── DOWNLOAD ──────────────────────────────────────────────────────
+function downloadAfter(){
+  if(!state.afterB64){alert('After image is still generating. Please wait a moment.');return;}
+  const a=document.createElement('a');
+  a.href=state.afterB64;
+  a.download=`marmaroph-after-${state.dir.toLowerCase()}-${state.tod}.jpg`;
+  a.click();
+}
+
+// ── RESET ─────────────────────────────────────────────────────────
+async function generateMoodboard(directives){
+  const labels=['Textures & Materials','Lighting & Warmth','Colour Palette','Table Styling'];
+  for(let i=0;i<4;i++){
+    try{
+      const p=`Interior design moodboard detail photo ${i+1} of 4 for a ${state.spaceType}. Focus: ${labels[i]}. Show: `+
+        (i===0?'close-up of natural dining table materials (wood grain, linen napkins, stone, ceramic) in warm light':i===1?'warm dining ambience, candle glow on table setting, golden hour through window':i===2?'curated arrangement in earthy dining palette, copper accents, ceramics, glassware':' styled dining vignette with plants, table runner, beautiful objects, soft textiles')+
+        `. Architectural Digest quality. No text, no watermarks.`;
+      const src=await generateImage(p);
+      if(src){
+        const cell=document.getElementById('mood'+(i+1));
+        cell.innerHTML='<img src="'+src+'" alt="'+labels[i]+'"><div class="mood-label">'+labels[i]+'</div>';
+      }
+    }catch(e){}
+  }
+}
+
+function resetAll(){
+  state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'dining room',afterB64:null};
+  
+  document.querySelectorAll('.dir-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('fsPreview').style.display='none';
+  document.getElementById('p2btn').disabled=true;
+  document.getElementById('tod-day').classList.add('sel');
+  document.getElementById('tod-night').classList.remove('sel');
+  document.getElementById('scoreBlock').style.display='none';
+  showPanel(1);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+renderUsageBar();
+document.getElementById('hpCSS').textContent=SE.HOUSEHOLD_CSS;
+document.getElementById('householdSection').innerHTML=SE.buildHouseholdHTML('hpContainer');
+SE.initHouseholdUI();
+</script>
+</body>
+</html>
