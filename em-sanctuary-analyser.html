@@ -183,16 +183,19 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .mood-gen{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--tx4);font-size:9px;height:100%;}
 
 /* ── SECTION BLOCKS ── */
-.sec-block{margin-bottom:1.5rem;}
-.sec-hdr{display:flex;align-items:flex-start;gap:12px;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid var(--bd2);}
+.sec-block{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--bd2);}
+.sec-block:last-child{border-bottom:none;}
+.sec-hdr{display:flex;align-items:flex-start;gap:12px;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--bd2);}
 .sh-num{font-family:Georgia,serif;font-size:20px;font-weight:400;font-style:italic;color:var(--accent-pop);min-width:28px;}
 .sh-lbl{font-size:7px;font-weight:700;letter-spacing:.4em;color:var(--tx4);text-transform:uppercase;margin-bottom:2px;}
 .sh-title{font-family:Georgia,serif;font-size:16px;font-weight:400;font-style:italic;color:var(--tx);}
-.sec-body{font-size:11px;line-height:1.85;color:var(--tx2);}
-.sec-body p{margin-bottom:.75rem;}
-.sec-body ul{margin:0 0 .75rem 1.25rem;}
-.sec-body li{margin-bottom:.4rem;}
+.sec-body{font-size:11px;line-height:1.85;color:var(--tx2);padding:0 .25rem;}
+.sec-body p{margin-bottom:1rem;}
+.sec-body ul{margin:0 0 1rem 1.25rem;}
+.sec-body li{margin-bottom:.5rem;}
 .sec-body strong{color:var(--tx);font-weight:600;}
+.sec-divider{text-align:center;margin:2rem 0;opacity:.4;}
+.sec-divider svg{display:inline-block;vertical-align:middle;}
 
 /* ── BAGUA ── */
 .bagua-mini{max-width:260px;margin:0 auto 1rem;}
@@ -202,13 +205,13 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .row2{display:flex;flex-wrap:wrap;gap:6px;}
 
 /* ── ANALYSIS ITEMS ── */
-.layer-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px;}
+.layer-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
 .layer-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
 .layer-icon{font-size:14px;}
 .layer-body{font-size:10px;line-height:1.75;color:var(--tx2);}
 
 /* ── PRIORITY CHANGES ── */
-.pri-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.pri-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin-bottom:14px;position:relative;overflow:hidden;}
 .pri-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,#9fd6eb,#044147);}
 .pri-num{font-family:Georgia,serif;font-size:22px;font-style:italic;color:var(--accent-pop);float:left;margin-right:12px;line-height:1;}
 .pri-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:4px;}
@@ -587,43 +590,51 @@ Select the aesthetic that resonates with your space. This shapes the colour pale
     <!-- Before state -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">01</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
         <div><div class="sh-lbl">Marmaroph Framework</div><div class="sh-title">Before — What We See</div></div>
       </div>
       <div class="sec-body" id="beforeSection"></div>
     </div>
 
+    <div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8h45M75 8h45" stroke="var(--bd)" stroke-width="1"/><path d="M52 8a8 8 0 018-8 8 8 0 018 8 8 8 0 01-8 8 8 8 0 01-8-8z" fill="none" stroke="var(--accent-mid)" stroke-width="1"/><circle cx="60" cy="8" r="2" fill="var(--accent-mid)"/></svg></div>
+
     <!-- Layer by Layer -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">02</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
         <div><div class="sh-lbl">Light · Energy · Space</div><div class="sh-title">Layer by Layer</div></div>
       </div>
       <div class="sec-body" id="layersSection"></div>
     </div>
 
+    <div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8h45M75 8h45" stroke="var(--bd)" stroke-width="1"/><path d="M55 2l5 6-5 6M65 2l-5 6 5 6" fill="none" stroke="var(--accent-mid)" stroke-width="1"/></svg></div>
+
     <!-- Priority changes -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">03</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div><div class="sh-lbl">What to Fix &amp; How</div><div class="sh-title">Your 5 Priority Changes</div></div>
       </div>
       <div class="sec-body" id="prioritySection"></div>
     </div>
 
+    <div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8h45M75 8h45" stroke="var(--bd)" stroke-width="1"/><path d="M56 4l4 4-4 4M64 4l-4 4 4 4" fill="none" stroke="var(--accent-mid)" stroke-width="1" stroke-linecap="round"/></svg></div>
+
     <!-- What to keep -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">04</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
         <div><div class="sh-lbl">What's Already Working</div><div class="sh-title">Keep &amp; Build On</div></div>
       </div>
       <div class="sec-body" id="keepSection"></div>
     </div>
 
+    <div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8h45M75 8h45" stroke="var(--bd)" stroke-width="1"/><path d="M52 8a8 8 0 018-8 8 8 0 018 8 8 8 0 01-8 8 8 8 0 01-8-8z" fill="none" stroke="var(--accent-mid)" stroke-width="1"/><circle cx="60" cy="8" r="2" fill="var(--accent-mid)"/></svg></div>
+
     <!-- Materials -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">05</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
         <div><div class="sh-lbl">Natural &amp; Intentional</div><div class="sh-title">Materials Specification</div></div>
       </div>
       <div class="sec-body">
@@ -631,10 +642,12 @@ Select the aesthetic that resonates with your space. This shapes the colour pale
       </div>
     </div>
 
+    <div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8h45M75 8h45" stroke="var(--bd)" stroke-width="1"/><path d="M55 2l5 6-5 6M65 2l-5 6 5 6" fill="none" stroke="var(--accent-mid)" stroke-width="1"/></svg></div>
+
     <!-- Floor Plan -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">06</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg></div>
         <div><div class="sh-lbl">Top-Down View</div><div class="sh-title">Sanctuary Space Plan</div></div>
       </div>
       <div class="sec-body">
@@ -642,19 +655,23 @@ Select the aesthetic that resonates with your space. This shapes the colour pale
       </div>
     </div>
 
+    <div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8h45M75 8h45" stroke="var(--bd)" stroke-width="1"/><path d="M56 4l4 4-4 4M64 4l-4 4 4 4" fill="none" stroke="var(--accent-mid)" stroke-width="1" stroke-linecap="round"/></svg></div>
+
     <!-- Scents -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">07</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34M4 4s2.7 1 6.28 5.17C14.14 13.5 17 20 17 20s3-3 3-7-4-11-16-9z"/></svg></div>
         <div><div class="sh-lbl">Morning Movement Ritual</div><div class="sh-title">Scents &amp; Essential Oils</div></div>
       </div>
       <div class="sec-body" id="scentsSection"></div>
     </div>
 
+    <div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8h45M75 8h45" stroke="var(--bd)" stroke-width="1"/><path d="M52 8a8 8 0 018-8 8 8 0 018 8 8 8 0 01-8 8 8 8 0 01-8-8z" fill="none" stroke="var(--accent-mid)" stroke-width="1"/><circle cx="60" cy="8" r="2" fill="var(--accent-mid)"/></svg></div>
+
     <!-- Shopping List -->
     <div class="sec-block">
       <div class="sec-hdr">
-        <div class="sh-num">08</div>
+        <div class="sh-num"><svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></div>
         <div><div class="sh-lbl">Where to Buy</div><div class="sh-title">Your Shopping List</div></div>
       </div>
       <div class="sec-body">

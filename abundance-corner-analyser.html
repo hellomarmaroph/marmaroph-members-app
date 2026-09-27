@@ -162,12 +162,19 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
 .hidden{display:none!important}
 
 /* SECTION BLOCKS */
-.sec-block{margin-bottom:1.5rem}
-.sec-hdr{background:rgba(212,179,102,.12);border:1px solid var(--card-bd);border-radius:12px 12px 0 0;padding:.8rem 1rem;display:flex;align-items:center;gap:10px}
+.sec-block{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--card-bd);}
+.sec-block:last-child{border-bottom:none;}
+.sec-hdr{background:rgba(212,179,102,.12);border:1px solid var(--card-bd);border-radius:12px 12px 0 0;padding:.8rem 1rem;display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
 .sh-num{font-size:22px;font-weight:300;color:var(--gold-soft);line-height:1}
 .sh-lbl{font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);margin-bottom:1px}
 .sh-title{font-size:14px;font-weight:600;color:var(--gold)}
-.sec-body{border:1px solid var(--card-bd);border-top:none;border-radius:0 0 12px 12px;padding:1rem}
+.sec-body{border:1px solid var(--card-bd);border-top:none;border-radius:0 0 12px 12px;padding:1rem;font-size:11px;line-height:1.85;color:var(--tx2);padding:1rem;padding-left:1.25rem;padding-right:1.25rem;}
+.sec-body p{margin-bottom:1rem;}
+.sec-body ul{margin:0 0 1rem 1.25rem;}
+.sec-body li{margin-bottom:.5rem;}
+.sec-body strong{font-weight:600;color:var(--gold);}
+.sec-divider{text-align:center;margin:2rem 0;opacity:.4;}
+.sec-divider svg{display:inline-block;vertical-align:middle;}
 
 /* SCORE */
 .score-wrap{display:flex;align-items:center;gap:1.25rem;padding:.25rem 0 .75rem}
@@ -912,15 +919,35 @@ function renderResults(analysis,sec){
   // Build analysis content
   var html='';
 
+  // SVG icons for section headers
+  var icoEye='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var icoLayers='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>';
+  var icoPulse='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>';
+  var icoHeart='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>';
+  var icoCube='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>';
+  var icoBulb='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>';
+  var icoLeaf='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34M4 4s2.7 1 6.28 5.17C14.14 13.5 17 20 17 20s3-3 3-7-4-11-16-9z"/></svg>';
+  var icoCart='<svg style="display:inline-block;vertical-align:middle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>';
+
+  // Decorative dividers (3 styles, alternating)
+  var divLines='<path d="M0 8h45M75 8h45" stroke="var(--card-bd)" stroke-width="1"/>';
+  var divDiamond=divLines+'<path d="M52 8a8 8 0 018-8 8 8 0 018 8 8 8 0 01-8 8 8 8 0 01-8-8z" fill="none" stroke="var(--gold)" stroke-width="1"/><circle cx="60" cy="8" r="2" fill="var(--gold)"/>';
+  var divChevrons=divLines+'<path d="M55 2l5 6-5 6M65 2l-5 6 5 6" fill="none" stroke="var(--gold)" stroke-width="1"/>';
+  var divArrows=divLines+'<path d="M56 4l4 4-4 4M64 4l-4 4 4 4" fill="none" stroke="var(--gold)" stroke-width="1" stroke-linecap="round"/>';
+  var dividers=[divDiamond,divChevrons,divArrows];
+  var divIdx=0;
+  function nextDivider(){var d='<div class="sec-divider"><svg width="120" height="16" viewBox="0 0 120 16">'+dividers[divIdx%3]+'</svg></div>';divIdx++;return d;}
+
   // Before state
   if(sec.before){
-    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">1</div><div><div class="sh-lbl">INVENTORY</div><div class="sh-title">The Before State</div></div></div>';
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoEye+'</div><div><div class="sh-lbl">INVENTORY</div><div class="sh-title">The Before State</div></div></div>';
     html+='<div class="sec-body">'+renderText(sec.before)+'</div></div>';
   }
 
   // Feng Shui
   if(sec.feng){
-    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">2</div><div><div class="sh-lbl">'+state.dir+' · '+fs.elem.toUpperCase()+'</div><div class="sh-title">Feng Shui Reading</div></div></div>';
+    if(html)html+=nextDivider();
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoLayers+'</div><div><div class="sh-lbl">'+state.dir+' · '+fs.elem.toUpperCase()+'</div><div class="sh-title">Feng Shui Reading</div></div></div>';
     html+='<div class="sec-body">';
     // Mini bagua
     html+='<div class="bagua-mini">';
@@ -943,14 +970,16 @@ function renderResults(analysis,sec){
 
   // Abundance design
   if(sec.abundance){
-    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">3</div><div><div class="sh-lbl">RITUAL SPACE</div><div class="sh-title">Abundance Design Analysis</div></div></div>';
+    if(html)html+=nextDivider();
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoBulb+'</div><div><div class="sh-lbl">RITUAL SPACE</div><div class="sh-title">Abundance Design Analysis</div></div></div>';
     html+='<div class="sec-body">'+renderText(sec.abundance)+'</div></div>';
   }
 
   // Priority changes
   if(sec.priority){
     var changes=parsePriorityChanges(sec.priority);
-    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">4</div><div><div class="sh-lbl">ACTION PLAN</div><div class="sh-title">Five Priority Changes</div></div></div>';
+    if(html)html+=nextDivider();
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoPulse+'</div><div><div class="sh-lbl">ACTION PLAN</div><div class="sh-title">Five Priority Changes</div></div></div>';
     html+='<div class="sec-body"><div class="pri-list">';
     changes.forEach(function(c,i){
       html+='<div class="pri-item"><div class="pri-head"><div class="pri-num">'+(i+1)+'</div><div class="pri-label">'+c.label+'</div></div>';
@@ -966,7 +995,8 @@ function renderResults(analysis,sec){
 
   // What to keep
   if(sec.keep){
-    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">✦</div><div><div class="sh-lbl">ALREADY ALIGNED</div><div class="sh-title">What to Keep</div></div></div>';
+    if(html)html+=nextDivider();
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoHeart+'</div><div><div class="sh-lbl">ALREADY ALIGNED</div><div class="sh-title">What to Keep</div></div></div>';
     html+='<div class="sec-body">'+renderText(sec.keep)+'</div></div>';
   }
 
@@ -974,7 +1004,8 @@ function renderResults(analysis,sec){
   if(sec.materials){
     var mats=parseMaterials(sec.materials);
     if(mats.length){
-      html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">5</div><div><div class="sh-lbl">NATURAL ONLY</div><div class="sh-title">Materials Specification</div></div></div>';
+      if(html)html+=nextDivider();
+      html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoCube+'</div><div><div class="sh-lbl">NATURAL ONLY</div><div class="sh-title">Materials Specification</div></div></div>';
       html+='<div class="sec-body"><div class="mat-grid">';
       mats.forEach(function(m){
         html+='<div class="mat-card"><div class="mat-name">'+m.name+'</div><div class="mat-where">'+m.where+'</div><div class="mat-why">'+m.why+'</div>';
@@ -987,7 +1018,8 @@ function renderResults(analysis,sec){
 
   // Shopping list
   if(sec.shopping&&sec.shopping.length){
-    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">6</div><div><div class="sh-lbl">CURATED</div><div class="sh-title">Shopping List</div></div></div>';
+    if(html)html+=nextDivider();
+    html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoCart+'</div><div><div class="sh-lbl">CURATED</div><div class="sh-title">Shopping List</div></div></div>';
     html+='<div class="sec-body"><div class="shop-grid">';
     sec.shopping.forEach(function(item){
       html+='<div class="shop-item"><div class="shop-cat">'+item.c+'</div><div class="shop-info"><div class="shop-name">'+item.n+'</div><div class="shop-why">'+item.t+'</div></div>';
