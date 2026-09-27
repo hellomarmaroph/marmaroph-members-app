@@ -1328,7 +1328,7 @@ async function startAnalysis(){
       document.getElementById('afterLabel').textContent='after';
       document.getElementById('moodBlock').style.display='block';
       generateMoodboard(state._directives);
-      document.getElementById('afterGen').style.display='none';
+      var ag=document.getElementById('afterGen'); if(ag) ag.style.display='none';
       const ai=document.getElementById('afterImg');
       ai.src=imgSrc;
       ai.classList.remove('hidden');
