@@ -1,4 +1,4 @@
-var CACHE = 'marmaroph-v114';
+var CACHE = 'marmaroph-v115';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
@@ -38,6 +38,10 @@ self.addEventListener('notificationclick', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
+  var url = e.request.url;
+  if (url.indexOf('googleapis.com') !== -1 || url.indexOf('marmaroph.com/_functions') !== -1) {
+    return;
+  }
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request).catch(function() {
