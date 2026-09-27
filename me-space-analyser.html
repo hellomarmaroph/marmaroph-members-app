@@ -388,7 +388,11 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 </div>
 </div>
 </div>
-      <div class="reject-text" id="rejectText"></div>
+      <div class="reject-card" id="rejectCard">
+        <div class="reject-icon">&#9888;</div>
+        <div class="reject-title">Not quite right</div>
+        <div class="reject-text" id="rejectText"></div>
+      </div>
     </div>
 
     <div class="limit-card" id="limitCard">
@@ -724,7 +728,7 @@ function handleDualFile(slot,f){
 }
 function resetSlot(slot){
   if(slot==='day'){
-    state.dayB64=null;state.imgB64=null;state.dayB64=null;state.nightB64=null;state.dayMime=null;state.nightMime=null;
+    state.dayB64=null;state.imgB64=null;state.dayMime=null;
     document.getElementById('prevDay').style.display='none';
     document.getElementById('upzoneDay').style.display='block';
     document.getElementById('filDay').value='';
