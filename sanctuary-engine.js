@@ -918,6 +918,10 @@ var RITUAL_CONFIGS = {
 
 // ── PUBLIC API ──────────────────────────────────────────────────
 return {
+  API_KEY: API_KEY,
+  VISION_MODEL: VISION_MODEL,
+  GEN_ENDPOINT: GEN_ENDPOINT,
+
   FS_BASE: FS_BASE,
   DIR_ELEMS: DIR_ELEMS,
   ELEMENTS: ELEMENTS,
