@@ -16,6 +16,81 @@ function corsHeaders() {
   };
 }
 
+// Handle CORS preflight for socialLogin
+export function options_socialLogin(request) {
+  return response({ status: 204, headers: corsHeaders() });
+}
+
+// POST _functions/socialLogin
+// Body: { provider: 'google', token: string }
+// Uses Google access token to get user profile, then finds member by email.
+export async function post_socialLogin(request) {
+  try {
+    const body = await request.body.json();
+    const { provider, token } = body;
+
+    if (!token || provider !== 'google') {
+      return badRequest({
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'Invalid login request.' })
+      });
+    }
+
+    // Get user info from Google using the access token
+    const googleRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: 'Bearer ' + token }
+    });
+
+    if (!googleRes.ok) {
+      return badRequest({
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'Google authentication failed. Please try again.' })
+      });
+    }
+
+    const googleUser = await googleRes.json();
+    const email = (googleUser.email || '').toLowerCase();
+
+    if (!email) {
+      return badRequest({
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'Could not retrieve email from Google.' })
+      });
+    }
+
+    // Look up member by email
+    const result = await members.queryMembers()
+      .eq('loginEmail', email)
+      .find({ suppressAuth: true });
+
+    if (result.items.length === 0) {
+      return badRequest({
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'No account found for ' + email + '. Please sign up first or use the email you registered with.' })
+      });
+    }
+
+    const member = result.items[0];
+    return ok({
+      headers: corsHeaders(),
+      body: JSON.stringify({
+        memberId: member._id,
+        loginEmail: member.loginEmail || email,
+        firstName: member.profile?.firstName || googleUser.given_name || '',
+        lastName: member.profile?.lastName || googleUser.family_name || '',
+        nickname: member.profile?.nickname || '',
+        photo: member.profile?.photo?.url || googleUser.picture || '',
+        slug: member.slug || ''
+      })
+    });
+  } catch (err) {
+    return serverError({
+      headers: corsHeaders(),
+      body: JSON.stringify({ error: 'Login failed. Please try again.' })
+    });
+  }
+}
+
 // Handle CORS preflight for loginMember
 export function options_loginMember(request) {
   return response({ status: 204, headers: corsHeaders() });
