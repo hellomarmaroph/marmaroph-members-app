@@ -390,7 +390,7 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
       <div class="limit-text" id="limitText"></div>
     </div>
 
-    <button class="btn btn-p" id="p1btn" onclick="goToCompass()" disabled>Both uploaded — continue <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    <button class="btn btn-p" id="p1btn" onclick="goToCompass()" disabled>Photo uploaded -- continue <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
   </div>
 
   
@@ -1295,7 +1295,7 @@ async function startAnalysis(){
       document.getElementById('rejectCard').style.display='block';
       document.getElementById('rejectText').innerHTML=
         `${parsed.rejection_reason||'Please photograph your yoga corner, peace sanctuary, or bedroom movement space.'}<br><br>
-        <strong>Valid spaces:</strong> peace corner · yoga area · dining room · kitchen table · balcony · breakfast nook`;
+        <strong>Valid spaces:</strong> yoga room · yoga corner · peace corner · meditation area · bedroom with open floor space`;
       document.getElementById('p1btn').disabled=true;
       return;
     }
