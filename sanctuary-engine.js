@@ -8,10 +8,10 @@ var SanctuaryEngine = (function(){
 'use strict';
 
 // ── API ─────────────────────────────────────────────────────────
-var API_KEY = 'AQ.Ab8RN6IqEC5QZjntZK_2XAPeDoUwPBKbW2Xz4-HeW__063D_og';
-var VISION_MODEL = 'gemini-2.5-flash';
-var IMAGE_MODEL_A = 'imagen-4.0-generate-001';
-var IMAGE_MODEL_B = 'gemini-2.5-flash-image';
+var API_KEY = 'AIzaSyDS-I-DxNevfQUPthbTyDcQMWcTdN4VTwQ';
+var VISION_MODEL = 'gemini-3.8-flash';
+var IMAGE_MODEL_A = 'gemini-3.1-flash-image';
+var IMAGE_MODEL_B = 'gemini-3.1-flash-image';
 var GEN_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/';
 
 // ── FENG SHUI BASE DATA (shared across all rituals) ─────────────
@@ -118,28 +118,16 @@ function geminiVision(imgB64, imgMime, prompt) {
 }
 
 function generateImage(prompt) {
-  var body = {instances:[{prompt:prompt}], parameters:{sampleCount:1, aspectRatio:'3:4', outputMimeType:'image/jpeg'}};
-  return fetch(GEN_ENDPOINT + IMAGE_MODEL_A + ':predict?key=' + API_KEY,
+  var body = {contents:[{parts:[{text:prompt}]}], generationConfig:{responseModalities:['IMAGE','TEXT']}};
+  return fetch(GEN_ENDPOINT + IMAGE_MODEL_A + ':generateContent?key=' + API_KEY,
     {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)})
     .then(function(r){ return r.json(); })
     .then(function(d){
-      if (d.predictions && d.predictions[0] && d.predictions[0].bytesBase64Encoded) {
-        return 'data:image/jpeg;base64,' + d.predictions[0].bytesBase64Encoded;
-      }
-      throw new Error('imagen fallback');
-    })
-    .catch(function(){
-      var body2 = {contents:[{parts:[{text:prompt}]}], generationConfig:{responseModalities:['IMAGE','TEXT']}};
-      return fetch(GEN_ENDPOINT + IMAGE_MODEL_B + ':generateContent?key=' + API_KEY,
-        {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body2)})
-        .then(function(r){ return r.json(); })
-        .then(function(d2){
-          if (d2.error) throw new Error(d2.error.message);
-          var parts = (d2.candidates && d2.candidates[0] && d2.candidates[0].content && d2.candidates[0].content.parts) || [];
-          var imgP = parts.find(function(p){ return p.inlineData; });
-          if (imgP) return 'data:' + imgP.inlineData.mimeType + ';base64,' + imgP.inlineData.data;
-          return null;
-        });
+      if (d.error) throw new Error(d.error.message);
+      var parts = (d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts) || [];
+      var imgP = parts.find(function(p){ return p.inlineData; });
+      if (imgP) return 'data:' + imgP.inlineData.mimeType + ';base64,' + imgP.inlineData.data;
+      return null;
     });
 }
 
