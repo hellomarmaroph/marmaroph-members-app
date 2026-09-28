@@ -151,14 +151,6 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .res-title em{color:var(--accent-pop);}
 
 /* ── BEFORE / AFTER SLIDER ── */
-.ba-slider-wrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--bd);aspect-ratio:3/4;max-width:100%;touch-action:none;user-select:none;-webkit-user-select:none;cursor:col-resize;margin-bottom:1.5rem;}
-.ba-slider-wrap img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
-.ba-slider-wrap .ba-after-img{clip-path:inset(0 0 0 50%);}
-.ba-slider-line{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;z-index:3;transform:translateX(-50%);pointer-events:none;}
-.ba-slider-knob{position:absolute;top:50%;left:50%;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.95);border:1.5px solid #9fd6eb;z-index:4;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--tx);box-shadow:0 2px 10px rgba(4,65,71,.2);pointer-events:none;letter-spacing:-2px;}
-.ba-slider-label{position:absolute;bottom:12px;padding:4px 10px;border-radius:4px;font-size:7px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;z-index:2;}
-.ba-slider-label.lbl-before{left:12px;background:rgba(0,0,0,.5);}
-.ba-slider-label.lbl-after{right:12px;background:rgba(0,0,0,.5);}
 
 /* old ba-grid fallback */
 .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
@@ -513,7 +505,8 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
         <div class="lsr lit" id="ls1"><div class="lspip"></div>Validating your space</div>
         <div class="lsr" id="ls2"><div class="lspip"></div>Running Feng Shui analysis</div>
         <div class="lsr" id="ls3"><div class="lspip"></div>Building your recommendations</div>
-        <div class="lsr" id="ls4"><div class="lspip"></div>Generating your after vision</div>
+        <div class="lsr" id="ls4"><div class="lspip"></div>Generating day vision</div>
+        <div class="lsr" id="ls5"><div class="lspip"></div>Generating night vision</div>
       </div>
     </div>
   </div>
@@ -524,14 +517,38 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
     <div class="res-eyebrow" id="resEyebrow">MARMAROPH RITUAL SPACE ANALYSIS</div>
     <h2 class="res-title" id="resTitle">Your Space <em>Transformed</em></h2>
 
-    <!-- Before / After Slider -->
-    <div class="ba-slider-wrap" id="baSlider" onpointerdown="sliderStart(event)" onpointermove="sliderMove(event)" onpointerup="sliderEnd(event)">
-      <img class="ba-before-img" id="beforeImg" src="" alt="Before">
-      <img class="ba-after-img" id="afterImg" src="" alt="After">
-      <div class="ba-slider-line" id="baLine"></div>
-      <div class="ba-slider-knob" id="baKnob"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="19 18 13 12 19 6"/></svg></div>
-      <div class="ba-slider-label lbl-before">before</div>
-      <div class="ba-slider-label lbl-after" id="afterLabel">generating…</div>
+    <!-- Before / After DAY -->
+    <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">☀️ Natural Light</div>
+    <div class="ba-grid">
+      <div class="ba-panel">
+        <img class="ba-img" id="beforeImg" src="" alt="Before">
+        <div class="ba-tag">BEFORE</div>
+      </div>
+      <div class="ba-panel" id="afterPanelDay">
+        <div class="ba-gen" id="afterGenDay">
+          <div class="ba-gen-orb"></div>
+          <div class="ba-gen-text">Generating<br>day vision…</div>
+        </div>
+        <img class="ba-img hidden" id="afterImgDay" src="" alt="After — Day">
+        <div class="ba-tag" style="background:rgba(107,159,212,.9);color:#fff">AFTER</div>
+      </div>
+    </div>
+
+    <!-- Before / After NIGHT -->
+    <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">🕯️ Artificial Light</div>
+    <div class="ba-grid" style="margin-bottom:1.5rem">
+      <div class="ba-panel">
+        <img class="ba-img" id="beforeImg2" src="" alt="Before">
+        <div class="ba-tag">BEFORE</div>
+      </div>
+      <div class="ba-panel" id="afterPanelNight">
+        <div class="ba-gen" id="afterGenNight">
+          <div class="ba-gen-orb"></div>
+          <div class="ba-gen-text">Generating<br>night vision…</div>
+        </div>
+        <img class="ba-img hidden" id="afterImgNight" src="" alt="After — Night">
+        <div class="ba-tag" style="background:rgba(212,179,102,.9);color:var(--navy)">AFTER</div>
+      </div>
     </div>
 
     <!-- Moodboard -->
@@ -717,7 +734,7 @@ var cfg=SE.getConfig('mindfulEating');
 
 // ── STATE ─────────────────────────────────────────────────────────
 let state = { tod:'day',dayB64:null,nightB64:null,dayMime:null,nightMime:null, dir:null, imgB64:null, imgMime:'image/jpeg',
-              spaceType:'dining room', afterB64:null };
+              spaceType:'dining room', afterDayB64:null, afterNightB64:null };
 
 // ── FENG SHUI DATA (built from shared engine + dining extras) ────
 var FS=SE.buildFS(cfg);
@@ -838,24 +855,6 @@ function selectDir(d){
   document.getElementById('p3btn').disabled=false;
 }
 
-var sliderActive=false;
-function sliderStart(e){
-  sliderActive=true;
-  e.target.setPointerCapture&&e.target.setPointerCapture(e.pointerId);
-  sliderMove(e);
-}
-function sliderMove(e){
-  if(!sliderActive)return;
-  const wrap=document.getElementById('baSlider');
-  const rect=wrap.getBoundingClientRect();
-  let pct=((e.clientX-rect.left)/rect.width)*100;
-  pct=Math.max(2,Math.min(98,pct));
-  document.getElementById('baLine').style.left=pct+'%';
-  document.getElementById('baKnob').style.left=pct+'%';
-  document.getElementById('afterImg').style.clipPath='inset(0 0 0 '+pct+'%)';
-}
-function sliderEnd(){sliderActive=false;}
-
 var selectedStyle='';
 
 function selectStyle(s){
@@ -880,7 +879,7 @@ function goToCompass(){
 function goBack(n){showPanel(n);}
 
 function lightStep(n){
-  for(let i=1;i<=4;i++) document.getElementById('ls'+i).classList.toggle('lit',i<=n);
+  for(let i=1;i<=5;i++) document.getElementById('ls'+i).classList.toggle('lit',i<=n);
 }
 
 // ── API CALLS ─────────────────────────────────────────────────────
@@ -923,6 +922,7 @@ COMPASS CONTEXT: Direction ${state.dir} — ${fs.trig} (${fs.chi}) · ${fs.elem}
 ${fs.note}
 
 ${householdCtx}
+${householdCtx ? 'CRITICAL PERSONALISATION RULE: You MUST reference each household member BY NAME throughout your analysis. In the Feng Shui Reading, explain how this room direction affects EACH person based on their Kua number. In the Priority Changes, specify which person each change benefits most. In What To Keep, mention whose energy it supports. Shopping list items should note who they serve. If the room direction is unfavorable for someone, name them and explain the cure. Generic advice is NOT acceptable when you have personal data.' : ''}
 
 MARMAROPH FRAMEWORK (your bible):
 APPROVED MATERIALS: Solid hardwoods with natural oil/beeswax finish, honed natural stone, terracotta, unglazed ceramic, linen/wool/cotton, rattan/bamboo, copper/brass.
@@ -1004,9 +1004,9 @@ Study the image carefully. Reply with ONLY a single-line JSON — no other text,
 Tone: Marmaroph voice — warm, intelligent, authoritative. Never generic. Address the reader directly. Use bullet points throughout — never write long unbroken paragraphs.`;
 }
 
-function buildImagePrompt(directives){
+function buildImagePrompt(directives,isNight){
   const fs=FS[state.dir];
-  const isDay=state.tod==='day';
+  const isDay=!isNight;
   const d=directives||{windows_visible:true,space_is_dark:false,chandelier_suits:false,mirror_needed:false,mirror_type:'floor',rug_needed:false,rug_description:'',wall_art_needed:false,wall_art_description:'',light_layers:['floor lamp','wall sconce','table lamp'],custom_palette:null};
   const palette=(d.custom_palette||fs.palette).map(p=>p.name).join(', ');
   const curtainLine=d.windows_visible
@@ -1191,8 +1191,9 @@ function renderResults(analysis, sec){
   const fs=FS[state.dir];
   if(!sec) sec=parseAnalysis(analysis);
 
-  document.getElementById('resEyebrow').textContent=`${state.dir} · ${fs.elem} Element · ${state.tod.toUpperCase()}`;
-  document.getElementById('beforeImg').src=`data:${state.imgMime};base64,${state.imgB64}`;
+  document.getElementById('resEyebrow').textContent=`${state.dir} · ${fs.elem} Element`;
+  document.getElementById('beforeImg').src=state.dayB64?`data:${state.dayMime||'image/jpeg'};base64,${state.dayB64}`:`data:${state.imgMime};base64,${state.imgB64}`;
+  document.getElementById('beforeImg2').src=state.nightB64?`data:${state.nightMime||'image/jpeg'};base64,${state.nightB64}`:`data:${state.imgMime};base64,${state.imgB64}`;
 
   // Score
   const sc=sec.score;
@@ -1413,25 +1414,38 @@ async function startAnalysis(){
     renderResults(analysis, parsedSections);
     showPanel(5);
 
-    // Step 4 — Generate after image (non-blocking)
+    // Step 4 — Generate DAY image
+    lightStep(4);
     try{
-      lightStep(4);
-      const imgSrc=await generateImage(buildImagePrompt(state._directives));
-      if(imgSrc){
-        state.afterB64=imgSrc;
-        document.getElementById('afterLabel').textContent='after';
+      var dayImg=await generateImage(buildImagePrompt(state._directives,false));
+      if(dayImg){
+        state.afterDayB64=dayImg;
+        document.getElementById('afterGenDay').style.display='none';
+        var aiDay=document.getElementById('afterImgDay');
+        aiDay.src=dayImg;aiDay.classList.remove('hidden');
         document.getElementById('moodBlock').style.display='block';
         generateMoodboard(state._directives);
-        var ag=document.getElementById('afterGen'); if(ag) ag.style.display='none';
-        const ai=document.getElementById('afterImg');
-        ai.src=imgSrc;
-        ai.classList.remove('hidden');
-      } else {
-        document.getElementById('afterLabel').textContent='image unavailable';
       }
     }catch(imgErr){
-      console.error('After image failed:',imgErr);
-      document.getElementById('afterLabel').textContent='image unavailable';
+      console.error('Day image failed:',imgErr);
+      var dg=document.getElementById('afterGenDay');
+      dg.innerHTML='<div style="padding:1rem;text-align:center;font-size:10px;color:var(--tx3);line-height:1.6">Day vision could not be generated.<br>Your full analysis is still available below.</div>';
+    }
+
+    // Step 5 — Generate NIGHT image
+    lightStep(5);
+    try{
+      var nightImg=await generateImage(buildImagePrompt(state._directives,true));
+      if(nightImg){
+        state.afterNightB64=nightImg;
+        document.getElementById('afterGenNight').style.display='none';
+        var aiNight=document.getElementById('afterImgNight');
+        aiNight.src=nightImg;aiNight.classList.remove('hidden');
+      }
+    }catch(imgErr){
+      console.error('Night image failed:',imgErr);
+      var ng=document.getElementById('afterGenNight');
+      ng.innerHTML='<div style="padding:1rem;text-align:center;font-size:10px;color:var(--tx3);line-height:1.6">Night vision could not be generated.<br>Your full analysis is still available below.</div>';
     }
 
   }catch(err){
@@ -1443,11 +1457,15 @@ async function startAnalysis(){
 
 // ── DOWNLOAD ──────────────────────────────────────────────────────
 function downloadAfter(){
-  if(!state.afterB64){alert('After image is still generating. Please wait a moment.');return;}
-  const a=document.createElement('a');
-  a.href=state.afterB64;
-  a.download=`marmaroph-after-${state.dir.toLowerCase()}-${state.tod}.jpg`;
-  a.click();
+  if(!state.afterDayB64 && !state.afterNightB64){alert('After images are still generating. Please wait a moment.');return;}
+  if(state.afterDayB64){
+    const a=document.createElement('a');a.href=state.afterDayB64;
+    a.download=`marmaroph-after-${state.dir.toLowerCase()}-day.jpg`;a.click();
+  }
+  if(state.afterNightB64){
+    const a2=document.createElement('a');a2.href=state.afterNightB64;
+    a2.download=`marmaroph-after-${state.dir.toLowerCase()}-night.jpg`;a2.click();
+  }
 }
 
 // ── RESET ─────────────────────────────────────────────────────────
@@ -1468,7 +1486,7 @@ async function generateMoodboard(directives){
 }
 
 function resetAll(){
-  state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'dining room',afterB64:null};
+  state={tod:'day',dayB64:null,nightB64:null,dayMime:null,nightMime:null,dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'dining room',afterDayB64:null,afterNightB64:null};
   selectedStyle='';
   
   document.querySelectorAll('.dir-btn').forEach(b=>b.classList.remove('sel'));

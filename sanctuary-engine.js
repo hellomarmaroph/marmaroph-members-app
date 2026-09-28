@@ -224,10 +224,15 @@ function parsePriorityChanges(text) {
   var match;
   while ((match = rx.exec(text)) !== null) {
     var block = match[2].trim();
-    var mistakeM = block.match(/MISTAKE[:\s]+([^\n]+(?:\n(?!FIX)[^\n]+)*)/i);
-    var fixM = block.match(/FIX[:\s]+([^\n]+(?:\n[^\n]+)*)/i);
-    var firstLine = block.split('\n')[0].replace(/MISTAKE.*/i,'').replace(/^\*+/,'').trim();
-    items.push({label: firstLine || 'Change '+match[1], mistake: mistakeM?mistakeM[1].trim():'', fix: fixM?fixM[1].trim():block});
+    var clean = block.replace(/\*\*/g,'');
+    var mistakeM = clean.match(/MISTAKE[:\s]+([^\n]+(?:\n(?!FIX)[^\n]+)*)/i);
+    var fixM = clean.match(/FIX[:\s]+([^\n]+(?:\n(?!MISTAKE)[^\n]+)*)/i);
+    var firstLine = clean.split('\n')[0].replace(/MISTAKE.*/i,'').replace(/^\*+/,'').trim();
+    var mistake = mistakeM ? mistakeM[1].trim() : '';
+    var fix = fixM ? fixM[1].trim() : '';
+    if (mistake && fix && mistake === fix) fix = '';
+    if (!fix && !mistake) fix = clean;
+    items.push({label: firstLine || 'Change '+match[1], mistake: mistake, fix: fix || clean});
   }
   if (!items.length) {
     text.split(/\n\n+/).forEach(function(p, i) {

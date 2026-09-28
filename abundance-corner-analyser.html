@@ -763,7 +763,7 @@ function buildAnalysisPrompt(){
 
   return 'You are a certified Marmaroph Healthy Home designer, Compass Feng Shui expert, and abundance mindset coach. Analyse this '+tod+' photo of a '+state.spaceType+' being used as an Abundance Corner for a financial wellness ritual.\n\n'+
     'COMPASS CONTEXT: Direction '+state.dir+' — '+fs.trig+' ('+fs.chi+') · '+fs.elem+' element · '+fs.energy+'\n'+fs.note+'\n\n'+
-    (householdCtx?householdCtx+'\n\n':'')+
+    (householdCtx?householdCtx+'\nCRITICAL PERSONALISATION RULE: You MUST reference each household member BY NAME throughout your analysis. In the Feng Shui Reading, explain how this room direction affects EACH person based on their Kua number. In the Priority Changes, specify which person each change benefits most. In What To Keep, mention whose energy it supports. Shopping list items should note who they serve. If the room direction is unfavorable for someone, name them and explain the cure. Generic advice is NOT acceptable when you have personal data.\n\n':'')+
     'STYLE PREFERENCE: '+styleDesc+'\n\n'+
     'PERSONALITY CONTEXT: '+personality+'\n\n'+
     'MARMAROPH FRAMEWORK:\n'+
