@@ -467,6 +467,151 @@ function hasHomeMap() {
   return !!getHomeMap();
 }
 
+var FLOOR_PLAN_CSS =
+  '.fp-section{background:var(--card);border:1px solid var(--card-bd);border-radius:14px;padding:1rem;margin-bottom:1.2rem}\n' +
+  '.fp-title{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.04em;margin-bottom:.4rem;display:flex;align-items:center;gap:6px}\n' +
+  '.fp-subtitle{font-size:9px;font-weight:300;color:var(--tx3);margin-bottom:.8rem;line-height:1.6}\n' +
+  '.fp-room{background:rgba(212,179,102,.06);border:1px solid var(--card-bd);border-radius:10px;padding:.6rem .75rem;margin-bottom:.5rem;display:flex;align-items:center;gap:8px;position:relative}\n' +
+  '.fp-room-name{font-size:11px;font-weight:600;color:var(--tx);flex:1}\n' +
+  '.fp-room-dir{font-size:9px;font-weight:700;color:var(--sky);letter-spacing:.06em;background:rgba(159,214,235,.12);border:1px solid rgba(159,214,235,.25);border-radius:5px;padding:2px 8px}\n' +
+  '.fp-room-ritual{font-size:7px;font-weight:700;letter-spacing:.08em;color:var(--gold);background:rgba(212,179,102,.15);border-radius:3px;padding:1px 5px;text-transform:uppercase;margin-left:4px}\n' +
+  '.fp-remove{background:none;border:none;color:var(--tx4);font-size:14px;cursor:pointer;padding:2px 6px}\n' +
+  '.fp-remove:hover{color:var(--danger,#c0392b)}\n' +
+  '.fp-add-btn{width:100%;background:none;border:1.5px dashed var(--card-bd);border-radius:10px;padding:.5rem;color:var(--tx3);font-size:10px;font-weight:500;cursor:pointer;transition:all .2s}\n' +
+  '.fp-add-btn:hover{border-color:var(--accent-pop,var(--sky));color:var(--accent-pop,var(--sky))}\n' +
+  '.fp-form{background:rgba(212,179,102,.04);border:1px solid var(--card-bd);border-radius:10px;padding:.6rem;margin-bottom:.5rem}\n' +
+  '.fp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}\n' +
+  '.fp-field label{font-size:8px;font-weight:600;letter-spacing:.05em;color:var(--tx3);display:block;margin-bottom:3px}\n' +
+  '.fp-field input,.fp-field select{width:100%;background:var(--bg);border:1px solid var(--card-bd);border-radius:8px;padding:7px 8px;font-size:10px;font-family:inherit;color:var(--tx);outline:none;transition:border .2s}\n' +
+  '.fp-field input:focus,.fp-field select:focus{border-color:var(--accent-pop,var(--sky))}\n' +
+  '.fp-saved{display:inline-block;font-size:9px;color:var(--sky);font-weight:500;opacity:0;transition:opacity .3s}\n' +
+  '.fp-saved.show{opacity:1}\n' +
+  '.fp-visual{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:.8rem;max-width:200px;margin-left:auto;margin-right:auto}\n' +
+  '.fp-vcell{aspect-ratio:1;border:1px solid var(--bd2);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:7px;color:var(--tx4);line-height:1.3;text-align:center;padding:2px;overflow:hidden}\n' +
+  '.fp-vcell.has-room{background:rgba(159,214,235,.1);border-color:var(--sky);color:var(--tx)}\n' +
+  '.fp-vcell .fp-vdir{font-size:7px;font-weight:700;letter-spacing:.04em;color:var(--tx3)}\n' +
+  '.fp-vcell .fp-vname{font-size:6px;color:var(--sky);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}\n';
+
+var ROOM_TYPES = [
+  'Living Room','Dining Room','Kitchen','Master Bedroom','Bedroom 2','Bedroom 3',
+  'Bathroom','Home Office','Entrance/Hallway','Balcony/Terrace','Laundry','Storage','Garden/Patio'
+];
+var DIRS = ['N','NE','E','SE','S','SW','W','NW'];
+var DIR_GRID_POS = {NW:0,N:1,NE:2,W:3,center:4,E:5,SW:6,S:7,SE:8};
+
+function buildHomeMapHTML(containerId) {
+  return '<div class="fp-section" id="' + containerId + '">' +
+    '<div class="fp-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Your Home Floor Plan</div>' +
+    '<div class="fp-subtitle">Map every room in your home with its compass direction. This gives us the full Feng Shui picture of your house so we can analyse how energy flows between spaces and make truly accurate recommendations for your ritual space.</div>' +
+    '<div id="fpVisual" class="fp-visual"></div>' +
+    '<div id="fpRooms"></div>' +
+    '<button class="fp-add-btn" id="fpAddBtn" onclick="window._fpAddRoom()">+ Add a room</button>' +
+    '<div class="fp-saved" id="fpSaved">Saved</div>' +
+    '</div>';
+}
+
+function initHomeMapUI() {
+  var map = getHomeMap() || {rooms:[]};
+
+  function render() {
+    var el = document.getElementById('fpRooms');
+    if (!el) return;
+    el.innerHTML = map.rooms.map(function(r, i) {
+      return '<div class="fp-room">' +
+        '<div class="fp-room-name">' + r.name + (r.isRitual ? '<span class="fp-room-ritual">ritual space</span>' : '') + '</div>' +
+        '<div class="fp-room-dir">' + r.dir + '</div>' +
+        '<button class="fp-remove" onclick="window._fpRemoveRoom(' + i + ')">×</button>' +
+        '</div>';
+    }).join('');
+    renderVisual();
+  }
+
+  function renderVisual() {
+    var el = document.getElementById('fpVisual');
+    if (!el) return;
+    var cells = ['NW','N','NE','W','','E','SW','S','SE'];
+    var roomByDir = {};
+    map.rooms.forEach(function(r) { roomByDir[r.dir] = (roomByDir[r.dir] || []).concat(r.name); });
+    el.innerHTML = cells.map(function(d) {
+      if (!d) return '<div class="fp-vcell" style="background:rgba(212,179,102,.08);border-color:var(--gold)"><div style="font-size:6px;font-weight:700;color:var(--gold)">CENTER</div></div>';
+      var names = roomByDir[d] || [];
+      var cls = names.length ? 'fp-vcell has-room' : 'fp-vcell';
+      return '<div class="' + cls + '"><div class="fp-vdir">' + d + '</div>' +
+        (names.length ? names.map(function(n) { return '<div class="fp-vname">' + n + '</div>'; }).join('') : '') +
+        '</div>';
+    }).join('');
+  }
+
+  function save() {
+    saveHomeMap(map);
+    var s = document.getElementById('fpSaved');
+    if (s) { s.classList.add('show'); setTimeout(function() { s.classList.remove('show'); }, 1500); }
+  }
+
+  window._fpAddRoom = function() {
+    var btn = document.getElementById('fpAddBtn');
+    if (document.getElementById('fpNewForm')) return;
+    var form = document.createElement('div');
+    form.id = 'fpNewForm';
+    form.className = 'fp-form';
+    form.innerHTML =
+      '<div class="fp-row"><div class="fp-field"><label>ROOM NAME</label>' +
+      '<select id="fpNewName">' + ROOM_TYPES.map(function(r) { return '<option>' + r + '</option>'; }).join('') +
+      '<option>Other</option></select></div>' +
+      '<div class="fp-field"><label>COMPASS DIRECTION</label>' +
+      '<select id="fpNewDir">' + DIRS.map(function(d) { return '<option value="' + d + '">' + d + '</option>'; }).join('') +
+      '</select></div></div>' +
+      '<div class="fp-field" id="fpOtherWrap" style="display:none;margin-bottom:8px"><label>CUSTOM ROOM NAME</label><input id="fpOtherName" placeholder="e.g. Yoga Room"></div>' +
+      '<div style="display:flex;gap:6px">' +
+      '<button class="fp-add-btn" style="border-style:solid;border-color:var(--sky);color:var(--sky)" onclick="window._fpSaveRoom()">Add</button>' +
+      '<button class="fp-add-btn" onclick="document.getElementById(\'fpNewForm\').remove()">Cancel</button></div>';
+    btn.parentNode.insertBefore(form, btn);
+    document.getElementById('fpNewName').onchange = function() {
+      document.getElementById('fpOtherWrap').style.display = this.value === 'Other' ? 'block' : 'none';
+    };
+  };
+
+  window._fpSaveRoom = function() {
+    var sel = document.getElementById('fpNewName');
+    var name = sel.value === 'Other' ? (document.getElementById('fpOtherName').value.trim() || 'Room') : sel.value;
+    var dir = document.getElementById('fpNewDir').value;
+    map.rooms.push({name: name, dir: dir, isRitual: false});
+    save();
+    render();
+    var f = document.getElementById('fpNewForm');
+    if (f) f.remove();
+  };
+
+  window._fpRemoveRoom = function(i) {
+    map.rooms.splice(i, 1);
+    save();
+    render();
+  };
+
+  render();
+}
+
+function buildHomeMapPromptContext() {
+  var map = getHomeMap();
+  if (!map || !map.rooms || map.rooms.length === 0) return '';
+
+  var lines = ['WHOLE-HOME FLOOR PLAN (use to understand energy flow between rooms):'];
+  var dirRooms = {};
+  map.rooms.forEach(function(r) {
+    if (!dirRooms[r.dir]) dirRooms[r.dir] = [];
+    dirRooms[r.dir].push(r.name);
+  });
+  DIRS.forEach(function(d) {
+    if (dirRooms[d]) {
+      var fsInfo = FS_BASE[d];
+      lines.push('  ' + d + ' sector (' + fsInfo.trig + ' · ' + fsInfo.elem + ' · ' + fsInfo.energy + '): ' + dirRooms[d].join(', '));
+    }
+  });
+  lines.push('');
+  lines.push('IMPORTANT: Use this whole-home map to understand how chi flows BETWEEN rooms. Note which elements are adjacent, which directions are missing rooms, and how the ritual space sits within the overall energy map. Your recommendations for the ritual space should account for what surrounds it.');
+  return lines.join('\n');
+}
+
 // ── ANALYSIS HISTORY (localStorage, per member per ritual) ──────
 function getAnalysisHistory(ritualId) {
   try { return JSON.parse(localStorage.getItem('sa_history_' + ritualId)) || []; } catch(e) { return []; }
@@ -950,6 +1095,10 @@ return {
   getHomeMap: getHomeMap,
   saveHomeMap: saveHomeMap,
   hasHomeMap: hasHomeMap,
+  buildHomeMapHTML: buildHomeMapHTML,
+  initHomeMapUI: initHomeMapUI,
+  buildHomeMapPromptContext: buildHomeMapPromptContext,
+  FLOOR_PLAN_CSS: FLOOR_PLAN_CSS,
   getAnalysisHistory: getAnalysisHistory,
   saveAnalysis: saveAnalysis,
 

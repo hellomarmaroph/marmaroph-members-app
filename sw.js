@@ -1,4 +1,4 @@
-var CACHE = 'marmaroph-v117';
+var CACHE = 'marmaroph-v118';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(

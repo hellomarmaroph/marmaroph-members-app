@@ -151,13 +151,15 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .res-title em{color:var(--accent-pop);}
 
 /* ── BEFORE / AFTER SLIDER ── */
-
-/* old ba-grid fallback */
-.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
-.ba-panel{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--bd);background:var(--off);}
-.ba-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;}
-.ba-tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.5);color:#fff;font-size:7px;font-weight:700;letter-spacing:.14em;padding:3px 8px;border-radius:4px;text-transform:uppercase;}
-.ba-gen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--off);z-index:2;}
+.ba-slider-wrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--bd);aspect-ratio:3/4;max-width:100%;touch-action:none;user-select:none;-webkit-user-select:none;cursor:col-resize;margin-bottom:1rem;}
+.ba-slider-wrap img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+.ba-slider-wrap .ba-after-img{clip-path:inset(0 0 0 50%);}
+.ba-slider-line{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;z-index:3;transform:translateX(-50%);pointer-events:none;}
+.ba-slider-knob{position:absolute;top:50%;left:50%;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.95);border:1.5px solid #9fd6eb;z-index:4;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--tx);box-shadow:0 2px 10px rgba(4,65,71,.2);pointer-events:none;letter-spacing:-2px;}
+.ba-slider-label{position:absolute;bottom:12px;padding:4px 10px;border-radius:4px;font-size:7px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;z-index:2;}
+.ba-slider-label.lbl-before{left:12px;background:rgba(0,0,0,.5);}
+.ba-slider-label.lbl-after{right:12px;background:rgba(0,0,0,.5);}
+.ba-gen-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--off);z-index:5;}
 .ba-gen-orb{width:24px;height:24px;border-radius:50%;background:var(--accent-light);border:1.5px solid var(--accent-pop);animation:pulse 2s ease infinite;margin-bottom:8px;}
 .ba-gen-text{font-size:10px;color:var(--tx3);text-align:center;}
 .hidden{display:none;}
@@ -304,6 +306,7 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .floor-plan-wrap{display:flex;justify-content:center;margin-bottom:.85rem}
 </style>
 <style id="hpCSS"></style>
+<style id="fpCSS"></style>
 </head>
 <body>
 <div class="wrap">
@@ -490,6 +493,7 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
         <div class="fsp-pills" id="fspPills"></div>
       </div>
     </div>
+    <div id="floorPlanSection"></div>
     <div id="householdSection"></div>
     <button class="btn btn-p" id="p3btn" onclick="startAnalysis()" disabled>Analyse My Space <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
     <button class="btn btn-s" onclick="goBack(2)"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
@@ -517,38 +521,28 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
     <div class="res-eyebrow" id="resEyebrow">MARMAROPH RITUAL SPACE ANALYSIS</div>
     <h2 class="res-title" id="resTitle">Your Space <em>Transformed</em></h2>
 
-    <!-- Before / After DAY -->
+    <!-- Before / After DAY SLIDER -->
     <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">☀️ Natural Light</div>
-    <div class="ba-grid">
-      <div class="ba-panel">
-        <img class="ba-img" id="beforeImg" src="" alt="Before">
-        <div class="ba-tag">BEFORE</div>
-      </div>
-      <div class="ba-panel" id="afterPanelDay">
-        <div class="ba-gen" id="afterGenDay">
-          <div class="ba-gen-orb"></div>
-          <div class="ba-gen-text">Generating<br>day vision…</div>
-        </div>
-        <img class="ba-img hidden" id="afterImgDay" src="" alt="After — Day">
-        <div class="ba-tag" style="background:rgba(107,159,212,.9);color:#fff">AFTER</div>
-      </div>
+    <div class="ba-slider-wrap" id="baSliderDay" onpointerdown="sliderStart(event,'day')" onpointermove="sliderMove(event,'day')" onpointerup="sliderEnd('day')">
+      <img class="ba-before-img" id="beforeImg" src="" alt="Before">
+      <img class="ba-after-img" id="afterImgDay" src="" alt="After — Day">
+      <div class="ba-gen-overlay" id="afterGenDay"><div class="ba-gen-orb"></div><div class="ba-gen-text">Generating<br>day vision…</div></div>
+      <div class="ba-slider-line" id="baLineDay"></div>
+      <div class="ba-slider-knob" id="baKnobDay"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="19 18 13 12 19 6"/></svg></div>
+      <div class="ba-slider-label lbl-before">before</div>
+      <div class="ba-slider-label lbl-after" id="afterLabelDay">generating…</div>
     </div>
 
-    <!-- Before / After NIGHT -->
+    <!-- Before / After NIGHT SLIDER -->
     <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">🕯️ Artificial Light</div>
-    <div class="ba-grid" style="margin-bottom:1.5rem">
-      <div class="ba-panel">
-        <img class="ba-img" id="beforeImg2" src="" alt="Before">
-        <div class="ba-tag">BEFORE</div>
-      </div>
-      <div class="ba-panel" id="afterPanelNight">
-        <div class="ba-gen" id="afterGenNight">
-          <div class="ba-gen-orb"></div>
-          <div class="ba-gen-text">Generating<br>night vision…</div>
-        </div>
-        <img class="ba-img hidden" id="afterImgNight" src="" alt="After — Night">
-        <div class="ba-tag" style="background:rgba(212,179,102,.9);color:var(--navy)">AFTER</div>
-      </div>
+    <div class="ba-slider-wrap" id="baSliderNight" onpointerdown="sliderStart(event,'night')" onpointermove="sliderMove(event,'night')" onpointerup="sliderEnd('night')" style="margin-bottom:1.5rem">
+      <img class="ba-before-img" id="beforeImg2" src="" alt="Before">
+      <img class="ba-after-img" id="afterImgNight" src="" alt="After — Night">
+      <div class="ba-gen-overlay" id="afterGenNight"><div class="ba-gen-orb"></div><div class="ba-gen-text">Generating<br>night vision…</div></div>
+      <div class="ba-slider-line" id="baLineNight"></div>
+      <div class="ba-slider-knob" id="baKnobNight"><svg style="display:inline-block;vertical-align:middle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="19 18 13 12 19 6"/></svg></div>
+      <div class="ba-slider-label lbl-before">before</div>
+      <div class="ba-slider-label lbl-after" id="afterLabelNight">generating…</div>
     </div>
 
     <!-- Moodboard -->
@@ -855,6 +849,28 @@ function selectDir(d){
   document.getElementById('p3btn').disabled=false;
 }
 
+var sliderActiveDay=false,sliderActiveNight=false;
+function sliderStart(e,which){
+  if(which==='day')sliderActiveDay=true; else sliderActiveNight=true;
+  e.target.setPointerCapture&&e.target.setPointerCapture(e.pointerId);
+  sliderMove(e,which);
+}
+function sliderMove(e,which){
+  var active=which==='day'?sliderActiveDay:sliderActiveNight;
+  if(!active)return;
+  var wrap=document.getElementById(which==='day'?'baSliderDay':'baSliderNight');
+  var rect=wrap.getBoundingClientRect();
+  var pct=((e.clientX-rect.left)/rect.width)*100;
+  pct=Math.max(2,Math.min(98,pct));
+  var suffix=which==='day'?'Day':'Night';
+  document.getElementById('baLine'+suffix).style.left=pct+'%';
+  document.getElementById('baKnob'+suffix).style.left=pct+'%';
+  document.getElementById('afterImg'+suffix).style.clipPath='inset(0 0 0 '+pct+'%)';
+}
+function sliderEnd(which){
+  if(which==='day')sliderActiveDay=false; else sliderActiveNight=false;
+}
+
 var selectedStyle='';
 
 function selectStyle(s){
@@ -916,10 +932,13 @@ function buildAnalysisPrompt(){
   const fs=FS[state.dir];
   const tod=state.tod==='day'?'morning/midday':'evening';
   const householdCtx=SE.buildHouseholdPromptContext('mindfulEating');
+  const homeMapCtx=SE.buildHomeMapPromptContext();
   return `You are a certified Marmaroph Healthy Home designer and Compass Feng Shui expert. Analyse these two photos of the same ${state.spaceType}. Photo 1 shows the space in natural daylight. Photo 2 shows it under artificial evening lighting. Compare both lighting conditions.
 
 COMPASS CONTEXT: Direction ${state.dir} — ${fs.trig} (${fs.chi}) · ${fs.elem} element · ${fs.energy}
 ${fs.note}
+
+${homeMapCtx}
 
 ${householdCtx}
 ${householdCtx ? 'CRITICAL PERSONALISATION RULE: You MUST reference each household member BY NAME throughout your analysis. In the Feng Shui Reading, explain how this room direction affects EACH person based on their Kua number. In the Priority Changes, specify which person each change benefits most. In What To Keep, mention whose energy it supports. Shopping list items should note who they serve. If the room direction is unfavorable for someone, name them and explain the cure. Generic advice is NOT acceptable when you have personal data.' : ''}
@@ -1421,15 +1440,19 @@ async function startAnalysis(){
       if(dayImg){
         state.afterDayB64=dayImg;
         document.getElementById('afterGenDay').style.display='none';
+        document.getElementById('afterLabelDay').textContent='after';
         var aiDay=document.getElementById('afterImgDay');
         aiDay.src=dayImg;aiDay.classList.remove('hidden');
         document.getElementById('moodBlock').style.display='block';
         generateMoodboard(state._directives);
+      } else {
+        document.getElementById('afterLabelDay').textContent='image unavailable';
+        document.getElementById('afterGenDay').style.display='none';
       }
     }catch(imgErr){
       console.error('Day image failed:',imgErr);
-      var dg=document.getElementById('afterGenDay');
-      dg.innerHTML='<div style="padding:1rem;text-align:center;font-size:10px;color:var(--tx3);line-height:1.6">Day vision could not be generated.<br>Your full analysis is still available below.</div>';
+      document.getElementById('afterLabelDay').textContent='image unavailable';
+      document.getElementById('afterGenDay').style.display='none';
     }
 
     // Step 5 — Generate NIGHT image
@@ -1439,13 +1462,17 @@ async function startAnalysis(){
       if(nightImg){
         state.afterNightB64=nightImg;
         document.getElementById('afterGenNight').style.display='none';
+        document.getElementById('afterLabelNight').textContent='after';
         var aiNight=document.getElementById('afterImgNight');
         aiNight.src=nightImg;aiNight.classList.remove('hidden');
+      } else {
+        document.getElementById('afterLabelNight').textContent='image unavailable';
+        document.getElementById('afterGenNight').style.display='none';
       }
     }catch(imgErr){
       console.error('Night image failed:',imgErr);
-      var ng=document.getElementById('afterGenNight');
-      ng.innerHTML='<div style="padding:1rem;text-align:center;font-size:10px;color:var(--tx3);line-height:1.6">Night vision could not be generated.<br>Your full analysis is still available below.</div>';
+      document.getElementById('afterLabelNight').textContent='image unavailable';
+      document.getElementById('afterGenNight').style.display='none';
     }
 
   }catch(err){
@@ -1503,6 +1530,9 @@ function resetAll(){
 // ── INIT ──────────────────────────────────────────────────────────
 renderUsageBar();
 document.getElementById('hpCSS').textContent=SE.HOUSEHOLD_CSS;
+document.getElementById('fpCSS').textContent=SE.FLOOR_PLAN_CSS;
+document.getElementById('floorPlanSection').innerHTML=SE.buildHomeMapHTML('fpContainer');
+SE.initHomeMapUI();
 document.getElementById('householdSection').innerHTML=SE.buildHouseholdHTML('hpContainer');
 SE.initHouseholdUI();
 </script>

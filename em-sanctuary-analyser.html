@@ -316,6 +316,7 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .floor-plan-wrap{display:flex;justify-content:center;margin-bottom:.85rem}
 </style>
 <style id="hpCSS"></style>
+<style id="fpCSS"></style>
 </head>
 <body>
 <div class="wrap">
@@ -484,6 +485,7 @@ Select the aesthetic that resonates with your space. This shapes the colour pale
         <div class="fsp-pills" id="fspPills"></div>
       </div>
     </div>
+    <div id="floorPlanSection"></div>
     <div id="householdSection"></div>
     <button class="btn btn-p" id="p2btn" onclick="startAnalysis()" disabled>Analyse My Sanctuary <svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
     <button class="btn btn-s" onclick="goBack(1)"><svg style="display:inline-block;vertical-align:middle" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
@@ -860,12 +862,15 @@ Respond ONLY in this JSON format:
 function buildAnalysisPrompt(){
   const fs=FS[state.dir];
   const householdCtx=SE.buildHouseholdPromptContext('energisedMornings');
+  const homeMapCtx=SE.buildHomeMapPromptContext();
 
   return `You are a certified Marmaroph Healthy Home designer and Compass Feng Shui expert. Analyse this photo of a ${state.spaceType} taken in natural morning light. This is a morning movement ritual space — natural sunlight through open windows is the foundation.
 
 COMPASS CONTEXT: Direction ${state.dir} — ${fs.trig} (${fs.chi}) · ${fs.elem} element · ${fs.energy}
 ${fs.note}
 Mat position guidance: ${fs.mat_position}
+
+${homeMapCtx}
 
 ${householdCtx}
 ${householdCtx ? 'CRITICAL PERSONALISATION RULE: You MUST reference each household member BY NAME throughout your analysis. In the Feng Shui Reading, explain how this room direction affects EACH person based on their Kua number. In the Priority Changes, specify which person each change benefits most. In What To Keep, mention whose energy it supports. Shopping list items should note who they serve. If the room direction is unfavorable for someone, name them and explain the cure. Generic advice is NOT acceptable when you have personal data.' : ''}
@@ -1433,6 +1438,9 @@ function resetAll(){
 // ── INIT ──────────────────────────────────────────────────────────
 renderUsageBar();
 document.getElementById('hpCSS').textContent=SE.HOUSEHOLD_CSS;
+document.getElementById('fpCSS').textContent=SE.FLOOR_PLAN_CSS;
+document.getElementById('floorPlanSection').innerHTML=SE.buildHomeMapHTML('fpContainer');
+SE.initHomeMapUI();
 document.getElementById('householdSection').innerHTML=SE.buildHouseholdHTML('hpContainer');
 SE.initHouseholdUI();
 </script>
