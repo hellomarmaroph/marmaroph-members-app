@@ -932,7 +932,7 @@ function buildAnalysisPrompt(){
   const fs=FS[state.dir];
   const tod=state.tod==='day'?'morning/midday':'evening';
   const householdCtx=SE.buildHouseholdPromptContext('mindfulEating');
-  const homeMapCtx=SE.buildHomeMapPromptContext();
+  const homeMapCtx=SE.buildHomeMapPromptContext(state.dir);
   return `You are a certified Marmaroph Healthy Home designer and Compass Feng Shui expert. Analyse these two photos of the same ${state.spaceType}. Photo 1 shows the space in natural daylight. Photo 2 shows it under artificial evening lighting. Compare both lighting conditions.
 
 COMPASS CONTEXT: Direction ${state.dir} — ${fs.trig} (${fs.chi}) · ${fs.elem} element · ${fs.energy}

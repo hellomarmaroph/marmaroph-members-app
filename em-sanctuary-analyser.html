@@ -862,7 +862,7 @@ Respond ONLY in this JSON format:
 function buildAnalysisPrompt(){
   const fs=FS[state.dir];
   const householdCtx=SE.buildHouseholdPromptContext('energisedMornings');
-  const homeMapCtx=SE.buildHomeMapPromptContext();
+  const homeMapCtx=SE.buildHomeMapPromptContext(state.dir);
 
   return `You are a certified Marmaroph Healthy Home designer and Compass Feng Shui expert. Analyse this photo of a ${state.spaceType} taken in natural morning light. This is a morning movement ritual space — natural sunlight through open windows is the foundation.
 

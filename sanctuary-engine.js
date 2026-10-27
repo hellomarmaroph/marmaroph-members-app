@@ -502,7 +502,7 @@ var DIR_GRID_POS = {NW:0,N:1,NE:2,W:3,center:4,E:5,SW:6,S:7,SE:8};
 function buildHomeMapHTML(containerId) {
   return '<div class="fp-section" id="' + containerId + '">' +
     '<div class="fp-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Your Home Floor Plan</div>' +
-    '<div class="fp-subtitle">Map every room in your home with its compass direction. This gives us the full Feng Shui picture of your house so we can analyse how energy flows between spaces and make truly accurate recommendations for your ritual space.</div>' +
+    '<div class="fp-subtitle">Map your home so we know which Bagua life area your ritual space falls in. Each compass sector governs a different area of life (wealth, relationships, career, health...) and needs specific elements to activate it. The same room in a different position needs completely different design.</div>' +
     '<div id="fpVisual" class="fp-visual"></div>' +
     '<div id="fpRooms"></div>' +
     '<button class="fp-add-btn" id="fpAddBtn" onclick="window._fpAddRoom()">+ Add a room</button>' +
@@ -530,6 +530,7 @@ function initHomeMapUI() {
     var el = document.getElementById('fpVisual');
     if (!el) return;
     var cells = ['NW','N','NE','W','','E','SW','S','SE'];
+    var baguaLabels = {N:'Career',NE:'Knowledge',E:'Health',SE:'Wealth',S:'Fame',SW:'Love',W:'Children',NW:'Mentors'};
     var roomByDir = {};
     map.rooms.forEach(function(r) { roomByDir[r.dir] = (roomByDir[r.dir] || []).concat(r.name); });
     el.innerHTML = cells.map(function(d) {
@@ -537,6 +538,7 @@ function initHomeMapUI() {
       var names = roomByDir[d] || [];
       var cls = names.length ? 'fp-vcell has-room' : 'fp-vcell';
       return '<div class="' + cls + '"><div class="fp-vdir">' + d + '</div>' +
+        '<div style="font-size:5px;color:var(--tx4);font-weight:500">' + (baguaLabels[d]||'') + '</div>' +
         (names.length ? names.map(function(n) { return '<div class="fp-vname">' + n + '</div>'; }).join('') : '') +
         '</div>';
     }).join('');
@@ -591,11 +593,11 @@ function initHomeMapUI() {
   render();
 }
 
-function buildHomeMapPromptContext() {
+function buildHomeMapPromptContext(ritualDir) {
   var map = getHomeMap();
   if (!map || !map.rooms || map.rooms.length === 0) return '';
 
-  var lines = ['WHOLE-HOME FLOOR PLAN (use to understand energy flow between rooms):'];
+  var lines = ['WHOLE-HOME BAGUA MAP (determines which life area each room governs):'];
   var dirRooms = {};
   map.rooms.forEach(function(r) {
     if (!dirRooms[r.dir]) dirRooms[r.dir] = [];
@@ -604,11 +606,18 @@ function buildHomeMapPromptContext() {
   DIRS.forEach(function(d) {
     if (dirRooms[d]) {
       var fsInfo = FS_BASE[d];
-      lines.push('  ' + d + ' sector (' + fsInfo.trig + ' · ' + fsInfo.elem + ' · ' + fsInfo.energy + '): ' + dirRooms[d].join(', '));
+      lines.push('  ' + d + ' sector = ' + fsInfo.energy + ' (' + fsInfo.trig + ' · ' + fsInfo.elem + ' element): ' + dirRooms[d].join(', '));
     }
   });
   lines.push('');
-  lines.push('IMPORTANT: Use this whole-home map to understand how chi flows BETWEEN rooms. Note which elements are adjacent, which directions are missing rooms, and how the ritual space sits within the overall energy map. Your recommendations for the ritual space should account for what surrounds it.');
+  if (ritualDir) {
+    var ritualFs = FS_BASE[ritualDir];
+    if (ritualFs) {
+      lines.push('THE RITUAL SPACE IS IN THE ' + ritualDir + ' SECTOR = ' + ritualFs.energy.toUpperCase() + ' AREA.');
+      lines.push('This means this room governs ' + ritualFs.energy + ' in this household. The ' + ritualFs.elem + ' element must be dominant. Your design recommendations MUST support and activate ' + ritualFs.energy + ' energy specifically — the colours, materials, objects, and arrangements you recommend should all serve this Bagua area. Do NOT give generic interior design advice — every recommendation must connect back to strengthening ' + ritualFs.energy + ' through ' + ritualFs.elem + ' element activation.');
+    }
+  }
+  lines.push('Use the surrounding rooms to understand what is adjacent — chi flows between them. But your analysis and recommendations are ONLY for the ritual space, not the other rooms.');
   return lines.join('\n');
 }
 
