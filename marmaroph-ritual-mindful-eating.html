@@ -764,7 +764,6 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
 
   <!-- ============ WELCOME (first visit) ============ -->
   <section class="screen" id="s-welcome">
-    <button class="back-link" onclick="window.location.href='index.html'" style="position:relative;z-index:10;margin-bottom:4px">← My Sanctuary</button>
     <img class="flower-deco" data-img="BOUG" style="width:120px;top:-20px;left:-34px" alt="">
     <img class="mascot-float" data-img="LUMI_T" style="width:80px;right:8px;top:60px" alt="Lumi">
     <div class="rise">
@@ -1090,7 +1089,6 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
 
     <div class="stage-head">
       <button class="back-link" onclick="go('s-welcome')">← My Ritual</button>
-      <button class="back-link" onclick="window.location.href='index.html'" style="cursor:pointer;background:none;border:none;color:inherit;font:inherit;padding:0">← My Sanctuary</button>
     </div>
     <img class="flower-deco" data-img="BOUG3" style="width:130px;bottom:-16px;left:-36px;z-index:1" alt="">
     <img class="flower-deco" data-img="LEMON_TREE" style="width:130px;left:-30px;top:-14px;animation-delay:-5s" alt="">
@@ -2775,23 +2773,31 @@ function renderDayPicker(){
     rim.setAttribute('cx',cx);rim.setAttribute('cy',cy);rim.setAttribute('r',r);
     rim.setAttribute('class','plate-rim');
     rim.setAttribute('fill','none');rim.setAttribute('stroke-width','1.5');
+    var well=document.createElementNS(ns,'circle');
+    well.setAttribute('cx',cx);well.setAttribute('cy',cy);well.setAttribute('r',r*0.62);
+    well.setAttribute('fill','none');well.setAttribute('stroke-width','0.6');
     if(doneSet[i]){
       plate.setAttribute('fill','rgba(233,220,184,.18)');
       rim.setAttribute('stroke','rgba(233,220,184,.5)');
+      well.setAttribute('stroke','rgba(233,220,184,.25)');
     }else if(i===real){
       plate.setAttribute('fill','rgba(159,214,235,.1)');
       rim.setAttribute('stroke','rgba(159,214,235,.35)');
+      well.setAttribute('stroke','rgba(159,214,235,.18)');
     }else if(i<real){
       plate.setAttribute('fill','rgba(255,255,255,.03)');
       rim.setAttribute('stroke','rgba(255,255,255,.1)');
+      well.setAttribute('stroke','rgba(255,255,255,.05)');
     }else{
       plate.setAttribute('fill','rgba(255,255,255,.02)');
       rim.setAttribute('stroke','rgba(255,255,255,.06)');
+      well.setAttribute('stroke','rgba(255,255,255,.03)');
     }
     if(_viewDay===i){
       rim.setAttribute('stroke','var(--sky)');rim.setAttribute('stroke-width','2');
+      well.setAttribute('stroke','rgba(159,214,235,.25)');
     }
-    g.appendChild(plate);g.appendChild(rim);
+    g.appendChild(plate);g.appendChild(rim);g.appendChild(well);
     if(doneSet[i]){
       var ck=document.createElementNS(ns,'text');
       ck.setAttribute('x',cx);ck.setAttribute('y',cy+1);
