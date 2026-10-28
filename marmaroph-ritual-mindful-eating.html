@@ -764,9 +764,11 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
 
   <!-- ============ WELCOME (first visit) ============ -->
   <section class="screen" id="s-welcome">
+    <button class="back-link" onclick="window.location.href='index.html'" style="position:relative;z-index:10;margin-bottom:4px">← My Sanctuary</button>
     <img class="flower-deco" data-img="BOUG" style="width:120px;top:-20px;left:-34px" alt="">
     <img class="mascot-float" data-img="LUMI_T" style="width:80px;right:8px;top:60px" alt="Lumi">
     <div class="rise">
+      <div style="text-align:center;margin:6px 0 0"><img src="logo-copper.png" alt="Marmaroph" style="width:140px;opacity:0.92;position:relative;z-index:5;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.15))"></div>
       <div class="rule-label" style="margin-top:2px"><span class="eyebrow">The Home Sanctuary Club</span></div>
       <div class="floral-title">
         <img class="flower-deco" data-img="HYDRANGEA1" style="width:85px;top:-10px;left:-20px;opacity:.75;animation-delay:-3s" alt="">
@@ -991,6 +993,21 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <p class="body-copy" style="font-size:10.5px;text-align:center;margin-top:8px;opacity:.7">The ritual begins on the 1st. All 30 days run within your chosen month.</p>
     </div>
 
+    <div class="glass rise" style="margin-top:18px;padding:20px 18px;border:1px solid rgba(37,211,102,.12)">
+      <div class="rule-label" style="margin-bottom:10px"><span class="eyebrow">Your ritual sisters</span></div>
+      <p class="body-copy" style="font-size:12px;text-align:center;line-height:1.7;color:rgba(255,255,255,.7)">You are not doing this alone. Join the women who are starting the Mindful Eating ritual this month on WhatsApp.</p>
+      <div style="text-align:center;margin-top:12px">
+        <button onclick="showWelcomeCohort()" style="padding:10px 22px;border-radius:12px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);color:#25d366;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Join the group on WhatsApp</button>
+      </div>
+      <div id="welcomeCohortInput" style="display:none;margin-top:12px">
+        <p style="font-size:10.5px;color:rgba(255,255,255,.55);margin-bottom:8px;line-height:1.6;text-align:center">This group is being formed as more women join. Leave your WhatsApp number and we will add you when the group opens.</p>
+        <div style="display:flex;gap:8px">
+          <input type="tel" id="welcomeCohortPhone" placeholder="+44 7700 123456" style="flex:1;padding:9px 12px;border-radius:10px;border:1px solid rgba(37,211,102,.25);background:rgba(37,211,102,.06);color:#fff;font-family:Montserrat,sans-serif;font-size:12px">
+          <button onclick="saveWelcomeCohort()" style="padding:8px 14px;border-radius:10px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25d366;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">Save</button>
+        </div>
+      </div>
+    </div>
+
     <div class="notif-panel rise" id="notifPanel">
       <div class="rule-label" style="margin-bottom:6px"><span class="eyebrow">Daily reminders</span></div>
       <div class="notif-toggle-row" onclick="var t=document.getElementById('notifToggle');t.checked=!t.checked;toggleNotif()">
@@ -1062,9 +1079,8 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     </svg>
 
     <div class="stage-head">
-
-      <button class="back-link" onclick="go('s-welcome')">← The ritual</button>
-      <span class="stage-count">My Sanctuary</span>
+      <button class="back-link" onclick="go('s-welcome')">← My Ritual</button>
+      <button class="back-link" onclick="window.location.href='index.html'" style="cursor:pointer;background:none;border:none;color:inherit;font:inherit;padding:0">← My Sanctuary</button>
     </div>
     <img class="flower-deco" data-img="BOUG3" style="width:130px;bottom:-16px;left:-36px;z-index:1" alt="">
     <img class="flower-deco" data-img="LEMON_TREE" style="width:130px;left:-30px;top:-14px;animation-delay:-5s" alt="">
@@ -1099,15 +1115,15 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       </div>
     </div>
 
-    <!-- Day picker — browse any day's content -->
+    <!-- Unique plate calendar -->
     <div style="margin:10px 18px 0">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <span style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4)">Browse days</span>
+        <span style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4)">Your 30 plates</span>
         <button id="dayPickerReset" onclick="resetViewDay()" style="display:none;font-size:9px;letter-spacing:.1em;background:rgba(159,214,235,.1);border:1px solid rgba(159,214,235,.2);color:var(--sky);padding:4px 10px;border-radius:10px;cursor:pointer">Back to today</button>
       </div>
-      <div id="dayPickerStrip" style="display:flex;gap:4px;overflow-x:auto;padding:4px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none"></div>
+      <svg id="plateCalSvg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;margin:0 auto;display:block"></svg>
     </div>
-    <style>#dayPickerStrip::-webkit-scrollbar{display:none}.dp-day{min-width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .2s;flex-shrink:0}.dp-day.done{color:var(--gold);background:rgba(233,184,78,.1);border-color:rgba(233,184,78,.2)}.dp-day.today{box-shadow:0 0 0 2px var(--sky);color:var(--sky);font-weight:700}.dp-day.viewing{background:rgba(159,214,235,.15);border-color:rgba(159,214,235,.4);color:#fff;font-weight:700}.dp-day.missed{color:rgba(233,160,100,.7);border:1px dashed rgba(233,160,100,.35);background:rgba(233,160,100,.08)}.dp-day.future{color:rgba(255,255,255,.15);border-color:rgba(255,255,255,.04);pointer-events:none;opacity:.4}</style>
+    <style>.plate-cal-day{cursor:pointer;transition:all .3s}.plate-cal-day:hover .plate-rim{stroke-opacity:.6}</style>
 
     <!-- Viewing other day notice -->
     <div id="viewDayNotice" style="display:none;margin:0 18px 6px;padding:10px 14px;background:rgba(233,220,184,.08);border:1px solid rgba(233,220,184,.15);border-radius:12px;text-align:center">
@@ -1162,42 +1178,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <p class="ms-body" id="celebBody"></p>
     </div>
 
-    <!-- Cohort group -->
-    <div class="cohort-card rise" id="cohortCard" style="display:none">
-      <div class="co-title">Your ritual sisters</div>
-      <p class="co-body" id="cohortBody">You are not doing this alone. Join the women who started the Mindful Eating ritual this month.</p>
-      <div id="cohortJoined" style="display:none">
-        <p style="font-size:11px;color:var(--gold);margin-top:8px;font-style:italic">You are in the group. We will add you shortly.</p>
-      </div>
-      <div id="cohortForm">
-        <button class="co-btn" id="cohortJoinBtn" onclick="showCohortInput()">Join your cohort on WhatsApp</button>
-        <div id="cohortInputWrap" style="display:none;margin-top:12px">
-          <p style="font-size:10.5px;color:rgba(255,255,255,.55);margin-bottom:8px;line-height:1.6">This group is being formed as more women join. Leave your WhatsApp number and we will add you when the group opens.</p>
-          <div style="display:flex;gap:8px">
-            <input type="tel" id="cohortWhatsapp" placeholder="+44 7700 123456" style="flex:1;padding:9px 12px;border-radius:10px;border:1px solid rgba(37,211,102,.25);background:rgba(37,211,102,.06);color:#fff;font-family:Montserrat,sans-serif;font-size:12px">
-            <button onclick="saveCohortNumber()" style="padding:8px 14px;border-radius:10px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25d366;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">Save</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Day 25+ next ritual preview -->
-    <div class="next-ritual-card rise" id="nextRitualCard" style="display:none">
-      <div class="nr-eye">Your next chapter</div>
-      <div class="nr-title" id="nrTitle"></div>
-      <p class="nr-body" id="nrBody"></p>
-      <button class="btn btn-ghost" onclick="tryQuiz()">Discover your next ritual</button>
-    </div>
-
-    <!-- Long-horizon milestones -->
-    <div class="horizon-track rise" id="horizonTrack" style="display:none">
-      <div class="ht-title">Your sanctuary journey</div>
-      <div class="horizon-ms" id="hm1"><div class="hm-dot">1</div><div class="hm-info"><div class="hm-label">Month 1: First ritual complete</div><div class="hm-sub">You are here</div></div></div>
-      <div class="horizon-ms" id="hm3"><div class="hm-dot">3</div><div class="hm-info"><div class="hm-label">Month 3: Halfway to your consultation</div><div class="hm-sub">A complimentary wellness session awaits</div></div></div>
-      <div class="horizon-ms" id="hm6"><div class="hm-dot">6</div><div class="hm-info"><div class="hm-label">Month 6: Free wellness consultation</div><div class="hm-sub">One-on-one with a Marmaroph practitioner</div></div></div>
-      <div class="horizon-ms" id="hm12"><div class="hm-dot">12</div><div class="hm-info"><div class="hm-label">Month 12: Home redesign or retreat</div><div class="hm-sub">The ultimate sanctuary experience</div></div></div>
-    </div>
-
+    <!-- Month calendar -->
     <div class="rule-label" style="margin-top:22px"><span class="eyebrow" id="homeCalTitle">Your ritual month</span></div>
     <div class="month-cal rise" id="homeMonthCal">
       <div class="mc-head">
@@ -1207,6 +1188,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     </div>
     <p class="body-copy" style="font-size:10px;margin-top:6px;text-align:center;color:rgba(255,255,255,.5)"><span style="color:var(--gold)">★</span> = The Gathering, the last Saturday of the month</p>
 
+    <!-- Add to calendar -->
     <div class="rule-label" style="margin-top:18px"><span class="eyebrow">Add to your calendar</span></div>
     <div class="sync-row rise">
       <button class="sync-btn" onclick="syncGoogle()"><span class="sb-ico">◷</span>Google</button>
@@ -1215,6 +1197,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <button class="sync-btn" onclick="syncNotion(this)"><span class="sb-ico">▤</span>Notion</button>
     </div>
 
+    <!-- Sanctuary Tools -->
     <div class="rule-label" style="margin-top:22px"><span class="eyebrow">Sanctuary Tools</span></div>
     <p class="body-copy" style="font-size:10.5px;text-align:center;color:rgba(255,255,255,.5);margin-top:4px;margin-bottom:12px;font-style:italic">These tools support your ritual. Access them any time.</p>
     <div class="hub-grid rise">
@@ -1246,83 +1229,58 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
         <div class="hc-s">📚</div><div class="hc-title">Science &amp; References</div>
         <div class="hc-sub">Studies, books &amp; researchers behind every lesson</div>
       </button>
-      <button class="hub-card wide" id="quizCard" onclick="tryQuiz()">
-        <div class="hc-title" style="color:var(--sky)">&#9680; &nbsp;Find your next ritual</div>
-        <div class="hc-sub" id="quizSub">Unlocks at the end of your 30 days.</div>
-      </button>
     </div>
 
-    <!-- Acknowledgments & feedback -->
-    <div class="glass rise" style="margin-top:22px;padding:22px 20px">
-      <div class="rule-label"><span class="eyebrow">Acknowledgments</span></div>
-      <p class="body-copy" style="font-size:12px;margin-top:10px;text-align:center">This ritual was built with love by Marmaroph Home &amp; Living. Every lesson, every tool, every evening. Designed so you could return to your table with intention.</p>
-      <p class="body-copy" style="font-size:11px;margin-top:8px;text-align:center;color:var(--sky)">Thank you for trusting us with 30 evenings of your life.</p>
+    <!-- Find next ritual -->
+    <div class="next-ritual-card rise" id="nextRitualCard" style="display:none">
+      <div class="nr-eye">Your next chapter</div>
+      <div class="nr-title" id="nrTitle"></div>
+      <p class="nr-body" id="nrBody"></p>
+      <button class="btn btn-ghost" onclick="typeof tryQuiz==='function'&&tryQuiz()">Discover your next ritual</button>
+    </div>
+    <div class="btn-row rise" style="margin-top:8px">
+      <button class="btn btn-ghost" id="quizCard" onclick="typeof tryQuiz==='function'&&tryQuiz()">&#9680; &nbsp;Find your next ritual</button>
+    </div>
+    <p class="body-copy" style="font-size:9.5px;text-align:center;color:rgba(255,255,255,.35);margin-top:4px" id="quizSub">Unlocks at the end of your 30 days.</p>
 
-      <div class="rule-label" style="margin-top:20px"><span class="eyebrow">Your feedback</span></div>
+    <!-- Ritual sisters -->
+    <div class="cohort-card rise" id="cohortCard" style="display:none">
+      <div class="co-title">Your ritual sisters</div>
+      <p class="co-body" id="cohortBody">You are not doing this alone. Join the women who started the Mindful Eating ritual this month.</p>
+      <div id="cohortJoined" style="display:none">
+        <p style="font-size:11px;color:var(--gold);margin-top:8px;font-style:italic">You are in the group. We will add you shortly.</p>
+      </div>
+      <div id="cohortForm">
+        <button class="co-btn" id="cohortJoinBtn" onclick="showCohortInput()">Join your cohort on WhatsApp</button>
+        <div id="cohortInputWrap" style="display:none;margin-top:12px">
+          <p style="font-size:10.5px;color:rgba(255,255,255,.55);margin-bottom:8px;line-height:1.6">This group is being formed as more women join. Leave your WhatsApp number and we will add you when the group opens.</p>
+          <div style="display:flex;gap:8px">
+            <input type="tel" id="cohortWhatsapp" placeholder="+44 7700 123456" style="flex:1;padding:9px 12px;border-radius:10px;border:1px solid rgba(37,211,102,.25);background:rgba(37,211,102,.06);color:#fff;font-family:Montserrat,sans-serif;font-size:12px">
+            <button onclick="saveCohortNumber()" style="padding:8px 14px;border-radius:10px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25d366;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback -->
+    <div class="glass rise" style="margin-top:22px;padding:22px 20px">
+      <div class="rule-label"><span class="eyebrow">Your feedback</span></div>
       <p class="body-copy" style="font-size:11.5px;margin-top:8px;text-align:center">We would love to hear from you. Did this ritual bring value to your evenings?</p>
 
       <div style="display:flex;justify-content:center;gap:8px;margin-top:12px" id="feedbackStars">
-        <button class="fb-star" onclick="rateStar(1)">★</button>
-        <button class="fb-star" onclick="rateStar(2)">★</button>
-        <button class="fb-star" onclick="rateStar(3)">★</button>
-        <button class="fb-star" onclick="rateStar(4)">★</button>
-        <button class="fb-star" onclick="rateStar(5)">★</button>
+        <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(1)">★</button>
+        <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(2)">★</button>
+        <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(3)">★</button>
+        <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(4)">★</button>
+        <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(5)">★</button>
       </div>
       <p class="body-copy" style="font-size:10px;margin-top:4px;text-align:center;opacity:.5" id="starLabel">Tap a star to rate your experience</p>
 
       <textarea id="feedbackText" placeholder="What did you enjoy most? What could be better? Any ritual you wish existed?" style="width:100%;min-height:80px;margin-top:14px;padding:12px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass);color:#fff;font-family:'Montserrat',sans-serif;font-size:11px;resize:vertical"></textarea>
 
-      <div class="rule-label" style="margin-top:16px"><span class="eyebrow">What ritual would you like next?</span></div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px" id="wishRituals">
-        <button class="chip wish-chip" onclick="toggleWish(this)">Mindful Movement</button>
-        <button class="chip wish-chip" onclick="toggleWish(this)">Sleep Sanctuary</button>
-        <button class="chip wish-chip" onclick="toggleWish(this)">Sacred Connection</button>
-        <button class="chip wish-chip" onclick="toggleWish(this)">Morning Ritual</button>
-        <button class="chip wish-chip" onclick="toggleWish(this)">Creative Hour</button>
-        <button class="chip wish-chip" onclick="toggleWish(this)">Stress Reset</button>
-      </div>
-      <input id="wishOther" type="text" placeholder="Or tell us your own idea..." style="width:100%;margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass);color:#fff;font-family:'Montserrat',sans-serif;font-size:11px">
-
-      <button class="btn btn-primary" style="margin-top:16px" onclick="submitFeedback()">Send feedback</button>
+      <button class="btn btn-primary" style="margin-top:16px" onclick="typeof submitFeedback==='function'&&submitFeedback()">Send feedback</button>
       <div id="feedbackThanks" style="display:none;text-align:center;margin-top:14px">
         <p class="body-copy" style="font-size:12px;color:var(--gold)">Thank you. Your voice shapes what we build next.</p>
-      </div>
-    </div>
-
-    <!-- Scientific resources -->
-    <div class="glass rise" style="margin-top:22px;padding:22px 20px">
-      <div class="rule-label"><span class="eyebrow">Scientific Resources</span></div>
-      <p class="body-copy" style="font-size:11px;margin-top:10px;color:rgba(255,255,255,.6)">The science behind this ritual is grounded in peer-reviewed research and the teachings of leading functional medicine practitioners.</p>
-      <div style="margin-top:14px">
-        <div style="margin-bottom:14px">
-          <p style="font-size:12px;color:var(--gold);font-weight:600;margin-bottom:6px">Practitioners and Authors</p>
-          <p style="font-size:11px;color:rgba(255,255,255,.7);line-height:1.7">
-            <strong>Dr. Carlos Jaramillo</strong> — Functional medicine, metabolic health, gut-brain axis, food as information<br>
-            <strong>Dr. Peter Attia</strong> — Longevity medicine, muscle as organ of longevity, protein optimization (Outlive, 2023)<br>
-            <strong>Dr. Mario Alonso Puig</strong> — Neurosurgeon, psychoneuroimmunology, neuroplasticity and food perception<br>
-            <strong>Dr. Robert Lustig</strong> — Pediatric endocrinology, fructose metabolism, metabolic syndrome (UCSF)<br>
-            <strong>Dr. Matthew Walker</strong> — Sleep science, alcohol and REM disruption (UC Berkeley)<br>
-            <strong>Dr. Kristin Neff</strong> — Self-compassion research and behavioral change<br>
-            <strong>Dr. Stephen Porges</strong> — Polyvagal theory, co-regulation, vagus nerve and digestion
-          </p>
-        </div>
-        <div style="margin-bottom:14px">
-          <p style="font-size:12px;color:var(--gold);font-weight:600;margin-bottom:6px">Key Studies</p>
-          <p style="font-size:10.5px;color:rgba(255,255,255,.6);line-height:1.8">
-            Shukla et al. (2015) Diabetes Care — Meal order and glucose response, Weill Cornell Medicine<br>
-            Suez et al. (2014) Nature — Artificial sweeteners and gut microbiome disruption<br>
-            Mamerow et al. (2014) Journal of Nutrition — Protein distribution and muscle synthesis<br>
-            Leong et al. (2015) The Lancet — PURE study: grip strength as mortality predictor (139,691 participants)<br>
-            Dehghan et al. (2017) The Lancet — PURE study: dietary fat and mortality (135,335 participants)<br>
-            Astrup et al. (2020) JACC — Saturated fat from whole foods and cardiovascular risk<br>
-            Howe et al. (2011) Cochrane Review — Resistance training and bone mineral density<br>
-            Gordon et al. (2018) JAMA Psychiatry — Resistance training and depression<br>
-            GBD 2016 Alcohol Collaborators (2018) The Lancet — Safest level of alcohol is none (28M people)<br>
-            BMJ (2013) — Whole fruit vs fruit juice and type 2 diabetes risk<br>
-            Nickerson et al. (2012) PLOS ONE — Maltodextrin and intestinal inflammation<br>
-            WHO — Added sugar recommendation: maximum 25g per day for adults
-          </p>
-        </div>
       </div>
     </div>
 
@@ -2778,8 +2736,9 @@ function resetViewDay(){
 }
 function isViewingOtherDay(){return _viewDay!==null&&_viewDay!==realDayIndex();}
 function renderDayPicker(){
-  var strip=document.getElementById('dayPickerStrip');if(!strip)return;
-  strip.innerHTML='';
+  var svg=document.getElementById('plateCalSvg');if(!svg)return;
+  var ns='http://www.w3.org/2000/svg';
+  svg.innerHTML='';
   var real=realDayIndex();
   var doneSet={};
   state.days.forEach(function(ds){
@@ -2788,21 +2747,55 @@ function renderDayPicker(){
     var diff=Math.round((d-sd)/86400000)+1;
     if(diff>=1&&diff<=30)doneSet[diff]=true;
   });
+  var cols=6,r=22,pad=4,ox=28,oy=24,gx=(320-ox*2-r*2*cols-(cols-1)*pad)/(cols-1)+r*2+pad;
+  if(gx<r*2+pad)gx=r*2+pad;
+  gx=52;var gy=44;
   for(var i=1;i<=30;i++){
-    var el=document.createElement('div');
-    el.className='dp-day';
-    el.textContent=i;
-    if(doneSet[i])el.classList.add('done');
-    if(i===real)el.classList.add('today');
-    if(_viewDay===i)el.classList.add('viewing');
-    if(i<real&&!doneSet[i])el.classList.add('missed');
-    if(i>real)el.classList.add('future');
-    (function(day){el.onclick=function(){if(day>realDayIndex())return;setViewDay(day);};})(i);
-    strip.appendChild(el);
+    var col=(i-1)%cols,row=Math.floor((i-1)/cols);
+    var cx=ox+col*gx,cy=oy+row*gy;
+    var g=document.createElementNS(ns,'g');
+    g.setAttribute('class','plate-cal-day');
+    g.setAttribute('data-day',i);
+    var plate=document.createElementNS(ns,'circle');
+    plate.setAttribute('cx',cx);plate.setAttribute('cy',cy);plate.setAttribute('r',r);
+    var rim=document.createElementNS(ns,'circle');
+    rim.setAttribute('cx',cx);rim.setAttribute('cy',cy);rim.setAttribute('r',r);
+    rim.setAttribute('class','plate-rim');
+    rim.setAttribute('fill','none');rim.setAttribute('stroke-width','1.5');
+    if(doneSet[i]){
+      plate.setAttribute('fill','rgba(233,220,184,.18)');
+      rim.setAttribute('stroke','rgba(233,220,184,.5)');
+    }else if(i===real){
+      plate.setAttribute('fill','rgba(159,214,235,.1)');
+      rim.setAttribute('stroke','rgba(159,214,235,.35)');
+    }else if(i<real){
+      plate.setAttribute('fill','rgba(255,255,255,.03)');
+      rim.setAttribute('stroke','rgba(255,255,255,.1)');
+    }else{
+      plate.setAttribute('fill','rgba(255,255,255,.02)');
+      rim.setAttribute('stroke','rgba(255,255,255,.06)');
+    }
+    if(_viewDay===i){
+      rim.setAttribute('stroke','var(--sky)');rim.setAttribute('stroke-width','2');
+    }
+    g.appendChild(plate);g.appendChild(rim);
+    if(doneSet[i]){
+      var ck=document.createElementNS(ns,'text');
+      ck.setAttribute('x',cx);ck.setAttribute('y',cy+1);
+      ck.setAttribute('text-anchor','middle');ck.setAttribute('dominant-baseline','central');
+      ck.setAttribute('fill','var(--gold)');ck.setAttribute('font-size','11');ck.setAttribute('font-family','serif');
+      ck.textContent='✦';g.appendChild(ck);
+    }
+    var label=document.createElementNS(ns,'text');
+    label.setAttribute('x',cx);label.setAttribute('y',cy+(doneSet[i]?10:1));
+    label.setAttribute('text-anchor','middle');label.setAttribute('dominant-baseline','central');
+    label.setAttribute('font-size',doneSet[i]?'6':'10');
+    label.setAttribute('font-family','Montserrat,sans-serif');
+    label.setAttribute('fill',doneSet[i]?'rgba(233,220,184,.6)':i===real?'var(--sky)':i<real?'rgba(255,255,255,.35)':'rgba(255,255,255,.15)');
+    label.textContent=i;g.appendChild(label);
+    (function(day){g.onclick=function(){if(day>realDayIndex())return;setViewDay(day);};})(i);
+    svg.appendChild(g);
   }
-  // Scroll to current view or today
-  var target=_viewDay||real;
-  if(target>5){var scrollTo=(target-3)*38;strip.scrollLeft=scrollTo;}
 }
 function isBeforeRitual(){
   var sd=ritualStartDate();if(!sd)return false;
@@ -3296,6 +3289,14 @@ function saveCohortNumber(){
   store(COHORT_KEY,{number:num,date:todayStr()});
   document.getElementById('cohortForm').style.display='none';
   document.getElementById('cohortJoined').style.display='block';
+}
+
+function showWelcomeCohort(){document.getElementById('welcomeCohortInput').style.display='block'}
+function saveWelcomeCohort(){
+  var num=document.getElementById('welcomeCohortPhone').value.trim();
+  if(!num)return;
+  store(COHORT_KEY,{number:num,date:todayStr()});
+  document.getElementById('welcomeCohortInput').innerHTML='<p style="font-size:11px;color:var(--gold);margin:0;font-style:italic;text-align:center">You are in the group. We will add you shortly.</p>';
 }
 
 /* ================= habit liberation tracker ================= */
@@ -4663,7 +4664,7 @@ function startNextRitual(){
 
 /* ================= ambient ================= */
 (function(){
-  var sky=document.getElementById('sky');
+  var sky=document.getElementById('sky');if(!sky)return;
   for(var i=0;i<42;i++){
     var s=document.createElement('div');s.className='star';
     var size=Math.random()*2.2+0.8;

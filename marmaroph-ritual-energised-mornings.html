@@ -428,10 +428,18 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 
 <!-- ═══════════ S-WELCOME ═══════════ -->
 <section class="screen" id="s-welcome">
+  <!-- 1. Nav button -->
+  <div class="stage-head" style="position:relative;z-index:10">
+    <span class="back-link" onclick="window.location.href='index.html'" style="cursor:pointer">← My Sanctuary</span>
+  </div>
+
   <img class="flower-deco" data-img="BOUG" style="width:130px;top:-18px;left:-32px;opacity:.9;z-index:2;animation-delay:-3s" alt="">
   <img class="flower-deco" data-img="ORCHID" style="width:120px;top:-10px;right:-26px;opacity:.85;z-index:2;animation-delay:-7s" alt="">
   <img class="mascot-float" data-img="LUMI_T" style="width:80px;right:16px;top:260px;z-index:3" alt="Lumi">
   <img class="jungle-deco" data-img="JAGUAR" style="width:110px;left:-16px;bottom:20px" alt="">
+
+  <!-- 2. Logo -->
+  <div style="text-align:center;margin:6px 0 0;position:relative;z-index:5"><img src="logo-copper.png" alt="Marmaroph" style="width:140px;opacity:0.92;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.15))"></div>
 
   <!-- ── LOBBY SECTION: title + orbital ring ── -->
   <div class="lobby-wrap" style="padding-bottom:0">
@@ -887,8 +895,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 
   <div style="position:relative;z-index:5;padding:0 0 20px">
     <div class="stage-head" style="padding-bottom:4px">
-      <button class="back-link" onclick="go('s-welcome')">← Home</button>
-      <span class="stage-count" id="homePhaseLabel">Your morning</span>
+      <button class="back-link" onclick="go('s-welcome')">← My Ritual</button>
+      <button class="back-link" onclick="window.location.href='index.html'" style="cursor:pointer;background:none;border:none;color:inherit;font:inherit;padding:0">← My Sanctuary</button>
     </div>
 
     <div style="text-align:center;margin:10px 0 0"><img src="logo-copper.png" alt="Marmaroph" style="width:140px;opacity:0.92;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.15))"></div>
@@ -1038,6 +1046,22 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
       <p class="wa-body">You are not doing this alone. Join the women who started Energized Morning <span class="waMonthLine">with you</span>.</p>
       <a class="wa-btn" href="https://wa.me/yourlink" target="_blank" rel="noopener">Join your cohort on WhatsApp</a>
     </div>
+
+    <!-- ── Feedback ── -->
+    <div class="glass rise" style="margin-top:16px;padding:20px 18px">
+      <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:10px">Your feedback</div>
+      <p style="font-size:11.5px;text-align:center;color:rgba(255,255,255,.6);margin-bottom:12px">Did this ritual bring value to your mornings?</p>
+      <div style="display:flex;justify-content:center;gap:8px" id="feedbackStars">
+        <button class="fb-star" onclick="rateStar(1)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
+        <button class="fb-star" onclick="rateStar(2)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
+        <button class="fb-star" onclick="rateStar(3)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
+        <button class="fb-star" onclick="rateStar(4)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
+        <button class="fb-star" onclick="rateStar(5)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
+      </div>
+      <textarea id="feedbackText" placeholder="What did you enjoy most? What could be better?" style="width:100%;min-height:60px;margin-top:12px;padding:12px;border-radius:12px;border:1px solid var(--glass-border);background:rgba(255,255,255,.04);color:#fff;font-family:'Montserrat',sans-serif;font-size:11px;resize:vertical"></textarea>
+      <button class="btn btn-ghost" style="width:100%;margin-top:10px" onclick="typeof submitFeedback==='function'&&submitFeedback()">Send feedback</button>
+    </div>
+
     <footer>Marmaroph Home &amp; Living</footer>
   </div>
   <div style="display:flex;justify-content:flex-end;padding:0 0 20px"><img class="jungle-deco" data-img="JAGUAR" style="width:110px;position:relative" alt=""></div>
@@ -4180,6 +4204,10 @@ function syncNotion(btn){
   navigator.clipboard&&navigator.clipboard.writeText(txt);
   alert('Notion event text copied to clipboard. Paste it into your Notion calendar or database.');
 }
+
+/* ── Feedback ── */
+function rateStar(n){var stars=document.querySelectorAll('#feedbackStars .fb-star');stars.forEach(function(s,i){s.style.color=i<n?'var(--gold)':'rgba(255,255,255,.2)'}); ss('em_rating',n)}
+function submitFeedback(){var r=ls('em_rating')||'';var t=document.getElementById('feedbackText');ss('em_feedback',JSON.stringify({rating:r,text:t?t.value:'',ts:Date.now()}));if(t)t.value='';alert('Thank you for your feedback.')}
 
 /* ── lazy images ── */
 function setDailyImages(){}
