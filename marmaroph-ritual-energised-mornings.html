@@ -842,24 +842,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <a class="wa-btn" href="https://wa.me/yourlink" target="_blank" rel="noopener">Join your cohort on WhatsApp</a>
   </div>
 
-  <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
-  <div class="rule-label"><span class="eyebrow">Choose your ritual month</span></div>
-  <div class="glass rise" style="padding:16px 18px">
-    <p style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:12px;line-height:1.7">Select the month and year when your 30-day morning ritual begins. The calendar, the gathering, and the daily counter all sync to this date.</p>
-    <div style="display:flex;gap:10px;margin-bottom:12px">
-      <select id="monthPicker" style="flex:1;background:rgba(255,255,255,.08);border:1px solid var(--glass-border);border-radius:8px;color:#fff;padding:10px 12px;font-size:13px;font-family:inherit">
-        <option value="0">January</option><option value="1">February</option><option value="2">March</option>
-        <option value="3">April</option><option value="4">May</option><option value="5">June</option>
-        <option value="6">July</option><option value="7">August</option><option value="8">September</option>
-        <option value="9">October</option><option value="10">November</option><option value="11">December</option>
-      </select>
-      <select id="yearPicker" style="width:90px;background:rgba(255,255,255,.08);border:1px solid var(--glass-border);border-radius:8px;color:#fff;padding:10px 12px;font-size:13px;font-family:inherit">
-        <option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option>
-      </select>
-    </div>
-    <button class="btn btn-primary btn-full" id="joinBtn" onclick="joinRitual()">Begin my morning ritual ✦</button>
-  </div>
-
+  <!-- ── DAILY REMINDERS ── -->
   <div class="notif-panel rise" id="notifPanel">
     <div class="rule-label" style="margin-bottom:6px"><span class="eyebrow">Daily reminders</span></div>
     <div class="notif-toggle-row" onclick="var t=document.getElementById('notifToggle');t.checked=!t.checked;toggleNotif()">
@@ -878,6 +861,36 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
       <label class="notif-check"><input type="checkbox" id="notifCheckin" onchange="saveNotifPrefs()"><span>Weekly check-in</span></label>
       <p class="notif-saved" id="notifSaved">Preferences saved</p>
     </div>
+  </div>
+
+  <!-- ── ARCHIVE: DO NOT DISTURB ── -->
+  <div class="sec-rule" style="margin-top:14px"><span class="sr-ico">✦</span></div>
+  <div class="rule-label"><span class="eyebrow">Do not disturb during Ritual</span></div>
+  <div class="glass rise" style="padding:16px 18px;text-align:center">
+    <p style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:10px">When you begin the ritual, silence your phone and close all tabs. This is your time — no notifications, no distractions.</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M18.36 19.36L5.64 6.64M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600">Archive mode recommended</span>
+    </div>
+  </div>
+
+  <!-- ── CHOOSE YOUR MONTH ── -->
+  <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
+  <div class="rule-label"><span class="eyebrow">Choose your ritual month</span></div>
+  <div class="glass rise" style="padding:16px 18px">
+    <p style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:12px;line-height:1.7">Select the month and year when your 30-day morning ritual begins. The calendar, the gathering, and the daily counter all sync to this date.</p>
+    <div style="display:flex;gap:10px;margin-bottom:12px">
+      <select id="monthPicker" style="flex:1;background:rgba(255,255,255,.08);border:1px solid var(--glass-border);border-radius:8px;color:#fff;padding:10px 12px;font-size:13px;font-family:inherit">
+        <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+        <option value="3">April</option><option value="4">May</option><option value="5">June</option>
+        <option value="6">July</option><option value="7">August</option><option value="8">September</option>
+        <option value="9">October</option><option value="10">November</option><option value="11">December</option>
+      </select>
+      <select id="yearPicker" style="width:90px;background:rgba(255,255,255,.08);border:1px solid var(--glass-border);border-radius:8px;color:#fff;padding:10px 12px;font-size:13px;font-family:inherit">
+        <option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-full" id="joinBtn" onclick="joinRitual()">Begin my morning ritual ✦</button>
   </div>
 
   <footer>Marmaroph Home &amp; Living</footer>
@@ -976,6 +989,9 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <!-- begin button -->
     <div class="home-begin-row">
       <button class="btn btn-primary" id="beginBtn" style="width:100%;justify-content:center" onclick="startRitual()">Begin the ritual</button>
+    </div>
+    <div style="padding:8px 18px 0">
+      <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="startRitual()">Check for progress</button>
     </div>
 
     <!-- pillar tags -->

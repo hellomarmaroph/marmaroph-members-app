@@ -984,15 +984,6 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <div id="diagResult" style="display:none"></div>
     </div>
 
-    <div class="month-picker rise" id="monthPicker" style="margin-top:18px">
-      <div class="rule-label"><span class="eyebrow">Choose your ritual month</span></div>
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:10px">
-        <select id="pickMonth" class="mp-select"></select>
-        <select id="pickYear" class="mp-select"></select>
-      </div>
-      <p class="body-copy" style="font-size:10.5px;text-align:center;margin-top:8px;opacity:.7">The ritual begins on the 1st. All 30 days run within your chosen month.</p>
-    </div>
-
     <div class="glass rise" style="margin-top:18px;padding:20px 18px;border:1px solid rgba(37,211,102,.12)">
       <div class="rule-label" style="margin-bottom:10px"><span class="eyebrow">Your ritual sisters</span></div>
       <p class="body-copy" style="font-size:12px;text-align:center;line-height:1.7;color:rgba(255,255,255,.7)">You are not doing this alone. Join the women who are starting the Mindful Eating ritual this month on WhatsApp.</p>
@@ -1026,6 +1017,25 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
         <label class="notif-check"><input type="checkbox" id="notifCheckin" onchange="saveNotifPrefs()"><span>Weekly check-in</span></label>
         <p class="notif-saved" id="notifSaved">Preferences saved</p>
       </div>
+    </div>
+
+    <!-- Archive: Do not disturb -->
+    <div class="glass rise" style="margin-top:18px;padding:16px 18px;text-align:center">
+      <div class="rule-label" style="margin-bottom:10px"><span class="eyebrow">Do not disturb during Ritual</span></div>
+      <p class="body-copy" style="font-size:12px;line-height:1.7;color:rgba(255,255,255,.6);margin-bottom:10px">When you begin the ritual, silence your phone and close all tabs. This is your time — no notifications, no distractions.</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M18.36 19.36L5.64 6.64M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600">Archive mode recommended</span>
+      </div>
+    </div>
+
+    <div class="month-picker rise" id="monthPicker" style="margin-top:18px">
+      <div class="rule-label"><span class="eyebrow">Choose your ritual month</span></div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:10px">
+        <select id="pickMonth" class="mp-select"></select>
+        <select id="pickYear" class="mp-select"></select>
+      </div>
+      <p class="body-copy" style="font-size:10.5px;text-align:center;margin-top:8px;opacity:.7">The ritual begins on the 1st. All 30 days run within your chosen month.</p>
     </div>
 
     <div id="waitGate" class="rise" style="display:none;text-align:center;margin-top:14px">
@@ -1132,6 +1142,9 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
 
     <div class="btn-row rise" style="margin-top:12px;padding-top:6px">
       <button class="btn btn-primary" id="beginBtn" onclick="startRitual()">Begin today's ritual</button>
+    </div>
+    <div class="btn-row rise" style="padding-top:6px">
+      <button class="btn btn-ghost" onclick="startRitual()">Check for progress</button>
     </div>
 
     <!-- Day 1 reflection form -->
