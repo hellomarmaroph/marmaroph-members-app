@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Marmaroph">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="apple-touch-startup-image" href="splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
 <link rel="apple-touch-startup-image" href="splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
 <link rel="apple-touch-startup-image" href="splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
@@ -601,7 +601,7 @@
   <!-- Mobile header -->
   <div class="mobile-header">
     <button class="menu-btn" id="menuBtn">&#9776;</button>
-    <div class="mobile-title">MARMAROPH</div>
+    <div class="mobile-title"><img src="logo-copper.png" alt="Marmaroph" style="height:28px;vertical-align:middle;opacity:0.95"></div>
     <div class="mobile-av" id="mobileAv" onclick="document.getElementById('avatarInput').click()"><span id="mobileAvInit">MA</span></div>
     <div class="mobile-menu" id="mobileMenu">
       <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Home Sanctuary Club</div>
@@ -623,7 +623,7 @@
   <div class="sidebar" id="sidebar">
     <div class="sb-cosmos" id="sbCosmos"></div>
     <div class="sb-header">
-      <div class="sb-logo">MARMAROPH</div>
+      <div class="sb-logo"><img src="logo-copper.png" alt="Marmaroph" style="width:110px;opacity:0.95"></div>
       <div class="sb-avatar" id="sbAvatar" onclick="document.getElementById('avatarInput').click()"><div class="sb-avatar-overlay">&#128247;</div><div class="sb-avatar-init" id="sbAvatarInit">MA</div></div>
       <input type="file" id="avatarInput" accept="image/*" onchange="uploadAvatar(this)">
       <div class="sb-name" id="sbName">Member</div>
@@ -1749,7 +1749,7 @@ if ('serviceWorker' in navigator && !isInIframe) {
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (!refreshing) { refreshing = true; window.location.reload(); }
   });
-  navigator.serviceWorker.register('sw.js?v=121').then(function(reg) {
+  navigator.serviceWorker.register('sw.js?v=122').then(function(reg) {
     reg.update();
   }).catch(function(){});
 }
@@ -2912,7 +2912,7 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(!refreshing){refreshing=true;window.location.reload();}
   });
-  navigator.serviceWorker.register('sw.js?v=121').then(function(reg){reg.update();}).catch(function(){});
+  navigator.serviceWorker.register('sw.js?v=122').then(function(reg){reg.update();}).catch(function(){});
 }
 </script>
 </body>
