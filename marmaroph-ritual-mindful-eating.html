@@ -293,8 +293,9 @@ h2{font-weight:300;font-size:24px;line-height:1.3;text-align:center;position:rel
 
 .btn{display:block;width:100%;padding:16px;border-radius:50px;font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;text-align:center;transition:transform .25s ease,box-shadow .25s ease;border:none;position:relative;z-index:4}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:linear-gradient(135deg,#c9956b,#b07a50,#d4a574);color:#fff;box-shadow:0 8px 28px rgba(176,122,80,.3);animation:glowpulse 3.5s ease-in-out infinite}
-@keyframes glowpulse{0%,100%{box-shadow:0 8px 24px rgba(176,122,80,.25)}50%{box-shadow:0 8px 38px rgba(201,149,107,.5)}}
+.btn-primary{background:linear-gradient(135deg,#e8b87a,#d4975a,#f0c88e,#c98a4e,#eabb78);background-size:200% 200%;color:#fff;box-shadow:0 8px 28px rgba(212,151,90,.35),inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 0 rgba(0,0,0,.1);animation:glowpulse 3.5s ease-in-out infinite,shimmer 4s linear infinite;text-shadow:0 1px 2px rgba(120,70,20,.3)}
+@keyframes glowpulse{0%,100%{box-shadow:0 8px 24px rgba(212,151,90,.3),inset 0 1px 0 rgba(255,255,255,.35)}50%{box-shadow:0 8px 42px rgba(232,184,122,.55),inset 0 1px 0 rgba(255,255,255,.45)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 .btn-ghost{background:transparent;color:rgba(201,149,107,.9);border:1px solid rgba(201,149,107,.35)}
 .btn-ghost:hover{background:rgba(201,149,107,.08)}
 .btn-primary:disabled{opacity:.4;pointer-events:none;animation:none}
@@ -852,11 +853,6 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
         <p style="font-size:11.5px;line-height:1.7;color:rgba(255,255,255,.8);text-align:center"><strong style="color:var(--gold);font-weight:600">Rituals are designed to start on the 1st of each month.</strong> Choose the month you want to begin. If you subscribed during the first days of the month, start the ritual right away. If you subscribed after the 3rd, we recommend starting the following month so you can complete the full 30-day journey.</p>
       </div>
     </div>
-    <div class="progress-wrap rise">
-      <div class="progress-meta"><span>Your 30 days</span><b id="wPctLabel">0%</b></div>
-      <div class="progress-track"><div class="progress-fill" id="wFill"></div></div>
-    </div>
-
     <div class="sec-rule"><span class="sr-ico">✦</span></div>
     <div class="rule-label" style="margin-top:4px"><span class="eyebrow">How the method unfolds</span></div>
     <div class="timeline rise">
@@ -4857,8 +4853,8 @@ function updateGate(){
 function renderWelcome(){
   var dc=doneCount();
   var pct=Math.round(dc/30*100);
-  document.getElementById('wPctLabel').textContent=pct+'%';
-  setTimeout(function(){document.getElementById('wFill').style.width=pct+'%'},150);
+  var _wPct=document.getElementById('wPctLabel');if(_wPct)_wPct.textContent=pct+'%';
+  var _wFl=document.getElementById('wFill');if(_wFl)setTimeout(function(){_wFl.style.width=pct+'%'},150);
   initMonthPicker();
   loadNotifPrefs();
   if(state.joined)scheduleNotif();
