@@ -293,10 +293,11 @@ h2{font-weight:300;font-size:24px;line-height:1.3;text-align:center;position:rel
 
 .btn{display:block;width:100%;padding:16px;border-radius:50px;font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;text-align:center;transition:transform .25s ease,box-shadow .25s ease;border:none;position:relative;z-index:4}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:linear-gradient(135deg,#f0e4c3,#d9c897);color:var(--teal);box-shadow:0 8px 28px rgba(233,220,184,.25);animation:glowpulse 3.5s ease-in-out infinite}
-@keyframes glowpulse{0%,100%{box-shadow:0 8px 24px rgba(233,220,184,.22)}50%{box-shadow:0 8px 38px rgba(233,220,184,.45)}}
-.btn-ghost{background:transparent;color:var(--sky);border:1px solid rgba(159,214,235,.4)}
-.btn-ghost:hover{background:rgba(159,214,235,.08)}
+.btn-primary{background:linear-gradient(135deg,#c9956b,#b07a50,#d4a574);color:#fff;box-shadow:0 8px 28px rgba(176,122,80,.3);animation:glowpulse 3.5s ease-in-out infinite}
+@keyframes glowpulse{0%,100%{box-shadow:0 8px 24px rgba(176,122,80,.25)}50%{box-shadow:0 8px 38px rgba(201,149,107,.5)}}
+.btn-ghost{background:transparent;color:rgba(201,149,107,.9);border:1px solid rgba(201,149,107,.35)}
+.btn-ghost:hover{background:rgba(201,149,107,.08)}
+.btn-primary:disabled{opacity:.4;pointer-events:none;animation:none}
 .btn-row{display:flex;flex-direction:column;gap:11px;margin-top:auto;padding-top:24px;position:relative;z-index:4}
 
 .step-tag{display:flex;justify-content:center;margin:6px 0 10px;position:relative;z-index:4}
@@ -785,60 +786,61 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <span class="pillar-tag p-connect"><span class="p-dot"></span>Connect</span>
     </div>
 
-    <div id="welcomeBeginBtn" style="display:none;margin-top:16px">
-      <button class="btn btn-primary" onclick="go('s-home')" style="width:100%;padding:16px;font-size:13px;font-weight:700;letter-spacing:.12em">BEGIN TODAY&#8217;S RITUAL &#8594;</button>
+    <div style="margin-top:16px">
+      <button class="btn btn-primary" id="welcomeBeginBtn" onclick="go('s-home')" disabled style="width:100%;padding:16px;font-size:13px;font-weight:700;letter-spacing:.12em">BEGIN THIS RITUAL &#8594;</button>
+      <p id="welcomeGateMsg" style="font-size:10px;text-align:center;color:rgba(201,149,107,.6);margin-top:8px;font-style:italic">Complete the Sanctuary Tool and the Personal Quiz to unlock</p>
     </div>
 
     <div style="text-align:center;margin-top:12px">
-      <button onclick="showRitualGuide()" style="background:none;border:1px solid rgba(233,220,184,0.3);color:var(--gold,#e9dcb8);font-size:11px;font-weight:400;letter-spacing:0.08em;padding:8px 20px;border-radius:20px;cursor:pointer;font-family:inherit;transition:all 0.2s" onmouseover="this.style.background='rgba(233,220,184,0.08)'" onmouseout="this.style.background='none'">&#128218; How to use this app</button>
+      <button onclick="showRitualGuide()" style="background:none;border:1px solid rgba(201,149,107,0.3);color:rgba(201,149,107,.8);font-size:11px;font-weight:400;letter-spacing:0.08em;padding:8px 20px;border-radius:20px;cursor:pointer;font-family:inherit;transition:all 0.2s" onmouseover="this.style.background='rgba(201,149,107,0.08)'" onmouseout="this.style.background='none'">&#128218; How to use this app</button>
     </div>
 
     <div class="sec-rule"><span class="sr-ico">✦</span></div>
-    <div class="intro-cards rise">
-      <div class="intro-card">
-        <div class="intro-ico">⚕</div>
-        <p>We live in a world where medical care begins at the disease. Most appointments are reserved for diagnosis, not for prevention. By the time the system pays attention, years of daily choices have already spoken.</p>
-      </div>
-      <div class="intro-card">
-        <div class="intro-ico">🌿</div>
-        <p>Food is one of the most powerful things you do every single day, and one of the least intentional. Here, we place it at the centre of your health: not as a diet, not as a rule, but as the daily architecture of how you feel, how you age, and how you live.</p>
-      </div>
-      <div class="intro-card">
-        <div class="intro-ico">✦</div>
-        <p>We do not eat as punishment. We do not skip, compensate, or restrict. We nourish. With knowledge, with beauty, and with the understanding that every meal is an act of care for the body you will live in for decades.</p>
-      </div>
-      <div class="intro-card">
-        <div class="intro-ico">🕯</div>
-        <p>This is the space where you slow down. Where food becomes a reason to sit, to breathe, and to connect. With yourself first, and then with the people you love. The table is a relationship, not just a surface.</p>
-      </div>
-      <div class="intro-card experts">
-        <div class="intro-ico">◉</div>
-        <p class="experts-label">Grounded in science, guided by experts</p>
-        <p>This is not a replacement for professional medical advice. It is a guide built on the clinical and scientific work of the people who have spent their careers studying how humans truly thrive.</p>
-        <div class="expert-row">
-          <span class="expert-chip">Dr. Peter Attia</span>
-          <span class="expert-chip">Dr. Carlos Jaramillo</span>
-          <span class="expert-chip">Rafael Santandreu</span>
-          <span class="expert-chip">Dr. Robert Lustig</span>
+    <div class="glass rise" style="padding:22px 20px;margin-top:8px;border:1px solid rgba(201,149,107,.15)">
+      <div class="rule-label" style="margin-bottom:14px"><span class="eyebrow">Our philosophy</span></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;text-align:center;margin-bottom:18px">You are not broken.<br>You are just not listening yet.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+        <div style="background:rgba(201,149,107,.06);border:1px solid rgba(201,149,107,.15);border-radius:12px;padding:14px 12px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">⚕</div>
+          <p style="font-size:10.5px;line-height:1.6;color:rgba(255,255,255,.75)">Medical care begins at disease. We begin at the table, before symptoms speak.</p>
+        </div>
+        <div style="background:rgba(201,149,107,.06);border:1px solid rgba(201,149,107,.15);border-radius:12px;padding:14px 12px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🌿</div>
+          <p style="font-size:10.5px;line-height:1.6;color:rgba(255,255,255,.75)">Food is the daily architecture of how you feel, age, and live. Not a diet — a practice.</p>
+        </div>
+        <div style="background:rgba(201,149,107,.06);border:1px solid rgba(201,149,107,.15);border-radius:12px;padding:14px 12px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">✦</div>
+          <p style="font-size:10.5px;line-height:1.6;color:rgba(255,255,255,.75)">We do not restrict. We nourish. Every meal is an act of care for the body you will live in.</p>
+        </div>
+        <div style="background:rgba(201,149,107,.06);border:1px solid rgba(201,149,107,.15);border-radius:12px;padding:14px 12px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🕯</div>
+          <p style="font-size:10.5px;line-height:1.6;color:rgba(255,255,255,.75)">The table is a relationship, not a surface. Slow down, breathe, connect.</p>
         </div>
       </div>
+
+      <div style="font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.8);text-align:left">
+        <p style="margin-bottom:12px">This ritual exists because paying attention to what you eat, and how, can make today feel better. Not a future version of today. Today. But it only works if you show up. Consistently. Not perfectly, but regularly.</p>
+        <p style="margin-bottom:12px">Habits form through repetition, not motivation. Small, consistent actions reshape behavior more effectively than any dramatic overhaul. You do not need another supplement. You do not need to track every macro. You need to reconnect with your body and sit down to eat something real.</p>
+        <p style="margin-bottom:0">This is the opposite of a diet. It is an education. And education changes you from the inside, permanently.</p>
+      </div>
     </div>
+
     <img class="flower-inline fl-right" data-img="ORCHID" style="width:100px;opacity:.6;animation-delay:-10s" alt="">
 
     <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
-    <div class="glass rise" style="padding:22px 20px;margin-top:8px;border:1px solid rgba(159,214,235,.15)">
-      <div class="rule-label" style="margin-bottom:12px"><span class="eyebrow">Our philosophy</span></div>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;text-align:center;margin-bottom:16px">You are not broken. You are just not listening yet.</p>
-      <div style="font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.8);text-align:left">
-        <p style="margin-bottom:12px">This ritual exists because paying attention to what you eat, and how, can make today feel better. Not a future version of today. Today. But it only works if you show up. Consistently. Not perfectly, but regularly.</p>
-        <p style="margin-bottom:12px">We are not here to guilt you or pressure you. The wellness industry already does enough of that with its supplements, cleanses, and miracle diets. But we are also not going to pretend this is optional entertainment. Building a new relationship with food takes practice, the same way learning any skill does. The research is clear: habits form through repetition, not motivation. Dr. BJ Fogg's work at Stanford shows that small, consistent actions reshape behavior more effectively than any dramatic overhaul.</p>
-        <p style="margin-bottom:12px">Here is what the science actually says about food: ultra-processed products, refined sugar, industrial seed oils, and alcohol are not neutral. They drive chronic inflammation, disrupt your gut microbiome, and rewire your brain's reward system. This is not opinion. This is published, peer-reviewed research from Dr. Robert Lustig at UCSF, Dr. Carlos Jaramillo, and the NOVA food classification studies. The goal is not to scare you. The goal is to give you the information so you can gradually, at your own pace, replace these with real food. Not overnight. Not with restriction or guilt. Through understanding.</p>
-        <p style="margin-bottom:12px">You do not need another supplement. You do not need to track every macro. You need to reconnect with your body, learn to hear what it is actually asking for, and sit down to eat something real. That process takes 30 days of showing up. Not perfectly. But showing up.</p>
-        <p style="margin-bottom:0">This is the opposite of a diet. It is an education. And education changes you from the inside, permanently.</p>
+    <div class="glass rise" style="padding:22px 20px;margin-top:8px;border:1px solid rgba(201,149,107,.12)">
+      <div class="rule-label" style="margin-bottom:12px"><span class="eyebrow">Grounded in science</span></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;line-height:1.3;color:#fff;text-align:center;margin-bottom:14px">Guided by experts, verified by research</p>
+      <p style="font-size:12px;line-height:1.8;color:rgba(255,255,255,.75);text-align:center;margin-bottom:14px">This is not a replacement for professional medical advice. It is a guide built on the clinical and scientific work of the people who have spent their careers studying how humans truly thrive.</p>
+      <p style="font-size:12px;line-height:1.8;color:rgba(255,255,255,.7);text-align:center;margin-bottom:14px">Ultra-processed products, refined sugar, industrial seed oils, and alcohol drive chronic inflammation, disrupt your gut microbiome, and rewire your brain's reward system. This is published, peer-reviewed research.</p>
+      <div class="expert-row" style="margin-bottom:14px">
+        <span class="expert-chip">Dr. Peter Attia</span>
+        <span class="expert-chip">Dr. Carlos Jaramillo</span>
+        <span class="expert-chip">Rafael Santandreu</span>
+        <span class="expert-chip">Dr. Robert Lustig</span>
       </div>
-      <div style="margin-top:16px;padding:12px 14px;background:rgba(233,220,184,.06);border:1px solid rgba(233,220,184,.12);border-radius:10px;text-align:center">
-        <p style="font-size:11px;line-height:1.7;color:rgba(255,255,255,.55);font-style:italic">Everything in this ritual is grounded in peer-reviewed research. We cite our sources because you deserve to verify anything we say.</p>
-      </div>
+      <button class="btn btn-ghost" onclick="go('s-refs')" style="font-size:11px">&#128218; &nbsp;Read the research &amp; studies</button>
     </div>
 
     <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
@@ -901,41 +903,27 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     <h2 class="rise" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;line-height:1.3">Complete these <em>two steps</em><br>before you begin</h2>
     <p class="body-copy rise" style="font-size:12.5px;margin-top:10px;text-align:center">The ritual works best when your space and your starting point are clear. Complete both steps below, then begin your 30 days.</p>
 
-    <div class="glass rise" style="padding:18px 16px;margin-top:16px;border:1.5px solid rgba(159,214,235,.2)">
+    <div class="glass rise" style="padding:18px 16px;margin-top:16px;border:1.5px solid rgba(201,149,107,.25)">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-        <div style="width:32px;height:32px;border-radius:50%;background:rgba(159,214,235,.15);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--sky);flex-shrink:0">1</div>
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(201,149,107,.15);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:rgba(201,149,107,.9);flex-shrink:0">1</div>
         <div>
-          <div style="font-size:12px;font-weight:700;color:var(--sky);letter-spacing:.08em">SANCTUARY TOOL</div>
+          <div style="font-size:12px;font-weight:700;color:rgba(201,149,107,.9);letter-spacing:.08em">SANCTUARY TOOL</div>
           <p style="font-size:11.5px;color:rgba(255,255,255,.7);margin-top:2px;line-height:1.5">Diagnose and transform your eating space. Your environment decides before your willpower does.</p>
         </div>
       </div>
       <img class="rise" data-img="ISO_ROOM" alt="The Marmaroph dining room with Marmi and Lumi" style="width:68%;max-width:340px;margin:8px auto 4px;display:block;position:relative;z-index:2;filter:drop-shadow(0 18px 36px rgba(2,39,43,.4))">
-      <button class="btn btn-primary rise" style="margin-top:10px;width:100%" onclick="openTool('space','welcome')">⌂ &nbsp;Diagnose your space</button>
+      <button class="btn btn-primary rise" id="sanctuaryBtn" style="margin-top:10px;width:100%" onclick="openTool('space','welcome')">⌂ &nbsp;Diagnose your space</button>
+      <p id="sanctuaryStatus" style="display:none;font-size:10px;text-align:center;color:rgba(201,149,107,.7);margin-top:6px">&#10003; Completed</p>
     </div>
 
-    <div class="glass rise" style="padding:18px 16px;margin-top:12px;border:1.5px solid rgba(233,220,184,.2)">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-        <div style="width:32px;height:32px;border-radius:50%;background:rgba(233,220,184,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold);flex-shrink:0">2</div>
+    <div class="glass rise" id="diagSection" style="padding:18px 16px;margin-top:12px;border:1.5px solid rgba(201,149,107,.2)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(201,149,107,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:rgba(201,149,107,.8);flex-shrink:0">2</div>
         <div>
-          <div style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.08em">PERSONAL QUIZ</div>
-          <p style="font-size:11.5px;color:rgba(255,255,255,.7);margin-top:2px;line-height:1.5">Answer a few quick questions so this ritual speaks to your reality, not a generic one.</p>
+          <div style="font-size:12px;font-weight:700;color:rgba(201,149,107,.8);letter-spacing:.08em">PERSONAL QUIZ</div>
+          <p style="font-size:11.5px;color:rgba(255,255,255,.7);margin-top:2px;line-height:1.5">Every body is different. Answer a few quick questions so this ritual speaks to your reality, not a generic one.</p>
         </div>
       </div>
-      <p style="font-size:10.5px;color:rgba(255,255,255,.5);text-align:center;margin-top:4px;font-style:italic">Scroll down to the quiz below</p>
-    </div>
-
-    <img class="flower-inline fl-right" data-img="BOUG3" style="width:90px;opacity:.5;animation-delay:-8s" alt="">
-
-    <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
-    <img class="flower-inline fl-left" data-img="BOUG" style="width:85px;opacity:.5;animation-delay:-12s" alt="">
-    <div class="rule-label" style="margin-top:4px"><span class="eyebrow">The anchor object of this ritual</span></div>
-    <img class="rise" data-img="LUMI_PLATE" alt="Lumi presenting the Marmaroph plate" style="width:72%;max-width:320px;margin:14px auto 8px;display:block;position:relative;z-index:2;filter:drop-shadow(0 14px 30px rgba(2,39,43,.35))">
-    <p class="body-copy rise" style="font-size:12.5px;text-align:center;line-height:1.7;color:rgba(255,255,255,.85)"><strong style="color:var(--gold)">The Marmaroph plate</strong> is the physical anchor of your mindful eating practice. Protein, veggies, carbs, fat: the architecture of your meal, drawn not counted.</p>
-
-    <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
-    <div class="rule-label" style="margin-top:4px"><span class="eyebrow">Step 2: Let us understand you</span></div>
-    <div class="glass rise" id="diagSection" style="padding:20px 18px;margin-top:10px">
-      <p class="body-copy" style="font-size:12.5px;text-align:center;margin-bottom:4px">Every body is different. Answer a few quick questions so this ritual can speak to <em>your</em> reality, not a generic one.</p>
       <div id="diagFlow">
         <div class="diag-step" id="diagQ1" style="margin-top:14px">
           <p style="font-size:13px;color:var(--gold);font-weight:600">1. How do you typically feel after meals?</p>
@@ -983,6 +971,14 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <div id="diagResult" style="display:none"></div>
     </div>
 
+    <img class="flower-inline fl-right" data-img="BOUG3" style="width:90px;opacity:.5;animation-delay:-8s" alt="">
+
+    <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
+    <img class="flower-inline fl-left" data-img="BOUG" style="width:85px;opacity:.5;animation-delay:-12s" alt="">
+    <div class="rule-label" style="margin-top:4px"><span class="eyebrow">The anchor object of this ritual</span></div>
+    <img class="rise" data-img="LUMI_PLATE" alt="Lumi presenting the Marmaroph plate" style="width:72%;max-width:320px;margin:14px auto 8px;display:block;position:relative;z-index:2;filter:drop-shadow(0 14px 30px rgba(2,39,43,.35))">
+    <p class="body-copy rise" style="font-size:12.5px;text-align:center;line-height:1.7;color:rgba(255,255,255,.85)"><strong style="color:var(--gold)">The Marmaroph plate</strong> is the physical anchor of your mindful eating practice. Protein, veggies, carbs, fat: the architecture of your meal, drawn not counted.</p>
+
     <div class="glass rise" style="margin-top:18px;padding:20px 18px;border:1px solid rgba(37,211,102,.12)">
       <div class="rule-label" style="margin-bottom:10px"><span class="eyebrow">Your ritual sisters</span></div>
       <p class="body-copy" style="font-size:12px;text-align:center;line-height:1.7;color:rgba(255,255,255,.7)">You are not doing this alone. Join the women who are starting the Mindful Eating ritual this month on WhatsApp.</p>
@@ -1018,14 +1014,20 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       </div>
     </div>
 
-    <!-- Archive: Do not disturb -->
-    <div class="glass rise" style="margin-top:18px;padding:16px 18px;text-align:center">
+    <!-- Do not disturb during Ritual -->
+    <div class="glass rise" style="margin-top:18px;padding:20px 18px;text-align:center;border:1px solid rgba(201,149,107,.15)">
       <div class="rule-label" style="margin-bottom:10px"><span class="eyebrow">Do not disturb during Ritual</span></div>
-      <p class="body-copy" style="font-size:12px;line-height:1.7;color:rgba(255,255,255,.6);margin-bottom:10px">When you begin the ritual, silence your phone and close all tabs. This is your time — no notifications, no distractions.</p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M18.36 19.36L5.64 6.64M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600">Archive mode recommended</span>
+      <div style="font-size:28px;margin-bottom:10px">🔕</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.3;color:#fff;margin-bottom:10px">Your ritual deserves your full attention</p>
+      <p class="body-copy" style="font-size:12px;line-height:1.7;color:rgba(255,255,255,.65);margin-bottom:14px">When you begin, silence your phone and close all tabs. No notifications, no distractions. This is highly recommended for the practice — the ritual works best when you are fully present.</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:14px;background:rgba(201,149,107,.06);border:1px solid rgba(201,149,107,.15);border-radius:14px">
+        <div style="flex:1;text-align:left">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,149,107,.9)">Silence notifications</div>
+          <p style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;line-height:1.5">You won't receive any app notifications while this is active</p>
+        </div>
+        <div class="notif-switch" onclick="toggleDND()"><input type="checkbox" id="dndToggle"><span class="notif-slider"></span></div>
       </div>
+      <p id="dndStatus" style="display:none;font-size:10px;color:rgba(201,149,107,.6);margin-top:8px;font-style:italic">Do Not Disturb is active. You will not receive notifications.</p>
     </div>
 
     <div class="month-picker rise" id="monthPicker" style="margin-top:18px">
@@ -1046,6 +1048,16 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     <div class="btn-row" style="padding-top:12px">
       <button class="btn btn-primary" id="joinBtn" onclick="joinChallenge()">Join the challenge</button>
     </div>
+
+    <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
+    <div class="glass rise" style="margin-top:8px;padding:20px 18px;text-align:center;border:1px solid rgba(201,149,107,.15)">
+      <div style="font-size:28px;margin-bottom:8px">🤝</div>
+      <div class="rule-label" style="margin-bottom:10px"><span class="eyebrow">Ritual buddy</span></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.3;color:#fff;margin-bottom:10px">Walk this path with someone</p>
+      <p class="body-copy" style="font-size:12px;line-height:1.7;color:rgba(255,255,255,.65);margin-bottom:14px">Accountability changes everything. Find a ritual buddy to share the journey — you will both receive reminders and can check in on each other's progress.</p>
+      <button class="btn btn-ghost" onclick="findRitualBuddy()" style="font-size:11px">&#10047; &nbsp;Find your ritual buddy</button>
+    </div>
+
     <img class="flower-deco" data-img="BOUG_FULL" style="width:100px;left:-34px;bottom:60px;opacity:.6;animation-delay:-8s" alt="">
     <footer>Marmaroph Home &amp; Living</footer>
   </section>
@@ -2935,13 +2947,15 @@ function openTool(name,source){
   pdf.className=name==='space'?'to-pdf visible':'to-pdf';
 }
 function closeTool(){
+  var wasSpace=document.getElementById('toolOverlay').querySelector&&document.getElementById('toTitle')&&document.getElementById('toTitle').textContent.indexOf('Space')>-1;
   document.getElementById('toolOverlay').classList.remove('open');
   var frame=document.getElementById('toolFrame');frame.removeAttribute('src');frame.srcdoc='';
   var loader=document.getElementById('toolLoader');if(loader)loader.style.display='flex';
   var back=document.getElementById('backToSanctuary');if(back)back.style.display='';
+  if(wasSpace){state.spaceCompleted=true;store(KEY,state);checkBeginGate();}
   if(toolSource==='welcome'){
     toolSource=null;
-    var w=document.getElementById('s-welcome'),b=document.getElementById('joinBtn');
+    var b=document.getElementById('joinBtn');
     setTimeout(function(){
       b.scrollIntoView({behavior:'smooth',block:'center'});
       b.classList.add('pulse-cta');
@@ -4559,6 +4573,7 @@ function showDiagResult(){
   res.innerHTML='<div class="diag-result"><h4>'+title+'</h4><p>'+body+'</p><p style="margin-top:10px;font-size:11px;color:var(--gold);font-weight:600">Your ritual focus: '+focus+'</p></div>';
   res.scrollIntoView({behavior:'smooth',block:'center'});
   document.getElementById('monthPicker').style.display='block';
+  checkBeginGate();
 }
 
 /* ================= calendar ================= */
@@ -4847,6 +4862,9 @@ function renderWelcome(){
   initMonthPicker();
   loadNotifPrefs();
   if(state.joined)scheduleNotif();
+  var _dndT=document.getElementById('dndToggle');
+  if(_dndT&&state.dndActive){_dndT.checked=true;var _ds=document.getElementById('dndStatus');if(_ds)_ds.style.display='block';}
+  checkBeginGate();
   if(state.joined&&!isBeforeRitual()){
     document.getElementById('joinBtn').textContent='Begin your ritual →';
     document.getElementById('monthPicker').style.display='none';
@@ -4978,8 +4996,53 @@ function playWelcomeSound(){
 }
 document.addEventListener('click',playWelcomeSound,{once:true});
 document.addEventListener('touchstart',playWelcomeSound,{once:true});
+function checkBeginGate(){
+  var quizDone=!!(state.diagScore!==undefined&&state.diagScore!==null);
+  var spaceDone=!!(state.spaceCompleted);
+  var btn=document.getElementById('welcomeBeginBtn');
+  var msg=document.getElementById('welcomeGateMsg');
+  if(btn){
+    if(quizDone&&spaceDone){
+      btn.disabled=false;
+      if(msg)msg.style.display='none';
+    }else{
+      btn.disabled=true;
+      if(msg){
+        msg.style.display='block';
+        var needs=[];
+        if(!spaceDone)needs.push('Sanctuary Tool');
+        if(!quizDone)needs.push('Personal Quiz');
+        msg.textContent='Complete the '+needs.join(' and the ')+' to unlock';
+      }
+    }
+  }
+  var ss=document.getElementById('sanctuaryStatus');
+  if(ss&&spaceDone){ss.style.display='block';}
+}
+function toggleDND(){
+  var tog=document.getElementById('dndToggle');
+  var active=tog.checked;
+  state.dndActive=active;store(KEY,state);
+  var status=document.getElementById('dndStatus');
+  if(status){
+    status.style.display=active?'block':'none';
+    status.textContent=active?'Do Not Disturb is active. You will not receive notifications.':'';
+  }
+  if(active&&'Notification' in window){
+    state.notifEnabled=false;store(KEY,state);
+    var nt=document.getElementById('notifToggle');if(nt)nt.checked=false;
+    var no=document.getElementById('notifOpts');if(no)no.style.display='none';
+  }
+}
+function findRitualBuddy(){
+  var email=prompt('Enter your email or WhatsApp number to be matched with a ritual buddy:');
+  if(email&&email.trim()){
+    state.buddyRequest=email.trim();store(KEY,state);
+    alert('We will match you with a ritual buddy and notify you soon.');
+  }
+}
 var _startParam = new URLSearchParams(window.location.search).get('startScreen');
-if(doneCount()>=1){var _wb=document.getElementById('welcomeBeginBtn');if(_wb)_wb.style.display='block';}
+checkBeginGate();
 go((_startParam === 's-home') ? 's-home' : 's-welcome');
 </script>
 </body>
