@@ -331,7 +331,7 @@ h2{font-weight:300;font-size:24px;line-height:1.3;text-align:center;position:rel
 .tl-item{position:relative;padding:0 0 20px 14px}
 .tl-item::before{content:'';position:absolute;left:-26px;top:4px;width:11px;height:11px;border-radius:50%;border:1px solid var(--gold);background:var(--teal)}
 .tl-item.lit::before{background:var(--gold);box-shadow:0 0 10px rgba(233,220,184,.5)}
-.tl-item .tl-t{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.tl-item .tl-t{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px;background:linear-gradient(135deg,rgba(201,149,107,1),rgba(233,220,184,.9));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block}
 .tl-item p{font-size:12px;line-height:1.65;color:rgba(255,255,255,.7)}
 
 .hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px;position:relative;z-index:4}
@@ -827,7 +827,9 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       </div>
     </div>
 
-    <img class="flower-inline fl-right" data-img="ORCHID" style="width:100px;opacity:.6;animation-delay:-10s" alt="">
+    <div style="display:flex;justify-content:center;margin:12px auto 0">
+      <img data-img="ORCHID" style="width:100px;opacity:.6;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));animation:sway 10s ease-in-out infinite;animation-delay:-10s" alt="">
+    </div>
 
     <img data-img="MARMI_SCI" alt="Marmi the scientist" style="width:140px;display:block;margin:20px auto 8px;filter:drop-shadow(0 14px 28px rgba(2,39,43,.35));animation:bob 6s ease-in-out infinite">
 
@@ -913,7 +915,9 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <div class="tl-item"><div class="tl-t">Day 27 · 90%</div><p>The gathering unlocks: your seat at a healthy restaurant, with the women who walked the same 30 days.</p></div>
       <div class="tl-item"><div class="tl-t">Day 30 · The event &amp; beyond</div><p>One table, together. Then a short quiz senses where your practice goes next.</p></div>
     </div>
-    <img class="flower-inline fl-left" data-img="HYDRANGEA2" style="width:110px;opacity:.55;animation-delay:-14s" alt="">
+    <div style="display:flex;justify-content:center;margin:18px auto 8px">
+      <img data-img="HYDRANGEA2" style="width:110px;opacity:.55;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));animation:sway 10s ease-in-out infinite;animation-delay:-14s" alt="">
+    </div>
 
     <div class="sec-rule"><span class="sr-ico">✦</span></div>
     <div class="rule-label" style="margin-top:4px"><span class="eyebrow">Before the ritual begins</span></div>
@@ -990,10 +994,12 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
       <div id="diagResult" style="display:none"></div>
     </div>
 
-    <img class="flower-inline fl-right" data-img="BOUG3" style="width:90px;opacity:.5;animation-delay:-8s" alt="">
+    <div style="display:flex;justify-content:center;gap:12px;margin:18px auto 8px">
+      <img data-img="BOUG3" style="width:90px;opacity:.5;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));animation:sway 10s ease-in-out infinite;animation-delay:-8s" alt="">
+      <img data-img="BOUG" style="width:85px;opacity:.5;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));animation:sway 10s ease-in-out infinite;animation-delay:-12s" alt="">
+    </div>
 
     <div class="sec-rule" style="margin-top:18px"><span class="sr-ico">✦</span></div>
-    <img class="flower-inline fl-left" data-img="BOUG" style="width:85px;opacity:.5;animation-delay:-12s" alt="">
     <div class="rule-label" style="margin-top:4px"><span class="eyebrow">The anchor object of this ritual</span></div>
     <img class="rise" data-img="LUMI_PLATE" alt="Lumi presenting the Marmaroph plate" style="width:72%;max-width:320px;margin:14px auto 8px;display:block;position:relative;z-index:2;filter:drop-shadow(0 14px 30px rgba(2,39,43,.35))">
     <p class="body-copy rise" style="font-size:12.5px;text-align:center;line-height:1.7;color:rgba(255,255,255,.85)"><strong style="color:var(--gold)">The Marmaroph plate</strong> is the physical anchor of your mindful eating practice. Protein, veggies, carbs, fat: the architecture of your meal, drawn not counted.</p>
