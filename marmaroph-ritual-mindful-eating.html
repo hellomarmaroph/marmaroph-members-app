@@ -1695,7 +1695,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
     <img class="flower-deco" data-img="HYDRANGEA2" style="width:70px;left:-20px;bottom:120px;opacity:.5;animation-delay:-6s" alt="">
     <div class="stage-head">
       <button class="back-link" onclick="go('s-home')">← My Ritual</button>
-      <span class="stage-count">My Progress</span>
+      <a class="back-link" href="https://app.marmaroph.com" style="text-decoration:none">← My Sanctuary</a>
     </div>
 
     <div class="rule-label" style="margin-top:6px"><span class="eyebrow">Your Journey</span></div>
@@ -2908,7 +2908,7 @@ function go(id){
   if(!el)return;
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
   el.classList.add('active');el.scrollTop=0;
-  var back=document.getElementById('backToSanctuary');if(back)back.style.display=id==='s-home'?'none':'';
+  var back=document.getElementById('backToSanctuary');if(back)back.style.display=(id==='s-home'||id==='s-dash')?'none':'';
   if(id==='s-welcome')renderWelcome();
   if(id==='s-home')renderHome();
   if(id==='s-dash')renderDash();
