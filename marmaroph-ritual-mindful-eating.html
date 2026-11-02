@@ -1111,6 +1111,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
 
     <div class="stage-head">
       <button class="back-link" onclick="go('s-welcome')">← My Ritual</button>
+      <a class="back-link" href="https://app.marmaroph.com" style="text-decoration:none">← My Sanctuary</a>
     </div>
     <img class="flower-deco" data-img="BOUG3" style="width:130px;bottom:-16px;left:-36px;z-index:1" alt="">
     <img class="flower-deco" data-img="LEMON_TREE" style="width:130px;left:-30px;top:-14px;animation-delay:-5s" alt="">
@@ -2912,6 +2913,7 @@ function go(id){
   if(!el)return;
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
   el.classList.add('active');el.scrollTop=0;
+  var back=document.getElementById('backToSanctuary');if(back)back.style.display=id==='s-home'?'none':'';
   if(id==='s-welcome')renderWelcome();
   if(id==='s-home')renderHome();
   if(id==='s-dash')renderDash();
