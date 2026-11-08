@@ -198,6 +198,41 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 #toolLoader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;background:#080d24;transition:opacity .4s}
 #toolLoader.hide{opacity:0;pointer-events:none}
 #toolLoader .sl-spinner{width:28px;height:28px;border:2px solid rgba(212,179,102,.2);border-top-color:var(--gold);border-radius:50%;animation:slSpin .9s linear infinite}
+/* Hub grid & cards */
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px;position:relative;z-index:4}
+.hub-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:17px 15px;cursor:pointer;text-align:left;transition:all .3s ease;font-family:'Montserrat',sans-serif;color:#fff;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.hub-card:hover{background:rgba(180,160,220,.1);border-color:rgba(180,160,220,.45);transform:translateY(-2px)}
+.hub-card:active{transform:scale(.97)}
+.hub-card .hc-s{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--gold);margin-bottom:7px}
+.hub-card .hc-title{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
+.hub-card .hc-sub{font-size:10.5px;line-height:1.5;color:rgba(255,255,255,.55)}
+.hub-card.wide{grid-column:1/-1}
+.hub-card.locked{opacity:.55;cursor:default}
+.hub-card.locked:hover{transform:none;background:var(--glass);border-color:var(--glass-border)}
+/* Reflect card */
+.reflect-card{background:rgba(180,160,220,.06);border:1px solid rgba(180,160,220,.15);border-radius:14px;padding:20px 16px;margin-top:16px}
+.reflect-card h4{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);margin-bottom:4px;font-style:italic}
+.reflect-card p{font-size:11.5px;color:rgba(255,255,255,.6);line-height:1.7}
+/* Day 30 compare */
+.reflect-compare{display:flex;gap:12px;margin-top:14px}
+.reflect-compare .rc-col{flex:1;border-radius:12px;padding:14px 12px}
+.reflect-compare .rc-day1{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.reflect-compare .rc-day30{background:rgba(233,184,78,.08);border:1px solid rgba(233,184,78,.2)}
+.reflect-compare .rc-label{font-family:Montserrat,sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.4);margin-bottom:8px}
+.reflect-compare .rc-day30 .rc-label{color:var(--gold)}
+.reflect-compare .rc-text{font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;font-style:italic}
+.reflect-compare .rc-day30 .rc-text{color:var(--gold)}
+/* Check-in banner */
+.checkin-banner{background:rgba(180,160,220,.08);border:1px solid rgba(180,160,220,.15);border-radius:14px;padding:18px 16px;margin-top:16px;position:relative}
+.checkin-banner .cb-day{font-family:Montserrat,sans-serif;font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:rgba(180,160,220,.7);margin-bottom:6px}
+.checkin-banner .cb-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:#fff;margin-bottom:6px;font-style:italic}
+.checkin-banner .cb-body{font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.7}
+.checkin-banner .cb-close{position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,.3);font-size:16px;cursor:pointer}
+/* Milestone card */
+.milestone-card{background:linear-gradient(135deg,rgba(233,184,78,.1),rgba(180,160,220,.06));border:1px solid rgba(233,220,184,.15);border-radius:14px;padding:16px;margin-top:16px;text-align:center}
+.milestone-card .ms-icon{font-size:28px;margin-bottom:6px}
+.milestone-card .ms-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);font-style:italic}
+.milestone-card .ms-body{font-size:11px;color:rgba(255,255,255,.6);line-height:1.7;margin-top:4px}
 </style>
 </head>
 <body>
@@ -251,7 +286,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 
   <!-- ── HOW THE METHOD UNFOLDS (Timeline) ── -->
   <div class="sec-title" style="font-size:22px;margin-top:28px">How the method unfolds</div>
-  <div class="sec-title-sub">30 days · the five S's</div>
+  <div class="sec-title-sub">your journey · the five S's</div>
 
   <div class="rtl">
     <div class="rtl-node">
@@ -282,38 +317,27 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
       <div class="rtl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div class="rtl-step">S5 · Seed</div>
       <div class="rtl-title">Let Today Count</div>
-      <div class="rtl-desc">Mark the day. After 30 days, the Quiet Abundance Dinner awaits. A gathering of women in conscious relationship with their resources.</div>
+      <div class="rtl-desc">Mark the day. Track your progress across four levels — from debt freedom to wealth in motion. The ritual lasts as long as your journey needs.</div>
     </div>
   </div>
 
   <!-- Koi fish accent (between timeline and prep flow) -->
   <div class="deco-art float3" style="margin-top:8px"><img src="img/deco-koi-gold.png" alt="" width="200" loading="lazy"></div>
 
-  <!-- ── BEFORE YOU BEGIN: Two-step preparation flow ── -->
+  <!-- ── BEFORE YOU BEGIN: Two-step preparation ── -->
   <div class="sec-title" style="font-size:22px;margin-top:32px">Before you begin</div>
   <div class="sec-title-sub">two steps to prepare your ritual</div>
 
-  <div class="flow-card">
-    <div class="flow-num">1</div>
-    <div class="flow-body">
-      <div class="flow-title">Your Financial Diagnosis</div>
-      <div class="flow-desc">Understand your relationship with money. Three honest questions that shape your personal 30-day path.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 18px;margin-top:14px">
+    <div class="flow-card" onclick="document.getElementById('quizWrap').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;text-align:center;padding:18px 12px">
+      <div class="flow-num" style="margin:0 auto 8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center">1</div>
+      <div class="flow-title" style="font-size:14px;margin-bottom:6px">Financial Diagnosis</div>
+      <div class="flow-desc" style="font-size:10.5px">Three questions to find your level</div>
     </div>
-  </div>
-  <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-  <div class="flow-card">
-    <div class="flow-num">2</div>
-    <div class="flow-body">
-      <div class="flow-title">Your Space Analysis</div>
-      <div class="flow-desc">Upload a photo of the place where you will sit with your finances. AI-powered redesign with Feng Shui, interior design, and before/after vision.</div>
-    </div>
-  </div>
-  <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-  <div class="flow-card" style="border-color:var(--gold);background:rgba(212,179,102,.04)">
-    <div class="flow-num" style="color:var(--gold)">✦</div>
-    <div class="flow-body">
-      <div class="flow-title">Begin your 30 days</div>
-      <div class="flow-desc">Space set. Path clear. Begin the daily ritual with your personalised programme.</div>
+    <div class="flow-card" onclick="openTool('space','Abundance Corner Analyser')" style="cursor:pointer;text-align:center;padding:18px 12px">
+      <div class="flow-num" style="margin:0 auto 8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center">2</div>
+      <div class="flow-title" style="font-size:14px;margin-bottom:6px">Space Analyser</div>
+      <div class="flow-desc" style="font-size:10.5px">Upload &amp; redesign your space</div>
     </div>
   </div>
 
@@ -322,10 +346,10 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 
   <!-- ── STEP 1: Financial Diagnosis (Quiz) ── -->
   <div class="sec-title" style="font-size:22px;margin-top:32px">Your Financial Diagnosis</div>
-  <div class="sec-title-sub">let us understand your relationship with money</div>
-  <p class="body-copy" style="margin-bottom:14px;font-size:12px">Every financial reality is different. Answer honestly so this ritual can speak to yours.</p>
+  <div class="sec-title-sub">three questions to find your level</div>
+  <p class="body-copy" style="margin-bottom:14px;font-size:12px">Every woman starts from a different place. Answer honestly so we can place you in the right level of your abundance journey.</p>
 
-  <div class="quiz-wrap">
+  <div class="quiz-wrap" id="quizWrap">
     <div class="quiz-step on" id="qs1">
       <p class="quiz-q">1. Your most urgent financial reality right now is...</p>
       <div class="quiz-opts">
@@ -364,30 +388,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
   </div>
 
-  <!-- ── Tiger figure (between diagnosis and space analyzer) ── -->
-    <div class="deco-art float2" style="margin:14px 0"><img src="img/deco-tiger.png" alt="" width="260" loading="lazy"></div>
-
-    <!-- STEP 2: Space Analyzer -->
-    <div class="sec-title" style="font-size:22px;margin-top:4px">Your Abundance Corner</div>
-    <div class="sec-title-sub">diagnose and redesign your financial space</div>
-    <p class="body-copy" style="margin-bottom:14px;font-size:12px">Upload a photo of the space where you sit with your finances. We will analyse it through Feng Shui, healthy home criteria, and interior design principles, then show you exactly how to transform it.</p>
-    <div style="padding:0 18px">
-      <div class="glass-card" style="margin:0;padding:20px;text-align:center">
-        <div class="ico-circle" style="margin:0 auto 10px">
-          <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3z"/><path d="M3 9h18M9 3v18"/></svg>
-        </div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--gold);margin-bottom:6px">Space Analysis + Redesign</div>
-        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:14px">
-          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Photo upload</span>
-          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Feng Shui compass</span>
-          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">AI analysis</span>
-          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Space score</span>
-          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Style preferences</span>
-          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:3px 10px">Before/after vision</span>
-        </div>
-        <button class="btn btn-primary" style="width:100%" onclick="openTool('space','Abundance Corner Analyser')">Diagnose your space</button>
-      </div>
-    </div>
+  <!-- Tiger deco -->
+  <div class="deco-art float2" style="margin:14px 0"><img src="img/deco-tiger.png" alt="" width="260" loading="lazy"></div>
 
     <!-- Ritual sisters -->
     <div class="wa-card" style="margin-top:20px">
@@ -400,6 +402,15 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
         </button>
       </div>
     </div>
+
+  <div class="glass rise" style="margin:12px 18px 0;padding:24px 20px;text-align:center;border:1.5px solid rgba(176,143,212,.2);background:linear-gradient(160deg,rgba(176,143,212,.05) 0%,rgba(44,62,80,.25) 100%);border-radius:20px">
+    <div class="rule-label" style="margin-bottom:8px"><span class="eyebrow">Ritual buddy</span></div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;margin-bottom:8px">You don't have to do this alone</p>
+    <p class="body-copy" style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.7);margin-bottom:6px">We will match you with another woman practising the same ritual. Someone to share the journey, check in with each other, and keep going when motivation dips.</p>
+    <p class="body-copy" style="font-size:11.5px;line-height:1.6;color:rgba(176,143,212,.65);margin-bottom:16px;font-style:italic">Accountability changes everything. Two women, one ritual, thirty days.</p>
+    <button class="btn btn-primary" id="buddyToggleBtn" onclick="show('s-buddy-profile');renderBuddyProfileForm()" style="font-size:11px">&#10047; &nbsp;Find My Ritual Buddy</button>
+    <p id="buddyActiveMsg" style="display:none;font-size:10.5px;color:rgba(176,143,212,.8);margin-top:8px">&#10003; You have an active buddy. <span style="text-decoration:underline;cursor:pointer" onclick="show('s-buddy-hub');renderBuddyHub()">Open Buddy Hub</span></p>
+  </div>
 
     <!-- Daily reminders -->
     <div class="sec-title" style="font-size:18px;margin-top:20px">Daily reminders</div>
@@ -432,6 +443,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
 
     <div style="padding:16px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goHome()">Begin the Ritual ✦</button></div>
+
   <footer>Marmaroph Home &amp; Living</footer>
 </section>
 
@@ -439,93 +451,157 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 <!-- HOME — Daily Hub with Sun Calendar                 -->
 <!-- ═══════════════════════════════════════════════════ -->
 <section class="screen" id="s-home">
-  <!-- 1. Two nav buttons -->
+  <!-- Nav -->
   <div class="stage-head">
     <span class="back-link" onclick="goWelcome()">← My Ritual</span>
     <span class="back-link" onclick="window.location.href='index.html'" style="cursor:pointer">← My Sanctuary</span>
   </div>
 
-  <!-- 2. Logo -->
-  <div style="text-align:center;margin:10px 0 0"><img src="logo-copper.png" alt="Marmaroph" style="width:140px;opacity:0.92;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.15))"></div>
-
-  <!-- 3. Greeting + Name + Ritual + Pillar -->
-  <div style="text-align:center;padding:0 18px">
-    <div class="eyebrow" style="margin-top:2px">The Home Sanctuary Club</div>
+  <!-- Logo + greeting + title -->
+  <div class="rise">
+    <div style="text-align:center;margin:10px 0 0"><img src="logo-copper.png" alt="Marmaroph" style="width:140px;opacity:0.92;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.15))"></div>
+    <div class="rule-label" style="margin-top:2px"><span class="eyebrow">The Home Sanctuary Club</span></div>
     <div class="hello">Hi, beautiful</div>
     <div style="position:relative;text-align:center;margin-top:0;padding:10px 0 8px">
-      <div style="display:flex;justify-content:center;margin:0 0 6px">
-        <span style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
-      </div>
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;line-height:.94;color:#fff;text-shadow:0 2px 24px rgba(8,13,36,.35)">Quiet<br>Abundance</div>
       <div style="font-size:12px;font-weight:700;letter-spacing:.48em;text-transform:uppercase;color:var(--gold);margin-top:12px;text-shadow:0 1px 8px rgba(8,13,36,.4)">R I T U A L</div>
     </div>
   </div>
 
-  <!-- 4. Day counter + Stats -->
-  <div class="day-strip">
-    <div class="dn" id="dayNum">1<span>/30</span></div>
-    <div class="chip" id="chipStreak">✦ 0 streak</div>
+  <!-- Progress bar + day strip + pillar tag -->
+  <div class="progress-wrap rise">
+    <div class="progress-meta"><span>Your 30 days</span><b id="pctLabel">0%</b></div>
+    <div class="progress-track"><div class="progress-fill" id="homeFill"></div></div>
+    <div class="day-strip">
+      <div class="dn" id="dayNum">1<span>/30</span></div>
+      <div class="chip" id="chipStreak">✦ 0 streak</div>
+    </div>
+    <div style="display:flex;justify-content:center;margin:6px 0 0">
+      <span style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
+    </div>
   </div>
 
-  <!-- 5. Unique calendar (sun calendar) -->
+  <!-- Sun calendar -->
   <div class="sun-cal-wrap"><canvas id="sunCal" width="380" height="380"></canvas></div>
   <div style="text-align:center;margin-top:-6px">
     <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3)" id="homeChip">PATH B</div>
   </div>
 
-  <!-- 6. Progress bar -->
-  <div class="progress-wrap" style="margin-top:8px">
-    <div class="progress-meta"><span>Your 30 days</span><b id="pctLabel">0%</b></div>
-    <div class="progress-track"><div class="progress-fill" id="homeFill"></div></div>
+  <!-- Begin ritual button -->
+  <div class="btn-row rise" style="margin-top:12px;padding-top:6px">
+    <button class="btn btn-primary" style="width:100%" onclick="goStep(1)">Begin today's ritual</button>
   </div>
 
-  <!-- 7. Begin ritual button -->
-  <div style="padding:12px 18px 0"><button class="btn btn-primary" style="width:100%" onclick="goStep(1)">Begin today's ritual</button></div>
-  <div style="padding:8px 18px 0"><button class="btn btn-ghost" style="width:100%" onclick="goStep(1)">Check for progress</button></div>
+  <!-- My Progress + My Ritual Buddy buttons row -->
+  <div class="rise" style="display:flex;flex-direction:row;gap:10px;padding:6px 18px 0;position:relative;z-index:4">
+    <button class="btn btn-ghost" onclick="goStep(1)" style="flex:1;border:1.5px solid rgba(180,160,220,.35);background:linear-gradient(160deg,rgba(180,160,220,.2) 0%,rgba(44,62,80,.45) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:#fff;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.25),inset 0 1px 0 rgba(180,160,220,.15)">&#9678; &nbsp;Check Progress</button>
+    <button class="btn btn-ghost" id="buddyHubBtn" onclick="goWelcome()" style="flex:1;border:1.5px solid rgba(180,160,220,.15);background:linear-gradient(160deg,rgba(180,160,220,.08) 0%,rgba(44,62,80,.25) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2)">&#128274; &nbsp;My Ritual Buddy</button>
+  </div>
 
-  <!-- 8. Month calendar -->
-  <div class="sec-title" style="font-size:18px;margin-top:18px">Your Month</div>
-  <div class="month-cal">
+  <!-- Buddy home card -->
+  <div id="buddyHomeCard" style="display:none;margin:14px 18px 0;padding:18px;background:linear-gradient(160deg,rgba(176,143,212,.06) 0%,rgba(44,62,80,.22) 100%);border:1px solid rgba(176,143,212,.15);border-radius:16px" class="rise">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <div id="buddyAvatar" style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,rgba(176,143,212,.3),rgba(44,62,80,.5));border:1.5px solid rgba(176,143,212,.25);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0">
+        <span style="font-size:20px">&#10047;</span>
+      </div>
+      <div style="flex:1;min-width:0">
+        <p id="buddyNameHome" style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#fff;margin-bottom:2px">Your Ritual Buddy</p>
+        <p id="buddyStatusHome" style="font-size:10.5px;color:rgba(176,143,212,.7)">Waiting for match...</p>
+      </div>
+    </div>
+    <div id="buddyQuickActions" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn btn-primary" onclick="show('s-buddy-hub');renderBuddyHub()" style="font-size:10px;padding:9px 0">View Buddy</button>
+      <button class="btn btn-ghost" onclick="show('s-buddy-hub');renderBuddyHub();setTimeout(function(){var c=document.getElementById('buddyChatInput');if(c)c.focus()},300)" style="font-size:10px;padding:9px 0">Send Message</button>
+    </div>
+  </div>
+
+  <!-- Day 1 reflection -->
+  <div class="reflect-card rise" id="rd1Form" style="display:none">
+    <h4>Before you begin</h4>
+    <p>Answer three questions honestly. On day 30, you will see how far you have come.</p>
+    <div class="fgrp"><label class="flbl">How do you feel about money right now?</label><textarea class="refl-ta" id="rq1" rows="2" placeholder="Be honest with yourself..."></textarea></div>
+    <div class="fgrp"><label class="flbl">What would financial independence make possible?</label><textarea class="refl-ta" id="rq2" rows="2" placeholder="Name it clearly..."></textarea></div>
+    <div class="fgrp"><label class="flbl">What do you hope will shift in this journey?</label><textarea class="refl-ta" id="rq3" rows="2" placeholder="One thing..."></textarea></div>
+    <button class="btn btn-ghost" style="width:100%" onclick="saveRD1()">Save my reflection</button>
+  </div>
+  <div class="reflect-card rise" id="rd1View" style="display:none">
+    <h4>✦ Your Day 1 words</h4>
+    <p style="font-style:italic">Look how far you have come.</p>
+    <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7" id="rd1Text"></div>
+  </div>
+
+  <!-- Day 30 before/after reveal -->
+  <div class="reflect-card rise" id="reflectDay30" style="display:none">
+    <h4>Look how far you have come</h4>
+    <p>30 days ago, you wrote these words. Read them now.</p>
+    <div style="margin-top:14px">
+      <div style="font-family:Montserrat,sans-serif;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(180,160,220,.7);margin-bottom:8px">How you felt about money</div>
+      <div class="reflect-compare"><div class="rc-col rc-day1"><div class="rc-label">Day 1</div><p class="rc-text" id="rc1Money"></p></div><div class="rc-col rc-day30"><div class="rc-label">Day 30</div><textarea class="rc-text" id="rc30Money" placeholder="How do you feel now?" style="background:transparent;border:none;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:13px;width:100%;min-height:40px;resize:none"></textarea></div></div>
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-family:Montserrat,sans-serif;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(180,160,220,.7);margin-bottom:8px">What financial independence would make possible</div>
+      <div class="reflect-compare"><div class="rc-col rc-day1"><div class="rc-label">Day 1</div><p class="rc-text" id="rc1Independence"></p></div><div class="rc-col rc-day30"><div class="rc-label">Day 30</div><textarea class="rc-text" id="rc30Independence" placeholder="What has changed?" style="background:transparent;border:none;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:13px;width:100%;min-height:40px;resize:none"></textarea></div></div>
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-family:Montserrat,sans-serif;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(180,160,220,.7);margin-bottom:8px">What you hoped would shift</div>
+      <div class="reflect-compare"><div class="rc-col rc-day1"><div class="rc-label">Day 1</div><p class="rc-text" id="rc1Hope"></p></div><div class="rc-col rc-day30"><div class="rc-label">Day 30</div><textarea class="rc-text" id="rc30Hope" placeholder="Did it shift?" style="background:transparent;border:none;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:13px;width:100%;min-height:40px;resize:none"></textarea></div></div>
+    </div>
+    <button class="btn btn-primary" style="margin-top:14px" onclick="typeof saveDay30Reflection==='function'&&saveDay30Reflection()">Save my transformation</button>
+  </div>
+
+  <!-- Mid-cycle check-in banner -->
+  <div class="checkin-banner rise" id="checkinBanner" style="display:none">
+    <button class="cb-close" onclick="this.parentElement.style.display='none'">&times;</button>
+    <div class="cb-day" id="checkinDay"></div>
+    <div class="cb-title" id="checkinTitle"></div>
+    <p class="cb-body" id="checkinBody"></p>
+  </div>
+
+  <!-- Micro-celebration card -->
+  <div class="milestone-card rise" id="microCelebration" style="display:none">
+    <div class="ms-icon" id="celebIcon"></div>
+    <div class="ms-title" id="celebTitle"></div>
+    <p class="ms-body" id="celebBody"></p>
+  </div>
+
+  <!-- Month calendar -->
+  <div class="rule-label" style="margin-top:22px"><span class="eyebrow" id="homeCalTitle">Your ritual month</span></div>
+  <div class="month-cal rise">
     <div class="mc-head"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
     <div class="mc-body" id="calHome"></div>
   </div>
 
-  <!-- 9. Day 1 reflection -->
-  <div class="glass-card" id="rd1Form" style="margin-top:14px">
-    <div class="eyebrow" style="text-align:left;margin-bottom:10px">Before you begin</div>
-    <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:12px">Answer three questions honestly. On day 30, you will see how far you have come.</p>
-    <div class="fgrp"><label class="flbl">How do you feel about money right now?</label><textarea class="refl-ta" id="rq1" rows="2" placeholder="Be honest with yourself..."></textarea></div>
-    <div class="fgrp"><label class="flbl">What would financial independence make possible?</label><textarea class="refl-ta" id="rq2" rows="2" placeholder="Name it clearly..."></textarea></div>
-    <div class="fgrp"><label class="flbl">What do you hope will shift in 30 days?</label><textarea class="refl-ta" id="rq3" rows="2" placeholder="One thing..."></textarea></div>
-    <button class="btn btn-ghost" style="width:100%" onclick="saveRD1()">Save my reflection</button>
-  </div>
-  <div class="glass-card" id="rd1View" style="display:none;margin-top:14px">
-    <div class="eyebrow" style="text-align:left;margin-bottom:6px">✦ Your Day 1 words</div>
-    <p style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:8px;font-style:italic">Look how far you have come.</p>
-    <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7" id="rd1Text"></div>
-  </div>
-
-  <!-- 10. Add to calendar -->
-  <div class="sec-title" style="font-size:18px;margin-top:18px">Add to your calendar</div>
-  <div class="sec-title-sub">One tap — every day blocked for you</div>
-  <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:8px 18px 0">
+  <!-- Add to calendar -->
+  <div class="rule-label" style="margin-top:18px"><span class="eyebrow">Add to your calendar</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:8px 18px 0" class="rise">
     <button class="sync-btn" onclick="syncGoogle()" style="flex:1;min-width:70px;padding:12px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:rgba(255,255,255,.7);font-size:10px;font-family:'Montserrat',sans-serif;cursor:pointer;text-align:center"><span style="display:block;font-size:16px;margin-bottom:4px">◷</span>Google</button>
     <button class="sync-btn" onclick="syncOutlook()" style="flex:1;min-width:70px;padding:12px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:rgba(255,255,255,.7);font-size:10px;font-family:'Montserrat',sans-serif;cursor:pointer;text-align:center"><span style="display:block;font-size:16px;margin-bottom:4px">◫</span>Outlook</button>
     <button class="sync-btn" onclick="syncICS()" style="flex:1;min-width:70px;padding:12px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:rgba(255,255,255,.7);font-size:10px;font-family:'Montserrat',sans-serif;cursor:pointer;text-align:center"><span style="display:block;font-size:16px;margin-bottom:4px"></span>Apple</button>
     <button class="sync-btn" onclick="syncNotion&&syncNotion(this)" style="flex:1;min-width:70px;padding:12px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:rgba(255,255,255,.7);font-size:10px;font-family:'Montserrat',sans-serif;cursor:pointer;text-align:center"><span style="display:block;font-size:16px;margin-bottom:4px">▤</span>Notion</button>
   </div>
 
-  <!-- 11. Daily tools -->
-  <div class="sec-title" style="font-size:18px;margin-top:18px">Your Daily Tools</div>
-  <div class="sec-title-sub">your quiet ledger</div>
-  <div style="padding:0 18px 12px">
-    <button class="btn btn-primary" style="width:100%" onclick="openTool('finance','My Finances')">Open My Quiet Ledger</button>
+  <!-- Sanctuary Tools — hub grid with ALL tools together -->
+  <div class="rule-label" style="margin-top:22px"><span class="eyebrow">Sanctuary Tools</span></div>
+  <p class="body-copy" style="font-size:10.5px;text-align:center;color:rgba(255,255,255,.5);margin-top:4px;margin-bottom:12px;font-style:italic">These tools support your ritual. Access them any time.</p>
+  <div class="hub-grid rise">
+    <button class="hub-card" onclick="openTool('finance','My Finances')">
+      <div class="hc-s">&#9830;</div><div class="hc-title">Quiet Ledger</div>
+      <div class="hc-sub">Your financial diagnosis &amp; money tracker</div>
+    </button>
+    <button class="hub-card" onclick="openTool('space','Abundance Corner Analyser')">
+      <div class="hc-s">S¹</div><div class="hc-title">Space Analyser</div>
+      <div class="hc-sub">Diagnose &amp; transform your abundance corner</div>
+    </button>
+    <button class="hub-card" onclick="openLink&&openLink(typeof LINKS!=='undefined'&&LINKS.PLAYLIST_URL||'#')">
+      <div class="hc-s">▶</div><div class="hc-title">Playlist</div>
+      <div class="hc-sub">Music for your abundance ritual</div>
+    </button>
   </div>
 
   <!-- Golden tiger accent -->
   <div class="deco-art float2" style="margin-top:6px"><img src="img/deco-tiger-gold.png" alt="" width="240" loading="lazy"></div>
 
-  <!-- 12. Find your next ritual -->
+  <!-- Find your next ritual -->
   <div style="padding:0 18px;margin-top:12px">
     <button class="hub-card wide" id="quizCard" onclick="typeof tryQuiz==='function'?tryQuiz():alert('Complete day 20 to unlock your next ritual.')" style="width:100%;margin:0;display:flex;flex-direction:column;align-items:center;padding:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;cursor:pointer;text-align:center">
       <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold)">✦ &nbsp;Find your next ritual</div>
@@ -533,7 +609,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </button>
   </div>
 
-  <!-- 13. Ritual sisters -->
+  <!-- Ritual sisters -->
   <div class="wa-card" style="margin-top:16px">
     <div class="wa-title">Your ritual sisters</div>
     <div class="wa-body">You are not doing this alone. Join the women who started the Quiet Abundance ritual this month.</div>
@@ -545,21 +621,199 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
   </div>
 
-  <!-- 14. Feedback -->
-  <div class="glass-card" style="margin-top:16px;padding:20px">
-    <div class="eyebrow" style="text-align:center;margin-bottom:10px">Your feedback</div>
-    <p style="font-size:11.5px;text-align:center;color:rgba(255,255,255,.6);margin-bottom:12px">Did this ritual bring value to your relationship with money?</p>
-    <div style="display:flex;justify-content:center;gap:8px" id="feedbackStars">
-      <button class="fb-star" onclick="rateStar(1)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
-      <button class="fb-star" onclick="rateStar(2)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
-      <button class="fb-star" onclick="rateStar(3)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
-      <button class="fb-star" onclick="rateStar(4)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
-      <button class="fb-star" onclick="rateStar(5)" style="font-size:24px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer">★</button>
+  <!-- Feedback -->
+  <div class="glass rise" style="margin-top:22px;padding:22px 20px">
+    <div class="rule-label"><span class="eyebrow">Your feedback</span></div>
+    <p class="body-copy" style="font-size:11.5px;margin-top:8px;text-align:center">Did this ritual bring value to your relationship with money?</p>
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:12px" id="feedbackStars">
+      <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(1)">★</button>
+      <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(2)">★</button>
+      <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(3)">★</button>
+      <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(4)">★</button>
+      <button class="fb-star" onclick="typeof rateStar==='function'&&rateStar(5)">★</button>
     </div>
-    <textarea id="feedbackText" placeholder="What did you enjoy most? What could be better?" style="width:100%;min-height:60px;margin-top:12px;padding:12px;border-radius:12px;border:1px solid var(--glass-border);background:rgba(255,255,255,.04);color:#fff;font-family:'Montserrat',sans-serif;font-size:11px;resize:vertical"></textarea>
-    <button class="btn btn-ghost" style="width:100%;margin-top:10px" onclick="typeof submitFeedback==='function'&&submitFeedback()">Send feedback</button>
+    <textarea id="feedbackText" placeholder="What did you enjoy most? What could be better? Any ritual you wish existed?" style="width:100%;min-height:80px;margin-top:14px;padding:12px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass);color:#fff;font-family:'Montserrat',sans-serif;font-size:11px;resize:vertical"></textarea>
+    <button class="btn btn-primary" style="margin-top:16px" onclick="typeof submitFeedback==='function'&&submitFeedback()">Send feedback</button>
+    <div id="feedbackThanks" style="display:none;text-align:center;margin-top:14px">
+      <p class="body-copy" style="font-size:12px;color:var(--gold)">Thank you. Your voice shapes what we build next.</p>
+    </div>
   </div>
 
+  <footer>Marmaroph Home &amp; Living</footer>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- BUDDY PROFILE                                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="screen" id="s-buddy-profile">
+  <div style="padding:24px 20px 0">
+    <button class="back-link" onclick="goWelcome()">&#8592; Back</button>
+  </div>
+  <div style="text-align:center;padding:20px 24px 0">
+    <div class="rule-label" style="margin-bottom:6px"><span class="eyebrow">Ritual Buddy</span></div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#fff;line-height:1.3;margin-bottom:6px">Let us find your match</p>
+    <p class="body-copy" style="font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:18px">Fill in your profile so we can pair you with someone who shares your rhythm.</p>
+  </div>
+  <div style="padding:0 20px 30px">
+    <div style="text-align:center;margin-bottom:18px">
+      <div id="buddyPhotoPreview" onclick="document.getElementById('buddyPhotoInput').click()" style="width:80px;height:80px;border-radius:50%;margin:0 auto 8px;background:linear-gradient(135deg,rgba(176,143,212,.15),rgba(44,62,80,.3));border:2px dashed rgba(176,143,212,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden">
+        <span style="font-size:28px;opacity:.4">&#128247;</span>
+      </div>
+      <input type="file" id="buddyPhotoInput" accept="image/*" style="display:none" onchange="previewBuddyPhoto(this)">
+      <p style="font-size:10px;color:rgba(176,143,212,.8);font-weight:600">Tap to add photo</p>
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(176,143,212,.9);font-weight:700;display:block;margin-bottom:6px">Display name</label>
+      <input type="text" id="bpName" placeholder="How your buddy will know you" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(176,143,212,.25);border-radius:10px;padding:10px 12px;color:#fff;font-size:13px;font-family:'Montserrat',sans-serif">
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(176,143,212,.9);font-weight:700;display:block;margin-bottom:6px">Location</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <input type="text" id="bpCity" placeholder="City" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(176,143,212,.25);border-radius:10px;padding:10px 12px;color:#fff;font-size:12px;font-family:'Montserrat',sans-serif">
+        <input type="text" id="bpCountry" placeholder="Country" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(176,143,212,.25);border-radius:10px;padding:10px 12px;color:#fff;font-size:12px;font-family:'Montserrat',sans-serif">
+      </div>
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(176,143,212,.9);font-weight:700;display:block;margin-bottom:6px">Timezone</label>
+      <select id="bpTimezone" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(176,143,212,.25);border-radius:10px;padding:10px 12px;color:#fff;font-size:12px;font-family:'Montserrat',sans-serif;-webkit-appearance:none">
+        <option value="" style="color:#333">Select your timezone</option>
+        <option value="UTC-8" style="color:#333">Pacific (UTC-8)</option>
+        <option value="UTC-5" style="color:#333">Eastern (UTC-5)</option>
+        <option value="UTC+0" style="color:#333">GMT / London (UTC+0)</option>
+        <option value="UTC+1" style="color:#333">Central Europe (UTC+1)</option>
+        <option value="UTC+2" style="color:#333">Eastern Europe (UTC+2)</option>
+        <option value="UTC+3" style="color:#333">Middle East (UTC+3)</option>
+        <option value="UTC+5:30" style="color:#333">India (UTC+5:30)</option>
+        <option value="UTC+8" style="color:#333">East Asia (UTC+8)</option>
+        <option value="UTC+10" style="color:#333">Australia East (UTC+10)</option>
+      </select>
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(176,143,212,.9);font-weight:700;display:block;margin-bottom:8px">Interests <span style="opacity:.6">(pick up to 5)</span></label>
+      <div id="bpInterestTags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(176,143,212,.9);font-weight:700;display:block;margin-bottom:6px">Life stage</label>
+      <select id="bpLifeStage" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(176,143,212,.25);border-radius:10px;padding:10px 12px;color:#fff;font-size:12px;font-family:'Montserrat',sans-serif;-webkit-appearance:none">
+        <option value="" style="color:#333">Select</option>
+        <option value="student" style="color:#333">Student</option>
+        <option value="early-career" style="color:#333">Early career</option>
+        <option value="established" style="color:#333">Established professional</option>
+        <option value="new-mother" style="color:#333">New mother</option>
+        <option value="homemaker" style="color:#333">Homemaker</option>
+        <option value="transitioning" style="color:#333">Life transition</option>
+        <option value="retired" style="color:#333">Retired</option>
+      </select>
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(176,143,212,.9);font-weight:700;display:block;margin-bottom:6px">Check-in preference</label>
+      <div style="display:flex;gap:8px">
+        <label style="flex:1;text-align:center;padding:10px 8px;border-radius:10px;border:1px solid rgba(176,143,212,.25);background:rgba(255,255,255,.06);cursor:pointer;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)" id="callPrefVideo" onclick="setBuddyCallPref('video')">
+          <span style="display:block;font-size:18px;margin-bottom:4px">&#127909;</span> Video call
+        </label>
+        <label style="flex:1;text-align:center;padding:10px 8px;border-radius:10px;border:1px solid rgba(176,143,212,.25);background:rgba(255,255,255,.06);cursor:pointer;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)" id="callPrefChat" onclick="setBuddyCallPref('chat')">
+          <span style="display:block;font-size:18px;margin-bottom:4px">&#128172;</span> Chat only
+        </label>
+        <label style="flex:1;text-align:center;padding:10px 8px;border-radius:10px;border:1px solid rgba(176,143,212,.25);background:rgba(255,255,255,.06);cursor:pointer;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)" id="callPrefBoth" onclick="setBuddyCallPref('both')">
+          <span style="display:block;font-size:18px;margin-bottom:4px">&#10024;</span> Both
+        </label>
+      </div>
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(176,143,212,.9);font-weight:700;display:block;margin-bottom:6px">A little about you</label>
+      <textarea id="bpBio" placeholder="What brings you to this ritual? What are you hoping to shift?" style="width:100%;min-height:70px;background:rgba(255,255,255,.08);border:1px solid rgba(176,143,212,.25);border-radius:10px;padding:10px 12px;color:#fff;font-size:12px;font-family:'Montserrat',sans-serif;resize:vertical"></textarea>
+    </div>
+    <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:16px">
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer" onclick="var c=document.getElementById('bpGuidelines');c.checked=!c.checked">
+        <input type="checkbox" id="bpGuidelines" style="margin-top:3px;accent-color:rgba(176,143,212,.8);flex-shrink:0">
+        <span style="font-size:11px;color:rgba(255,255,255,.85);line-height:1.5;font-weight:500">I agree to be kind, respectful, and supportive. I understand this is a sacred space for growth and will honour my buddy's boundaries.</span>
+      </label>
+    </div>
+    <button class="btn btn-primary" onclick="saveBuddyProfile()" style="width:100%;font-size:12px" id="bpSubmitBtn">&#10047; &nbsp;Activate &amp; Find My Buddy</button>
+    <p id="bpError" style="display:none;text-align:center;font-size:11px;color:#e57373;margin-top:10px"></p>
+    <p id="bpSuccess" style="display:none;text-align:center;font-size:11px;color:rgba(176,143,212,.8);margin-top:10px"></p>
+  </div>
+  <footer>Marmaroph Home &amp; Living</footer>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- BUDDY HUB                                           -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="screen" id="s-buddy-hub">
+  <div style="padding:20px 20px 0">
+    <button class="back-link" onclick="goHome()">&#8592; My Ritual</button>
+  </div>
+  <div style="text-align:center;padding:10px 24px 0">
+    <div style="display:flex;justify-content:center;align-items:center;margin-bottom:14px">
+      <div id="hubMyAvatar" style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,rgba(176,143,212,.3),rgba(44,62,80,.5));border:3px solid rgba(176,143,212,.5);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;z-index:2;box-shadow:0 4px 16px rgba(0,0,0,.3)">
+        <span style="font-size:24px;color:rgba(176,143,212,.6)">&#10047;</span>
+      </div>
+      <div id="hubBuddyAvatar" style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,rgba(44,62,80,.5),rgba(176,143,212,.3));border:3px solid rgba(176,143,212,.5);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;z-index:1;margin-left:-18px;box-shadow:0 4px 16px rgba(0,0,0,.3)">
+        <span style="font-size:24px;color:rgba(176,143,212,.6)">&#10047;</span>
+      </div>
+    </div>
+    <p id="hubWelcomeMsg" style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;margin-bottom:4px;line-height:1.3">Welcome to Buddy Hub</p>
+    <p id="hubBuddySubtext" style="font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(176,143,212,.7);margin-bottom:4px;line-height:1.4;font-style:italic">Your ritual sister is on her way...</p>
+    <p id="hubBuddyLocation" style="font-size:10.5px;color:rgba(176,143,212,.5);margin-bottom:14px"></p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">
+      <button class="btn btn-ghost" onclick="startBuddyVideoCall()" id="hubVideoBtn" style="font-size:10px;padding:10px 16px;border-radius:20px;border:1px solid rgba(176,143,212,.3);background:linear-gradient(135deg,rgba(176,143,212,.08),rgba(44,62,80,.12))">&#127909; Video Call</button>
+      <button class="btn btn-ghost" onclick="sendMotivation()" id="hubMotivateBtn" style="font-size:10px;padding:10px 16px;border-radius:20px;border:1px solid rgba(176,143,212,.3);background:linear-gradient(135deg,rgba(176,143,212,.08),rgba(44,62,80,.12))">&#128150; Motivate</button>
+      <button class="btn btn-ghost" onclick="scrollToBuddyProfile()" style="font-size:10px;padding:10px 16px;border-radius:20px;border:1px solid rgba(176,143,212,.3);background:linear-gradient(135deg,rgba(176,143,212,.08),rgba(44,62,80,.12))">&#128100; Profile</button>
+    </div>
+  </div>
+  <div style="text-align:center;padding:0 30px 8px">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(176,143,212,.45);letter-spacing:.08em">Growing together, one ritual at a time</p>
+  </div>
+  <div style="margin:6px 40px 14px;height:1px;background:linear-gradient(90deg,transparent,rgba(176,143,212,.2),transparent)"></div>
+  <div class="glass rise" style="margin:0 18px 12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(176,143,212,.15);background:linear-gradient(135deg,rgba(176,143,212,.04),rgba(44,62,80,.08))">
+    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">How are you feeling today?</p>
+    <div id="feelingPicker" style="display:flex;gap:6px;justify-content:center;margin-bottom:8px">
+      <button onclick="shareDailyFeeling('radiant')" class="feeling-btn" data-feel="radiant" style="font-size:24px;background:none;border:2px solid transparent;border-radius:14px;padding:8px 10px;cursor:pointer;transition:all .3s" title="Radiant">&#9728;&#65039;</button>
+      <button onclick="shareDailyFeeling('calm')" class="feeling-btn" data-feel="calm" style="font-size:24px;background:none;border:2px solid transparent;border-radius:14px;padding:8px 10px;cursor:pointer;transition:all .3s" title="Calm">&#128524;</button>
+      <button onclick="shareDailyFeeling('strong')" class="feeling-btn" data-feel="strong" style="font-size:24px;background:none;border:2px solid transparent;border-radius:14px;padding:8px 10px;cursor:pointer;transition:all .3s" title="Strong">&#128170;</button>
+      <button onclick="shareDailyFeeling('tired')" class="feeling-btn" data-feel="tired" style="font-size:24px;background:none;border:2px solid transparent;border-radius:14px;padding:8px 10px;cursor:pointer;transition:all .3s" title="Tired">&#128564;</button>
+      <button onclick="shareDailyFeeling('struggling')" class="feeling-btn" data-feel="struggling" style="font-size:24px;background:none;border:2px solid transparent;border-radius:14px;padding:8px 10px;cursor:pointer;transition:all .3s" title="Struggling">&#128148;</button>
+    </div>
+    <p id="feelingConfirm" style="display:none;text-align:center;font-size:10px;color:rgba(176,143,212,.7)"></p>
+  </div>
+  <div class="glass rise" style="margin:0 18px 12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(176,143,212,.15);background:linear-gradient(135deg,rgba(176,143,212,.04),rgba(44,62,80,.08))">
+    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Messages</p>
+    <div id="buddyChatMessages" style="max-height:220px;overflow-y:auto;margin-bottom:10px;padding-right:4px">
+      <p style="text-align:center;font-size:11px;color:rgba(255,255,255,.3);padding:20px 0">Messages will appear here</p>
+    </div>
+    <div style="display:flex;gap:8px;overflow:hidden">
+      <input type="text" id="buddyChatInput" placeholder="Write a message..." maxlength="280" style="flex:1;min-width:0;background:rgba(255,255,255,.06);border:1px solid rgba(176,143,212,.18);border-radius:14px;padding:11px 14px;color:#fff;font-size:12px;font-family:'Montserrat',sans-serif">
+      <button class="btn btn-primary" onclick="sendBuddyMessage()" style="font-size:11px;padding:11px 16px;flex-shrink:0;border-radius:14px;min-width:auto;width:auto;max-width:70px">Send</button>
+    </div>
+  </div>
+  <div class="glass rise" style="margin:0 18px 12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(176,143,212,.15);background:linear-gradient(135deg,rgba(176,143,212,.04),rgba(44,62,80,.08))">
+    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Buddy's Journey</p>
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
+      <div style="flex:1">
+        <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden">
+          <div id="buddyProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,rgba(176,143,212,.7),rgba(44,62,80,.9));border-radius:4px;transition:width .6s ease"></div>
+        </div>
+      </div>
+      <p id="buddyProgressText" style="font-size:11px;color:rgba(255,255,255,.5);flex-shrink:0;font-weight:500">0 / 30</p>
+    </div>
+    <p id="buddyStreakText" style="font-size:10.5px;color:rgba(176,143,212,.5)"></p>
+  </div>
+  <div class="glass rise" style="margin:0 18px 12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(176,143,212,.15);background:linear-gradient(135deg,rgba(176,143,212,.04),rgba(44,62,80,.08))">
+    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Buddy's Badges</p>
+    <div id="buddyBadgesGrid" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+      <p style="font-size:11px;color:rgba(255,255,255,.3)">No badges yet</p>
+    </div>
+  </div>
+  <div class="glass rise" id="buddyFullProfile" style="margin:0 18px 12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(176,143,212,.15);background:linear-gradient(135deg,rgba(176,143,212,.04),rgba(44,62,80,.08))">
+    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Buddy's Profile</p>
+    <p id="hubBuddyBio" style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:10px;font-style:italic"></p>
+    <div id="buddyProfileInterests" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+    <p id="buddyProfileLifeStage" style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px"></p>
+    <p id="buddyProfileCallPref" style="font-size:11px;color:rgba(255,255,255,.45)"></p>
+  </div>
+  <div style="padding:0 18px 30px;text-align:center">
+    <button class="btn btn-ghost" onclick="show('s-buddy-profile');renderBuddyProfileForm()" style="font-size:10px;margin-bottom:8px;border-radius:20px;padding:10px 24px">&#9998; Edit My Profile</button>
+  </div>
   <footer>Marmaroph Home &amp; Living</footer>
 </section>
 
@@ -646,9 +900,9 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 <!-- ═══════════════════════════════════════════════════ -->
 <section class="screen" id="s-r4">
   <div class="stage-head"><span class="back-link" onclick="goStep(3)">← Grounding</span><span class="stage-count">4 / 5</span></div>
-  <div class="rule-label"><span class="eyebrow">S4 · SENSE</span></div>
-  <div class="sec-title">Financial Awareness</div>
-  <div class="sec-title-sub">learn · shift · track</div>
+  <div class="rule-label"><span class="eyebrow" id="s4Eyebrow">S4 · SENSE</span></div>
+  <div class="sec-title" id="s4Title">Financial Awareness</div>
+  <div class="sec-title-sub" id="s4Sub">learn · shift · track</div>
   <!-- Jaguar sideways accent -->
   <div class="deco-art float2" style="margin-top:4px"><img src="img/deco-leopard-run2.png" alt="" width="260" loading="lazy"></div>
 
@@ -743,6 +997,7 @@ function ss(k,v){try{localStorage.setItem(k,String(v))}catch(e){}}
 /* ── State ── */
 var S={
   path:ls('qa_p')||'',
+  level:+ls('qa_lvl')||0,
   days:JSON.parse(ls('qa_d')||'[]'),
   mE:+ls('qa_me')||0,mS:+ls('qa_ms')||0,
   exp:JSON.parse(ls('qa_ex')||'[]'),
@@ -755,11 +1010,14 @@ var S={
   milestones:JSON.parse(ls('qa_mst')||'[]'),
   profile:JSON.parse(ls('qa_prof')||'null'),
   dailyTrack:JSON.parse(ls('qa_dt')||'[]'),
-  startMonth:ls('qa_sm')||''
+  startMonth:ls('qa_sm')||'',
+  buddyActive:ls('qa_buddy')==='1',
+  buddyProfile:JSON.parse(ls('qa_bp')||'null'),
+  buddyPhotoData:ls('qa_bph')||''
 };
 if(!S.days.length)S.days=new Array(30).fill(false);
 function sv(){
-  ss('qa_p',S.path);ss('qa_d',JSON.stringify(S.days));
+  ss('qa_p',S.path);ss('qa_lvl',S.level);ss('qa_d',JSON.stringify(S.days));
   ss('qa_me',S.mE);ss('qa_ms',S.mS);ss('qa_ex',JSON.stringify(S.exp));
   ss('qa_rv',S.rsvp?'1':'0');ss('qa_rd1',JSON.stringify(S.rd1));
   ss('qa_bowl',JSON.stringify(S.bowl));ss('qa_inc',S.income);
@@ -768,6 +1026,9 @@ function sv(){
   ss('qa_prof',JSON.stringify(S.profile));
   ss('qa_dt',JSON.stringify(S.dailyTrack));
   ss('qa_sm',S.startMonth);
+  ss('qa_buddy',S.buddyActive?'1':'0');
+  ss('qa_bp',JSON.stringify(S.buddyProfile));
+  ss('qa_bph',S.buddyPhotoData||'');
 }
 
 /* ── Navigation ── */
@@ -776,7 +1037,7 @@ function goWelcome(){show('s-welcome')}
 function goHome(){show('s-home');renderHome();drawSunCal();buildCal('calHome')}
 function goStep(n){show('s-r'+n);if(n===1){loadBeforePhoto()}if(n===4){renderLesson();renderTodayMindset()}if(n===5){buildCal('calSeed');startTimer();drawDinnerRing()}}
 function completeRitual(){var dn=daysDone();showDone('Day '+dn+' is yours.','You did not just look at your money. You returned home.')}
-function showDone(t,q){var dn=daysDone();document.getElementById('doneTitle').textContent=t;document.getElementById('doneDay').textContent='DAY '+dn+' OF 30';document.getElementById('doneQuote').textContent='"'+q+'"';show('s-done')}
+function showDone(t,q){var dn=daysDone();var lvlN={1:'Debt Freedom',2:'Foundation',3:'Quiet Saver',4:'Wealth in Motion'};document.getElementById('doneTitle').textContent=t;document.getElementById('doneDay').textContent='DAY '+dn+' · LEVEL '+(S.level||1)+' · '+(lvlN[S.level]||'');document.getElementById('doneQuote').textContent='"'+q+'"';show('s-done')}
 function showRefs(){show('s-refs');renderRefs()}
 
 /* ── Calendar sync ── */
@@ -882,14 +1143,15 @@ function getStreak(){var s=0;for(var i=S.days.length-1;i>=0;i--){if(S.days[i])s+
 function renderHome(){
   var dn=daysDone();
   var pct=Math.round((dn/30)*100);
-  document.getElementById('homeChip').textContent=S.path?'PATH '+S.path+' · DAY '+(dn+1)+' OF 30':'PATH';
+  document.getElementById('homeChip').textContent='PATH '+S.path+' · DAY '+(dn+1)+' OF 30';
 
   // Progress bar
   var pctEl=document.getElementById('pctLabel');if(pctEl)pctEl.textContent=pct+'%';
   var fillEl=document.getElementById('homeFill');if(fillEl)setTimeout(function(){fillEl.style.width=pct+'%'},100);
-  var dayEl=document.getElementById('dayNum');if(dayEl)dayEl.innerHTML=(dn+1)+'<span>/30</span>';
+  var dayEl=document.getElementById('dayNum');if(dayEl)dayEl.innerHTML=(dn+1)+'<span> days</span>';
   var streakEl=document.getElementById('chipStreak');if(streakEl)streakEl.textContent='✦ '+getStreak()+' streak';
 
+  // Day 1 reflection
   if(S.rd1){
     document.getElementById('rd1Form').style.display='none';
     document.getElementById('rd1View').style.display='block';
@@ -897,7 +1159,50 @@ function renderHome(){
       var labels=['Money feelings','Financial independence','30-day hope'];
       return '<div style="margin-bottom:8px"><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:2px">'+labels[i]+'</div><div style="font-size:12px;color:rgba(255,255,255,.65)">'+t+'</div></div>';
     }).join('');
+  }else if(dn===0){
+    document.getElementById('rd1Form').style.display='block';
   }
+
+  // Day 30 before/after reveal
+  var d30=document.getElementById('reflectDay30');
+  if(d30){
+    if(dn>=29&&S.rd1){
+      d30.style.display='block';
+      var rc1m=document.getElementById('rc1Money');if(rc1m&&S.rd1[0])rc1m.textContent=S.rd1[0];
+      var rc1i=document.getElementById('rc1Independence');if(rc1i&&S.rd1[1])rc1i.textContent=S.rd1[1];
+      var rc1h=document.getElementById('rc1Hope');if(rc1h&&S.rd1[2])rc1h.textContent=S.rd1[2];
+    }else{d30.style.display='none';}
+  }
+
+  // Mid-cycle check-in banners
+  var cb=document.getElementById('checkinBanner');
+  if(cb){
+    var checkins={7:{t:'Week 1 done',b:'You showed up for seven days. That is not nothing. That is everything.'},14:{t:'Halfway there',b:'Two weeks of building a new relationship with money. The old patterns are loosening.'},21:{t:'Three weeks in',b:'You are not the same woman who started this ritual. Your abundance corner knows it.'}};
+    var ck=checkins[dn+1];
+    if(ck&&!S['dismissedCheckin'+(dn+1)]){
+      cb.style.display='block';
+      var cd=document.getElementById('checkinDay');if(cd)cd.textContent='Day '+(dn+1);
+      var ct=document.getElementById('checkinTitle');if(ct)ct.textContent=ck.t;
+      var cbody=document.getElementById('checkinBody');if(cbody)cbody.textContent=ck.b;
+    }else{cb.style.display='none';}
+  }
+
+  // Micro-celebrations
+  var mc=document.getElementById('microCelebration');
+  if(mc){
+    var milestones={3:{i:'🌱',t:'First roots planted',b:'Three days in. The seed is in the soil.'},10:{i:'💎',t:'Double digits',b:'Ten days of showing up for your finances.'},20:{i:'🔥',t:'Twenty days strong',b:'You are unstoppable. The finish line is close.'},30:{i:'👑',t:'Ritual complete',b:'Thirty days. You did it. You are the woman who finishes what she starts.'}};
+    var ml=milestones[dn];
+    if(ml){
+      mc.style.display='block';
+      var ci=document.getElementById('celebIcon');if(ci)ci.textContent=ml.i;
+      var ctt=document.getElementById('celebTitle');if(ctt)ctt.textContent=ml.t;
+      var cbb=document.getElementById('celebBody');if(cbb)cbb.textContent=ml.b;
+    }else{mc.style.display='none';}
+  }
+
+  // Buddy card
+  var bCard=document.getElementById('buddyHomeCard');
+  if(bCard)bCard.style.display=S.buddyActive?'block':'none';
 }
 
 /* ── Month Picker (dropdown) ── */
@@ -1061,18 +1366,23 @@ function runCycle(r){
 }
 
 /* ── Lessons (dynamic, changes daily based on quiz) ── */
-var AFFS={A:'You are not behind. You are starting.',B:'Money has never been your enemy. It has been a language you were never taught.',C:'Every woman who built wealth started with one decision to pay attention.'};
+var AFFS={
+  '1':'You are not behind. You are starting.',
+  '2':'Money has never been your enemy. It has been a language you were never taught.',
+  '3':'Every dollar you protect today builds the bridge to your freedom.',
+  '4':'Every woman who built wealth started with one decision to pay attention.'
+};
 
 var LS={
-  A:[
-    {t:'Mapping Your Debt',b:'Before you can clear it, you need to see it clearly. List every debt: the name, the balance, the interest rate. Every debt you name loses some of its power over you.',i:'Clarity is not defeat. Seeing what is there is the first act of freedom.',u:0},
+  '1':[
+    {t:'Good Debt vs Bad Debt',b:'Not all debt is equal. Bad debt takes money out of your pocket — credit cards, personal loans, buy-now-pay-later. Good debt puts money in — a rental mortgage that earns rent, a business loan generating income. Your first job: eliminate the bad debt.',i:'If it takes money out and the thing you bought is losing value, it is bad debt. Period.',u:0},
     {t:'Understanding Interest Rates',b:'A 22% credit card rate means you pay $22 for every $100 you owe per year. High-interest debt grows fast when unpaid. This is mathematics. And mathematics can be your friend.',i:'High-interest debt is the most urgent because mathematics is ruthless.',u:3},
     {t:'The Snowball Method',b:'Pay the smallest debt first. Once cleared, roll that payment into the next. Psychological wins build momentum.',i:'The best debt strategy is the one you will actually do.',u:6},
     {t:'The Avalanche Method',b:'Pay the highest interest rate debt first. Mathematically optimal. You pay less total interest over time.',i:'If numbers motivate you more than feelings, the Avalanche saves more money.',u:9},
     {t:'Negotiating Your Rates',b:'Call your credit card company and ask for a lower rate. 70% of people who ask get a reduction. One phone call can save hundreds.',i:'The money you do not pay in interest is money you keep.',u:14},
     {t:'Your Payoff Timeline',b:'Once you know your total debt and monthly payment capacity, you can calculate your freedom date. A date changes everything.',i:'Debt with a date feels like a project, not a life sentence.',u:21}
   ],
-  B:[
+  '2':[
     {t:'The Peace Fund',b:'Three to six months of living expenses in a separate, accessible account. Not invested, not spent. It exists to fund a crisis without borrowing. We call it the Peace Fund because that is what it gives you: peace.',i:'A Peace Fund does not prevent emergencies. It prevents them from becoming debt.',u:0},
     {t:'Why 3 to 6 Months?',b:'Three months covers most job losses. Six months covers career transitions and health events. Start with one month. Then three. Then six.',i:'Each milestone changes how you sleep at night.',u:3},
     {t:'Where to Keep It',b:'A high-yield savings account. Not your checking account, not invested. Accessible within 1 to 2 business days. The separation is the point.',i:'Keeping it separate creates a psychological barrier. That barrier protects you.',u:6},
@@ -1080,7 +1390,15 @@ var LS={
     {t:'The 50/30/20 Rule',b:'50% needs, 30% wants, 20% savings and debt repayment. This is not rigid. It is a compass.',i:'The 50/30/20 rule is a compass, not a cage.',u:14},
     {t:'When Your Foundation Is Complete',b:'Six months saved does not mean you stop. It means new savings flow toward a named goal: a home, a business, studies, freedom.',i:'A complete foundation is not the end. It is the moment it becomes interesting.',u:21}
   ],
-  C:[
+  '3':[
+    {t:'Your Safety Net Is Built. Now Grow It.',b:'You have savings, but under six months. Your money is safe but losing purchasing power. Inflation averages 3% per year. A high-yield savings account is a start, but it is not the finish line.',i:'Saving preserves money. Growing it requires the next step.',u:0},
+    {t:'Low-Risk Investing: Your First Step',b:'Term deposits, government bonds, and money market funds earn more than savings accounts with very little risk. These are not exciting. They are effective.',i:'Boring investments are the ones that let you sleep at night.',u:3},
+    {t:'Understanding Risk vs Return',b:'Higher returns always mean higher risk. At this stage, you want steady, predictable growth. Not a rollercoaster.',i:'The goal is not to get rich fast. It is to never go backwards.',u:6},
+    {t:'Dollar-Cost Averaging',b:'Invest a fixed amount at regular intervals, regardless of market conditions. You buy more when prices are low and less when high. Time in the market beats timing the market.',i:'Consistency beats cleverness. Every single time.',u:9},
+    {t:'Building Toward Six Months',b:'Every dollar beyond three months of savings is a dollar closer to unshakeable security. The peace of six months changes how you make every decision.',i:'At six months, you stop reacting and start choosing.',u:14},
+    {t:'Ready for Level 4',b:'When your safety net covers six months, you have earned the right to think bigger. Higher-risk investments, diversified portfolios, true wealth building.',i:'Security first. Then ambition. Never the other way around.',u:21}
+  ],
+  '4':[
     {t:'Why Saving Alone Is Not Enough',b:'If inflation averages 3% and savings earns 0.5%, you lose purchasing power every year money sits still.',i:'Saving preserves money. Investing grows it. Both are necessary, in that order.',u:0},
     {t:'What Is Investing?',b:'Putting money into assets that grow in value over time. The investor accepts some risk in exchange for growth beyond inflation.',i:'Investing is not gambling. It is patience, paid.',u:3},
     {t:'Compound Interest: The 8th Wonder',b:'$200/month at 7% average return starting at 25 becomes roughly $524,000 by 65. Starting at 35: roughly $243,000. The difference is time.',i:'Compound interest rewards starting, not perfection.',u:6},
@@ -1105,14 +1423,24 @@ var MINDSETS=[
   {cat:'Comparison',old:'Everyone else seems to have their finances figured out.',nw:'Most people are performing stability they do not feel. I choose honest progress.',expert:'78% of workers live paycheck to paycheck. You are not behind. You are in the majority, choosing differently.'}
 ];
 
+var LVL_S4={
+  '1':{eye:'S4 · DEBT FREEDOM',title:'Clear the Weight',sub:'learn · track · eliminate'},
+  '2':{eye:'S4 · FOUNDATION',title:'Build Your Safety Net',sub:'learn · save · automate'},
+  '3':{eye:'S4 · QUIET SAVER',title:'Grow Your Safety Net',sub:'learn · protect · grow'},
+  '4':{eye:'S4 · WEALTH IN MOTION',title:'Financial Awareness',sub:'learn · invest · build'}
+};
 function renderLesson(){
   var c=document.getElementById('todayLesson');if(!c)return;
-  var p=S.path||'B',lsList=LS[p]||LS.B,dn=daysDone();
+  var p=S.path||'2',lsList=LS[p]||LS['2'],dn=daysDone();
+  var s4=LVL_S4[p]||LVL_S4['2'];
+  var s4e=document.getElementById('s4Eyebrow');if(s4e)s4e.textContent=s4.eye;
+  var s4t=document.getElementById('s4Title');if(s4t)s4t.textContent=s4.title;
+  var s4s=document.getElementById('s4Sub');if(s4s)s4s.textContent=s4.sub;
   var l=null,idx=0;
   for(var i=lsList.length-1;i>=0;i--){if(dn>=lsList[i].u){l=lsList[i];idx=i;break}}
   if(!l){c.innerHTML='<div class="glass-card"><p style="font-size:12px;color:rgba(255,255,255,.5)">Complete the quiz to unlock your first lesson.</p></div>';return}
   c.innerHTML='<div class="lesson-card"><div class="lc-cat">LESSON '+(idx+1)+' OF '+lsList.length+'</div><div class="lc-title">'+l.t+'</div><div class="lc-body">'+l.b+'</div><div class="lc-quote">"'+l.i+'"</div></div>';
-  document.getElementById('todayAff').textContent='"'+(AFFS[p]||AFFS.B)+'"';
+  document.getElementById('todayAff').textContent='"'+(AFFS[p]||AFFS['2'])+'"';
 }
 
 /* ONE mindset pair per day (rotating) */
@@ -1231,6 +1559,14 @@ function closeTool(){
   setTimeout(function(){fr.src='about:blank'},400);
 }
 
+/* ── Listen for level-up from finance tracker iframe ── */
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.type==='levelUp'&&e.data.level){
+    var newLvl=String(e.data.level);
+    if(newLvl!==S.path){S.level=parseInt(newLvl);S.path=newLvl;sv();renderHome();}
+  }
+});
+
 /* ── Dinner ring countdown (circle frame) ── */
 function drawDinnerRing(){
   var c=document.getElementById('dinnerRing');if(!c)return;
@@ -1292,12 +1628,240 @@ function shootingStarLoop(){
 }
 
 /* ── Init ── */
+/* -- Buddy System -- */
+var BUDDY_API='https://www.marmaroph.com/_functions';
+var BUDDY_RITUAL='quiet-abundance';
+var _buddyCallPref='both';
+var _buddyPair=null;
+var _buddyProfile=null;
+var _chatPoll=null;
+var INTEREST_OPTIONS=['Financial wellness','Meditation','Feng Shui','Journaling','Crystals','Herbalism','Moon rituals','Self-care','Breathwork','Gratitude','Budgeting','Investing','Minimalism','Digital detox','Nature walks'];
+function getMemberId(){return(new URLSearchParams(window.location.search)).get('memberId')||''}
+function updateBuddyUI(){
+  var btn=document.getElementById('buddyToggleBtn');
+  var msg=document.getElementById('buddyActiveMsg');
+  var card=document.getElementById('buddyHomeCard');
+  var hubBtn=document.getElementById('buddyHubBtn');
+  if(S.buddyActive){
+    if(btn){btn.textContent='✖  Deactivate Buddy';btn.classList.add('btn-ghost');btn.classList.remove('btn-primary');}
+    if(msg)msg.style.display='block';
+    if(card)card.style.display='block';
+    if(hubBtn){hubBtn.innerHTML='&#10047; &nbsp;My Ritual Buddy';hubBtn.onclick=function(){show('s-buddy-hub');renderBuddyHub()};hubBtn.style.cssText='flex:1;border:1.5px solid rgba(180,160,220,.35);background:linear-gradient(160deg,rgba(180,160,220,.2) 0%,rgba(44,62,80,.45) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:#fff;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.25),inset 0 1px 0 rgba(180,160,220,.15)';}
+    loadBuddyHomeCard();
+  } else {
+    if(btn){btn.innerHTML='&#10047; &nbsp;Find My Ritual Buddy';btn.classList.remove('btn-ghost');btn.classList.add('btn-primary');}
+    if(msg)msg.style.display='none';
+    if(card)card.style.display='none';
+    if(hubBtn){hubBtn.innerHTML='&#128274; &nbsp;My Ritual Buddy';hubBtn.onclick=function(){show('s-buddy-profile');renderBuddyProfileForm()};hubBtn.style.cssText='flex:1;border:1.5px solid rgba(180,160,220,.15);background:linear-gradient(160deg,rgba(180,160,220,.08) 0%,rgba(44,62,80,.25) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2)';}
+  }
+}
+function loadBuddyHomeCard(){
+  if(!S.buddyActive)return;
+  var mid=getMemberId();if(!mid)return;
+  fetch(BUDDY_API+'/buddyPair?memberId='+mid+'&ritualId='+BUDDY_RITUAL).then(function(r){return r.json()}).then(function(d){
+    if(d&&d.pair){
+      _buddyPair=d.pair;var buddy=d.buddyProfile||{};
+      var avatar=document.getElementById('buddyAvatar');
+      if(avatar&&buddy.photo){avatar.innerHTML='<img src="'+buddy.photo+'" style="width:100%;height:100%;object-fit:cover">';}
+      var n=document.getElementById('buddyNameHome');if(n)n.textContent=buddy.displayName||'Your Buddy';
+      var s=document.getElementById('buddyStatusHome');if(s)s.textContent=(buddy.city||'')+((buddy.city&&buddy.country)?' \u00b7 ':'')+('Day '+(d.buddyProgress||0)+' / 30');
+    }
+  }).catch(function(){});
+}
+function renderBuddyProfileForm(){
+  var tags=document.getElementById('bpInterestTags');
+  if(!tags||tags.children.length>0)return;
+  var sel=S.buddyProfile&&S.buddyProfile.interestTags||[];
+  INTEREST_OPTIONS.forEach(function(t){
+    var b=document.createElement('button');
+    b.textContent=t;b.className='interest-tag';
+    b.style.cssText='padding:6px 12px;border-radius:20px;font-size:10.5px;font-family:Montserrat,sans-serif;cursor:pointer;transition:all .2s;border:1px solid rgba(176,143,212,.2);background:rgba(255,255,255,.04);color:rgba(255,255,255,.6)';
+    if(sel.indexOf(t)>-1){b.style.background='rgba(176,143,212,.2)';b.style.borderColor='rgba(176,143,212,.5)';b.style.color='#fff';b.dataset.on='1';}
+    b.onclick=function(){
+      if(b.dataset.on==='1'){b.dataset.on='';b.style.background='rgba(255,255,255,.04)';b.style.borderColor='rgba(176,143,212,.2)';b.style.color='rgba(255,255,255,.6)';}
+      else{var cnt=tags.querySelectorAll('[data-on="1"]').length;if(cnt>=5)return;b.dataset.on='1';b.style.background='rgba(176,143,212,.2)';b.style.borderColor='rgba(176,143,212,.5)';b.style.color='#fff';}
+    };
+    tags.appendChild(b);
+  });
+  if(S.buddyProfile){
+    var p=S.buddyProfile;
+    if(p.displayName)document.getElementById('bpName').value=p.displayName;
+    if(p.city)document.getElementById('bpCity').value=p.city;
+    if(p.country)document.getElementById('bpCountry').value=p.country;
+    if(p.timezone)document.getElementById('bpTimezone').value=p.timezone;
+    if(p.lifeStage)document.getElementById('bpLifeStage').value=p.lifeStage;
+    if(p.bio)document.getElementById('bpBio').value=p.bio;
+    if(p.callPref){_buddyCallPref=p.callPref;setBuddyCallPref(p.callPref);}
+    if(p.guidelinesAccepted)document.getElementById('bpGuidelines').checked=true;
+  }
+}
+function setBuddyCallPref(v){
+  _buddyCallPref=v;
+  ['video','chat','both'].forEach(function(k){
+    var el=document.getElementById('callPref'+k.charAt(0).toUpperCase()+k.slice(1));
+    if(el){el.style.borderColor=k===v?'rgba(176,143,212,.5)':'rgba(176,143,212,.15)';el.style.background=k===v?'rgba(176,143,212,.15)':'rgba(255,255,255,.04)';}
+  });
+}
+function previewBuddyPhoto(input){
+  if(!input.files||!input.files[0])return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var prev=document.getElementById('buddyPhotoPreview');
+    if(prev)prev.innerHTML='<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover">';
+    S.buddyPhotoData=e.target.result;sv();
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function saveBuddyProfile(){
+  var errEl=document.getElementById('bpError');var sucEl=document.getElementById('bpSuccess');
+  if(errEl)errEl.style.display='none';if(sucEl)sucEl.style.display='none';
+  var name=document.getElementById('bpName').value.trim();
+  var city=document.getElementById('bpCity').value.trim();
+  var country=document.getElementById('bpCountry').value.trim();
+  var tz=document.getElementById('bpTimezone').value;
+  var lifeStage=document.getElementById('bpLifeStage').value;
+  var bio=document.getElementById('bpBio').value.trim();
+  var guidelines=document.getElementById('bpGuidelines').checked;
+  var tags=[];document.querySelectorAll('#bpInterestTags [data-on="1"]').forEach(function(b){tags.push(b.textContent)});
+  if(!name){if(errEl){errEl.textContent='Please enter your display name.';errEl.style.display='block';}return;}
+  if(!city||!country){if(errEl){errEl.textContent='Please enter your location.';errEl.style.display='block';}return;}
+  if(tags.length===0){if(errEl){errEl.textContent='Please select at least one interest.';errEl.style.display='block';}return;}
+  if(!guidelines){if(errEl){errEl.textContent='Please accept the community guidelines.';errEl.style.display='block';}return;}
+  var profile={displayName:name,city:city,country:country,timezone:tz,interestTags:tags,lifeStage:lifeStage,callPref:_buddyCallPref,bio:bio,photo:S.buddyPhotoData||'',guidelinesAccepted:true};
+  S.buddyProfile=profile;S.buddyActive=true;sv();
+  var btn2=document.getElementById('bpSubmitBtn');if(btn2){btn2.textContent='Saving...';btn2.disabled=true;}
+  var mid=getMemberId();
+  if(mid){
+    fetch(BUDDY_API+'/buddyProfile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:mid,profile:profile})}).then(function(r){return r.json()}).then(function(){
+      return fetch(BUDDY_API+'/buddyRequest',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:mid,ritualId:BUDDY_RITUAL})});
+    }).then(function(){
+      if(btn2){btn2.textContent='\u2714 Profile Saved';btn2.disabled=false;}
+      if(sucEl){sucEl.textContent='You are in the matching pool! We will pair you at the start of the next cycle.';sucEl.style.display='block';}
+      updateBuddyUI();
+    }).catch(function(){
+      if(btn2){btn2.textContent='\u2726 Activate & Find My Buddy';btn2.disabled=false;}
+      if(sucEl){sucEl.textContent='Profile saved locally. It will sync when connected.';sucEl.style.display='block';}
+      updateBuddyUI();
+    });
+  } else {
+    if(btn2){btn2.textContent='\u2714 Profile Saved';btn2.disabled=false;}
+    if(sucEl){sucEl.textContent='Profile saved. Buddy matching will begin when you are signed in.';sucEl.style.display='block';}
+    updateBuddyUI();
+  }
+}
+function renderBuddyHub(){
+  var mid=getMemberId();if(!mid){renderBuddyHubOffline();return;}
+  var myAv=document.getElementById('hubMyAvatar');
+  if(myAv&&S.buddyProfile&&S.buddyProfile.photo)myAv.innerHTML='<img src="'+S.buddyProfile.photo+'" style="width:100%;height:100%;object-fit:cover">';
+  else if(myAv&&S.buddyProfile&&S.buddyProfile.displayName)myAv.innerHTML='<span style="font-size:22px;color:rgba(176,143,212,.8);font-family:Cormorant Garamond,serif;font-weight:600">'+S.buddyProfile.displayName.charAt(0).toUpperCase()+'</span>';
+  var myName=S.buddyProfile&&S.buddyProfile.displayName?S.buddyProfile.displayName:'you';
+  fetch(BUDDY_API+'/buddyPair?memberId='+mid+'&ritualId='+BUDDY_RITUAL).then(function(r){return r.json()}).then(function(d){
+    if(!d||!d.pair){renderBuddyHubWaiting(myName);return;}
+    _buddyPair=d.pair;var buddy=d.buddyProfile||{};_buddyProfile=buddy;
+    var av=document.getElementById('hubBuddyAvatar');
+    if(av&&buddy.photo)av.innerHTML='<img src="'+buddy.photo+'" style="width:100%;height:100%;object-fit:cover">';
+    else if(av&&buddy.displayName)av.innerHTML='<span style="font-size:22px;color:rgba(176,143,212,.8);font-family:Cormorant Garamond,serif;font-weight:600">'+buddy.displayName.charAt(0).toUpperCase()+'</span>';
+    var wm=document.getElementById('hubWelcomeMsg');if(wm)wm.innerHTML='Welcome back, <em>'+myName+'</em>';
+    var sub=document.getElementById('hubBuddySubtext');if(sub)sub.innerHTML='Your ritual buddy <strong>'+(buddy.displayName||'your sister')+'</strong> is here';
+    var loc=document.getElementById('hubBuddyLocation');if(loc)loc.textContent=(buddy.city||'')+((buddy.city&&buddy.country)?' \u00b7 ':'')+(buddy.country||'');
+    var bio2=document.getElementById('hubBuddyBio');if(bio2)bio2.textContent=buddy.bio||'';
+    if(buddy.interestTags&&buddy.interestTags.length){
+      var ig=document.getElementById('buddyProfileInterests');
+      if(ig){ig.innerHTML='';buddy.interestTags.forEach(function(t){ig.innerHTML+='<span style="padding:5px 12px;border-radius:20px;font-size:10px;background:rgba(176,143,212,.1);border:1px solid rgba(176,143,212,.25);color:rgba(255,255,255,.75)">'+t+'</span>'});}
+    }
+    var ls2=document.getElementById('buddyProfileLifeStage');if(ls2&&buddy.lifeStage)ls2.textContent='Life stage: '+buddy.lifeStage;
+    var cp=document.getElementById('buddyProfileCallPref');if(cp&&buddy.callPref)cp.textContent='Prefers: '+(buddy.callPref==='video'?'Video calls':buddy.callPref==='chat'?'Chat only':'Video & Chat');
+    var pb=document.getElementById('buddyProgressBar');var pt=document.getElementById('buddyProgressText');
+    var prog=d.buddyProgress||0;if(pb)pb.style.width=Math.round(prog/30*100)+'%';if(pt)pt.textContent=prog+' / 30';
+    var st=document.getElementById('buddyStreakText');if(st&&d.buddyStreak)st.textContent='\ud83d\udd25 '+d.buddyStreak+' day streak';
+    loadBuddyMessages();loadBuddyBadges(d.buddyMemberId);
+    if(_chatPoll)clearInterval(_chatPoll);_chatPoll=setInterval(loadBuddyMessages,15000);
+  }).catch(function(){renderBuddyHubOffline()});
+}
+function renderBuddyHubWaiting(myName){
+  var wm=document.getElementById('hubWelcomeMsg');if(wm)wm.innerHTML='Welcome, <em>'+(myName||'sister')+'</em>';
+  var sub=document.getElementById('hubBuddySubtext');if(sub)sub.textContent='We are finding your perfect ritual buddy...';
+  var loc=document.getElementById('hubBuddyLocation');if(loc)loc.textContent='You are in the matching pool';
+  var bio2=document.getElementById('hubBuddyBio');if(bio2)bio2.textContent='We pair buddies at the start of each ritual cycle. Hold tight \u2014 your sister is on her way.';
+}
+function renderBuddyHubOffline(){
+  var wm=document.getElementById('hubWelcomeMsg');if(wm)wm.textContent='Buddy Hub';
+  var sub=document.getElementById('hubBuddySubtext');if(sub)sub.textContent='Sign in through the Sanctuary to connect with your buddy.';
+  var loc=document.getElementById('hubBuddyLocation');if(loc)loc.textContent='';
+  var bio2=document.getElementById('hubBuddyBio');if(bio2)bio2.textContent='';
+}
+function loadBuddyMessages(){
+  if(!_buddyPair)return;var mid=getMemberId();
+  fetch(BUDDY_API+'/buddyMessages?pairId='+_buddyPair._id+'&memberId='+mid+'&limit=20').then(function(r){return r.json()}).then(function(d){
+    var c=document.getElementById('buddyChatMessages');if(!c)return;
+    if(!d.messages||d.messages.length===0){c.innerHTML='<p style="text-align:center;font-size:11px;color:rgba(255,255,255,.3);padding:20px 0">Start the conversation! Say hello to your buddy.</p>';return;}
+    var html='';d.messages.reverse().forEach(function(m){
+      var mine=m.fromMember===mid;var align=mine?'flex-end':'flex-start';
+      var bg=mine?'rgba(176,143,212,.15)':'rgba(44,62,80,.3)';var border=mine?'rgba(176,143,212,.2)':'rgba(255,255,255,.08)';
+      if(m.type==='feeling'){html+='<div style="text-align:center;padding:6px 0"><span style="font-size:10px;color:rgba(176,143,212,.5)">'+(mine?'You':(_buddyProfile&&_buddyProfile.displayName||'Buddy'))+' felt '+m.text+'</span></div>';}
+      else{html+='<div style="display:flex;justify-content:'+align+';margin-bottom:6px"><div style="max-width:80%;padding:8px 12px;border-radius:12px;background:'+bg+';border:1px solid '+border+'"><p style="font-size:11.5px;color:#fff;line-height:1.5;word-break:break-word">'+m.text+'</p><p style="font-size:9px;color:rgba(255,255,255,.3);margin-top:3px">'+formatMsgTime(m.createdAt)+'</p></div></div>';}
+    });c.innerHTML=html;c.scrollTop=c.scrollHeight;
+  }).catch(function(){});
+}
+function formatMsgTime(d){if(!d)return'';var dt=new Date(d);var h=dt.getHours(),m=dt.getMinutes();return(h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
+function sendBuddyMessage(){
+  var input=document.getElementById('buddyChatInput');if(!input)return;
+  var text=input.value.trim();if(!text)return;
+  if(!_buddyPair){showToast('No buddy paired yet');return;}
+  var mid=getMemberId();if(!mid)return;input.value='';
+  var c=document.getElementById('buddyChatMessages');
+  if(c){var empty=c.querySelector('p[style*="text-align:center"]');if(empty&&empty.parentNode===c)c.innerHTML='';
+    c.innerHTML+='<div style="display:flex;justify-content:flex-end;margin-bottom:6px"><div style="max-width:80%;padding:8px 12px;border-radius:12px;background:rgba(176,143,212,.15);border:1px solid rgba(176,143,212,.2)"><p style="font-size:11.5px;color:#fff;line-height:1.5">'+text+'</p><p style="font-size:9px;color:rgba(255,255,255,.3);margin-top:3px">now</p></div></div>';
+    c.scrollTop=c.scrollHeight;}
+  fetch(BUDDY_API+'/buddyMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pairId:_buddyPair._id,memberId:mid,type:'note',text:text})}).catch(function(){});
+}
+function shareDailyFeeling(feeling){
+  var emojis={radiant:'\u2600\ufe0f',calm:'\ud83d\ude0c',strong:'\ud83d\udcaa',tired:'\ud83d\ude34',struggling:'\ud83d\udc94'};
+  document.querySelectorAll('.feeling-btn').forEach(function(b){
+    b.style.borderColor=b.dataset.feel===feeling?'rgba(176,143,212,.5)':'transparent';
+    b.style.background=b.dataset.feel===feeling?'rgba(176,143,212,.12)':'none';
+  });
+  var conf=document.getElementById('feelingConfirm');
+  if(conf){conf.textContent='You shared: '+(emojis[feeling]||'')+' '+feeling;conf.style.display='block';}
+  S.todayFeeling=feeling;sv();
+  if(_buddyPair&&getMemberId()){fetch(BUDDY_API+'/buddyMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pairId:_buddyPair._id,memberId:getMemberId(),type:'feeling',text:feeling})}).catch(function(){});}
+}
+function sendMotivation(){
+  if(!_buddyPair){showToast('No buddy paired yet');return;}
+  var msgs=["You've got this! \ud83c\udf1f","Keep going, I believe in you \ud83d\udcab","We're in this together \ud83e\udd1d","One day at a time \u2728","So proud of your progress \ud83c\udf3f"];
+  var text=msgs[Math.floor(Math.random()*msgs.length)];
+  var mid=getMemberId();if(!mid)return;
+  fetch(BUDDY_API+'/buddyMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pairId:_buddyPair._id,memberId:mid,type:'motivation',text:text})}).then(function(){showToast('Motivation sent! \ud83d\udc9b');loadBuddyMessages();}).catch(function(){showToast('Saved for when you reconnect');});
+}
+function startBuddyVideoCall(){
+  if(!_buddyPair){showToast('No buddy paired yet');return;}
+  window.open('https://meet.jit.si/marmaroph-'+_buddyPair._id.slice(-8),'_blank');
+}
+function loadBuddyBadges(buddyMemberId){
+  if(!buddyMemberId)return;
+  fetch(BUDDY_API+'/memberBadges?memberId='+buddyMemberId).then(function(r){return r.json()}).then(function(d){
+    var g=document.getElementById('buddyBadgesGrid');if(!g)return;
+    if(!d.badges||d.badges.length===0){g.innerHTML='<p style="font-size:11px;color:rgba(255,255,255,.3)">No badges yet</p>';return;}
+    var html='';d.badges.forEach(function(b){
+      var icons={milestone:'\ud83c\udfc6',streak:'\ud83d\udd25',sisterhood:'\ud83e\udd1d',consistency:'\u2b50',explorer:'\ud83c\udf0d'};
+      html+='<div style="text-align:center;padding:8px 6px;min-width:60px" title="'+b.name+'"><div style="font-size:22px;margin-bottom:2px">'+(icons[b.category]||'\ud83c\udfc5')+'</div><p style="font-size:9px;color:rgba(255,255,255,.5);line-height:1.3">'+b.name+'</p></div>';
+    });g.innerHTML=html;
+  }).catch(function(){});
+}
+function scrollToBuddyProfile(){var el=document.getElementById('buddyFullProfile');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function showToast(msg){
+  var t=document.createElement('div');t.textContent=msg;
+  t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(176,143,212,.9);color:#fff;padding:10px 22px;border-radius:24px;font-size:12px;font-family:Montserrat,sans-serif;z-index:9999;animation:fadeIn .3s';
+  document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},2500);
+}
+
 document.addEventListener('DOMContentLoaded',function(){
   initCelestial();drawCelestial();
   buildMonthPicker();
   drawDinnerRing();
   setTimeout(shootingStarLoop,2000);
   setTimeout(function(){var sl=document.getElementById('splashLoader');sl.classList.add('hide');setTimeout(function(){sl.style.display='none'},600)},1800);
+  updateBuddyUI();
   if(S.path){goHome()}
   if(S.rsvp){var b=document.getElementById('rsvpBtn');if(b){b.textContent='✓ RSVP Confirmed';b.style.opacity='.65';b.onclick=null}}
   renderExpList();

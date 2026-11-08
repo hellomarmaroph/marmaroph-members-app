@@ -893,6 +893,15 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <button class="btn btn-primary btn-full" id="joinBtn" onclick="joinRitual()">Begin my morning ritual ✦</button>
   </div>
 
+  <div class="glass rise" style="margin-top:12px;padding:24px 20px;text-align:center;border:1.5px solid rgba(255,183,77,.2);background:linear-gradient(160deg,rgba(255,183,77,.05) 0%,rgba(44,62,80,.25) 100%);border-radius:20px">
+    <div class="rule-label" style="margin-bottom:8px"><span class="eyebrow">Ritual buddy</span></div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;margin-bottom:8px">You don't have to do this alone</p>
+    <p class="body-copy" style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.7);margin-bottom:6px">If you want, we will match you with another woman practising the same ritual as you. Someone to share the journey, check in with each other, and keep going when motivation dips.</p>
+    <p class="body-copy" style="font-size:11.5px;line-height:1.6;color:rgba(255,183,77,.65);margin-bottom:16px;font-style:italic">Accountability changes everything. Two women, one ritual, thirty days.</p>
+    <button class="btn btn-primary" id="buddyToggleBtn" onclick="toggleBuddyActive()" style="font-size:11px">&#10047; &nbsp;Activate Ritual Buddy</button>
+    <p id="buddyActiveMsg" style="display:none;font-size:10.5px;color:rgba(255,183,77,.8);margin-top:8px">&#10003; Ritual Buddy is active. You will be matched at the start of the next cycle.</p>
+  </div>
+
   <footer>Marmaroph Home &amp; Living</footer>
 </section>
 
@@ -992,6 +1001,13 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
     <div style="padding:8px 18px 0">
       <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="startRitual()">Check for progress</button>
+    </div>
+
+    <div id="buddyHomeCard" style="display:none;margin:14px 18px 0;padding:16px 18px;background:linear-gradient(160deg,rgba(255,183,77,.06) 0%,rgba(44,62,80,.2) 100%);border:1px solid rgba(255,183,77,.15);border-radius:16px;text-align:center" class="rise">
+      <p style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,183,77,.5);margin-bottom:4px">Ritual Buddy</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#fff;margin-bottom:4px">Your buddy journey is active</p>
+      <p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:10px">You'll be matched with a sister at the start of the cycle</p>
+      <button class="btn btn-ghost" onclick="go('s-welcome')" style="font-size:10.5px;padding:8px 18px">View Buddy Details</button>
     </div>
 
     <!-- pillar tags -->
@@ -4243,6 +4259,28 @@ function setDailyImages(){}
     .catch(function(){});
 })();
 
+/* ── buddy toggle ── */
+function toggleBuddyActive(){
+  state.buddyActive = !state.buddyActive;
+  if(!state.buddyActive) delete state.buddyRequest;
+  store(KEY,state);
+  updateBuddyUI();
+}
+function updateBuddyUI(){
+  var btn=document.getElementById('buddyToggleBtn');
+  var msg=document.getElementById('buddyActiveMsg');
+  var card=document.getElementById('buddyHomeCard');
+  if(state.buddyActive){
+    if(btn){btn.textContent='✖  Deactivate Ritual Buddy';btn.classList.add('btn-ghost');btn.classList.remove('btn-primary');}
+    if(msg)msg.style.display='block';
+    if(card)card.style.display='block';
+  } else {
+    if(btn){btn.innerHTML='&#10047;  Activate Ritual Buddy';btn.classList.remove('btn-ghost');btn.classList.add('btn-primary');}
+    if(msg)msg.style.display='none';
+    if(card)card.style.display='none';
+  }
+}
+
 /* ── boot ── */
 (function(){
   var splash=document.getElementById('splashLoader');
@@ -4250,6 +4288,7 @@ function setDailyImages(){}
   setTimeout(function(){
     if(splash)splash.classList.add('hide');
     setTimeout(function(){if(splash)splash.style.display='none';},600);
+    updateBuddyUI();
     if(_startParam === 's-home' || state.startDate){go('s-home');}else{go('s-welcome');}
   },1400);
 })();

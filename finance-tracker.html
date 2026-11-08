@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Quiet Abundance — My Quiet Ledger</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700&display=swap');
 :root{
@@ -153,6 +154,25 @@ select.finp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmln
 .unlock-banner .ub-sub{font-size:11px;color:rgba(255,255,255,.4)}
 
 
+/* Earn more projection slider */
+.proj-box{background:rgba(255,255,255,.03);border:1px solid var(--glass-border);border-radius:14px;padding:14px 16px;margin:8px 16px 16px}
+.proj-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--sky);margin-bottom:8px}
+.proj-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.proj-slider{-webkit-appearance:none;appearance:none;flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:2px;outline:none}
+.proj-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid rgba(0,0,0,.3)}
+.proj-val{font-size:14px;font-weight:600;color:var(--gold);min-width:60px;text-align:right}
+.proj-result{display:flex;gap:8px;margin-top:10px}
+.proj-stat{flex:1;background:rgba(255,255,255,.04);border-radius:10px;padding:10px;text-align:center}
+.proj-stat .ps-num{font-family:var(--serif);font-size:18px;color:#fff}
+.proj-stat .ps-lbl{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.proj-stat.highlight .ps-num{color:var(--success)}
+.proj-compare{font-size:11px;color:var(--success);text-align:center;margin-top:8px;font-style:italic}
+
+/* Level-up banner */
+.lvlup-banner{background:linear-gradient(135deg,rgba(212,179,102,.12),rgba(107,159,212,.08));border:1px solid var(--gold-soft);border-radius:16px;padding:18px;margin:12px 16px;text-align:center;animation:fadeUp .5s ease-out}
+.lvlup-banner .lvl-title{font-family:var(--serif);font-size:22px;color:var(--gold);margin-bottom:4px}
+.lvlup-banner .lvl-sub{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:12px}
+
 /* Close button */
 .close-btn{position:fixed;top:14px;right:14px;z-index:100;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(11,16,38,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 .close-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
@@ -193,6 +213,71 @@ select.finp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmln
 .celestial-divider{text-align:center;padding:8px 0;opacity:.25}
 .celestial-divider svg{width:60px;height:12px}
 
+/* ═══ Statement Import ═══ */
+.import-drop{border:2px dashed rgba(212,179,102,.25);border-radius:16px;padding:32px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.import-drop:hover,.import-drop.drag-over{border-color:var(--gold);background:rgba(212,179,102,.04)}
+.import-drop .id-icon{font-size:36px;margin-bottom:8px;opacity:.6}
+.import-drop .id-title{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.import-drop .id-sub{font-size:11px;color:rgba(255,255,255,.35)}
+.import-preview{margin-top:16px}
+.ip-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:var(--glass);border:1px solid var(--glass-border);margin-bottom:4px;font-size:11px}
+.ip-row .ipr-desc{color:rgba(255,255,255,.7);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px}
+.ip-row .ipr-amt{color:var(--gold);font-weight:600;white-space:nowrap}
+.ip-row .ipr-dt{color:rgba(255,255,255,.25);font-size:9px;margin-left:8px;white-space:nowrap}
+.ip-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.ip-stat{background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;padding:10px;text-align:center}
+.ip-stat .ips-val{font-family:var(--serif);font-size:22px;color:var(--gold)}
+.ip-stat .ips-lbl{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px}
+.import-status{text-align:center;font-size:11px;padding:8px;border-radius:8px;margin-top:8px}
+.import-status.is-ok{background:rgba(80,200,120,.08);color:var(--success)}
+.import-status.is-err{background:rgba(255,80,80,.08);color:var(--danger)}
+
+/* ═══ Swipe Card Game ═══ */
+.swipe-arena{position:relative;width:100%;height:380px;margin:0 auto;overflow:visible}
+.swipe-stack{position:relative;width:260px;height:340px;margin:0 auto}
+.swipe-card{position:absolute;width:260px;min-height:180px;left:0;top:0;background:linear-gradient(145deg,rgba(20,26,55,.95),rgba(15,21,50,.98));border:1.5px solid rgba(212,179,102,.2);border-radius:20px;padding:22px;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;transition:box-shadow .2s;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.swipe-card:active{cursor:grabbing}
+.swipe-card .sc-cat{font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--sky);margin-bottom:6px}
+.swipe-card .sc-name{font-family:var(--serif);font-size:22px;color:#fff;margin-bottom:4px;line-height:1.2}
+.swipe-card .sc-amt{font-family:var(--serif);font-size:28px;color:var(--gold);margin:8px 0}
+.swipe-card .sc-date{font-size:10px;color:rgba(255,255,255,.3)}
+.swipe-card .sc-tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:9px;font-weight:600;margin-top:8px}
+.sc-tag-fixed{background:rgba(107,159,212,.15);border:1px solid rgba(107,159,212,.25);color:var(--sky)}
+.sc-tag-happy{background:rgba(80,200,120,.12);border:1px solid rgba(80,200,120,.25);color:var(--success)}
+.sc-tag-showoff{background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.25);color:var(--danger)}
+.swipe-hint{position:absolute;width:100%;text-align:center;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;opacity:0;transition:opacity .15s;pointer-events:none}
+.swipe-hint.top{top:-28px;color:var(--sky)}
+.swipe-hint.left{bottom:-28px;left:-40px;color:var(--success)}
+.swipe-hint.right{bottom:-28px;right:-40px;color:var(--danger)}
+.swipe-card.dragging{transition:none!important}
+.swipe-card.fly{transition:transform .4s ease-out,opacity .4s ease-out;pointer-events:none}
+.swipe-dir{display:flex;justify-content:space-between;align-items:center;padding:0 24px;margin-top:14px}
+.swipe-dir-item{text-align:center;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.swipe-dir-item .sdi-icon{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:16px}
+.swipe-dir-item.active .sdi-icon{border-color:var(--gold);background:rgba(212,179,102,.1)}
+.swipe-counter{text-align:center;margin:12px 0 4px;font-size:11px;color:rgba(255,255,255,.3);font-weight:500}
+.swipe-progress{height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin:0 40px 20px;overflow:hidden}
+.swipe-progress-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--gold));border-radius:2px;transition:width .3s}
+
+/* Swipe results */
+.sr-bar{height:28px;border-radius:8px;display:flex;overflow:hidden;margin:12px 0}
+.sr-bar div{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(0,0,0,.7);transition:width .5s}
+.sr-seg-fixed{background:linear-gradient(90deg,#7eb8e8,var(--sky))}
+.sr-seg-happy{background:linear-gradient(90deg,#6ddb8e,#50c878)}
+.sr-seg-showoff{background:linear-gradient(90deg,#ff6b6b,#ee5a5a)}
+.sr-legend{display:flex;gap:14px;justify-content:center;margin:8px 0 14px}
+.sr-legend span{font-size:10px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:4px}
+.sr-legend span::before{content:'';width:8px;height:8px;border-radius:50%}
+.sr-legend .sl-fixed::before{background:var(--sky)}
+.sr-legend .sl-happy::before{background:var(--success)}
+.sr-legend .sl-showoff::before{background:var(--danger)}
+.sr-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;margin-bottom:4px;font-size:11px}
+.sr-item-fixed{background:rgba(107,159,212,.06);border:1px solid rgba(107,159,212,.1)}
+.sr-item-happy{background:rgba(80,200,120,.06);border:1px solid rgba(80,200,120,.1)}
+.sr-item-showoff{background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.1)}
+.sr-item .sri-name{color:rgba(255,255,255,.7)}
+.sr-item .sri-amt{font-weight:600;color:rgba(255,255,255,.5)}
+
 footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.15);padding:30px 0 16px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .fade-up{animation:fadeUp .5s ease-out both}
@@ -230,24 +315,48 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
     </div>
   </div>
 
-  <!-- Debt type -->
+  <!-- Debt type: Good vs Bad -->
   <div id="debtTypeSection" style="display:none">
-    <div class="heading">What type of debt?</div>
+    <div class="heading">Does your debt make you money?</div>
+    <div class="subtext">Not all debt is equal. The question is: does it put money in your pocket or take it out?</div>
+
+    <div style="padding:0 16px">
+      <div class="edu-box" style="margin-bottom:12px">
+        <div class="eb-title" style="color:var(--danger)">Bad debt — takes money out</div>
+        <p>Credit cards, personal loans, buy-now-pay-later, car loans on a car you only drive. This debt costs you money every single month and the thing you bought is losing value. A $5,000 credit card at 24% APR costs $1,200/year in interest alone.</p>
+      </div>
+      <div class="edu-box" style="margin-bottom:14px">
+        <div class="eb-title" style="color:var(--success)">Good debt — puts money in</div>
+        <p>A mortgage on a rental property that earns rent. A business loan for a business that generates income. An investment loan that produces returns higher than the interest. The debt pays for itself and then some.</p>
+      </div>
+    </div>
+
+    <div class="heading" style="font-size:13px">What kind of debt do you have?</div>
     <div class="subtext">Select all that apply</div>
     <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px" id="debtTypeList">
-      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'consumer')">Consumer debt (credit cards, personal loans)</div>
-      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'mortgage')">Mortgage debt</div>
-      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'investment')">Investment debt</div>
-      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'other')">Other debt</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'consumer')"><span style="color:var(--danger)">&#x25CF;</span> Credit cards &amp; personal loans</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'car')"><span style="color:var(--danger)">&#x25CF;</span> Car loan (personal use only)</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'bnpl')"><span style="color:var(--danger)">&#x25CF;</span> Buy-now-pay-later / Afterpay</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'mortgage_home')"><span style="color:rgba(255,255,255,.3)">&#x25CF;</span> Mortgage (home I live in)</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'mortgage_rental')"><span style="color:var(--success)">&#x25CF;</span> Mortgage (rental / income property)</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'business')"><span style="color:var(--success)">&#x25CF;</span> Business loan (generating income)</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'investment')"><span style="color:var(--success)">&#x25CF;</span> Investment loan</div>
+      <div class="chip" style="width:100%;text-align:center" onclick="toggleDebtType(this,'other')"><span style="color:rgba(255,255,255,.3)">&#x25CF;</span> Other debt</div>
     </div>
     <div id="otherDebtInput" style="display:none;padding:8px 16px 0">
       <input class="finp" type="text" id="otherDebtDesc" placeholder="What kind of debt?">
     </div>
     <div id="consumerEdu" style="display:none;margin-top:14px">
-      <div class="edu-box">
-        <div class="eb-title">Why consumer debt is the most dangerous</div>
-        <p>Consumer debt (credit cards, personal loans, buy-now-pay-later) carries the highest interest rates, often 20-30% annually. A $5,000 credit card balance at 24% APR costs you $1,200 per year in interest alone. That money could be building your future instead of paying for your past.</p>
-        <p style="margin-top:8px;color:var(--gold)">The Quiet Abundance method locks your focus here first. No savings goals, no investments, until this weight is lifted.</p>
+      <div class="edu-box" style="border-color:var(--danger)">
+        <div class="eb-title" style="color:var(--danger)">This is your priority</div>
+        <p>Consumer debt, car loans, and buy-now-pay-later are the most dangerous. They carry the highest interest rates (20-30%), and the things you bought with them are losing value every day. The Quiet Abundance method locks your focus here first. No savings goals, no investments, until this weight is lifted.</p>
+        <p style="margin-top:8px;color:var(--gold)">Good debt can wait. Bad debt cannot.</p>
+      </div>
+    </div>
+    <div id="goodDebtEdu" style="display:none;margin-top:14px">
+      <div class="edu-box" style="border-color:var(--success)">
+        <div class="eb-title" style="color:var(--success)">Good debt is a tool, not a burden</div>
+        <p>Your income-producing debt is working for you. A rental mortgage that earns rent, a business loan that generates revenue — these are leveraged investments. Focus on making sure the income always exceeds the repayments.</p>
       </div>
     </div>
     <div style="padding:16px 16px 0">
@@ -283,6 +392,107 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
 </div>
 
 <!-- ═══════════════════════════════════════ -->
+<!-- SWIPE CARD GAME                          -->
+<!-- ═══════════════════════════════════════ -->
+<div class="view" id="v-swipe">
+  <div style="padding:48px 18px 12px;text-align:center">
+    <div class="sec-lbl">EXPENSE SORTER</div>
+    <div class="sec-title">Know Your Spending</div>
+    <div class="subtext" style="margin-top:4px">Swipe each expense to categorize it</div>
+  </div>
+
+  <div class="swipe-dir">
+    <div class="swipe-dir-item" id="sd-happy"><div class="sdi-icon">&#x2190;</div>Happy</div>
+    <div class="swipe-dir-item" id="sd-fixed"><div class="sdi-icon">&#x2191;</div>Fixed</div>
+    <div class="swipe-dir-item" id="sd-showoff"><div class="sdi-icon">&#x2192;</div>Show-off</div>
+  </div>
+
+  <div class="swipe-counter" id="swipeCounter">0 / 0</div>
+  <div class="swipe-progress"><div class="swipe-progress-fill" id="swipeProgressFill" style="width:0"></div></div>
+
+  <div class="swipe-arena">
+    <div class="swipe-stack" id="swipeStack">
+      <div class="swipe-hint top" id="hintTop">FIXED</div>
+      <div class="swipe-hint left" id="hintLeft">HAPPY</div>
+      <div class="swipe-hint right" id="hintRight">SHOW-OFF</div>
+    </div>
+  </div>
+
+  <div style="padding:16px;text-align:center">
+    <div class="edu-box" style="margin-bottom:12px">
+      <div class="eb-title">How to sort</div>
+      <p><b style="color:var(--sky)">Fixed</b> (swipe up) &mdash; Rent, bills, insurance. Non-negotiable.</p>
+      <p style="margin-top:4px"><b style="color:var(--success)">Happy</b> (swipe left) &mdash; Genuinely makes you happy, Instagram or not.</p>
+      <p style="margin-top:4px"><b style="color:var(--danger)">Show-off</b> (swipe right) &mdash; If you couldn't post it, would you still buy it?</p>
+    </div>
+  </div>
+
+  <!-- Results shown after all cards swiped -->
+  <div id="swipeResults" style="display:none;padding:0 16px 24px">
+    <div class="heading" style="margin-top:0">Your Spending DNA</div>
+    <div class="subtext">here is how your money flows</div>
+    <div id="srBar"></div>
+    <div id="srLegend"></div>
+    <div id="srFixed"></div>
+    <div id="srHappy"></div>
+    <div id="srShowoff"></div>
+    <div id="srInsight"></div>
+    <div style="margin-top:16px">
+      <button class="btn btn-primary" style="width:100%" onclick="finishSwipe()">Save &amp; return to ledger</button>
+    </div>
+  </div>
+
+  <div style="padding:0 16px 20px">
+    <button class="btn btn-ghost" style="width:100%" onclick="cancelSwipe()">Back to ledger</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STATEMENT IMPORT                         -->
+<!-- ═══════════════════════════════════════ -->
+<div class="view" id="v-import">
+  <div style="padding:48px 18px 12px;text-align:center">
+    <div class="sec-lbl">BANK STATEMENT</div>
+    <div class="sec-title">Import Your Expenses</div>
+    <div class="subtext" style="margin-top:4px">Upload a CSV or PDF bank statement</div>
+  </div>
+
+  <div style="padding:0 16px">
+    <div class="import-drop" id="importDrop" onclick="document.getElementById('importFile').click()">
+      <div class="id-icon">&#x1F4C4;</div>
+      <div class="id-title">Drop file here or tap to browse</div>
+      <div class="id-sub">Supports CSV and PDF bank statements</div>
+    </div>
+    <input type="file" id="importFile" accept=".csv,.pdf" style="display:none" onchange="handleImportFile(this)">
+  </div>
+
+  <div id="importStatus" style="padding:0 16px"></div>
+  <div id="importPreview" style="padding:0 16px"></div>
+
+  <div style="padding:0 16px">
+    <div class="edu-box" style="margin-top:16px">
+      <div class="eb-title">Your data stays private</div>
+      <p>Everything is processed on your phone. No data is uploaded to any server. Your bank statement never leaves your device.</p>
+    </div>
+
+    <div class="edu-box" style="margin-top:8px">
+      <div class="eb-title">Supported formats</div>
+      <p><b style="color:var(--sky)">CSV</b> — Most banks let you export transactions as CSV. Look for "Download" or "Export" in your banking app.</p>
+      <p style="margin-top:4px"><b style="color:var(--gold)">PDF</b> — Monthly statements in PDF format. We extract the transaction lines automatically.</p>
+    </div>
+  </div>
+
+  <div id="importActions" style="display:none;padding:16px">
+    <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="importToSwipe()">Categorize these expenses &#x2728;</button>
+    <button class="btn btn-ghost" style="width:100%" onclick="importToDaily()">Add to daily tracker</button>
+  </div>
+
+  <div style="padding:0 16px 20px">
+    <button class="btn btn-ghost" style="width:100%;margin-top:12px" onclick="showTracker()">Back to ledger</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
 <!-- MAIN TRACKER                            -->
 <!-- ═══════════════════════════════════════ -->
 <div class="view" id="v-tracker">
@@ -302,6 +512,7 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
     <div class="heading">Your Freedom Timeline</div>
     <div class="subtext">when each debt disappears</div>
     <div class="tl tl-gold" id="debtTimeline"></div>
+    <div id="debtProjection"></div>
 
     <!-- Income & Expenses -->
     <div class="heading">Monthly Overview</div>
@@ -318,6 +529,12 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
     <div id="debtsList"></div>
     <div class="glass" id="addDebtForm">
       <div class="fgrp"><label class="flbl">Debt name</label><input class="finp" type="text" id="dName" placeholder="e.g. Chase Visa, Car loan..."></div>
+      <div class="fgrp"><label class="flbl">This debt...</label>
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <button class="chip sel" id="dKindBad" onclick="pickDebtKind('bad')" style="flex:1;text-align:center;border-color:var(--danger);color:var(--danger)">Takes money out</button>
+          <button class="chip" id="dKindGood" onclick="pickDebtKind('good')" style="flex:1;text-align:center;border-color:var(--success);color:var(--success)">Puts money in</button>
+        </div>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div class="fgrp"><label class="flbl">Balance ($)</label><input class="finp" type="number" id="dBalance" placeholder="Owed"></div>
         <div class="fgrp"><label class="flbl">Interest rate (%)</label><input class="finp" type="number" id="dRate" placeholder="APR" step="0.1"></div>
@@ -339,6 +556,7 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
     <!-- Daily spending -->
     <div class="heading">Daily Spending</div>
     <div class="subtext">every dollar tracked is a dollar chosen</div>
+    <div style="padding:0 16px 8px;display:flex;gap:6px"><button class="btn btn-ghost" style="flex:1;border-color:var(--gold);color:var(--gold)" onclick="startSwipeGame()">&#x2728; Categorize</button><button class="btn btn-ghost" style="flex:1;border-color:var(--sky);color:var(--sky)" onclick="showView('v-import')">&#x1F4C4; Import Statement</button></div>
     <div id="dailyTrackerA"></div>
 
     <!-- AI Plan -->
@@ -360,6 +578,7 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
     <div class="heading">Your Peace Timeline</div>
     <div class="subtext">building your financial safety net</div>
     <div class="tl tl-sky" id="peaceTimeline"></div>
+    <div id="peaceProjection"></div>
 
     <!-- Income & Expenses -->
     <div class="heading">Monthly Overview</div>
@@ -416,6 +635,7 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
     <!-- Daily spending -->
     <div class="heading">Daily Spending</div>
     <div class="subtext">mindful money, peaceful mind</div>
+    <div style="padding:0 16px 8px;display:flex;gap:6px"><button class="btn btn-ghost" style="flex:1;border-color:var(--gold);color:var(--gold)" onclick="startSwipeGame()">&#x2728; Categorize</button><button class="btn btn-ghost" style="flex:1;border-color:var(--sky);color:var(--sky)" onclick="showView('v-import')">&#x1F4C4; Import Statement</button></div>
     <div id="dailyTrackerB"></div>
 
     <!-- AI Plan -->
@@ -437,6 +657,7 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
     <div class="heading">Your Wealth Timeline</div>
     <div class="subtext">milestones on the way to your goal</div>
     <div class="tl tl-green" id="wealthTimeline"></div>
+    <div id="wealthProjection"></div>
 
     <!-- Dashboard -->
     <div class="heading">Wealth Dashboard</div>
@@ -465,9 +686,32 @@ footer{text-align:center;font-size:9px;letter-spacing:.2em;text-transform:upperc
       <div id="portfolioChart"></div>
     </div>
 
+    <!-- Assets & Net Worth -->
+    <div class="heading">Your Assets</div>
+    <div class="subtext">everything you own that holds or grows value</div>
+    <div class="glass" style="margin-bottom:8px">
+      <div class="edu-box" style="border-color:var(--success);margin-bottom:12px">
+        <div class="eb-title" style="color:var(--success)">Good debt builds wealth</div>
+        <p style="font-size:11px">A mortgage on a rental property, a business loan, an investment loan — these put money <em>in</em> your pocket. Track them here alongside your income-producing assets.</p>
+      </div>
+      <div class="fgrp"><label class="flbl">Asset name</label><input class="finp" type="text" id="asNameC" placeholder="e.g. Rental property, Business, ETF portfolio..."></div>
+      <div class="fgrp"><label class="flbl">Value ($)</label><input class="finp" type="number" id="asValueC" placeholder="Current value"></div>
+      <div class="fgrp"><label class="flbl">Type</label>
+        <select class="finp" id="asTypeC">
+          <option value="income">Income-producing</option>
+          <option value="neutral">Neutral (home, car)</option>
+          <option value="cost">Money-taking</option>
+        </select>
+      </div>
+      <button class="btn btn-ghost" style="width:100%" onclick="addAssetC()">Add asset</button>
+    </div>
+    <div id="assetsListC"></div>
+    <div id="netWorthSummary"></div>
+
     <!-- Daily spending -->
     <div class="heading">Daily Spending</div>
     <div class="subtext">wealth is built one conscious choice at a time</div>
+    <div style="padding:0 16px 8px;display:flex;gap:6px"><button class="btn btn-ghost" style="flex:1;border-color:var(--gold);color:var(--gold)" onclick="startSwipeGame()">&#x2728; Categorize</button><button class="btn btn-ghost" style="flex:1;border-color:var(--sky);color:var(--sky)" onclick="showView('v-import')">&#x1F4C4; Import Statement</button></div>
     <div id="dailyTrackerC"></div>
 
     <!-- AI Plan -->
@@ -513,7 +757,8 @@ var F={
   portfolio:JSON.parse(ls('fin_portfolio')||'{"stocks":0,"bonds":0,"realEstate":0,"cash":0,"other":0}'),
 
   daily:JSON.parse(ls('fin_daily')||'[]'),
-  planA:ls('fin_planA')||'',planB:ls('fin_planB')||'',planC:ls('fin_planC')||''
+  planA:ls('fin_planA')||'',planB:ls('fin_planB')||'',planC:ls('fin_planC')||'',
+  lastMonth:ls('fin_lastMonth')||''
 };
 
 function sv(){
@@ -529,6 +774,7 @@ function sv(){
   ss('fin_wGoal',JSON.stringify(F.wealthGoal));ss('fin_portfolio',JSON.stringify(F.portfolio));
   ss('fin_daily',JSON.stringify(F.daily));
   ss('fin_planA',F.planA);ss('fin_planB',F.planB);ss('fin_planC',F.planC);
+  ss('fin_lastMonth',F.lastMonth);
 }
 
 /* ═══════════════════════════════════════ */
@@ -701,17 +947,23 @@ function pickDebt(el,val){
   }
 }
 
+var BAD_DEBT_TYPES=['consumer','car','bnpl'];
+var GOOD_DEBT_TYPES=['mortgage_rental','business','investment'];
 function toggleDebtType(el,type){
   el.classList.toggle('sel');
   var idx=F.debtTypes.indexOf(type);
   if(idx===-1)F.debtTypes.push(type);else F.debtTypes.splice(idx,1);
   document.getElementById('otherDebtInput').style.display=F.debtTypes.indexOf('other')!==-1?'block':'none';
-  document.getElementById('consumerEdu').style.display=F.debtTypes.indexOf('consumer')!==-1?'block':'none';
+  var hasBad=F.debtTypes.some(function(t){return BAD_DEBT_TYPES.indexOf(t)!==-1});
+  var hasGood=F.debtTypes.some(function(t){return GOOD_DEBT_TYPES.indexOf(t)!==-1});
+  document.getElementById('consumerEdu').style.display=hasBad?'block':'none';
+  document.getElementById('goodDebtEdu').style.display=hasGood&&!hasBad?'block':'none';
   document.getElementById('debtContinueBtn').style.display=F.debtTypes.length?'flex':'none';
 }
 
 function completeOnboard(){
-  if(F.debtTypes.indexOf('consumer')!==-1) F.pendingTier='A';
+  var hasBad=F.debtTypes.some(function(t){return BAD_DEBT_TYPES.indexOf(t)!==-1});
+  if(hasBad) F.pendingTier='A';
   else F.pendingTier='B';
   sv();
   showMonthPicker();
@@ -767,9 +1019,13 @@ function finishOnboard(){
 /* ═══════════════════════════════════════ */
 /* TRACKER                                  */
 /* ═══════════════════════════════════════ */
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){if(v.parentElement.id==='mainScroll')v.classList.remove('active')});
+  var el=document.getElementById(id);if(el)el.classList.add('active');
+  document.getElementById('mainScroll').scrollTop=0;
+}
 function showTracker(){
-  document.getElementById('v-onboard').classList.remove('active');
-  document.getElementById('v-tracker').classList.add('active');
+  showView('v-tracker');
   showTier(F.tier);
 }
 
@@ -1083,7 +1339,7 @@ function renderSurplus(vizId){
 /* TIER A: DEBT FREEDOM                     */
 /* ═══════════════════════════════════════ */
 function renderTierA(){
-  fillInputs('A');renderDebtGoalTop();renderDebtsList();renderMonthlyPayments();renderDebtTimeline();
+  fillInputs('A');renderDebtGoalTop();renderDebtsList();renderMonthlyPayments();renderDebtTimeline();renderDebtProjection();
   renderDailyTracker('dailyTrackerA');renderSurplus('aSurplusViz');
   if(F.planA)renderSavedPlan('planA',F.planA);
 }
@@ -1104,11 +1360,19 @@ function renderDebtGoalTop(){
     '<div class="prog-wrap" style="margin:10px 0"><div class="prog-fill prog-gold" style="width:'+pct+'%"></div></div>'+
     '<div style="font-size:10px;color:rgba(255,255,255,.3)">'+pct+'% paid off</div></div>';
 }
+var _debtKindPick='bad';
+function pickDebtKind(k){
+  _debtKindPick=k;
+  var bb=document.getElementById('dKindBad'),gb=document.getElementById('dKindGood');
+  if(bb){bb.classList.toggle('sel',k==='bad')}
+  if(gb){gb.classList.toggle('sel',k==='good')}
+}
 function addDebt(){
   var n=document.getElementById('dName'),b=document.getElementById('dBalance'),r=document.getElementById('dRate'),m=document.getElementById('dMinPay');
   if(!n||!n.value.trim()||!b)return;
-  F.debts.push({name:n.value.trim(),balance:parseFloat(b.value)||0,originalBalance:parseFloat(b.value)||0,rate:parseFloat(r?r.value:0)||0,minPay:parseFloat(m?m.value:0)||0});
+  F.debts.push({name:n.value.trim(),balance:parseFloat(b.value)||0,originalBalance:parseFloat(b.value)||0,rate:parseFloat(r?r.value:0)||0,minPay:parseFloat(m?m.value:0)||0,debtKind:_debtKindPick||'bad'});
   sv();n.value='';b.value='';if(r)r.value='';if(m)m.value='';
+  _debtKindPick='bad';pickDebtKind('bad');
   renderDebtsList();renderDebtGoalTop();renderDebtTimeline();
 }
 function removeDebt(idx){F.debts.splice(idx,1);sv();renderDebtsList();renderDebtGoalTop();renderDebtTimeline();}
@@ -1116,7 +1380,10 @@ function renderDebtsList(){
   var c=document.getElementById('debtsList');if(!c)return;
   if(!F.debts.length){c.innerHTML='';return}
   c.innerHTML=F.debts.map(function(d,i){
-    return '<div class="debt-card"><div class="dc-name">'+d.name+'</div><div class="dc-info">'+d.rate+'% APR &middot; $'+d.minPay+'/mo minimum</div><div class="dc-amt">$'+d.balance.toLocaleString()+'</div><button class="dc-del" onclick="removeDebt('+i+')">remove</button></div>';
+    var kind=d.debtKind||'bad';
+    var kindColor=kind==='good'?'var(--success)':'var(--danger)';
+    var kindLabel=kind==='good'?'GOOD DEBT':'BAD DEBT';
+    return '<div class="debt-card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="dc-name">'+d.name+'</div><div style="font-size:9px;font-weight:700;color:'+kindColor+';letter-spacing:.5px">'+kindLabel+'</div></div><div class="dc-info">'+d.rate+'% APR &middot; $'+d.minPay+'/mo minimum</div><div class="dc-amt">$'+d.balance.toLocaleString()+'</div><button class="dc-del" onclick="removeDebt('+i+')">remove</button></div>';
   }).join('');
 }
 function renderMonthlyPayments(){
@@ -1139,7 +1406,7 @@ function logPayment(idx){
 function checkDebtFreedom(){
   var totalDebt=F.debts.reduce(function(s,d){return s+d.balance},0);
   if(totalDebt<=0&&F.debts.length>0){
-    F.tier='B';sv();
+    F.tier='B';sv();notifyParentLevelUp(2);
     var top=document.getElementById('debtGoalTop');
     if(top){top.innerHTML='<div class="unlock-banner fade-up"><div class="ub-title">&#10024; Debt Freedom Achieved</div><div class="ub-sub">Your Peace Fund journey is now unlocked</div><button class="btn btn-primary" style="margin-top:12px" onclick="showTier(\'B\')">Begin Peace Fund</button></div>';}
   }
@@ -1161,11 +1428,74 @@ function renderDebtTimeline(){
   c.innerHTML=html;
 }
 
+/* ═══════════════════ EARN MORE PROJECTIONS ═══════════════════ */
+function renderDebtProjection(){
+  var c=document.getElementById('debtProjection');if(!c)return;
+  if(!F.debts.length||!F.debts.some(function(d){return d.balance>0})){c.innerHTML='';return}
+  var totalDebt=F.debts.reduce(function(s,d){return s+d.balance},0);
+  var totalMin=F.debts.reduce(function(s,d){return s+d.minPay},0);
+  var surplus=Math.max(0,F.income-F.expenses);
+  var avgRate=F.debts.reduce(function(s,d){return s+d.rate},0)/F.debts.length;
+  function calcMonths(extra){
+    var pay=totalMin+surplus+extra;var monthRate=avgRate/100/12;
+    if(pay<=0)return 999;
+    if(monthRate>0&&pay>totalDebt*monthRate)return Math.ceil(Math.log(pay/(pay-totalDebt*monthRate))/Math.log(1+monthRate));
+    if(monthRate===0)return Math.ceil(totalDebt/pay);
+    return 999;
+  }
+  var baseMonths=calcMonths(0);
+  var sliderVal=F._debtSlider||0;
+  var accMonths=calcMonths(sliderVal);
+  var saved=baseMonths-accMonths;
+  c.innerHTML='<div class="proj-box">'+
+    '<div class="proj-label">What if you earned more?</div>'+
+    '<div class="proj-row"><input type="range" class="proj-slider" min="0" max="2000" step="50" value="'+sliderVal+'" oninput="updateDebtSlider(this.value)"><div class="proj-val" id="debtSliderVal">+$'+sliderVal+'/mo</div></div>'+
+    '<div class="proj-result">'+
+      '<div class="proj-stat"><div class="ps-num">'+(baseMonths<999?baseMonths+'mo':'&#8734;')+'</div><div class="ps-lbl">Current pace</div></div>'+
+      '<div class="proj-stat highlight"><div class="ps-num">'+(accMonths<999?accMonths+'mo':'&#8734;')+'</div><div class="ps-lbl">With extra income</div></div>'+
+    '</div>'+
+    (saved>0?'<div class="proj-compare">'+saved+(saved===1?' month':' months')+' faster to freedom</div>':'')+
+  '</div>';
+}
+function updateDebtSlider(v){
+  F._debtSlider=parseInt(v)||0;
+  renderDebtProjection();
+}
+function renderPeaceProjection(){
+  var c=document.getElementById('peaceProjection');if(!c)return;
+  var target=F.expenses*6||10000;var remaining=target-F.savings;
+  if(remaining<=0){c.innerHTML='';return}
+  var monthly=F.autoSave||Math.max(0,F.income-F.expenses);
+  function calcMonths(extra){var pay=monthly+extra;return pay>0?Math.ceil(remaining/pay):999;}
+  var baseMonths=calcMonths(0);
+  var sliderVal=F._peaceSlider||0;
+  var accMonths=calcMonths(sliderVal);
+  var saved=baseMonths-accMonths;
+  c.innerHTML='<div class="proj-box">'+
+    '<div class="proj-label">What if you earned more?</div>'+
+    '<div class="proj-row"><input type="range" class="proj-slider" min="0" max="2000" step="50" value="'+sliderVal+'" oninput="updatePeaceSlider(this.value)"><div class="proj-val" id="peaceSliderVal">+$'+sliderVal+'/mo</div></div>'+
+    '<div class="proj-result">'+
+      '<div class="proj-stat"><div class="ps-num">'+(baseMonths<999?baseMonths+'mo':'&#8734;')+'</div><div class="ps-lbl">Current pace</div></div>'+
+      '<div class="proj-stat highlight"><div class="ps-num">'+(accMonths<999?accMonths+'mo':'&#8734;')+'</div><div class="ps-lbl">With extra income</div></div>'+
+    '</div>'+
+    (saved>0?'<div class="proj-compare">'+saved+(saved===1?' month':' months')+' faster to peace</div>':'')+
+  '</div>';
+}
+function updatePeaceSlider(v){
+  F._peaceSlider=parseInt(v)||0;
+  renderPeaceProjection();
+}
+
+/* ═══════════ LEVEL-UP NOTIFICATIONS ═══════════ */
+function notifyParentLevelUp(newLevel){
+  try{window.parent.postMessage({type:'levelUp',level:newLevel},'*');}catch(e){}
+}
+
 /* ═══════════════════════════════════════ */
 /* TIER B: PEACE FUND                       */
 /* ═══════════════════════════════════════ */
 function renderTierB(){
-  fillInputs('B');renderSurplus('bSurplusViz');renderPeaceFundGoal();renderPeaceFundRing();renderPeaceTimeline();
+  fillInputs('B');renderSurplus('bSurplusViz');renderPeaceFundGoal();renderPeaceFundRing();renderPeaceTimeline();renderPeaceProjection();
   renderAssetsList();renderDailyTracker('dailyTrackerB');
   if(F.planB)renderSavedPlan('planB',F.planB);
 }
@@ -1180,7 +1510,7 @@ function renderPeaceFundGoal(){
     '<div class="prog-wrap" style="margin:10px 0"><div class="prog-fill prog-sky" style="width:'+pct+'%"></div></div>'+
     '<div style="font-size:10px;color:rgba(255,255,255,.3)">'+pct+'% funded'+(months>0?' &middot; ~'+months+' months to go':'')+'</div></div>';
   if(F.savings>=target&&target>0){
-    c.innerHTML+='<div class="unlock-banner fade-up" style="margin-top:-4px"><div class="ub-title">&#10024; Peace Fund Complete</div><div class="ub-sub">Wealth building is now unlocked</div><button class="btn btn-primary" style="margin-top:12px" onclick="F.tier=\'C\';sv();showTier(\'C\')">Begin Wealth Building</button></div>';
+    c.innerHTML+='<div class="unlock-banner fade-up" style="margin-top:-4px"><div class="ub-title">&#10024; Peace Fund Complete</div><div class="ub-sub">Wealth building is now unlocked</div><button class="btn btn-primary" style="margin-top:12px" onclick="F.tier=\'C\';sv();notifyParentLevelUp(4);showTier(\'C\')">Begin Wealth Building</button></div>';
   }
 }
 function renderPeaceTimeline(){
@@ -1228,8 +1558,8 @@ function renderAssetsList(){
 /* TIER C: WEALTH BUILDING                  */
 /* ═══════════════════════════════════════ */
 function renderTierC(){
-  fillInputs('C');renderWealthGoalTop();renderWealthTimeline();renderWealthStats();renderPortfolioChart();
-  renderDailyTracker('dailyTrackerC');
+  fillInputs('C');renderWealthGoalTop();renderWealthTimeline();renderWealthProjection();renderWealthStats();renderPortfolioChart();
+  renderAssetsListC();renderNetWorthSummary();renderDailyTracker('dailyTrackerC');
   if(F.planC)renderSavedPlan('planC',F.planC);
   if(F.wealthGoal)document.getElementById('wealthGoalForm').style.display='none';
 }
@@ -1283,6 +1613,73 @@ function renderPortfolioChart(){
   html+='</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">';
   items.forEach(function(item){if(item.val>0){html+='<div style="font-size:9px;color:rgba(255,255,255,.5)"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+item.color+';margin-right:3px;vertical-align:middle"></span>'+item.label+' '+(item.val/total*100).toFixed(0)+'%</div>';}});
   html+='</div>';c.innerHTML=html;
+}
+
+/* ═══════════ TIER C: ASSETS & PROJECTIONS ═══════════ */
+function addAssetC(){
+  var n=document.getElementById('asNameC'),v=document.getElementById('asValueC'),t=document.getElementById('asTypeC');
+  if(!n||!n.value.trim())return;
+  F.assets.push({name:n.value.trim(),value:parseFloat(v?v.value:0)||0,type:t?t.value:'income'});
+  sv();n.value='';if(v)v.value='';if(t)t.value='income';
+  renderAssetsListC();renderNetWorthSummary();renderWealthStats();
+}
+function renderAssetsListC(){
+  var c=document.getElementById('assetsListC');if(!c)return;
+  if(!F.assets.length){c.innerHTML='';return}
+  var colors={income:'var(--success)',cost:'var(--danger)',neutral:'rgba(255,255,255,.4)'};
+  var labels={income:'Income-producing',cost:'Money-taking',neutral:'Neutral'};
+  var incomeAssets=F.assets.filter(function(a){return a.type==='income'});
+  var otherAssets=F.assets.filter(function(a){return a.type!=='income'});
+  var html='';
+  if(incomeAssets.length){
+    html+='<div style="padding:0 16px 4px"><div class="sec-lbl" style="color:var(--success)">INCOME-PRODUCING</div></div>';
+    incomeAssets.forEach(function(a){var i=F.assets.indexOf(a);html+='<div class="asset-row"><div><div class="ar-name">'+a.name+'</div><div class="ar-type" style="color:var(--success)">'+labels.income+'</div></div><div style="display:flex;align-items:center;gap:8px"><div class="ar-val">$'+a.value.toLocaleString()+'</div><button style="background:none;border:none;color:rgba(255,80,80,.4);font-size:10px;cursor:pointer" onclick="removeAsset('+i+');renderAssetsListC();renderNetWorthSummary()">&#10005;</button></div></div>';});
+  }
+  if(otherAssets.length){
+    html+='<div style="padding:8px 16px 4px"><div class="sec-lbl" style="color:rgba(255,255,255,.3)">OTHER ASSETS</div></div>';
+    otherAssets.forEach(function(a){var i=F.assets.indexOf(a);var col=colors[a.type]||colors.neutral;html+='<div class="asset-row"><div><div class="ar-name">'+a.name+'</div><div class="ar-type" style="color:'+col+'">'+(labels[a.type]||'')+'</div></div><div style="display:flex;align-items:center;gap:8px"><div class="ar-val">$'+a.value.toLocaleString()+'</div><button style="background:none;border:none;color:rgba(255,80,80,.4);font-size:10px;cursor:pointer" onclick="removeAsset('+i+');renderAssetsListC();renderNetWorthSummary()">&#10005;</button></div></div>';});
+  }
+  c.innerHTML=html;
+}
+function renderNetWorthSummary(){
+  var c=document.getElementById('netWorthSummary');if(!c)return;
+  var tp=F.portfolio.stocks+F.portfolio.bonds+F.portfolio.realEstate+F.portfolio.cash+F.portfolio.other;
+  var incomeAssets=F.assets.filter(function(a){return a.type==='income'}).reduce(function(s,a){return s+a.value},0);
+  var otherAssets=F.assets.filter(function(a){return a.type!=='income'}).reduce(function(s,a){return s+a.value},0);
+  var nw=F.savings+tp+incomeAssets+otherAssets;
+  if(!F.assets.length&&!tp){c.innerHTML='';return}
+  c.innerHTML='<div class="glass" style="text-align:center;margin-top:8px">'+
+    '<div class="sec-lbl">NET WORTH</div>'+
+    '<div style="font-family:var(--serif);font-size:28px;color:var(--gold);margin:4px 0">$'+nw.toLocaleString()+'</div>'+
+    (incomeAssets>0?'<div style="font-size:10px;color:var(--success)">$'+incomeAssets.toLocaleString()+' in income-producing assets</div>':'')+
+  '</div>';
+}
+function renderWealthProjection(){
+  var c=document.getElementById('wealthProjection');if(!c)return;
+  if(!F.wealthGoal){c.innerHTML='';return}
+  var tp=F.portfolio.stocks+F.portfolio.bonds+F.portfolio.realEstate+F.portfolio.cash+F.portfolio.other;
+  var totalWealth=F.savings+F.invested+tp;
+  var remaining=F.wealthGoal.target-totalWealth;
+  if(remaining<=0){c.innerHTML='';return}
+  var monthly=F.autoSave||Math.max(0,F.income-F.expenses);
+  function calcMonths(extra){var pay=monthly+extra;return pay>0?Math.ceil(remaining/pay):999;}
+  var baseMonths=calcMonths(0);
+  var sliderVal=F._wealthSlider||0;
+  var accMonths=calcMonths(sliderVal);
+  var saved=baseMonths-accMonths;
+  c.innerHTML='<div class="proj-box">'+
+    '<div class="proj-label">What if you invested more?</div>'+
+    '<div class="proj-row"><input type="range" class="proj-slider" min="0" max="3000" step="100" value="'+sliderVal+'" oninput="updateWealthSlider(this.value)"><div class="proj-val" id="wealthSliderVal">+$'+sliderVal+'/mo</div></div>'+
+    '<div class="proj-result">'+
+      '<div class="proj-stat"><div class="ps-num">'+(baseMonths<999?baseMonths+'mo':'&#8734;')+'</div><div class="ps-lbl">Current pace</div></div>'+
+      '<div class="proj-stat highlight"><div class="ps-num">'+(accMonths<999?accMonths+'mo':'&#8734;')+'</div><div class="ps-lbl">With extra investing</div></div>'+
+    '</div>'+
+    (saved>0?'<div class="proj-compare">'+saved+(saved===1?' month':' months')+' closer to your goal</div>':'')+
+  '</div>';
+}
+function updateWealthSlider(v){
+  F._wealthSlider=parseInt(v)||0;
+  renderWealthProjection();
 }
 
 /* ═══════════════════════════════════════ */
@@ -1362,6 +1759,430 @@ function renderSavedPlan(elId,text){
 }
 
 /* ═══════════════════════════════════════ */
+/* STATEMENT IMPORT (CSV / PDF)              */
+/* ═══════════════════════════════════════ */
+var importedExpenses=[];
+
+(function(){
+  var drop=document.getElementById('importDrop');
+  if(!drop)return;
+  drop.addEventListener('dragover',function(e){e.preventDefault();drop.classList.add('drag-over')});
+  drop.addEventListener('dragleave',function(){drop.classList.remove('drag-over')});
+  drop.addEventListener('drop',function(e){
+    e.preventDefault();drop.classList.remove('drag-over');
+    if(e.dataTransfer.files.length)processImportFile(e.dataTransfer.files[0]);
+  });
+})();
+
+function handleImportFile(input){if(input.files.length)processImportFile(input.files[0])}
+
+function processImportFile(file){
+  var ext=file.name.split('.').pop().toLowerCase();
+  setImportStatus('Processing '+file.name+'...','');
+  if(ext==='csv')parseCsvFile(file);
+  else if(ext==='pdf')parsePdfFile(file);
+  else setImportStatus('Unsupported file type. Please use CSV or PDF.','is-err');
+}
+
+function setImportStatus(msg,cls){
+  var el=document.getElementById('importStatus');
+  el.innerHTML=msg?'<div class="import-status '+(cls||'')+'">'+msg+'</div>':'';
+}
+
+function parseCsvFile(file){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var text=e.target.result;
+    var lines=text.split(/\r?\n/).filter(function(l){return l.trim()});
+    if(lines.length<2){setImportStatus('File appears empty or has no data rows.','is-err');return}
+
+    var header=lines[0].toLowerCase();
+    var sep=header.indexOf('\t')>-1?'\t':',';
+    var cols=splitCsvLine(lines[0],sep);
+    var colsLower=cols.map(function(c){return c.toLowerCase().replace(/[^a-z]/g,'')});
+
+    var descIdx=findCol(colsLower,['description','narrative','details','memo','transactiondescription','particulars','reference','payee','name']);
+    var amtIdx=findCol(colsLower,['amount','debit','value','money','transactionamount','sum']);
+    var dateIdx=findCol(colsLower,['date','transactiondate','postdate','bookingdate','valuedate','postingdate']);
+    var creditIdx=findCol(colsLower,['credit','credits','moneyin']);
+    var debitIdx=findCol(colsLower,['debit','debits','moneyout']);
+
+    if(descIdx===-1){
+      descIdx=cols.length>1?1:0;
+    }
+    if(amtIdx===-1&&debitIdx===-1){
+      for(var ci=0;ci<cols.length;ci++){
+        if(ci!==descIdx&&ci!==dateIdx){
+          var testVal=lines.length>1?splitCsvLine(lines[1],sep)[ci]:'';
+          if(testVal&&/^-?[\d,]+\.?\d*$/.test(testVal.replace(/[$£€\s"]/g,''))){amtIdx=ci;break}
+        }
+      }
+    }
+
+    var hasNeg=false;
+    if(amtIdx>-1&&debitIdx===-1){
+      for(var p=1;p<lines.length;p++){
+        var prow=splitCsvLine(lines[p],sep);
+        if(prow[amtIdx]&&parseAmount(prow[amtIdx])<0){hasNeg=true;break}
+      }
+    }
+
+    var expenses=[];
+    for(var i=1;i<lines.length;i++){
+      var row=splitCsvLine(lines[i],sep);
+      if(row.length<2)continue;
+      var desc=(row[descIdx]||'').replace(/^["']|["']$/g,'').trim();
+      if(!desc)continue;
+
+      var amt=0;
+      if(debitIdx>-1&&creditIdx>-1){
+        var dv=parseAmount(row[debitIdx]);
+        var cv=parseAmount(row[creditIdx]);
+        amt=dv>0?dv:(cv>0?-cv:0);
+      }else{
+        var rawAmt=parseAmount(row[amtIdx!==undefined?amtIdx:1]);
+        if(hasNeg){
+          if(rawAmt>=0)continue;
+          amt=Math.abs(rawAmt);
+        }else{
+          amt=rawAmt;
+        }
+        if(amt===0)continue;
+      }
+      if(amt<=0)continue;
+
+      var dt='';
+      if(dateIdx>-1&&row[dateIdx]){
+        dt=row[dateIdx].replace(/^["']|["']$/g,'').trim();
+      }
+
+      var cat=guessCategory(desc);
+      expenses.push({desc:cleanDesc(desc),amt:Math.round(amt*100)/100,cat:cat,dt:dt});
+    }
+
+    if(!expenses.length){setImportStatus('Could not find any expenses in this file. Try a different format.','is-err');return}
+    importedExpenses=expenses;
+    setImportStatus('Found '+expenses.length+' expenses','is-ok');
+    renderImportPreview();
+  };
+  reader.readAsText(file);
+}
+
+function splitCsvLine(line,sep){
+  var result=[];var field='';var inQuote=false;
+  for(var i=0;i<line.length;i++){
+    var c=line[i];
+    if(c==='"'){inQuote=!inQuote;continue}
+    if(c===sep&&!inQuote){result.push(field);field='';continue}
+    field+=c;
+  }
+  result.push(field);
+  return result;
+}
+
+function findCol(cols,names){
+  for(var n=0;n<names.length;n++){
+    for(var c=0;c<cols.length;c++){
+      if(cols[c].indexOf(names[n])>-1)return c;
+    }
+  }
+  return -1;
+}
+
+function parseAmount(val){
+  if(!val)return 0;
+  val=String(val).replace(/[$£€\s"',]/g,'').replace(/\((.+)\)/,'$1');
+  var n=parseFloat(val);
+  return isNaN(n)?0:n;
+}
+
+function cleanDesc(d){
+  d=d.replace(/\b(VISA|EFTPOS|DEBIT|PURCHASE|POS|REF\s*\d+|CARD\s*\d+|\d{4}\*+\d{4}|XX\d{4})\b/gi,'');
+  d=d.replace(/\d{2}\/\d{2}\/?(\d{2,4})?/g,'');
+  d=d.replace(/\s{2,}/g,' ').trim();
+  if(d.length>40)d=d.substring(0,37)+'...';
+  return d||'Transaction';
+}
+
+function guessCategory(desc){
+  var d=desc.toLowerCase();
+  if(/uber|lyft|taxi|fuel|petrol|gas|parking|toll|train|bus|metro/.test(d))return 'transport';
+  if(/grocery|supermarket|woolworth|coles|aldi|costco|walmart|target|whole\s*food|trader\s*joe/.test(d))return 'food';
+  if(/restaurant|cafe|coffee|starbuck|mcdonald|kfc|pizza|sushi|burger|doordash|ubereats|deliveroo|grubhub|just\s*eat/.test(d))return 'food';
+  if(/electric|gas|water|internet|telstra|vodafone|optus|phone|mobile|wifi|utility|power/.test(d))return 'bills';
+  if(/rent|mortgage|insurance|council|rate/.test(d))return 'bills';
+  if(/netflix|spotify|hulu|disney|amazon\s*prime|youtube|apple\s*music|hbo|paramount/.test(d))return 'entertainment';
+  if(/gym|fitness|health|pharmacy|chemist|doctor|dental|medical|hospital|physio/.test(d))return 'health';
+  if(/zara|h&m|shein|asos|fashion|cloth|shoe|bag|nike|adidas|gucci|lv|louis\s*vuitton|prada/.test(d))return 'shopping';
+  if(/beauty|salon|spa|nail|hair|skin|makeup|sephora|mecca|ulta/.test(d))return 'beauty';
+  if(/hotel|airbnb|flight|airline|booking|travel|holiday|vacation/.test(d))return 'travel';
+  return 'other';
+}
+
+function parsePdfFile(file){
+  if(typeof pdfjsLib==='undefined'){setImportStatus('PDF library not loaded. Please try CSV instead.','is-err');return}
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var data=new Uint8Array(e.target.result);
+    pdfjsLib.getDocument({data:data}).promise.then(function(pdf){
+      var pages=[];
+      var total=pdf.numPages;
+      function extractPage(n){
+        if(n>total){processPdfText(pages.join('\n'));return}
+        pdf.getPage(n).then(function(page){
+          page.getTextContent().then(function(tc){
+            var txt=tc.items.map(function(it){return it.str}).join(' ');
+            pages.push(txt);
+            extractPage(n+1);
+          });
+        });
+      }
+      extractPage(1);
+    }).catch(function(err){
+      setImportStatus('Could not read PDF: '+err.message,'is-err');
+    });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function processPdfText(text){
+  var lines=text.split(/\n/);
+  var expenses=[];
+  var dateRe=/\b(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})\b/;
+  var amtRe=/\$?\s*(\d{1,3}(?:,\d{3})*(?:\.\d{2}))\b/;
+
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(!line||line.length<10)continue;
+    var dm=line.match(dateRe);
+    var am=line.match(amtRe);
+    if(!am)continue;
+    var amt=parseAmount(am[1]);
+    if(amt<=0||amt>50000)continue;
+
+    var desc=line;
+    if(dm)desc=desc.replace(dm[0],'');
+    desc=desc.replace(amtRe,'');
+    desc=desc.replace(/\b(CR|DR|CREDIT|DEBIT)\b/gi,'');
+    desc=cleanDesc(desc);
+    if(desc.length<2)continue;
+
+    expenses.push({desc:desc,amt:amt,cat:guessCategory(desc),dt:dm?dm[1]:''});
+  }
+
+  var unique={};
+  var deduped=[];
+  expenses.forEach(function(e){
+    var key=e.desc+'-'+e.amt;
+    if(!unique[key]){unique[key]=true;deduped.push(e)}
+  });
+
+  if(!deduped.length){setImportStatus('Could not extract expenses from this PDF. The format may not be supported.','is-err');return}
+  importedExpenses=deduped;
+  setImportStatus('Found '+deduped.length+' expenses from PDF','is-ok');
+  renderImportPreview();
+}
+
+function renderImportPreview(){
+  var el=document.getElementById('importPreview');
+  var total=importedExpenses.reduce(function(s,e){return s+e.amt},0);
+  var html='<div class="ip-summary"><div class="ip-stat"><div class="ips-val">'+importedExpenses.length+'</div><div class="ips-lbl">Transactions</div></div><div class="ip-stat"><div class="ips-val">$'+total.toLocaleString()+'</div><div class="ips-lbl">Total Spent</div></div></div>';
+  html+='<div class="import-preview">';
+  importedExpenses.slice(0,20).forEach(function(e){
+    var catObj=CATS.find(function(c){return c.id===e.cat})||CATS[CATS.length-1];
+    html+='<div class="ip-row"><span class="ipr-desc">'+e.desc+'</span><span class="ipr-amt">$'+e.amt.toLocaleString()+'</span>'+(e.dt?'<span class="ipr-dt">'+e.dt+'</span>':'')+'</div>';
+  });
+  if(importedExpenses.length>20)html+='<div style="text-align:center;font-size:10px;color:rgba(255,255,255,.25);padding:6px">+'+(importedExpenses.length-20)+' more</div>';
+  html+='</div>';
+  el.innerHTML=html;
+  document.getElementById('importActions').style.display='block';
+}
+
+function importToSwipe(){
+  swipeCards=importedExpenses.map(function(e,i){
+    var prev=lookupPrevCat(e.desc+'-'+e.amt);
+    return {desc:e.desc,amt:e.amt,cat:e.cat,prevType:prev||null,type:null,idx:i};
+  });
+  swipeIdx=0;
+  showView('v-swipe');
+  document.getElementById('swipeResults').style.display='none';
+  renderSwipeStack();
+}
+
+function importToDaily(){
+  var today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  importedExpenses.forEach(function(e){
+    F.daily.push({desc:e.desc,amt:e.amt,cat:e.cat,dt:e.dt||today});
+  });
+  sv();
+  setImportStatus('Added '+importedExpenses.length+' expenses to your daily tracker','is-ok');
+  setTimeout(function(){showTracker()},800);
+}
+
+/* ═══════════════════════════════════════ */
+/* SWIPE CARD GAME                           */
+/* ═══════════════════════════════════════ */
+var swipeCards=[];
+var swipeIdx=0;
+var swipeCategorized=JSON.parse(ls('fin_swipeCat')||'{}');
+
+function getMonthKey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function getPrevMonthKey(){var d=new Date();d.setMonth(d.getMonth()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function lookupPrevCat(key){
+  var mk=getMonthKey();var pmk=getPrevMonthKey();
+  if(swipeCategorized[mk]&&swipeCategorized[mk][key])return swipeCategorized[mk][key];
+  if(swipeCategorized[pmk]&&swipeCategorized[pmk][key])return swipeCategorized[pmk][key];
+  return null;
+}
+
+function startSwipeGame(){
+  var items=F.daily.slice();
+  if(!items.length){
+    items=[
+      {desc:'Coffee',amt:5,cat:'food'},
+      {desc:'Uber to work',amt:12,cat:'transport'},
+      {desc:'Netflix',amt:15,cat:'entertainment'},
+      {desc:'New shoes',amt:89,cat:'shopping'},
+      {desc:'Groceries',amt:65,cat:'food'},
+      {desc:'Rent',amt:1200,cat:'bills'},
+      {desc:'Gym membership',amt:45,cat:'health'},
+      {desc:'Designer bag',amt:340,cat:'shopping'},
+      {desc:'Phone bill',amt:55,cat:'bills'},
+      {desc:'Dinner out',amt:68,cat:'food'}
+    ];
+  }
+  swipeCards=items.map(function(e,i){
+    var prev=lookupPrevCat(e.desc+'-'+e.amt);
+    return {desc:e.desc,amt:e.amt,cat:e.cat,prevType:prev||null,type:null,idx:i};
+  });
+  swipeIdx=0;
+  showView('v-swipe');
+  document.getElementById('swipeResults').style.display='none';
+  renderSwipeStack();
+}
+
+function cancelSwipe(){showTracker()}
+
+function renderSwipeStack(){
+  var stack=document.getElementById('swipeStack');
+  var hints=stack.querySelectorAll('.swipe-hint');
+  var remaining=swipeCards.filter(function(c){return !c.type});
+  document.getElementById('swipeCounter').textContent=(swipeCards.length-remaining.length)+' / '+swipeCards.length;
+  document.getElementById('swipeProgressFill').style.width=((swipeCards.length-remaining.length)/swipeCards.length*100)+'%';
+
+  stack.querySelectorAll('.swipe-card').forEach(function(c){c.remove()});
+
+  if(!remaining.length){showSwipeResults();return}
+
+  var show=remaining.slice(0,3).reverse();
+  show.forEach(function(card,i){
+    var el=document.createElement('div');
+    el.className='swipe-card';
+    var depth=show.length-1-i;
+    el.style.transform='translateY('+depth*6+'px) scale('+(1-depth*0.03)+')';
+    el.style.opacity=depth===0?1:0.5;
+    el.style.zIndex=10-depth;
+
+    var catObj=CATS.find(function(c){return c.id===card.cat})||CATS[CATS.length-1];
+    var tagHtml=card.prevType?'<div class="sc-tag sc-tag-'+card.prevType+'">Last month: '+card.prevType.toUpperCase()+'</div>':'';
+    el.innerHTML='<div class="sc-cat">'+catObj.label+'</div><div class="sc-name">'+card.desc+'</div><div class="sc-amt">$'+card.amt.toLocaleString()+'</div>'+tagHtml;
+
+    if(depth===0){bindSwipeDrag(el,card)}
+    stack.appendChild(el);
+  });
+}
+
+function bindSwipeDrag(el,card){
+  var startX=0,startY=0,dx=0,dy=0,dragging=false;
+  var hintT=document.getElementById('hintTop');
+  var hintL=document.getElementById('hintLeft');
+  var hintR=document.getElementById('hintRight');
+  var sdFixed=document.getElementById('sd-fixed');
+  var sdHappy=document.getElementById('sd-happy');
+  var sdShowoff=document.getElementById('sd-showoff');
+
+  function onStart(ex,ey){startX=ex;startY=ey;dx=0;dy=0;dragging=true;el.classList.add('dragging')}
+  function onMove(ex,ey){
+    if(!dragging)return;
+    dx=ex-startX;dy=ey-startY;
+    var rot=dx*0.08;
+    el.style.transform='translate('+dx+'px,'+dy+'px) rotate('+rot+'deg)';
+    var absDx=Math.abs(dx),absDy=Math.abs(dy);
+    var thresh=40;
+    hintT.style.opacity=dy<-thresh?Math.min(1,(-dy-thresh)/60):0;
+    hintL.style.opacity=dx<-thresh?Math.min(1,(-dx-thresh)/60):0;
+    hintR.style.opacity=dx>thresh?Math.min(1,(dx-thresh)/60):0;
+    sdFixed.classList.toggle('active',dy<-thresh);
+    sdHappy.classList.toggle('active',dx<-thresh);
+    sdShowoff.classList.toggle('active',dx>thresh);
+  }
+  function onEnd(){
+    if(!dragging)return;dragging=false;el.classList.remove('dragging');
+    hintT.style.opacity=0;hintL.style.opacity=0;hintR.style.opacity=0;
+    sdFixed.classList.remove('active');sdHappy.classList.remove('active');sdShowoff.classList.remove('active');
+    var thresh=60;
+    if(dy<-thresh&&Math.abs(dy)>Math.abs(dx)){categorizeCard(card,'fixed',el,0,-600)}
+    else if(dx<-thresh&&Math.abs(dx)>Math.abs(dy)){categorizeCard(card,'happy',el,-600,0)}
+    else if(dx>thresh&&Math.abs(dx)>Math.abs(dy)){categorizeCard(card,'showoff',el,600,0)}
+    else{el.style.transform='';el.style.transition='transform .25s ease'}
+  }
+
+  el.addEventListener('mousedown',function(e){e.preventDefault();onStart(e.clientX,e.clientY)});
+  document.addEventListener('mousemove',function(e){onMove(e.clientX,e.clientY)});
+  document.addEventListener('mouseup',function(){onEnd()});
+  el.addEventListener('touchstart',function(e){var t=e.touches[0];onStart(t.clientX,t.clientY)},{passive:true});
+  document.addEventListener('touchmove',function(e){if(!dragging)return;var t=e.touches[0];onMove(t.clientX,t.clientY)},{passive:false});
+  document.addEventListener('touchend',function(){onEnd()});
+}
+
+function categorizeCard(card,type,el,flyX,flyY){
+  card.type=type;
+  el.classList.add('fly');
+  el.style.transform='translate('+flyX+'px,'+flyY+'px) rotate('+(flyX*0.1)+'deg)';
+  el.style.opacity='0';
+  setTimeout(function(){renderSwipeStack()},350);
+}
+
+function showSwipeResults(){
+  document.getElementById('swipeResults').style.display='block';
+  var fixed=swipeCards.filter(function(c){return c.type==='fixed'});
+  var happy=swipeCards.filter(function(c){return c.type==='happy'});
+  var showoff=swipeCards.filter(function(c){return c.type==='showoff'});
+  var total=swipeCards.reduce(function(s,c){return s+c.amt},0);
+  var fAmt=fixed.reduce(function(s,c){return s+c.amt},0);
+  var hAmt=happy.reduce(function(s,c){return s+c.amt},0);
+  var sAmt=showoff.reduce(function(s,c){return s+c.amt},0);
+  var fPct=total?Math.round(fAmt/total*100):0;
+  var hPct=total?Math.round(hAmt/total*100):0;
+  var sPct=total?100-fPct-hPct:0;
+
+  document.getElementById('srBar').innerHTML='<div class="sr-bar"><div class="sr-seg-fixed" style="width:'+fPct+'%">'+fPct+'%</div><div class="sr-seg-happy" style="width:'+hPct+'%">'+hPct+'%</div><div class="sr-seg-showoff" style="width:'+sPct+'%">'+sPct+'%</div></div>';
+  document.getElementById('srLegend').innerHTML='<div class="sr-legend"><span class="sl-fixed">Fixed $'+fAmt.toLocaleString()+'</span><span class="sl-happy">Happy $'+hAmt.toLocaleString()+'</span><span class="sl-showoff">Show-off $'+sAmt.toLocaleString()+'</span></div>';
+
+  function renderList(items,cls){
+    return items.map(function(c){return '<div class="sr-item sr-item-'+cls+'"><span class="sri-name">'+c.desc+'</span><span class="sri-amt">$'+c.amt.toLocaleString()+'</span></div>'}).join('');
+  }
+  if(fixed.length)document.getElementById('srFixed').innerHTML='<div class="flbl" style="color:var(--sky);margin:8px 0 4px">Fixed</div>'+renderList(fixed,'fixed');
+  if(happy.length)document.getElementById('srHappy').innerHTML='<div class="flbl" style="color:var(--success);margin:8px 0 4px">Happy</div>'+renderList(happy,'happy');
+  if(showoff.length)document.getElementById('srShowoff').innerHTML='<div class="flbl" style="color:var(--danger);margin:8px 0 4px">Show-off</div>'+renderList(showoff,'showoff');
+
+  var insight='';
+  if(sPct>30)insight='<div class="edu-box" style="border-color:var(--danger)"><div class="eb-title" style="color:var(--danger)">Red flag: '+sPct+'% show-off spending</div><p>More than a quarter of your money is going to things that look good on Instagram but don\'t genuinely serve you. This month, try the 24-hour rule: wait a day before any show-off purchase. You will be surprised how many you no longer want.</p></div>';
+  else if(sPct>15)insight='<div class="edu-box"><div class="eb-title" style="color:var(--gold)">Watch zone: '+sPct+'% show-off spending</div><p>Some show-off spending is human and normal. But each of these dollars could be building your future instead. Pick one show-off item to skip this month and redirect it to your goal.</p></div>';
+  else insight='<div class="edu-box" style="border-color:var(--success)"><div class="eb-title" style="color:var(--success)">Beautiful: only '+sPct+'% show-off spending</div><p>You are spending with intention. Your money flows where your values are. Keep this awareness and your financial goals will feel effortless.</p></div>';
+  document.getElementById('srInsight').innerHTML=insight;
+}
+
+function finishSwipe(){
+  var mk=getMonthKey();
+  if(!swipeCategorized[mk])swipeCategorized[mk]={};
+  swipeCards.forEach(function(c){swipeCategorized[mk][c.desc+'-'+c.amt]=c.type});
+  ss('fin_swipeCat',JSON.stringify(swipeCategorized));
+  showTracker();
+}
+
+/* ═══════════════════════════════════════ */
 /* GLITTER OVERLAY                          */
 /* ═══════════════════════════════════════ */
 function initGlitterOverlay(){
@@ -1381,9 +2202,22 @@ function closeFinance(){
   try{parent.closeTool()}catch(e){window.history.back()}
 }
 
+function checkMonthlyReset(){
+  var mk=getMonthKey();
+  if(F.lastMonth&&F.lastMonth!==mk){
+    F.daily=[];
+    F.debtPayments={};
+    F.lastMonth=mk;
+    sv();
+  }else if(!F.lastMonth){
+    F.lastMonth=mk;sv();
+  }
+}
+
 document.addEventListener('DOMContentLoaded',function(){
   initBg();
   initGlitterOverlay();
+  checkMonthlyReset();
   if(F.tier)showTracker();
 });
 </script>
