@@ -1166,9 +1166,9 @@ var PROMO_CODES = {
     appliesTo: 'subscription'
   },
   'FOUNDINGMEMBERS2026': {
-    type: 'first_month_free',
+    type: 'two_weeks_free',
     discountPercent: 100,
-    description: 'First month free',
+    description: 'Free 2-week trial',
     appliesTo: 'subscription'
   }
 };
@@ -1459,6 +1459,8 @@ function updatePriceDisplay() {
   var breakdown = 'Subscription: ' + subDisplay + '/month';
   if (appliedPromo && appliedPromo.type === 'first_month_free') {
     breakdown = 'Subscription: $0.00 first month (then $' + SUBSCRIPTION_PRICE.toFixed(2) + '/month)';
+  } else if (appliedPromo && appliedPromo.type === 'two_weeks_free') {
+    breakdown = 'Subscription: FREE for 2 weeks (then $' + SUBSCRIPTION_PRICE.toFixed(2) + '/month)';
   } else if (appliedPromo && appliedPromo.type === 'forever_free') {
     breakdown = 'Subscription: FREE (founding member)';
   }
@@ -1897,6 +1899,8 @@ function populateSummary() {
     note = 'Founding member: subscription is free forever.';
   } else if (appliedPromo && appliedPromo.type === 'first_month_free') {
     note = 'First month free. Subscription renews at $29/month after that.';
+  } else if (appliedPromo && appliedPromo.type === 'two_weeks_free') {
+    note = 'Free 2-week trial. Subscription starts at $29/month after 14 days.';
   } else {
     note = 'Subscription renews at $29/month.';
   }
