@@ -15,8 +15,8 @@
   --glass:rgba(255,255,255,.07); --glass-border:rgba(233,220,184,.22);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{font-family:'Montserrat',sans-serif;background:transparent;color:#fff;display:flex;justify-content:center}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Montserrat',sans-serif;background:linear-gradient(180deg,#044147 0%,#033a40 45%,#02272b 100%);color:#fff;display:flex;justify-content:center}
 #splashLoader{position:fixed;inset:0;z-index:9999;background:#02272b;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
 #splashLoader.hide{opacity:0;pointer-events:none}
 .sl-bg{position:absolute;inset:0;background:url('https://static.wixstatic.com/media/00228e_32919d9b8ed1461aa6b41af2ea4a093c~mv2.jpg/v1/fill/w_750,h_1400,al_c,q_85/00228e_32919d9b8ed1461aa6b41af2ea4a093c~mv2.jpg') center/cover no-repeat;opacity:.75}
@@ -689,7 +689,7 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
   h2{font-size:21px}
 }
 @media (min-width:768px){
-  .app{max-width:560px;border-radius:32px}
+  .app{max-width:100%;border-radius:0;box-shadow:none;margin:0;min-height:100%}
   .screen{padding:42px 44px 34px}
   .floral-title .ft-main{font-size:62px}
   .floral-title .ft-flower{transform:scale(1.15)}
@@ -702,10 +702,10 @@ footer{text-align:center;margin-top:26px;padding-top:14px;font-size:9px;letter-s
   .cd-sep{font-size:22px}
 }
 @media (min-width:768px) and (orientation:landscape){
-  .app{max-width:680px;min-height:auto}
+  .app{max-width:100%;min-height:100%}
 }
 @media (min-width:1100px){
-  .app{max-width:820px;min-height:860px}
+  .app{max-width:100%;min-height:100%}
   .screen{padding:48px 64px 40px}
   .floral-title .ft-main{font-size:72px}
   .hub-grid{grid-template-columns:repeat(3,1fr)}
