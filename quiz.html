@@ -1804,63 +1804,178 @@
       ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
       ambientGain = ambientCtx.createGain();
       ambientGain.gain.value = 0;
+
+      // Soft reverb via convolver
+      var revGain = ambientCtx.createGain();
+      revGain.gain.value = 0.35;
+      var dryGain = ambientCtx.createGain();
+      dryGain.gain.value = 0.7;
+      var convolver = ambientCtx.createConvolver();
+      var revLen = ambientCtx.sampleRate * 2.5;
+      var revBuf = ambientCtx.createBuffer(2, revLen, ambientCtx.sampleRate);
+      for (var ch = 0; ch < 2; ch++) {
+        var rd = revBuf.getChannelData(ch);
+        for (var i = 0; i < revLen; i++) rd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / revLen, 2.8);
+      }
+      convolver.buffer = revBuf;
+      dryGain.connect(ambientGain);
+      convolver.connect(revGain);
+      revGain.connect(ambientGain);
       ambientGain.connect(ambientCtx.destination);
 
-      // Warm pad: 3 detuned oscillators for a soft, dreamy chord
-      var notes = [174.61, 220, 261.63]; // F3, A3, C4 (F major)
-      var oscs = [];
-      notes.forEach(function(freq, idx) {
-        // Main tone
-        var osc = ambientCtx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.value = freq;
+      // Bossa nova tempo: ~68 BPM, beat = 0.882s
+      var BPM = 68;
+      var beat = 60 / BPM;
+      var barLen = beat * 4;
+      var loopBars = 8;
+      var loopLen = barLen * loopBars;
+
+      // Jazz chord voicings (frequencies in Hz) for a ii-V-I-vi bossa progression
+      var chords = [
+        [146.83, 174.61, 220.00, 293.66], // Dm7: D3, F3, A3, D4
+        [196.00, 246.94, 293.66, 369.99], // G7: G3, B3, D4, F#4
+        [130.81, 164.81, 196.00, 261.63], // Cmaj7: C3, E3, G3, C4
+        [220.00, 261.63, 329.63, 415.30], // Am7: A3, C4, E4, Ab4
+        [146.83, 174.61, 220.00, 293.66], // Dm7
+        [196.00, 246.94, 293.66, 369.99], // G7
+        [130.81, 164.81, 196.00, 329.63], // Cmaj9: C3, E3, G3, E4
+        [220.00, 277.18, 329.63, 415.30]  // Am7b5 color
+      ];
+
+      // Bass notes for each bar (root movement)
+      var bassNotes = [73.42, 98.00, 65.41, 55.00, 73.42, 98.00, 65.41, 55.00]; // D2,G2,C2,A1...
+
+      // Pluck sound: short sine with fast decay (nylon guitar feel)
+      function pluck(freq, time, vol, dur) {
+        var o = ambientCtx.createOscillator();
         var g = ambientCtx.createGain();
-        g.gain.value = 0.012;
-        osc.connect(g);
-        g.connect(ambientGain);
-        osc.start();
-        oscs.push(osc);
+        var f = ambientCtx.createBiquadFilter();
+        o.type = 'triangle';
+        o.frequency.value = freq;
+        f.type = 'lowpass';
+        f.frequency.value = freq * 3;
+        f.Q.value = 0.7;
+        o.connect(f);
+        f.connect(g);
+        g.connect(dryGain);
+        g.connect(convolver);
+        g.gain.setValueAtTime(vol, time);
+        g.gain.exponentialRampToValueAtTime(0.001, time + (dur || 1.2));
+        f.frequency.exponentialRampToValueAtTime(freq * 0.5, time + (dur || 1.2));
+        o.start(time);
+        o.stop(time + (dur || 1.2) + 0.1);
+      }
 
-        // Slightly detuned copy for warmth
-        var osc2 = ambientCtx.createOscillator();
-        osc2.type = 'sine';
-        osc2.frequency.value = freq * 1.003;
-        var g2 = ambientCtx.createGain();
-        g2.gain.value = 0.008;
-        osc2.connect(g2);
-        g2.connect(ambientGain);
-        osc2.start();
-        oscs.push(osc2);
-      });
+      // Bass pluck: deeper, rounder
+      function bassPluck(freq, time, vol) {
+        var o = ambientCtx.createOscillator();
+        var o2 = ambientCtx.createOscillator();
+        var g = ambientCtx.createGain();
+        var f = ambientCtx.createBiquadFilter();
+        o.type = 'sine';
+        o.frequency.value = freq;
+        o2.type = 'sine';
+        o2.frequency.value = freq * 2.01;
+        f.type = 'lowpass';
+        f.frequency.value = 400;
+        f.Q.value = 1;
+        o.connect(f);
+        o2.connect(f);
+        f.connect(g);
+        g.connect(dryGain);
+        g.connect(convolver);
+        g.gain.setValueAtTime(vol, time);
+        g.gain.exponentialRampToValueAtTime(0.001, time + beat * 1.8);
+        o.start(time);
+        o.stop(time + beat * 2);
+        o2.start(time);
+        o2.stop(time + beat * 2);
+      }
 
-      // Soft filtered noise layer for atmosphere
-      var bufSize = ambientCtx.sampleRate * 2;
-      var buf = ambientCtx.createBuffer(1, bufSize, ambientCtx.sampleRate);
-      var data = buf.getChannelData(0);
-      for (var i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
-      var noise = ambientCtx.createBufferSource();
-      noise.buffer = buf;
-      noise.loop = true;
-      var noiseFilter = ambientCtx.createBiquadFilter();
-      noiseFilter.type = 'lowpass';
-      noiseFilter.frequency.value = 300;
-      noiseFilter.Q.value = 0.5;
-      var noiseGain = ambientCtx.createGain();
-      noiseGain.gain.value = 0.015;
-      noise.connect(noiseFilter);
-      noiseFilter.connect(noiseGain);
-      noiseGain.connect(ambientGain);
-      noise.start();
+      // Brushed noise for soft percussion
+      var brushBuf = ambientCtx.createBuffer(1, ambientCtx.sampleRate * 2, ambientCtx.sampleRate);
+      var bd = brushBuf.getChannelData(0);
+      for (var i = 0; i < bd.length; i++) bd[i] = Math.random() * 2 - 1;
 
-      // Gentle LFO on noise filter for movement
-      var lfo = ambientCtx.createOscillator();
-      lfo.type = 'sine';
-      lfo.frequency.value = 0.08;
-      var lfoGain = ambientCtx.createGain();
-      lfoGain.gain.value = 100;
-      lfo.connect(lfoGain);
-      lfoGain.connect(noiseFilter.frequency);
-      lfo.start();
+      function brush(time, vol) {
+        var n = ambientCtx.createBufferSource();
+        n.buffer = brushBuf;
+        var g = ambientCtx.createGain();
+        var f = ambientCtx.createBiquadFilter();
+        f.type = 'bandpass';
+        f.frequency.value = 6000;
+        f.Q.value = 0.5;
+        n.connect(f);
+        f.connect(g);
+        g.connect(dryGain);
+        g.gain.setValueAtTime(vol, time);
+        g.gain.exponentialRampToValueAtTime(0.001, time + 0.08);
+        n.start(time);
+        n.stop(time + 0.1);
+      }
+
+      // Schedule the bossa nova loop
+      function scheduleLoop(startTime) {
+        for (var bar = 0; bar < loopBars; bar++) {
+          var bStart = startTime + bar * barLen;
+          var chord = chords[bar];
+
+          // Bossa nova guitar rhythm: the classic "long short, long short long" per bar
+          // Beats: 1 (chord), &2 (chord), 3 (chord), &4 (chord) with syncopation
+          var rhythm = [0, beat * 1.5, beat * 2, beat * 3, beat * 3.5];
+          rhythm.forEach(function(offset, ri) {
+            var vol = (ri === 0 || ri === 2) ? 0.035 : 0.022;
+            chord.forEach(function(freq) {
+              pluck(freq * (0.998 + Math.random() * 0.004), bStart + offset + Math.random() * 0.012, vol, 0.9 + Math.random() * 0.4);
+            });
+          });
+
+          // Walking bass: root on beat 1, fifth on beat 3
+          var bNote = bassNotes[bar];
+          bassPluck(bNote, bStart, 0.045);
+          bassPluck(bNote * 1.5, bStart + beat * 2, 0.032); // fifth
+
+          // Brush on every beat, lighter on off-beats
+          for (var b = 0; b < 4; b++) {
+            brush(bStart + b * beat, b % 2 === 0 ? 0.018 : 0.010);
+            // ghost brush on the &
+            brush(bStart + b * beat + beat * 0.5, 0.006);
+          }
+        }
+      }
+
+      // Initial schedule + continuous loop
+      var t0 = ambientCtx.currentTime + 0.1;
+      scheduleLoop(t0);
+      scheduleLoop(t0 + loopLen);
+      var nextLoop = t0 + loopLen * 2;
+
+      // Keep scheduling ahead
+      setInterval(function() {
+        if (!ambientPlaying || !ambientCtx) return;
+        if (ambientCtx.currentTime > nextLoop - loopLen) {
+          scheduleLoop(nextLoop);
+          nextLoop += loopLen;
+        }
+      }, 2000);
+
+      // Soft vinyl warmth: very gentle filtered noise underneath
+      var warmBuf = ambientCtx.createBuffer(1, ambientCtx.sampleRate * 4, ambientCtx.sampleRate);
+      var wd = warmBuf.getChannelData(0);
+      for (var i = 0; i < wd.length; i++) wd[i] = Math.random() * 2 - 1;
+      var warmNoise = ambientCtx.createBufferSource();
+      warmNoise.buffer = warmBuf;
+      warmNoise.loop = true;
+      var warmFilter = ambientCtx.createBiquadFilter();
+      warmFilter.type = 'lowpass';
+      warmFilter.frequency.value = 200;
+      warmFilter.Q.value = 0.3;
+      var warmGain = ambientCtx.createGain();
+      warmGain.gain.value = 0.008;
+      warmNoise.connect(warmFilter);
+      warmFilter.connect(warmGain);
+      warmGain.connect(ambientGain);
+      warmNoise.start();
 
       ambientStarted = true;
     } catch(e) { console.log('Ambient sound not supported'); }
