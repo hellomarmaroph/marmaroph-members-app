@@ -176,29 +176,35 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
 .sec-divider{text-align:center;margin:2rem 0;opacity:.4;}
 .sec-divider svg{display:inline-block;vertical-align:middle;}
 
-/* SCORE */
-.score-wrap{display:flex;align-items:center;gap:1.25rem;padding:.25rem 0 .75rem}
-.score-circ{flex-shrink:0;position:relative;width:76px;height:76px}
-.score-svg{width:76px;height:76px;transform:rotate(-90deg)}
-.score-trk{fill:none;stroke:var(--tx4);stroke-width:7}
-.score-ring{fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
-.score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.score-n{font-size:22px;font-weight:700;color:var(--gold);line-height:1}
-.score-d{font-size:8px;font-weight:400;color:var(--tx3)}
-.score-bars{flex:1;display:flex;flex-direction:column;gap:8px}
-.sb-row{display:flex;align-items:center;gap:8px}
-.sb-lbl{font-size:9px;font-weight:500;color:var(--tx3);width:65px;text-align:right}
-.sb-track{flex:1;height:6px;background:var(--card);border-radius:3px;overflow:hidden}
-.sb-fill{height:100%;border-radius:3px;transition:width 1s ease}
-.sb-val{font-size:9px;font-weight:700;color:var(--gold);width:20px}
+/* SCORE (centered hero) */
+.score-wrap{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:.5rem 0;}
+.score-circ{position:relative;width:140px;height:140px;flex-shrink:0;}
+.score-svg{width:100%;height:100%;transform:rotate(-90deg);}
+.score-trk{fill:none;stroke:var(--tx4);stroke-width:5;}
+.score-ring{fill:none;stroke:var(--gold);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 1s ease;}
+.score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-n{font-size:36px;font-weight:700;color:var(--gold);line-height:1;}
+.score-d{font-size:10px;font-weight:400;color:var(--tx3);}
+.score-bars{width:100%;max-width:320px;display:flex;flex-direction:column;gap:8px;}
+.sbar{display:flex;align-items:center;gap:8px;}
+.sbar-lbl{font-size:9px;color:var(--tx3);width:120px;text-align:right;}
+.sbar-trk{flex:1;height:5px;background:var(--card);border-radius:3px;overflow:hidden;}
+.sbar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:3px;transition:width 1s ease;}
+.sbar-val{font-size:9px;color:var(--tx2);width:36px;font-weight:600;}
 
-/* FENG SHUI MINI */
-.bagua-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:.85rem}
-.bm{background:var(--card);border:1px solid var(--card-bd);border-radius:6px;padding:.4rem .25rem;text-align:center}
-.bm.act{border-color:var(--gold);background:rgba(212,179,102,.08)}
-.bm-dir{font-size:9px;font-weight:700;color:var(--tx3);margin-bottom:1px}
-.bm.act .bm-dir{color:var(--gold)}
-.bm-elem{font-size:8px;font-weight:300;color:var(--tx3)}
+/* BAGUA 3×3 INFO GRID */
+.bagua-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:360px;margin:0 auto 1rem;}
+.bagua-cell{border-radius:10px;padding:10px 8px;text-align:center;border:1px solid var(--card-bd);transition:all .3s;}
+.bagua-cell.good{background:rgba(74,124,89,.08);border-color:rgba(74,124,89,.3);}
+.bagua-cell.warn{background:rgba(192,96,64,.06);border-color:rgba(192,96,64,.25);}
+.bagua-cell.active{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,179,102,.25);background:rgba(212,179,102,.06);}
+.bagua-cell.center-cell{background:rgba(212,179,102,.08);border-color:rgba(212,179,102,.3);}
+.bc-dir{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--tx);}
+.bc-elem{font-size:8px;font-weight:600;color:var(--tx3);margin-top:1px;}
+.bc-area{font-size:7px;color:var(--tx4);margin-top:3px;line-height:1.3;}
+.bc-status{font-size:7px;font-weight:700;margin-top:4px;letter-spacing:.04em;}
+.bc-status.ok{color:#4a7c59;}
+.bc-status.fix{color:#b85c2a;}
 
 /* PALETTE — circles */
 .palette-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:.85rem}
@@ -280,6 +286,8 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
 .pri-col-problem .pri-col-tag{color:#a05030;}
 .pri-col-fix .pri-col-tag{color:var(--accent);}
 .pri-col-text{font-size:10px;line-height:1.7;color:var(--tx2);}
+.pri-why{margin-top:8px;padding:10px 12px;background:rgba(159,214,235,.05);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:9px;line-height:1.7;color:var(--tx2);}
+.pri-why-tag{display:inline-block;font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:6px;vertical-align:middle;}
 @media(max-width:360px){.pri-cols{grid-template-columns:1fr;}}
 
 /* MINI CARDS */
@@ -575,9 +583,9 @@ html,body{font-family:'Montserrat',sans-serif;font-weight:300;background:linear-
       <div class="sec-body">
         <div class="score-wrap">
           <div class="score-circ">
-            <svg class="score-svg" viewBox="0 0 76 76">
-              <circle class="score-trk" cx="38" cy="38" r="32"/>
-              <circle class="score-ring" id="scoreRing" cx="38" cy="38" r="32" stroke-dasharray="201" stroke-dashoffset="201"/>
+            <svg class="score-svg" viewBox="0 0 140 140">
+              <circle class="score-trk" cx="70" cy="70" r="60"/>
+              <circle class="score-ring" id="scoreRing" cx="70" cy="70" r="60" stroke-dasharray="377" stroke-dashoffset="377"/>
             </svg>
             <div class="score-inner">
               <div class="score-n" id="scoreNum">0</div>
@@ -890,6 +898,14 @@ var renderText=SE.renderText;
 // ── FLOOR PLAN SVG (delegated to engine) ────────────────────────
 function buildFloorPlanSVG(eb){return SE.buildFloorPlanSVG(eb,state.dir)}
 
+function extractWhy(text){
+  if(!text) return '';
+  var sentences=text.split(/[.!]\s+/).filter(function(s){return s.length>15;});
+  var whyKW=/because|energy|chi|element|feng shui|bagua|balance|harmony|supports|activat|nourish|drain|block|stagnant/i;
+  var match=sentences.filter(function(s){return whyKW.test(s);})[0];
+  return match?(match.trim()+'.'):(sentences.length>1?sentences[sentences.length-1].trim()+'.':'');
+}
+
 // ── RENDER RESULTS ───────────────────────────────────────────────
 function renderResults(analysis,sec){
   var fs=FS[state.dir];
@@ -907,15 +923,14 @@ function renderResults(analysis,sec){
   if(sc&&sc.overall){
     document.getElementById('scoreBlock').style.display='';
     var pct=Math.min(100,Math.max(0,sc.overall));
-    var circ=201;
+    var circ=377;
     document.getElementById('scoreRing').style.strokeDashoffset=circ-circ*(pct/100);
     document.getElementById('scoreNum').textContent=pct;
-    var bars=[['Materials',sc.materials,20],['Lighting',sc.lighting,20],['Feng Shui',sc.feng_shui,20],['Ritual',sc.ritual,20],['Abundance',sc.abundance,20]];
+    var bars=[['Natural Materials',sc.materials,20],['Lighting Quality',sc.lighting,20],['Feng Shui Alignment',sc.feng_shui,20],['Ritual Readiness',sc.ritual,20],['Abundance Energy',sc.abundance,20]];
     var barsHtml='';
     bars.forEach(function(b){
       var w=Math.min(100,Math.max(0,(b[1]/b[2])*100));
-      var col=w>=70?'var(--success)':w>=40?'var(--gold)':'rgba(255,150,150,.7)';
-      barsHtml+='<div class="sb-row"><div class="sb-lbl">'+b[0]+'</div><div class="sb-track"><div class="sb-fill" style="width:'+w+'%;background:'+col+'"></div></div><div class="sb-val">'+b[1]+'/'+b[2]+'</div></div>';
+      barsHtml+='<div class="sbar"><div class="sbar-lbl">'+b[0]+'</div><div class="sbar-trk"><div class="sbar-fill" style="width:'+w+'%"></div></div><div class="sbar-val">'+b[1]+'/'+b[2]+'</div></div>';
     });
     document.getElementById('scoreBars').innerHTML=barsHtml;
   }
@@ -953,11 +968,20 @@ function renderResults(analysis,sec){
     if(html)html+=nextDivider();
     html+='<div class="sec-block"><div class="sec-hdr"><div class="sh-num">'+icoLayers+'</div><div><div class="sh-lbl">'+state.dir+' · '+fs.elem.toUpperCase()+'</div><div class="sh-title">Feng Shui Reading</div></div></div>';
     html+='<div class="sec-body">';
-    // Mini bagua
-    html+='<div class="bagua-mini">';
-    ['N','NE','E','SE','S','SW','W','NW'].forEach(function(d){
-      var f=FS[d],act=d===state.dir?' act':'';
-      html+='<div class="bm'+act+'"><div class="bm-dir">'+d+'</div><div class="bm-elem">'+f.elem+'</div></div>';
+    // 3×3 Bagua info grid
+    var baguaAreas={N:'Career',NE:'Knowledge',E:'Health & Family',SE:'Wealth',S:'Fame & Recognition',SW:'Relationships',W:'Children & Creativity',NW:'Mentors & Travel'};
+    var elemColors={Wood:'#4a7c59',Fire:'#c0392b',Earth:'#c9912a',Metal:'#b0b0b0',Water:'#2c3e6b'};
+    var gridCells=['NW','N','NE','W','center','E','SW','S','SE'];
+    html+='<div class="bagua-grid">';
+    gridCells.forEach(function(d){
+      if(d==='center'){html+='<div class="bagua-cell center-cell"><div class="bc-dir" style="color:#c9912a">TAI CHI</div><div class="bc-elem">Earth</div><div class="bc-area">Health & Balance</div></div>';return;}
+      var info=FS[d]||{};
+      var isActive=d===state.dir;
+      var isSupport=info.elem===fs.elem;
+      var cls=isActive?'bagua-cell active':isSupport?'bagua-cell good':'bagua-cell warn';
+      var statusCls=isActive?'bc-status ok':(isSupport?'bc-status ok':'bc-status fix');
+      var statusTxt=isActive?'YOUR SPACE':(isSupport?'SUPPORTS':'NEEDS CURE');
+      html+='<div class="'+cls+'"><div class="bc-dir">'+d+'</div><div class="bc-elem" style="color:'+(elemColors[info.elem]||'var(--tx3)')+'">'+info.elem+'</div><div class="bc-area">'+(baguaAreas[d]||'')+'</div><div class="'+statusCls+'">'+statusTxt+'</div></div>';
     });
     html+='</div>';
     html+='<div class="fs-note-box">'+fs.note+'</div>';
@@ -992,6 +1016,8 @@ function renderResults(analysis,sec){
       if(c.mistake)html+='<div class="pri-col pri-col-problem"><div class="pri-col-tag">The Problem</div><div class="pri-col-text">'+c.mistake+'</div></div>';
       html+='<div class="pri-col pri-col-fix"><div class="pri-col-tag">The Fix</div><div class="pri-col-text">'+c.fix+'</div></div>';
       html+='</div>';
+      var whyText=c.why||extractWhy(c.fix);
+      if(whyText)html+='<div class="pri-why"><span class="pri-why-tag">WHY THIS MATTERS</span> '+whyText+'</div>';
       html+='</div></div>';
     });
     html+='</div></div></div>';

@@ -225,19 +225,21 @@ function parsePriorityChanges(text) {
   while ((match = rx.exec(text)) !== null) {
     var block = match[2].trim();
     var clean = block.replace(/\*\*/g,'');
-    var mistakeM = clean.match(/MISTAKE[:\s]+([^\n]+(?:\n(?!FIX)[^\n]+)*)/i);
-    var fixM = clean.match(/FIX[:\s]+([^\n]+(?:\n(?!MISTAKE)[^\n]+)*)/i);
+    var mistakeM = clean.match(/MISTAKE[:\s]+([^\n]+(?:\n(?!FIX|WHY)[^\n]+)*)/i);
+    var fixM = clean.match(/FIX[:\s]+([^\n]+(?:\n(?!MISTAKE|WHY)[^\n]+)*)/i);
+    var whyM = clean.match(/WHY[:\s]+([^\n]+(?:\n(?!MISTAKE|FIX)[^\n]+)*)/i);
     var firstLine = clean.split('\n')[0].replace(/MISTAKE.*/i,'').replace(/^\*+/,'').trim();
     var mistake = mistakeM ? mistakeM[1].trim() : '';
     var fix = fixM ? fixM[1].trim() : '';
+    var why = whyM ? whyM[1].trim() : '';
     if (mistake && fix && mistake === fix) fix = '';
     if (!fix && !mistake) fix = clean;
-    items.push({label: firstLine || 'Change '+match[1], mistake: mistake, fix: fix || clean});
+    items.push({label: firstLine || 'Change '+match[1], mistake: mistake, fix: fix || clean, why: why});
   }
   if (!items.length) {
     text.split(/\n\n+/).forEach(function(p, i) {
       var c = p.replace(/^\d+[\.\)]\s*/,'').replace(/\*\*/g,'').trim();
-      if (c) items.push({label:'Change '+(i+1), mistake:'', fix:c});
+      if (c) items.push({label:'Change '+(i+1), mistake:'', fix:c, why:''});
     });
   }
   return items.slice(0, 5);
@@ -384,7 +386,7 @@ function buildCorePrompt(state, fs, config) {
     '- One sentence of encouragement\n\n' +
     config.analysisSection + '\n\n' +
     '## THE FIVE PRIORITY CHANGES\n' +
-    'Number 1–5. For each:\nMISTAKE: [specific]\nFIX: [exact solution with materials, size, placement]\n\n' +
+    'Number 1–5. For each:\nMISTAKE: [specific]\nFIX: [exact solution with materials, size, placement]\nWHY: [one sentence explaining how this fix improves the feng shui energy, element balance, or ritual experience in this specific compass direction]\n\n' +
     '## WHAT TO KEEP\nBullet points. Be generous where warranted.\n\n' +
     '## MATERIALS SPECIFICATION\n' +
     'List exactly 5–7 natural materials. Format per line:\nMATERIAL_NAME | where_to_use | why_chosen | product_spec\n\n' +

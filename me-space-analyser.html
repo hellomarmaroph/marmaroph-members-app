@@ -186,8 +186,19 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .sec-divider{text-align:center;margin:2rem 0;opacity:.4;}
 .sec-divider svg{display:inline-block;vertical-align:middle;}
 
-/* ── BAGUA ── */
-.bagua-mini{max-width:260px;margin:0 auto 1rem;}
+/* ── BAGUA 3×3 INFO GRID ── */
+.bagua-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:360px;margin:0 auto 1rem;}
+.bagua-cell{border-radius:10px;padding:10px 8px;text-align:center;border:1px solid var(--bd2);transition:all .3s;}
+.bagua-cell.good{background:rgba(74,124,89,.08);border-color:rgba(74,124,89,.3);}
+.bagua-cell.warn{background:rgba(192,96,64,.06);border-color:rgba(192,96,64,.25);}
+.bagua-cell.active{border-color:var(--accent-pop);box-shadow:0 0 0 2px rgba(159,214,235,.25);background:rgba(159,214,235,.06);}
+.bagua-cell.center-cell{background:rgba(212,179,102,.08);border-color:rgba(212,179,102,.3);}
+.bc-dir{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--tx);}
+.bc-elem{font-size:8px;font-weight:600;color:var(--tx3);margin-top:1px;}
+.bc-area{font-size:7px;color:var(--tx4);margin-top:3px;line-height:1.3;}
+.bc-status{font-size:7px;font-weight:700;margin-top:4px;letter-spacing:.04em;}
+.bc-status.ok{color:#4a7c59;}
+.bc-status.fix{color:#b85c2a;}
 .fs-note-box{background:var(--off);border:1px solid var(--bd2);border-radius:10px;padding:12px;margin-bottom:10px;font-size:10px;line-height:1.7;color:var(--tx2);}
 .palette-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
 .palette-chip{width:32px;height:32px;border-radius:8px;border:1px solid var(--bd);}
@@ -213,6 +224,8 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .pri-col-problem .pri-col-tag{color:#a05030;}
 .pri-col-fix .pri-col-tag{color:var(--accent);}
 .pri-col-text{font-size:10px;line-height:1.7;color:var(--tx2);}
+.pri-why{margin-top:8px;padding:10px 12px;background:rgba(159,214,235,.05);border-left:3px solid var(--accent-pop);border-radius:0 8px 8px 0;font-size:9px;line-height:1.7;color:var(--tx2);}
+.pri-why-tag{display:inline-block;font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:6px;vertical-align:middle;}
 .pri-tag{display:inline-block;background:var(--accent-light);border:1px solid var(--accent-bd);border-radius:4px;padding:2px 6px;font-size:8px;font-weight:600;color:var(--accent);margin-top:6px;text-transform:uppercase;letter-spacing:.04em;}
 @media(max-width:360px){.pri-cols{grid-template-columns:1fr;}}
 
@@ -242,20 +255,21 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
 .shop-desc{font-size:9px;color:var(--tx3);margin-top:2px;line-height:1.5;}
 .shop-price{font-size:9px;font-weight:700;color:var(--accent-pop);margin-top:2px;}
 
-/* ── SCORE ── */
-.score-wrap{display:flex;align-items:center;gap:1.25rem;padding:.5rem 0;}
-.score-circ{position:relative;width:76px;height:76px;flex-shrink:0;}
+/* ── SCORE (centered hero) ── */
+.score-wrap{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:.5rem 0;}
+.score-circ{position:relative;width:140px;height:140px;flex-shrink:0;}
 .score-svg{width:100%;height:100%;transform:rotate(-90deg);}
 .score-trk{fill:none;stroke:var(--bd);stroke-width:4;}
 .score-ring{fill:none;stroke:#9fd6eb;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1.2s ease;}
 .score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.score-n{font-family:Georgia,serif;font-size:22px;font-weight:400;color:var(--tx);}
-.score-d{font-size:8px;color:var(--tx4);}
-.score-bars{flex:1;display:flex;flex-direction:column;gap:6px;}
-.score-bar-row{display:flex;align-items:center;gap:8px;}
-.score-bar-label{font-size:8px;color:var(--tx3);width:50px;text-align:right;}
-.score-bar-track{flex:1;height:4px;background:var(--bd2);border-radius:2px;overflow:hidden;}
-.score-bar-fill{height:100%;background:var(--accent-pop);border-radius:2px;transition:width 1s ease;}
+.score-n{font-family:Georgia,serif;font-size:36px;font-weight:400;color:var(--tx);}
+.score-d{font-size:10px;color:var(--tx4);}
+.score-bars{width:100%;max-width:320px;display:flex;flex-direction:column;gap:8px;}
+.sbar{display:flex;align-items:center;gap:8px;}
+.sbar-lbl{font-size:9px;color:var(--tx3);width:120px;text-align:right;}
+.sbar-trk{flex:1;height:5px;background:var(--bd2);border-radius:3px;overflow:hidden;}
+.sbar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-pop));border-radius:3px;transition:width 1s ease;}
+.sbar-val{font-size:9px;color:var(--tx2);width:36px;font-weight:600;}
 
 /* ── DOWNLOAD ── */
 .dl-row{display:flex;gap:8px;margin-top:1.5rem;}
@@ -570,10 +584,10 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
       <div class="sec-body">
         <div class="score-wrap">
           <div class="score-circ">
-            <svg class="score-svg" viewBox="0 0 76 76">
-              <circle class="score-trk" cx="38" cy="38" r="32"/>
-              <circle class="score-ring" id="scoreRing" cx="38" cy="38" r="32"
-                stroke-dasharray="201" stroke-dashoffset="201"/>
+            <svg class="score-svg" viewBox="0 0 140 140">
+              <circle class="score-trk" cx="70" cy="70" r="60"/>
+              <circle class="score-ring" id="scoreRing" cx="70" cy="70" r="60"
+                stroke-dasharray="377" stroke-dashoffset="377"/>
             </svg>
             <div class="score-inner">
               <div class="score-n" id="scoreNum">0</div>
@@ -592,7 +606,7 @@ html,body{font-family:'Montserrat',system-ui,sans-serif;background:#fff;color:va
         <div><div class="sh-lbl">Compass School · Ba Zhai</div><div class="sh-title" id="fsTitle">Feng Shui Profile</div></div>
       </div>
       <div class="sec-body">
-        <div class="bagua-mini" id="baguaMini"></div>
+        <div class="bagua-grid" id="baguaGrid"></div>
         <div class="fs-note-box" id="fsNoteBox"></div>
         <div class="palette-row" id="paletteRow"></div>
         <div class="row2" id="fsRow2"></div>
@@ -1206,6 +1220,14 @@ function generateFloorPlan(directives, spaceType){
 
 function buildFloorPlanSVG(eb){return SE.buildFloorPlanSVG(eb,state.dir)}
 
+function extractWhy(text){
+  if(!text) return '';
+  const sentences=text.split(/[.!]\s+/).filter(s=>s.length>15);
+  const whyKW=/because|energy|chi|element|feng shui|bagua|balance|harmony|supports|activat|nourish|drain|block|stagnant/i;
+  const match=sentences.find(s=>whyKW.test(s));
+  return match?(match.trim()+'.'):(sentences.length>1?sentences[sentences.length-1].trim()+'.':'');
+}
+
 function renderResults(analysis, sec){
   const fs=FS[state.dir];
   if(!sec) sec=parseAnalysis(analysis);
@@ -1219,7 +1241,7 @@ function renderResults(analysis, sec){
   if(sc && sc.overall>0){
     document.getElementById('scoreBlock').style.display='block';
     document.getElementById('scoreNum').textContent=sc.overall;
-    const offset=201-(201*sc.overall/100);
+    const offset=377-(377*sc.overall/100);
     document.getElementById('scoreRing').style.strokeDashoffset=offset;
     document.getElementById('scoreBars').innerHTML=[
       {lbl:'Natural Materials',val:sc.materials},
@@ -1235,11 +1257,24 @@ function renderResults(analysis, sec){
 
   // Feng Shui
   document.getElementById('fsTitle').textContent=`${state.dir} — ${fs.trig} ${fs.chi} · ${fs.energy}`;
-  document.getElementById('baguaMini').innerHTML=['N','NE','E','SE','S','SW','W','NW'].map(d=>`
-    <div class="bm${d===state.dir?' act':''}">
-      <div class="bm-dir">${d}</div>
-      <div class="bm-elem">${DIR_ELEMS[d]}</div>
-    </div>`).join('');
+  const gridCells=['NW','N','NE','W','center','E','SW','S','SE'];
+  const baguaAreas={N:'Career',NE:'Knowledge',E:'Health & Family',SE:'Wealth',S:'Fame & Recognition',SW:'Relationships',W:'Children & Creativity',NW:'Mentors & Travel'};
+  const elemColors={Wood:'#4a7c59',Fire:'#c0392b',Earth:'#c9912a',Metal:'#b0b0b0',Water:'#2c3e6b'};
+  document.getElementById('baguaGrid').innerHTML=gridCells.map(d=>{
+    if(d==='center') return `<div class="bagua-cell center-cell"><div class="bc-dir" style="color:#c9912a">TAI CHI</div><div class="bc-elem">Earth</div><div class="bc-area">Health & Balance</div></div>`;
+    const info=FS[d]||{};
+    const isActive=d===state.dir;
+    const isSupport=info.elem===fs.elem;
+    const cls=isActive?'bagua-cell active':isSupport?'bagua-cell good':'bagua-cell warn';
+    const statusCls=isActive?'bc-status ok':(isSupport?'bc-status ok':'bc-status fix');
+    const statusTxt=isActive?'YOUR SPACE':(isSupport?'SUPPORTS':'NEEDS CURE');
+    return `<div class="${cls}">
+      <div class="bc-dir">${d}</div>
+      <div class="bc-elem" style="color:${elemColors[info.elem]||'var(--tx3)'}">${info.elem||''}</div>
+      <div class="bc-area">${baguaAreas[d]||''}</div>
+      <div class="${statusCls}">${statusTxt}</div>
+    </div>`;
+  }).join('');
   document.getElementById('fsNoteBox').textContent=fs.note;
   const paletteData=(sec.directives?.custom_palette?.length===4) ? sec.directives.custom_palette : fs.palette;
   document.getElementById('paletteRow').innerHTML=paletteData.map(p=>`
@@ -1299,7 +1334,7 @@ function renderResults(analysis, sec){
     layersEl.innerHTML='<div class="as-text" style="color:var(--tx3);font-size:11px;">Layer observations included in sections above and below.</div>';
   }
 
-  // Priority changes — mistake/fix card format
+  // Priority changes (with WHY explanation)
   const prItems=parsePriorityChanges(sec.priority);
   document.getElementById('prioritySection').innerHTML=prItems.length
     ?`<div class="priority-list">${prItems.map((it,i)=>`
@@ -1309,6 +1344,7 @@ function renderResults(analysis, sec){
           ${it.mistake?`<div class="pri-col pri-col-problem"><div class="pri-col-tag">The Problem</div><div class="pri-col-text">${it.mistake.replace(/\*\*/g,'')}</div></div>`:''}
           <div class="pri-col pri-col-fix"><div class="pri-col-tag">The Fix</div><div class="pri-col-text">${it.fix.replace(/\*\*/g,'')}</div></div>
         </div>
+        ${it.why||it.fix?`<div class="pri-why"><span class="pri-why-tag">WHY THIS MATTERS</span> ${(it.why||extractWhy(it.fix)).replace(/\*\*/g,'')}</div>`:''}
       </div>`).join('')}</div>`
     :renderText(sec.priority);
 
