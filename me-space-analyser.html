@@ -1431,6 +1431,7 @@ async function startAnalysis(){
     renderUsageBar();
 
     renderResults(analysis, parsedSections);
+    saveResults(analysis, parsedSections);
     showPanel(5);
 
     // Step 4 — Generate DAY image
@@ -1512,10 +1513,33 @@ async function generateMoodboard(directives){
   }
 }
 
+// ── PERSISTENCE ──────────────────────────────────────────────────
+var SAVE_KEY='me_sanctuary_results';
+function saveResults(analysis, sec){
+  try{
+    var data={
+      dir:state.dir, spaceType:state.spaceType, imgMime:state.imgMime,
+      analysis:analysis, sec:sec, savedAt:Date.now()
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  }catch(e){ console.warn('Could not save results:',e); }
+}
+function loadResults(){
+  try{
+    var raw=localStorage.getItem(SAVE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function clearResults(){
+  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+}
+
 function resetAll(){
+  clearResults();
   state={tod:'day',dayB64:null,nightB64:null,dayMime:null,nightMime:null,dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'dining room',afterDayB64:null,afterNightB64:null};
   selectedStyle='';
-  
+
   document.querySelectorAll('.dir-btn').forEach(b=>b.classList.remove('sel'));
   document.querySelectorAll('.tod-btn[id^="sty-"]').forEach(b=>b.classList.remove('sel'));
   var snb=document.getElementById('styleNextBtn'); if(snb){snb.disabled=true;snb.style.opacity='.45';}
@@ -1535,6 +1559,24 @@ document.getElementById('floorPlanSection').innerHTML=SE.buildHomeMapHTML('fpCon
 SE.initHomeMapUI();
 document.getElementById('householdSection').innerHTML=SE.buildHouseholdHTML('hpContainer');
 SE.initHouseholdUI();
+
+// Check for saved results
+(function(){
+  var saved=loadResults();
+  if(saved && saved.dir && saved.analysis){
+    state.dir=saved.dir;
+    state.spaceType=saved.spaceType||'dining room';
+    state.imgMime=saved.imgMime||'image/jpeg';
+    renderResults(saved.analysis, saved.sec);
+    document.getElementById('beforeImg').src='';
+    document.getElementById('beforeImg').style.display='none';
+    var sliderDay=document.getElementById('baSliderDay');
+    if(sliderDay) sliderDay.style.display='none';
+    var sliderNight=document.getElementById('baSliderNight');
+    if(sliderNight) sliderNight.style.display='none';
+    showPanel(5);
+  }
+})();
 </script>
 </body>
 </html>

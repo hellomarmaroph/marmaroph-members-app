@@ -1369,6 +1369,7 @@ async function startAnalysis(){
     renderUsageBar();
 
     renderResults(analysis, parsedSections);
+    saveResults(analysis, parsedSections);
     showPanel(5);
 
   }catch(err){
@@ -1425,7 +1426,30 @@ async function generateMoodboard(directives){
   }
 }
 
+// ── PERSISTENCE ──────────────────────────────────────────────────
+var SAVE_KEY='em_sanctuary_results';
+function saveResults(analysis, sec){
+  try{
+    var data={
+      dir:state.dir, spaceType:state.spaceType, imgMime:state.imgMime,
+      analysis:analysis, sec:sec, savedAt:Date.now()
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  }catch(e){ console.warn('Could not save results:',e); }
+}
+function loadResults(){
+  try{
+    var raw=localStorage.getItem(SAVE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function clearResults(){
+  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+}
+
 function resetAll(){
+  clearResults();
   state={dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'yoga corner',afterB64:null};
   resetPhoto();
   document.querySelectorAll('.dir-btn').forEach(b=>b.classList.remove('sel'));
@@ -1443,6 +1467,23 @@ document.getElementById('floorPlanSection').innerHTML=SE.buildHomeMapHTML('fpCon
 SE.initHomeMapUI();
 document.getElementById('householdSection').innerHTML=SE.buildHouseholdHTML('hpContainer');
 SE.initHouseholdUI();
+
+// Check for saved results
+(function(){
+  var saved=loadResults();
+  if(saved && saved.dir && saved.analysis){
+    state.dir=saved.dir;
+    state.spaceType=saved.spaceType||'yoga corner';
+    state.imgMime=saved.imgMime||'image/jpeg';
+    renderResults(saved.analysis, saved.sec);
+    document.getElementById('beforeImg').src='';
+    document.getElementById('beforeImg').style.display='none';
+    document.getElementById('afterImg').style.display='none';
+    var baSlider=document.getElementById('baSlider');
+    if(baSlider) baSlider.style.display='none';
+    showPanel(5);
+  }
+})();
 </script>
 </body>
 </html>

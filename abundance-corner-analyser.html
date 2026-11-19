@@ -1073,6 +1073,7 @@ async function startAnalysis(){
     renderUsageBar();
 
     renderResults(analysis,parsedSections);
+    saveResults(analysis,parsedSections);
     showPanel(4);
 
     // Step 4: Generate DAY image
@@ -1114,8 +1115,31 @@ async function startAnalysis(){
   }
 }
 
+// ── PERSISTENCE ──────────────────────────────────────────────────
+var SAVE_KEY='qa_sanctuary_results';
+function saveResults(analysis, sec){
+  try{
+    var data={
+      dir:state.dir, spaceType:state.spaceType, imgMime:state.imgMime,
+      analysis:analysis, sec:sec, savedAt:Date.now()
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  }catch(e){ console.warn('Could not save results:',e); }
+}
+function loadResults(){
+  try{
+    var raw=localStorage.getItem(SAVE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function clearResults(){
+  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+}
+
 // ── RESET ────────────────────────────────────────────────────────
 function resetAll(){
+  clearResults();
   state={tod:'day',dir:null,imgB64:null,imgMime:'image/jpeg',spaceType:'abundance corner',style:null,spot:null,feel:null,calm:null,money:null,safe:null,goal:null,afterDayB64:null,afterNightB64:null};
   resetUpload();
   document.querySelectorAll('.dir-btn,.style-btn,.pq-opt').forEach(function(b){b.classList.remove('sel')});
@@ -1138,6 +1162,21 @@ SE.initHouseholdUI();
 document.getElementById('fpCSS').textContent=SE.FLOOR_PLAN_CSS;
 document.getElementById('floorPlanSection').innerHTML=SE.buildHomeMapHTML('fpContainer');
 SE.initHomeMapUI();
+
+(function(){
+  var saved=loadResults();
+  if(saved && saved.dir && saved.analysis){
+    state.dir=saved.dir;
+    state.spaceType=saved.spaceType||'abundance corner';
+    state.imgMime=saved.imgMime||'image/jpeg';
+    renderResults(saved.analysis, saved.sec);
+    var baSliderDay=document.getElementById('baSliderDay');
+    var baSliderNight=document.getElementById('baSliderNight');
+    if(baSliderDay) baSliderDay.style.display='none';
+    if(baSliderNight) baSliderNight.style.display='none';
+    showPanel(4);
+  }
+})();
 </script>
 </body>
 </html>
