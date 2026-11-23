@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "members-app",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "/Users/marianamaciasarevalo/Downloads/Photos-3-001/marmaroph-members-app", "-p", "8090", "-c-1"],
+      "port": 8090
+    }
+  ]
+}

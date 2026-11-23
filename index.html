@@ -138,13 +138,13 @@
 
   /* ══ MOBILE ══ */
   .mobile-header {
-    display: none; align-items: center; gap: 14px;
-    padding: 14px 20px; background: rgba(13,46,52,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); color: var(--white);
+    display: none; align-items: center; justify-content: center;
+    padding: 14px 20px; background: linear-gradient(90deg, #022a30 0%, #044147 35%, #065158 65%, #0a6b72 100%); color: var(--white);
     position: relative; z-index: 100; transition: background 0.3s ease, backdrop-filter 0.3s ease;
   }
-  .menu-btn { background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; padding: 4px; }
-  .mobile-title { font-family: var(--fh); font-size: 18px; font-weight: 400; letter-spacing: 1px; flex: 1; }
-  .mobile-av { width: 30px; height: 30px; border-radius: 50%; background: rgba(159,214,235,0.15); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 400; overflow: hidden; border: 1.5px solid rgba(159,214,235,0.3); }
+  .menu-btn { background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; padding: 4px; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
+  .mobile-title { font-family: var(--fh); font-size: 18px; font-weight: 400; letter-spacing: 1px; text-align: center; }
+  .mobile-av { width: 30px; height: 30px; border-radius: 50%; background: rgba(159,214,235,0.15); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 400; overflow: hidden; border: 1.5px solid rgba(159,214,235,0.3); position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
   .mobile-av img { width: 100%; height: 100%; object-fit: cover; }
   .mobile-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--em2); z-index: 99; border-bottom: 1px solid rgba(159,214,235,0.1); max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
   .mobile-menu.open { max-height: 500px; }
@@ -153,9 +153,9 @@
 
   /* ══ MAIN ══ */
   .main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #0d2e34; }
-  .section { display: none; background: #faf8f5; padding-top: 60px; }
+  .section { display: none; background: transparent; padding-top: 60px; position: relative; }
   .section.active { display: block; }
-  #sec-home { background: #0d2e34; padding-top: 0; }
+  #sec-home { padding-top: 0; }
 
   /* ══ HOME SANCTUARY CLUB ══ */
   .home-bg {
@@ -164,6 +164,7 @@
     min-height: 100%;
     padding-top: 60px;
   }
+  #sec-home { z-index: 5; }
 
   /* Stars background */
   .stars-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 1; overflow: hidden; }
@@ -194,6 +195,138 @@
   .shooting-star:nth-child(2) { animation-delay: 2.5s; animation-duration: 5s; }
   .shooting-star:nth-child(3) { animation-delay: 5s; animation-duration: 6s; }
 
+  /* ══ CELESTIAL BACKGROUND (all pages) ══ */
+  .celestial-canvas {
+    position: fixed; top: 0; left: var(--sidebar); right: 0; bottom: 0; pointer-events: none; z-index: 1; overflow: hidden;
+  }
+  @media (max-width: 768px) { .celestial-canvas { left: 0; } }
+  .cel-star {
+    position: absolute; border-radius: 50%; background: rgba(159,214,235,0.6);
+    animation: celTwinkle 3s ease-in-out infinite;
+  }
+  .cel-star.gold { background: rgba(201,162,78,0.5); }
+  .cel-star.bright { background: rgba(255,255,255,0.8); box-shadow: 0 0 4px 1px rgba(159,214,235,0.3); }
+  @keyframes celTwinkle { 0%,100%{opacity:0.15;transform:scale(0.7)} 50%{opacity:1;transform:scale(1.2)} }
+
+  .cel-shoot {
+    position: absolute; width: 80px; height: 1px;
+    background: linear-gradient(90deg, rgba(159,214,235,0.8), rgba(201,162,78,0.3), transparent);
+    border-radius: 2px; opacity: 0;
+  }
+  .cel-shoot::before {
+    content: ''; position: absolute; left: 0; top: -1.5px; width: 4px; height: 4px;
+    background: #fff; border-radius: 50%;
+    box-shadow: 0 0 8px 3px rgba(159,214,235,0.6), 0 0 16px 6px rgba(159,214,235,0.2);
+  }
+  @keyframes celShoot {
+    0% { transform: translateX(0) translateY(0) rotate(var(--shoot-angle,-25deg)); opacity: 0; }
+    3% { opacity: 1; }
+    12% { transform: translateX(280px) translateY(120px) rotate(var(--shoot-angle,-25deg)); opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  .cel-planet {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    animation: celFloat 20s ease-in-out infinite;
+  }
+  @keyframes celFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  .cel-constellation { position: absolute; pointer-events: none; opacity: 0.4; }
+  .cel-constellation line { stroke: rgba(159,214,235,0.2); stroke-width: 0.8; }
+  .cel-constellation circle { fill: rgba(159,214,235,0.5); }
+
+  .cel-dust {
+    position: absolute; width: 100%; height: 100%; pointer-events: none;
+    background: radial-gradient(ellipse at 20% 30%, rgba(159,214,235,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, rgba(201,162,78,0.02) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(187,217,215,0.025) 0%, transparent 40%);
+    animation: celDustDrift 30s ease-in-out infinite alternate;
+  }
+  @keyframes celDustDrift { 0%{opacity:0.6;transform:scale(1)} 100%{opacity:1;transform:scale(1.05) translateX(10px)} }
+
+  .cel-orchid {
+    position: absolute; pointer-events: none; opacity: 0;
+    animation: celOrchidFloat 25s ease-in-out infinite;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+  }
+  @keyframes celOrchidFloat {
+    0% { opacity: 0; transform: translateY(20px) rotate(0deg); }
+    5% { opacity: 0.25; }
+    50% { opacity: 0.2; transform: translateY(-30px) rotate(8deg); }
+    95% { opacity: 0.25; }
+    100% { opacity: 0; transform: translateY(20px) rotate(-5deg); }
+  }
+
+  /* ══ DARK THEME OVERRIDES FOR ALL SECTIONS ══ */
+  .sec-title { color: #ffffff; text-shadow: 0 1px 8px rgba(0,0,0,0.3); }
+  .sec-sub { color: rgba(187,217,215,0.7); }
+  .card {
+    background: rgba(4,65,71,0.35); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(159,214,235,0.12); box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  }
+  .card::before { background: linear-gradient(90deg,transparent,rgba(159,214,235,0.2),transparent); }
+  .card-t { color: #ffffff; }
+  .circle-card { background: rgba(4,65,71,0.35); border-color: rgba(159,214,235,0.12); box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+  .circle-name { color: #ffffff; }
+  .circle-meta { color: rgba(187,217,215,0.6); }
+  .circle-preview { color: rgba(255,255,255,0.75); }
+  .circle-count { color: rgba(187,217,215,0.5); }
+  .circle-av { border-color: rgba(4,65,71,0.5); }
+  .cm-tab-btn { color: rgba(187,217,215,0.5); }
+  .cm-tab-btn.active { background: rgba(159,214,235,0.12); color: #ffffff; }
+  .buddy-card { background: rgba(212,132,154,0.08); border-color: rgba(212,132,154,0.15); }
+  .buddy-card h4 { color: #ffffff; }
+  .buddy-card p { color: rgba(255,255,255,0.65); }
+  .cele-post { background: rgba(4,65,71,0.3); border-color: rgba(159,214,235,0.1); }
+  .btn-ghost { border-color: rgba(159,214,235,0.2); color: rgba(187,217,215,0.8); }
+  .btn-ghost:hover { background: rgba(159,214,235,0.08); }
+  .gift-node-month { color: rgba(187,217,215,0.6); }
+  .gift-node-title { color: #ffffff; }
+  .gift-node-desc { color: rgba(255,255,255,0.6); }
+  .gift-node::before { background: rgba(4,65,71,0.6); border-color: rgba(159,214,235,0.3); }
+  .gift-tag-locked { background: rgba(159,214,235,0.06); color: rgba(187,217,215,0.5); }
+  .referral-card { background: rgba(110,200,155,0.06); border-color: rgba(110,200,155,0.15); }
+  .ritual-spotlight-name { color: #ffffff; }
+  .ritual-spotlight-card { background: rgba(4,65,71,0.35); border-color: rgba(159,214,235,0.12); }
+  .journey-bar-label { color: rgba(187,217,215,0.5); }
+  input, textarea, select { background: rgba(4,65,71,0.3); border-color: rgba(159,214,235,0.15); color: #ffffff; }
+  input::placeholder, textarea::placeholder { color: rgba(187,217,215,0.4); }
+
+  /* ══ HOME (SANCTUARY) LIGHT OVERRIDES ══ */
+  #sec-home .sec-title { color: var(--em2); text-shadow: none; }
+  #sec-home .sec-sub { color: var(--muted); }
+  #sec-home .card {
+    background: rgba(255,255,255,0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(4,65,71,0.06); box-shadow: 0 4px 24px rgba(4,65,71,0.04);
+  }
+  #sec-home .card::before { background: linear-gradient(90deg,transparent,rgba(159,214,235,0.15),transparent); }
+  #sec-home .card-t { color: var(--em2); }
+  #sec-home .circle-card { background: rgba(255,255,255,0.7); border-color: rgba(4,65,71,0.08); box-shadow: 0 2px 12px rgba(4,65,71,0.04); }
+  #sec-home .circle-name { color: var(--em2); }
+  #sec-home .circle-meta { color: var(--muted); }
+  #sec-home .circle-preview { color: var(--em); }
+  #sec-home .circle-count { color: var(--muted); }
+  #sec-home .circle-av { border-color: rgba(4,65,71,0.1); }
+  #sec-home .cm-tab-btn { color: var(--muted); }
+  #sec-home .cm-tab-btn.active { background: rgba(159,214,235,0.12); color: var(--em2); }
+  #sec-home .buddy-card { background: rgba(212,132,154,0.06); border-color: rgba(212,132,154,0.12); }
+  #sec-home .buddy-card h4 { color: var(--em2); }
+  #sec-home .buddy-card p { color: var(--em); }
+  #sec-home .cele-post { background: rgba(255,255,255,0.5); border-color: rgba(4,65,71,0.06); }
+  #sec-home .btn-ghost { border-color: rgba(4,65,71,0.12); color: var(--em); }
+  #sec-home .btn-ghost:hover { background: rgba(159,214,235,0.08); }
+  #sec-home .gift-node-month { color: var(--muted); }
+  #sec-home .gift-node-title { color: var(--em2); }
+  #sec-home .gift-node-desc { color: var(--em); }
+  #sec-home .gift-node::before { background: rgba(255,255,255,0.8); border-color: rgba(4,65,71,0.1); }
+  #sec-home .gift-tag-locked { background: rgba(4,65,71,0.04); color: var(--muted); }
+  #sec-home .referral-card { background: linear-gradient(135deg,rgba(110,200,155,0.08),rgba(159,214,235,0.06)); border-color: rgba(110,200,155,0.15); }
+  #sec-home .ritual-spotlight-name { color: var(--em2); }
+  #sec-home .ritual-spotlight-card { background: rgba(255,255,255,0.7); border-color: rgba(4,65,71,0.08); }
+  #sec-home .journey-bar-label { color: var(--muted); }
+  #sec-home input, #sec-home textarea, #sec-home select { background: rgba(255,255,255,0.8); border-color: rgba(4,65,71,0.12); color: var(--em2); }
+  #sec-home input::placeholder, #sec-home textarea::placeholder { color: var(--muted); }
+
   /* Cover image */
   .home-cover {
     position: absolute; top: 0; left: 0; z-index: 0; width: 100%; height: 300px; object-fit: cover; object-position: center top; display: block;
@@ -209,6 +342,13 @@
   .flower-4 { top: 55%; right: -30px; width: 180px; animation: floatIn 1.5s ease-out 0.8s forwards, gentleFloat 10s ease-in-out 2.5s infinite; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.04)); }
   @keyframes floatIn { 0%{opacity:0;transform:translateY(20px) scale(0.9)} 100%{opacity:0.6;transform:translateY(0) scale(1)} }
   @keyframes gentleFloat { 0%,100%{transform:translateY(0px) rotate(0deg)} 50%{transform:translateY(-12px) rotate(2deg)} }
+  @keyframes sway { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
+
+  /* Quiz beige overrides */
+  #sec-quiz { z-index: 5; }
+  #sec-quiz .quiz-option { background: #fff !important; border: 1px solid rgba(4,65,71,0.14) !important; color: rgba(12,51,56,0.85) !important; box-shadow: 0 6px 16px rgba(4,65,71,0.05) !important; }
+  #sec-quiz .quiz-option:hover { border-color: var(--teal) !important; }
+  #sec-quiz .quiz-option.selected { border-color: var(--gold) !important; background: linear-gradient(135deg, rgba(201,162,78,0.08), rgba(255,255,255,0.95)) !important; }
 
   /* Mascots */
   .mascot-float { position: absolute; pointer-events: none; z-index: 3; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.08)); }
@@ -218,20 +358,23 @@
   @keyframes mascotBob { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
 
   /* ══ PILLAR WHEEL ══ */
-  .pillar-hero { position: relative; z-index: 4; padding: 36px 32px 28px; text-align: center; }
+  .pillar-hero { position: relative; z-index: 4; padding: 52px 32px 28px; text-align: center; }
   .pillar-hero-title { font-family: var(--fh); font-size: 28px; font-weight: 600; color: #ffffff; margin-bottom: 4px; text-shadow: 0 2px 12px rgba(0,0,0,0.5), 0 0 30px rgba(0,0,0,0.3); }
   .pillar-hero-sub { font-size: 10px; color: rgba(255,255,255,0.9); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
-  .pillar-wheel-svg { width: 180px; height: 180px; display: block; margin: 0 auto 20px; }
+  .pillar-wheel-svg { width: 200px; height: 200px; display: block; margin: 0 auto 24px; filter: drop-shadow(0 0 20px rgba(139,184,201,0.15)); transition: transform 0.4s ease; cursor: pointer; }
+  .pillar-wheel-svg:hover { transform: scale(1.05); }
   .pillar-legend-row {
-    display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+    display: flex; justify-content: center; gap: 0; flex-wrap: nowrap;
   }
   .pillar-legend-item {
-    display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 70px;
+    display: flex; flex-direction: column; align-items: center; width: 64px; min-width: 64px;
   }
-  .pillar-legend-dot { font-size: 12px; line-height: 1; }
-  .pillar-legend-bar-track { width: 60px; height: 4px; background: rgba(4,65,71,0.06); border-radius: 10px; overflow: hidden; }
+  .pillar-legend-dot { height: 18px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; }
+  .pillar-legend-dot svg { width: 12px; height: 12px; }
+  .pillar-legend-item:hover .pillar-legend-dot { transform: scale(1.4); }
+  .pillar-legend-bar-track { width: 48px; height: 4px; margin: 2px 0; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
   .pillar-legend-bar-fill { height: 100%; border-radius: 10px; transition: width 1s ease; }
-  .pillar-legend-label { font-size: 9px; font-weight: 400; color: rgba(255,255,255,0.85); letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+  .pillar-legend-label { font-size: 9px; font-weight: 400; color: rgba(255,255,255,0.85); letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.3); line-height: 1; }
 
   /* ══ GLASS CARDS ══ */
   .glass {
@@ -296,10 +439,10 @@
   .home-rituals { position: relative; z-index: 4; padding: 0 32px 28px; }
 
   .home-rituals-header {
-    background: rgba(255,255,255,0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(4,65,71,0.06); border-radius: 20px;
+    background: rgba(255,255,255,0.55); backdrop-filter: blur(24px) saturate(1.2); -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.35); border-radius: 20px;
     padding: 24px; text-align: center; position: relative; overflow: hidden;
-    box-shadow: 0 8px 32px rgba(4,65,71,0.04);
+    box-shadow: 0 8px 32px rgba(4,65,71,0.08), inset 0 1px 0 rgba(255,255,255,0.4);
   }
   .home-rituals-header::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(159,214,235,0.15),transparent); }
 
@@ -522,15 +665,9 @@
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--em2); color: #e8f4f2; padding: 14px 28px; border-radius: 14px; font-family: var(--fb); font-size: 12px; font-weight: 400; z-index: 9999; opacity: 0; transition: all 0.4s; box-shadow: 0 8px 30px rgba(0,0,0,0.2); pointer-events: none; text-align: center; max-width: 340px; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  .quiz-progress { display: flex; gap: 6px; margin: 20px 0; }
-  .quiz-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(4,65,71,0.08); transition: all 0.3s; }
-  .quiz-dot.active { background: var(--sky); box-shadow: 0 0 8px rgba(159,214,235,0.4); }
-  .quiz-dot.done { background: #6ec89b; }
-  .quiz-option { display: block; width: 100%; text-align: left; padding: 16px 20px; margin: 8px 0; border-radius: 14px; border: 1.5px solid rgba(4,65,71,0.08); background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); font-family: var(--fb); font-size: 13px; color: var(--text); font-weight: 300; cursor: pointer; transition: all 0.25s; }
-  .quiz-option:hover { border-color: rgba(159,214,235,0.3); background: rgba(240,247,250,0.8); }
-  .quiz-option.selected { border-color: rgba(159,214,235,0.5); background: linear-gradient(135deg, rgba(240,247,250,0.9), rgba(255,255,255,0.8)); box-shadow: 0 4px 16px rgba(159,214,235,0.15); font-weight: 400; color: var(--em2); }
-  .quiz-result-card { background: linear-gradient(135deg, rgba(240,247,250,0.9), rgba(255,255,255,0.8)); border: 1.5px solid rgba(159,214,235,0.25); border-radius: 18px; padding: 32px; text-align: center; position: relative; overflow: hidden; }
-  .quiz-result-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,rgba(159,214,235,0.6),transparent); }
+  .quiz-option { display: block; width: 100%; text-align: left; padding: 16px 18px; margin: 0; border-radius: 16px; border: 1px solid rgba(4,65,71,0.14); background: #fff; font-family: var(--fb); font-size: 12.5px; line-height: 1.55; color: rgba(12,51,56,0.85); cursor: pointer; transition: all 0.25s ease; box-shadow: 0 6px 16px rgba(4,65,71,0.05); }
+  .quiz-option:hover { border-color: var(--teal); transform: translateY(-1px); }
+  .quiz-option.selected { border-color: var(--gold); background: linear-gradient(135deg, rgba(201,162,78,0.08), rgba(255,255,255,0.95)); box-shadow: 0 4px 16px rgba(201,162,78,0.15); font-weight: 500; color: var(--em2); }
 
   /* ══ COMMUNITY ══ */
   .cm-tabs { display: flex; gap: 2px; margin-bottom: 16px; background: rgba(4,65,71,0.04); border-radius: 8px; padding: 3px; }
@@ -579,7 +716,8 @@
   @media (max-width: 768px) {
     .app, .app.ready { flex-direction: column !important; }
     .mobile-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
-    .mobile-header.scrolled { background: rgba(13,46,52,0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .mobile-header.header-home { background: rgba(13,46,52,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+    .mobile-header.header-home.scrolled { background: rgba(13,46,52,0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
     .sidebar { display: none; }
     .mobile-header { display: flex; }
     .mobile-menu { display: block; }
@@ -616,7 +754,7 @@
     .home-rituals-header { background: rgba(255,255,255,0.95) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
     .hr-card { background: rgba(255,255,255,0.95) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
     .cm-card { background: rgba(255,255,255,0.95) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
-    .quiz-option { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.95) !important; }
+    .quiz-option { background: rgba(255,255,255,0.95) !important; }
     .circle-card { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.95) !important; }
     .cele-post { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.92) !important; }
     .form-input { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,0.95) !important; }
@@ -700,9 +838,9 @@
   .jp-keeper-card.light .keeper-desc { color: var(--muted); }
 
   /* ── Bottom tab bar (JP flag) ── */
-  .jp-tab-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--em2); border-top: 1px solid rgba(159,214,235,0.1); padding: 6px 0 env(safe-area-inset-bottom, 0); }
+  .jp-tab-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: linear-gradient(90deg, #0a6b72 0%, #065158 35%, #044147 65%, #022a30 100%); border-top: 1px solid rgba(159,214,235,0.15); padding: 6px 0 env(safe-area-inset-bottom, 0); }
   .jp-tab-bar-inner { display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; }
-  .jp-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px; cursor: pointer; border: none; background: none; color: rgba(187,217,215,0.4); font-family: var(--fh); font-size: 10px; font-weight: 400; letter-spacing: 0.5px; transition: color 0.2s; min-width: 64px; -webkit-tap-highlight-color: transparent; }
+  .jp-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 8px; cursor: pointer; border: none; background: none; color: rgba(187,217,215,0.4); font-family: var(--fh); font-size: 9px; font-weight: 400; letter-spacing: 0.5px; transition: color 0.2s; min-width: 52px; -webkit-tap-highlight-color: transparent; }
   .jp-tab .jp-tab-icon { font-size: 20px; line-height: 1; transition: opacity 0.2s; opacity: 0.5; }
   .jp-tab .jp-tab-label { margin-top: 1px; }
   .jp-tab.active { color: var(--sky); }
@@ -742,13 +880,9 @@
   <!-- Mobile header -->
   <div class="mobile-header">
     <button class="menu-btn" id="menuBtn">&#9776;</button>
-    <div class="mobile-title"><img src="logo-copper.png" alt="Marmaroph" style="height:38px;vertical-align:middle;opacity:0.95"></div>
+    <div class="mobile-title"><img src="logo-copper.png" alt="Marmaroph" style="height:52px;vertical-align:middle;opacity:0.95"></div>
     <div class="mobile-av" id="mobileAv" onclick="document.getElementById('avatarInput').click()"><span id="mobileAvInit">MA</span></div>
     <div class="mobile-menu" id="mobileMenu">
-      <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Sanctuary Club</div>
-      <div class="sb-item" onclick="navigate('rituals',this)"><span class="sb-icon">&#10022;</span> My Rituals</div>
-      <div class="sb-item" onclick="navigate('community',this)"><span class="sb-icon">&#9825;</span> Community <span class="sb-badge">new</span></div>
-      <div class="sb-item" onclick="navigate('quiz',this)"><span class="sb-icon">&#10070;</span> Choose Your Next Ritual</div>
       <div class="sb-item" onclick="navigate('profile',this)"><span class="sb-icon">&#9675;</span> Profile</div>
       <div class="sb-item" onclick="navigate('addresses',this)"><span class="sb-icon">&#9906;</span> Addresses</div>
       <div class="sb-item" onclick="navigate('payments',this)"><span class="sb-icon">&#9645;</span> Payments</div>
@@ -763,13 +897,17 @@
   <!-- Bottom tab bar (JP flag) -->
   <nav class="jp-tab-bar mm-jp-only" id="jpTabBar">
     <div class="jp-tab-bar-inner">
-      <button class="jp-tab active" data-sec="home" onclick="jpTabNav('home',this)">
-        <span class="jp-tab-icon">&#9671;</span>
-        <span class="jp-tab-label">Home</span>
+      <button class="jp-tab" data-sec="quiz" onclick="jpTabNav('quiz',this)">
+        <span class="jp-tab-icon">&#10070;</span>
+        <span class="jp-tab-label">Next Ritual</span>
       </button>
       <button class="jp-tab" data-sec="rituals" onclick="jpTabNav('rituals',this)">
         <span class="jp-tab-icon">&#10022;</span>
         <span class="jp-tab-label">Rituals</span>
+      </button>
+      <button class="jp-tab active" data-sec="home" onclick="jpTabNav('home',this)">
+        <span class="jp-tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" opacity="0.3"/></svg></span>
+        <span class="jp-tab-label">Sanctuary</span>
       </button>
       <button class="jp-tab" data-sec="community" onclick="jpTabNav('community',this)">
         <span class="jp-tab-icon">&#9825;</span>
@@ -794,10 +932,6 @@
     </div>
     <div class="sb-sep"></div>
     <nav class="sb-nav">
-      <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Sanctuary Club</div>
-      <div class="sb-item" onclick="navigate('rituals',this)"><span class="sb-icon">&#10022;</span> My Rituals</div>
-      <div class="sb-item" onclick="navigate('community',this)"><span class="sb-icon">&#9825;</span> Community <span class="sb-badge">new</span></div>
-      <div class="sb-item" onclick="navigate('quiz',this)"><span class="sb-icon">&#10070;</span> Choose Your Next Ritual</div>
       <div class="sb-item" onclick="navigate('profile',this)"><span class="sb-icon">&#9675;</span> Profile</div>
       <div class="sb-item" onclick="navigate('addresses',this)"><span class="sb-icon">&#9906;</span> Addresses</div>
       <div class="sb-item" onclick="navigate('payments',this)"><span class="sb-icon">&#9645;</span> Payments</div>
@@ -811,13 +945,15 @@
 
   <!-- Main -->
   <div class="main" id="mainArea">
+    <!-- Celestial background canvas -->
+    <div class="celestial-canvas" id="celestialCanvas"></div>
 
     <!-- ═══ HOME SANCTUARY CLUB (white bg + flowers + mascots) ═══ -->
     <div class="section active" id="sec-home">
       <div class="home-bg">
 
         <!-- Cover image -->
-        <img class="home-cover" src="img/loading-screen.jpg" alt="" loading="lazy"/>
+        <img class="home-cover" src="img/home-cover.jpg" alt="" loading="lazy"/>
 
         <!-- Stars & shooting stars -->
         <div class="stars-container" id="starsContainer"></div>
@@ -826,7 +962,6 @@
         <img class="floating-flower flower-2" src="https://static.wixstatic.com/media/00228e_0911417b663942e6984eb073e505406b~mv2.png/v1/fill/w_500,h_500,al_c,q_85/orchids.png" alt="" loading="lazy"/>
         <img class="floating-flower flower-3" src="https://static.wixstatic.com/media/00228e_d56dbb9c226d4340ada9e06470311032~mv2.png/v1/fill/w_400,h_400,al_c,q_85/flowers3.png" alt="" loading="lazy"/>
         <img class="floating-flower flower-4" src="https://static.wixstatic.com/media/00228e_3ed2e67b51264d05ae3b70e3514b7097~mv2.png/v1/fill/w_400,h_400,al_c,q_85/flowers1.png" alt="" loading="lazy"/>
-        <img class="mascot-float mascot-marmi" src="https://static.wixstatic.com/media/00228e_fde9eef4bdf04cf09bb1052868f02a47~mv2.png/v1/fill/w_240,h_240,al_c,q_85/marmi.png" alt="Marmi" loading="lazy"/>
         <img class="mascot-float mascot-lumi" src="https://static.wixstatic.com/media/00228e_eb8388fa248f46eab7cb5f940f009b52~mv2.png" alt="Lumi" loading="lazy"/>
 
         <!-- Current Ritual Spotlight (shown only when unlocked) -->
@@ -851,48 +986,48 @@
           <div class="pillar-hero-title">Your Wellness Pillars</div>
           <div class="pillar-hero-sub">Nurture every dimension of your sanctuary</div>
           <svg class="pillar-wheel-svg" viewBox="0 0 200 200" id="pillarWheel">
-            <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(4,65,71,0.04)" stroke-width="8"/>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(159,214,235,0.06)" stroke-width="10"/>
           </svg>
           <div class="pillar-legend-row" id="pillarLegend">
             <div class="pillar-legend-item">
-              <div class="pillar-legend-dot" style="color:#6ec89b">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#6ec89b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-nourishment" style="width:0%;background:linear-gradient(90deg,rgba(110,200,155,0.3),#6ec89b)"></div></div>
               <div class="pillar-legend-label">Nourish</div>
             </div>
             <div class="pillar-legend-item">
-              <div class="pillar-legend-dot" style="color:#b08fd4">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#b08fd4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-purpose" style="width:0%;background:linear-gradient(90deg,rgba(176,143,212,0.3),#b08fd4)"></div></div>
               <div class="pillar-legend-label">Purpose</div>
             </div>
             <div class="pillar-legend-item mm-jp-hide">
-              <div class="pillar-legend-dot" style="color:#8bb8c9">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#8bb8c9"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-regulate" style="width:0%;background:linear-gradient(90deg,rgba(139,184,201,0.3),#8bb8c9)"></div></div>
               <div class="pillar-legend-label">Regulate</div>
             </div>
             <div class="pillar-legend-item mm-jp-hide">
-              <div class="pillar-legend-dot" style="color:#e8a86d">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#e8a86d"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-movement" style="width:0%;background:linear-gradient(90deg,rgba(232,168,109,0.3),#e8a86d)"></div></div>
               <div class="pillar-legend-label">Movement</div>
             </div>
             <div class="pillar-legend-item mm-jp-hide">
-              <div class="pillar-legend-dot" style="color:#d4849a">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#d4849a"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-connection" style="width:0%;background:linear-gradient(90deg,rgba(212,132,154,0.3),#d4849a)"></div></div>
               <div class="pillar-legend-label">Connection</div>
             </div>
             <!-- JP flag: renamed pillars + Prosper -->
             <!-- Ground shown as text in wheel center, not in legend -->
             <div class="pillar-legend-item mm-jp-only" style="display:none">
-              <div class="pillar-legend-dot" style="color:#e8a86d">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#e8a86d"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-move" style="width:0%;background:linear-gradient(90deg,rgba(232,168,109,0.3),#e8a86d)"></div></div>
               <div class="pillar-legend-label">Move</div>
             </div>
             <div class="pillar-legend-item mm-jp-only" style="display:none">
-              <div class="pillar-legend-dot" style="color:#d4849a">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#d4849a"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-connect" style="width:0%;background:linear-gradient(90deg,rgba(212,132,154,0.3),#d4849a)"></div></div>
               <div class="pillar-legend-label">Connect</div>
             </div>
             <div class="pillar-legend-item mm-jp-only" style="display:none">
-              <div class="pillar-legend-dot" style="color:#c9a24e">&#9829;</div>
+              <div class="pillar-legend-dot"><svg viewBox="0 0 24 24" fill="#c9a24e"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-prosper" style="width:0%;background:linear-gradient(90deg,rgba(201,162,78,0.3),#c9a24e)"></div></div>
               <div class="pillar-legend-label">Prosper</div>
             </div>
@@ -907,21 +1042,21 @@
 
         <!-- Meet Your Guides -->
         <div style="max-width:540px;margin:0 auto 32px;padding:0 20px;position:relative;z-index:5">
-          <div style="background:linear-gradient(135deg,rgba(159,214,235,0.06),rgba(187,217,215,0.04));border:1px solid rgba(4,65,71,0.06);border-radius:16px;padding:24px;text-align:center">
-            <div style="font-family:var(--fh);font-size:16px;font-weight:500;color:var(--em2);margin-bottom:14px">Meet Your Guides</div>
+          <div style="background:rgba(4,65,71,0.2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(159,214,235,0.12);border-radius:16px;padding:24px;text-align:center">
+            <div style="font-family:var(--fh);font-size:16px;font-weight:500;color:rgba(255,255,255,0.85);margin-bottom:14px">Meet Your Guides</div>
             <div style="display:flex;justify-content:center;gap:40px;margin-bottom:20px">
               <div style="text-align:center;max-width:180px">
                 <img src="https://static.wixstatic.com/media/00228e_fde9eef4bdf04cf09bb1052868f02a47~mv2.png/v1/fill/w_240,h_240,al_c,q_85/marmi.png" alt="Marmi" style="width:72px;height:72px;border-radius:50%;border:2px solid rgba(110,200,155,0.3);box-shadow:0 4px 16px rgba(0,0,0,0.06)"/>
-                <div style="font-family:var(--fh);font-size:13px;font-weight:500;color:var(--em2);margin-top:8px">Marmi</div>
-                <div style="font-family:var(--fb);font-size:11px;font-weight:300;color:var(--muted);line-height:1.5;margin-top:4px">The calm within the chaos. Grounded, wise, and steady — she holds the space so you can grow.</div>
+                <div style="font-family:var(--fh);font-size:13px;font-weight:500;color:#ffffff;margin-top:8px">Marmi</div>
+                <div style="font-family:var(--fb);font-size:11px;font-weight:300;color:rgba(187,217,215,0.8);line-height:1.5;margin-top:4px">The calm within the chaos. Grounded, wise, and steady — she holds the space so you can grow.</div>
               </div>
               <div style="text-align:center;max-width:180px">
                 <img src="https://static.wixstatic.com/media/00228e_eb8388fa248f46eab7cb5f940f009b52~mv2.png" alt="Lumi" style="width:72px;height:72px;border-radius:50%;border:2px solid rgba(159,214,235,0.3);box-shadow:0 4px 16px rgba(0,0,0,0.06)"/>
-                <div style="font-family:var(--fh);font-size:13px;font-weight:500;color:var(--em2);margin-top:8px">Lumi</div>
-                <div style="font-family:var(--fb);font-size:11px;font-weight:300;color:var(--muted);line-height:1.5;margin-top:4px">She is all of us — beautifully imperfect, showing up every day, choosing to live better and become her truest self.</div>
+                <div style="font-family:var(--fh);font-size:13px;font-weight:500;color:#ffffff;margin-top:8px">Lumi</div>
+                <div style="font-family:var(--fb);font-size:11px;font-weight:300;color:rgba(187,217,215,0.8);line-height:1.5;margin-top:4px">She is all of us — beautifully imperfect, showing up every day, choosing to live better and become her truest self.</div>
               </div>
             </div>
-            <div style="font-family:var(--fb);font-size:12px;font-weight:300;color:var(--muted);line-height:1.6;max-width:440px;margin:0 auto;font-style:italic">Marmi gently guides Lumi through every ritual — and in doing so, she guides you too. Together, they walk beside you on this journey toward the woman you are becoming.</div>
+            <div style="font-family:var(--fb);font-size:12px;font-weight:300;color:rgba(187,217,215,0.75);line-height:1.6;max-width:440px;margin:0 auto;font-style:italic">Marmi gently guides Lumi through every ritual — and in doing so, she guides you too. Together, they walk beside you on this journey toward the woman you are becoming.</div>
           </div>
         </div>
 
@@ -1124,7 +1259,6 @@
         <img class="floating-flower flower-2" src="https://static.wixstatic.com/media/00228e_0911417b663942e6984eb073e505406b~mv2.png/v1/fill/w_500,h_500,al_c,q_85/orchids.png" alt="" loading="lazy" style="z-index:1;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.3))"/>
         <img class="floating-flower flower-3" src="https://static.wixstatic.com/media/00228e_d56dbb9c226d4340ada9e06470311032~mv2.png/v1/fill/w_400,h_400,al_c,q_85/flowers3.png" alt="" loading="lazy" style="z-index:1;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.25))"/>
         <img class="floating-flower flower-4" src="https://static.wixstatic.com/media/00228e_3ed2e67b51264d05ae3b70e3514b7097~mv2.png/v1/fill/w_400,h_400,al_c,q_85/flowers1.png" alt="" loading="lazy" style="z-index:1;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.25))"/>
-        <img class="mascot-float mascot-marmi" src="https://static.wixstatic.com/media/00228e_fde9eef4bdf04cf09bb1052868f02a47~mv2.png/v1/fill/w_240,h_240,al_c,q_85/marmi.png" alt="Marmi" loading="lazy" style="filter:drop-shadow(0 12px 32px rgba(0,0,0,0.4))"/>
         <img class="mascot-float mascot-lumi" src="https://static.wixstatic.com/media/00228e_eb8388fa248f46eab7cb5f940f009b52~mv2.png" alt="Lumi" loading="lazy" style="filter:drop-shadow(0 12px 32px rgba(0,0,0,0.4))"/>
 
         <div class="dark-rituals-content">
@@ -1249,38 +1383,64 @@
             </div>
             <button class="btn-sky" style="margin-top:14px" onclick="showToast('Sister messaging launches soon! You will be notified when it is ready.')">Message my sister &#8594;</button>
           </div>
+          <div class="card" style="margin-top:16px;text-align:center;padding:24px">
+            <div style="font-size:28px;margin-bottom:8px">&#128172;</div>
+            <div class="card-t" style="margin-bottom:6px">Home Sanctuary Club</div>
+            <div style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:16px">Join our WhatsApp group to connect with your ritual sisters, share your journey, and be part of the Sanctuary Club community.</div>
+            <a href="https://wa.me/17865998908" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#25D366;color:#fff;border-radius:12px;font-family:var(--fb);font-size:13px;font-weight:500;text-decoration:none;box-shadow:0 4px 12px rgba(37,211,102,0.3);transition:all 0.2s" onmouseover="this.style.background='#1ebe5a'" onmouseout="this.style.background='#25D366'">&#128242; Join WhatsApp Group</a>
+          </div>
           <div class="card" style="margin-top:16px"><div class="card-t">How Ritual Sisters Work</div><div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">1</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">We match you</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Based on your current ritual, goals, and timezone</div></div></div><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">2</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">Daily encouragement</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Share reflections, send encouragement, grow together</div></div></div><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">3</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">Meet in person</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Connect at community events and ritual gatherings</div></div></div></div></div>
         </div>
       </div>
     </div>
 
     <!-- ═══ QUIZ ═══ -->
-    <div class="section" id="sec-quiz">
-      <div class="content-area">
-        <div class="sec-title"><span style="font-size:16px;opacity:0.6">&#10070;</span> Choose Your Next Ritual</div>
-        <div style="font-family:var(--fh);font-size:19px;font-weight:500;color:var(--em2);margin-bottom:8px">Don't know which ritual to choose next? Here we help you.</div>
-        <div style="font-family:var(--fb);font-size:15px;font-weight:300;color:var(--muted);line-height:1.6;margin-bottom:24px">Answer the following questions so we can guide you to the perfect ritual for where you are right now.</div>
-        <div class="quiz-progress" id="quizDots"></div>
+    <div class="section" id="sec-quiz" style="background:linear-gradient(180deg,#faf8f4 0%,#f3efe7 100%);z-index:5">
+      <div class="content-area" style="position:relative;overflow:hidden;padding-bottom:120px">
+        <!-- Decorative flowers (bougainvillea top-left, hydrangea bottom-right) -->
+        <img src="img/boug.png" style="position:absolute;width:120px;left:-36px;top:-18px;opacity:0.55;pointer-events:none;animation:sway 9s ease-in-out infinite;transform-origin:top center;z-index:1" alt="">
+        <img src="img/hydrangea.png" style="position:absolute;width:140px;right:-36px;bottom:80px;opacity:0.55;pointer-events:none;animation:sway 9s ease-in-out infinite;animation-delay:-5s;transform:scaleX(-1);transform-origin:top center;z-index:1" alt="">
+
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <button class="btn-ghost" onclick="navigate('rituals')" style="padding:8px 16px;font-size:11px;border-color:rgba(4,65,71,0.15);color:rgba(4,65,71,0.55)">&#8592; Sanctuary</button>
+          <span style="font-family:var(--fh);font-size:13px;font-weight:500;color:var(--gold)">Next ritual</span>
+        </div>
+
+        <!-- Rule label -->
+        <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin:16px 0 6px">
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(4,65,71,0.2))"></div>
+          <span style="font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.25em;color:#5e9aae">The quiz · step zero</span>
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(4,65,71,0.2),transparent)"></div>
+        </div>
+
+        <!-- Quiz body -->
         <div id="quizBody">
-          <div class="card" id="quizQuestion" style="padding:28px">
-            <div style="font-size:11px;color:var(--muted);font-weight:300;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px" id="quizStep">Question 1 of 6</div>
-            <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--em2);margin-bottom:18px" id="quizText"></div>
-            <div id="quizOptions"></div>
-          </div>
-          <div style="display:flex;gap:12px;margin-top:16px">
-            <button class="btn-ghost" id="quizBack" onclick="quizPrev()" style="display:none;padding:10px 20px;font-size:11px">&#8592; Back</button>
-            <button class="btn-teal" id="quizNext" onclick="quizAdvance()" style="margin-left:auto;padding:10px 24px;font-size:11px;opacity:0.4;pointer-events:none">Next &#8594;</button>
+          <div class="quiz-q" id="quizText" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:24px;line-height:1.4;text-align:center;margin:16px 0 22px;color:var(--teal);position:relative;z-index:4"></div>
+          <div class="quiz-opts" id="quizOptions" style="display:flex;flex-direction:column;gap:10px;position:relative;z-index:4"></div>
+          <div class="quiz-progress" id="quizProg" style="font-size:10px;font-weight:700;letter-spacing:0.25em;color:#b89b4e;text-align:center;margin-top:14px;position:relative;z-index:4"></div>
+        </div>
+
+        <!-- Quiz result -->
+        <div id="quizResult" style="display:none;text-align:center;padding-top:20px">
+          <div style="font-size:48px;margin-bottom:12px" id="quizResultIcon"></div>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:var(--teal);margin-bottom:6px">Your next ritual is<br><em id="quizResultName" style="color:var(--gold);font-style:normal">—</em></h2>
+          <p style="font-size:12px;color:rgba(12,51,56,0.6);font-weight:300;max-width:420px;margin:14px auto 8px;line-height:1.7" id="quizResultDesc"></p>
+          <div style="text-align:center;margin:14px 0"><span style="display:inline-block;background:rgba(4,65,71,0.06);border:1px solid rgba(4,65,71,0.12);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:500;letter-spacing:0.1em;color:#5e9aae;text-transform:uppercase" id="quizResultPillar">Pillar</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:20px">
+            <button class="btn-teal" id="quizStartBtn" onclick="quizStartNow()" style="padding:14px 32px;font-size:12px;width:100%;max-width:320px">Start This Ritual &#8594;</button>
+            <button class="btn-ghost" id="quizRetakeBtn" onclick="initQuiz()" style="padding:10px 24px;font-size:11px;width:100%;max-width:320px;border-color:rgba(4,65,71,0.15);color:rgba(4,65,71,0.55)">Take the Quiz Again</button>
           </div>
         </div>
-        <div id="quizResult" style="display:none">
-          <div class="quiz-result-card">
-            <div style="font-size:36px;margin-bottom:12px" id="quizResultIcon"></div>
-            <div style="font-family:var(--fh);font-size:22px;font-weight:500;color:var(--em2);margin-bottom:6px" id="quizResultName"></div>
-            <div style="font-size:12px;color:var(--muted);font-weight:300;max-width:420px;margin:0 auto 20px" id="quizResultDesc"></div>
-            <div style="display:flex;flex-direction:column;gap:12px;align-items:center">
-              <button class="btn-teal" id="quizStartBtn" onclick="quizStartNow()" style="padding:14px 32px;font-size:12px">Start This Ritual Now &#8594;</button>
-              <button class="btn-ghost" id="quizRetakeBtn" onclick="initQuiz()" style="padding:10px 24px;font-size:11px">Take the Quiz Again</button>
-            </div>
+
+        <!-- Already completed state -->
+        <div id="quizAlready" style="display:none;text-align:center;padding-top:20px">
+          <div style="font-size:48px;margin-bottom:12px" id="quizAlreadyIcon"></div>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:var(--teal);margin-bottom:6px" id="quizAlreadyTitle">Your next ritual</h2>
+          <p style="font-size:12px;color:rgba(12,51,56,0.6);font-weight:300;max-width:420px;margin:14px auto 8px;line-height:1.7" id="quizAlreadyDesc"></p>
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:20px">
+            <button class="btn-teal" id="quizAlreadyStart" onclick="quizStartSaved()" style="padding:14px 32px;font-size:12px;width:100%;max-width:320px">Start This Ritual &#8594;</button>
+            <button class="btn-ghost" onclick="initQuiz()" style="padding:10px 24px;font-size:11px;width:100%;max-width:320px;border-color:rgba(4,65,71,0.15);color:rgba(4,65,71,0.55)">Retake the Quiz</button>
           </div>
         </div>
       </div>
@@ -2707,11 +2867,13 @@ function navigate(sec,el){
   closeRitualEmbed();
   document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sec-'+sec).classList.add('active');
+  var hdr=document.querySelector('.mobile-header');
+  if(hdr){if(sec==='home')hdr.classList.add('header-home');else hdr.classList.remove('header-home');}
   document.querySelectorAll('.sb-item').forEach(function(i){i.classList.remove('active');});
   if(el)el.classList.add('active');
   document.getElementById('mainArea').scrollTop=0;
   var mm=document.getElementById('mobileMenu');if(mm)mm.classList.remove('open');
-  if (sec === 'quiz') initQuiz();
+  if (sec === 'quiz') showQuizSection();
   if (sec === 'community') updateSisterCard();
   if (sec === 'subscription') renderProgressTab();
   jpSyncTabBar(sec);
@@ -3364,6 +3526,11 @@ function showToast(msg) {
 }
 
 var QUIZ_QUESTIONS = {
+  'mindful-eating': [
+    { q:'How do you usually feel in the first 30 minutes after waking?', opts:['Groggy. I hit snooze at least twice','Rushed. I go straight into tasks','Fine, but I know it could be better','I scroll my phone before getting up'], scores:[3,2,1,2] },
+    { q:'What would you most like to change about your relationship with food?', opts:['I want to stop eating on autopilot','I want to understand what I am putting in my body','I want to feel nourished, not just full','I want to cook with more intention'], scores:[3,2,1,1] },
+    { q:'How often do you read the labels on the food you buy?', opts:['Never','Sometimes, but I do not understand them','Often, but I am not sure what to look for','Always — I know exactly what I want'], scores:[3,2,1,0] }
+  ],
   'energised-mornings': [
     { q:'How do your mornings usually start?', opts:['Rushing out the door','Scrolling my phone in bed','I have some routine but it feels empty','I wake up with intention and energy'], scores:[3,2,1,0] },
     { q:'How often do you move your body in the first hour of waking?', opts:['Never','Rarely','Sometimes','Most days'], scores:[3,2,1,0] },
@@ -3417,6 +3584,44 @@ var QUIZ_QUESTIONS = {
 };
 
 var quizState = { questions: [], current: 0, answers: [], scores: {} };
+var QUIZ_ICONS = { 'energised-mornings':'☀','sanctuary-protection':'🛡','im-enough':'💖','sacred-connection':'💑','kindred-bonds':'🤝','quiet-abundance':'💰','bloom-in-gratitude':'🌼','new-beginnings':'🤰','nurtured-mother':'👩‍🍼','healing-heart':'💔','mindful-eating':'🍃' };
+var QUIZ_PILLARS = { 'energised-mornings':'Movement & Purpose','sanctuary-protection':'Ground & Connect','im-enough':'Purpose & Connect','sacred-connection':'Connect','kindred-bonds':'Connect','quiet-abundance':'Prosper','bloom-in-gratitude':'Nourishment & Purpose','new-beginnings':'Nourishment & Ground','nurtured-mother':'Nourishment & Ground','healing-heart':'Connect & Ground','mindful-eating':'Nourishment' };
+
+function getQuizSavedResult() {
+  try { var r = localStorage.getItem('mm_quiz_result'); return r ? JSON.parse(r) : null; } catch(e) { return null; }
+}
+function saveQuizResult(slug) {
+  try { localStorage.setItem('mm_quiz_result', JSON.stringify({ slug: slug, ts: Date.now() })); } catch(e) {}
+}
+
+function checkQuizSync() {
+  var saved = getQuizSavedResult();
+  if (!saved) return false;
+  var completed = (memberData.completedRituals || []);
+  var current = memberData.currentRitual || '';
+  if (completed.indexOf(saved.slug) !== -1 || current === saved.slug) {
+    try { localStorage.removeItem('mm_quiz_result'); } catch(e) {}
+    return false;
+  }
+  return saved;
+}
+
+function showQuizSection() {
+  var saved = checkQuizSync();
+  if (saved) {
+    var r = RITUALS[saved.slug];
+    document.getElementById('quizBody').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('quizAlready').style.display = 'block';
+    document.getElementById('quizAlreadyIcon').textContent = QUIZ_ICONS[saved.slug] || '✨';
+    document.getElementById('quizAlreadyTitle').innerHTML = 'Your next ritual is<br><em style="color:var(--gold);font-style:normal">' + (r ? r.name : saved.slug) + '</em>';
+    document.getElementById('quizAlreadyDesc').textContent = r ? r.desc : '';
+    quizState.resultSlug = saved.slug;
+  } else {
+    document.getElementById('quizAlready').style.display = 'none';
+    initQuiz();
+  }
+}
 
 function initQuiz() {
   var completed = (memberData.completedRituals || []);
@@ -3435,7 +3640,6 @@ function initQuiz() {
     });
   });
 
-  // Shuffle questions
   for (var i = questions.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
     var tmp = questions[i]; questions[i] = questions[j]; questions[j] = tmp;
@@ -3445,72 +3649,47 @@ function initQuiz() {
   quizState.current = 0;
   quizState.answers = [];
   document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizAlready').style.display = 'none';
   document.getElementById('quizBody').style.display = 'block';
 
   if (questions.length === 0) {
     document.getElementById('quizBody').style.display = 'none';
     document.getElementById('quizResult').style.display = 'block';
     document.getElementById('quizResultIcon').textContent = '✨';
-    document.getElementById('quizResultName').textContent = 'You have explored all rituals!';
+    document.getElementById('quizResultName').textContent = 'All rituals explored!';
     document.getElementById('quizResultDesc').textContent = 'You have completed or started every available ritual. Check back soon for new additions.';
     document.getElementById('quizStartBtn').style.display = 'none';
+    document.getElementById('quizRetakeBtn').style.display = 'none';
+    if (document.getElementById('quizResultPillar')) document.getElementById('quizResultPillar').style.display = 'none';
     return;
   }
 
-  renderQuizDots();
   renderQuizQuestion();
-}
-
-function renderQuizDots() {
-  var html = '';
-  for (var i = 0; i < quizState.questions.length; i++) {
-    var cls = 'quiz-dot';
-    if (i < quizState.current) cls += ' done';
-    if (i === quizState.current) cls += ' active';
-    html += '<div class="' + cls + '"></div>';
-  }
-  document.getElementById('quizDots').innerHTML = html;
 }
 
 function renderQuizQuestion() {
   var q = quizState.questions[quizState.current];
-  document.getElementById('quizStep').textContent = 'Question ' + (quizState.current + 1) + ' of ' + quizState.questions.length;
   document.getElementById('quizText').textContent = q.q;
   var html = '';
-  var prev = quizState.answers[quizState.current];
   q.opts.forEach(function(opt, idx) {
-    var sel = (prev !== undefined && prev === idx) ? ' selected' : '';
-    html += '<button class="quiz-option' + sel + '" onclick="quizSelect(this,' + idx + ')">' + opt + '</button>';
+    html += '<button class="quiz-option" onclick="quizSelect(this,' + idx + ')">' + opt + '</button>';
   });
   document.getElementById('quizOptions').innerHTML = html;
-  document.getElementById('quizBack').style.display = quizState.current > 0 ? 'inline-block' : 'none';
-  var next = document.getElementById('quizNext');
-  if (prev !== undefined) { next.style.opacity = '1'; next.style.pointerEvents = 'auto'; }
-  else { next.style.opacity = '0.4'; next.style.pointerEvents = 'none'; }
-  next.textContent = quizState.current === quizState.questions.length - 1 ? 'See My Result →' : 'Next →';
-  renderQuizDots();
+  document.getElementById('quizProg').textContent = (quizState.current + 1) + ' of ' + quizState.questions.length;
 }
 
 function quizSelect(btn, idx) {
-  document.querySelectorAll('.quiz-option').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('#quizOptions .quiz-option').forEach(function(b){ b.classList.remove('selected'); });
   btn.classList.add('selected');
   quizState.answers[quizState.current] = idx;
-  var next = document.getElementById('quizNext');
-  next.style.opacity = '1'; next.style.pointerEvents = 'auto';
-}
-
-function quizPrev() {
-  if (quizState.current > 0) { quizState.current--; renderQuizQuestion(); }
-}
-
-function quizAdvance() {
-  if (quizState.answers[quizState.current] === undefined) return;
-  if (quizState.current < quizState.questions.length - 1) {
+  setTimeout(function() {
     quizState.current++;
-    renderQuizQuestion();
-  } else {
-    calculateQuizResult();
-  }
+    if (quizState.current < quizState.questions.length) {
+      renderQuizQuestion();
+    } else {
+      calculateQuizResult();
+    }
+  }, 350);
 }
 
 function calculateQuizResult() {
@@ -3528,15 +3707,19 @@ function calculateQuizResult() {
   });
 
   var r = RITUALS[best];
-  var icons = { 'energised-mornings':'☀','sanctuary-protection':'🛡','im-enough':'💖','sacred-connection':'💑','kindred-bonds':'🤝','quiet-abundance':'💰','bloom-in-gratitude':'🌼','new-beginnings':'🤰','nurtured-mother':'👩‍🍼','healing-heart':'💔' };
   document.getElementById('quizBody').style.display = 'none';
   document.getElementById('quizResult').style.display = 'block';
-  document.getElementById('quizResultIcon').textContent = icons[best] || '✨';
+  document.getElementById('quizResultIcon').textContent = QUIZ_ICONS[best] || '✨';
   document.getElementById('quizResultName').textContent = r ? r.name : best;
   document.getElementById('quizResultDesc').textContent = r ? r.desc : '';
-  document.getElementById('quizStartBtn').style.display = 'inline-block';
-  document.getElementById('quizRetakeBtn').style.display = 'inline-block';
+  if (document.getElementById('quizResultPillar')) {
+    document.getElementById('quizResultPillar').textContent = 'Pillar · ' + (QUIZ_PILLARS[best] || '');
+    document.getElementById('quizResultPillar').style.display = '';
+  }
+  document.getElementById('quizStartBtn').style.display = '';
+  document.getElementById('quizRetakeBtn').style.display = '';
   quizState.resultSlug = best;
+  saveQuizResult(best);
   setTimeout(sendHeight, 100);
 }
 
@@ -3544,6 +3727,11 @@ function quizStartNow() {
   var slug = quizState.resultSlug;
   if (!slug) return;
   selectRitual(slug);
+}
+
+function quizStartSaved() {
+  var saved = getQuizSavedResult();
+  if (saved) selectRitual(saved.slug);
 }
 
 function uploadAvatar(input){
@@ -3647,24 +3835,50 @@ function drawPillarWheel(scores) {
   var pillars=ringPillars.map(function(k){return{key:k,pct:Math.min(100,(scores[k]||0)),color:colors[k]};});
   var R=80,C=2*Math.PI*R,segLen=C/n,gap=6,offset=-C/4;
 
+  var defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  pillars.forEach(function(p,i){
+    var grad=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+    grad.setAttribute('id','pwGrad-'+p.key);grad.setAttribute('x1','0%');grad.setAttribute('y1','0%');grad.setAttribute('x2','100%');grad.setAttribute('y2','100%');
+    var s1=document.createElementNS('http://www.w3.org/2000/svg','stop');s1.setAttribute('offset','0%');s1.setAttribute('stop-color',p.color);s1.setAttribute('stop-opacity','0.6');
+    var s2=document.createElementNS('http://www.w3.org/2000/svg','stop');s2.setAttribute('offset','100%');s2.setAttribute('stop-color',p.color);s2.setAttribute('stop-opacity','1');
+    grad.appendChild(s1);grad.appendChild(s2);defs.appendChild(grad);
+  });
+  var glowFilter=document.createElementNS('http://www.w3.org/2000/svg','filter');
+  glowFilter.setAttribute('id','wheelGlow');glowFilter.setAttribute('x','-50%');glowFilter.setAttribute('y','-50%');glowFilter.setAttribute('width','200%');glowFilter.setAttribute('height','200%');
+  var feGB=document.createElementNS('http://www.w3.org/2000/svg','feGaussianBlur');feGB.setAttribute('stdDeviation','2');feGB.setAttribute('result','blur');
+  var feMerge=document.createElementNS('http://www.w3.org/2000/svg','feMerge');
+  var mn1=document.createElementNS('http://www.w3.org/2000/svg','feMergeNode');mn1.setAttribute('in','blur');
+  var mn2=document.createElementNS('http://www.w3.org/2000/svg','feMergeNode');mn2.setAttribute('in','SourceGraphic');
+  feMerge.appendChild(mn1);feMerge.appendChild(mn2);glowFilter.appendChild(feGB);glowFilter.appendChild(feMerge);defs.appendChild(glowFilter);
+  svg.appendChild(defs);
+
+  var outerGlow=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  outerGlow.setAttribute('cx','100');outerGlow.setAttribute('cy','100');outerGlow.setAttribute('r','85');
+  outerGlow.setAttribute('fill','none');outerGlow.setAttribute('stroke','rgba(159,214,235,0.06)');outerGlow.setAttribute('stroke-width','1');
+  svg.appendChild(outerGlow);
+  var innerGlow=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  innerGlow.setAttribute('cx','100');innerGlow.setAttribute('cy','100');innerGlow.setAttribute('r','72');
+  innerGlow.setAttribute('fill','none');innerGlow.setAttribute('stroke','rgba(159,214,235,0.04)');innerGlow.setAttribute('stroke-width','1');
+  svg.appendChild(innerGlow);
+
   if(jp){
     var groundPct=Math.min(100,(scores.ground||0));
     var gc=document.createElementNS('http://www.w3.org/2000/svg','circle');
     gc.setAttribute('cx','100');gc.setAttribute('cy','100');gc.setAttribute('r','30');
-    gc.setAttribute('fill','none');gc.setAttribute('stroke','#8bb8c9');gc.setAttribute('stroke-opacity','0.5');
-    gc.setAttribute('stroke-width','6');svg.appendChild(gc);
+    gc.setAttribute('fill','rgba(139,184,201,0.04)');gc.setAttribute('stroke','#8bb8c9');gc.setAttribute('stroke-opacity','0.35');
+    gc.setAttribute('stroke-width','2');svg.appendChild(gc);
     if(groundPct>0){
       var gf=document.createElementNS('http://www.w3.org/2000/svg','circle');
       var gC=2*Math.PI*30,gFill=(groundPct/100)*gC;
       gf.setAttribute('cx','100');gf.setAttribute('cy','100');gf.setAttribute('r','30');
-      gf.setAttribute('fill','none');gf.setAttribute('stroke','#8bb8c9');gf.setAttribute('stroke-width','6');
+      gf.setAttribute('fill','none');gf.setAttribute('stroke','#8bb8c9');gf.setAttribute('stroke-width','3');
       gf.setAttribute('stroke-dasharray',gFill+' '+(gC-gFill));gf.setAttribute('stroke-dashoffset',String(-gC/4));
-      gf.setAttribute('stroke-linecap','round');gf.style.filter='drop-shadow(0 0 3px #8bb8c9)';svg.appendChild(gf);
+      gf.setAttribute('stroke-linecap','round');gf.setAttribute('filter','url(#wheelGlow)');svg.appendChild(gf);
     }
     var gt=document.createElementNS('http://www.w3.org/2000/svg','text');
-    gt.setAttribute('x','100');gt.setAttribute('y','104');gt.setAttribute('text-anchor','middle');
-    gt.setAttribute('font-size','10');gt.setAttribute('fill','#8bb8c9');gt.setAttribute('font-family','var(--fh)');
-    gt.setAttribute('font-weight','400');gt.setAttribute('opacity','0.7');gt.textContent='Ground';svg.appendChild(gt);
+    gt.setAttribute('x','100');gt.setAttribute('y','102');gt.setAttribute('text-anchor','middle');
+    gt.setAttribute('font-size','9');gt.setAttribute('fill','rgba(159,214,235,0.7)');gt.setAttribute('font-family','var(--fh)');
+    gt.setAttribute('font-weight','300');gt.setAttribute('letter-spacing','1.5');gt.textContent='GROUND';svg.appendChild(gt);
   }
 
   pillars.forEach(function(p,i){
@@ -3672,11 +3886,21 @@ function drawPillarWheel(scores) {
     var dashStart=offset+(i*segLen);
     var bgArc=document.createElementNS('http://www.w3.org/2000/svg','circle');
     bgArc.setAttribute('cx','100');bgArc.setAttribute('cy','100');bgArc.setAttribute('r',String(R));
-    bgArc.setAttribute('fill','none');bgArc.setAttribute('stroke',p.color);bgArc.setAttribute('stroke-opacity','0.5');
-    bgArc.setAttribute('stroke-width','8');bgArc.setAttribute('stroke-dasharray',(segLen-gap)+' '+(C-segLen+gap));
+    bgArc.setAttribute('fill','none');bgArc.setAttribute('stroke',p.color);bgArc.setAttribute('stroke-opacity','0.2');
+    bgArc.setAttribute('stroke-width','10');bgArc.setAttribute('stroke-dasharray',(segLen-gap)+' '+(C-segLen+gap));
     bgArc.setAttribute('stroke-dashoffset',String(-dashStart));bgArc.setAttribute('stroke-linecap','round');
+    bgArc.style.transition='stroke-opacity 0.3s';bgArc.style.cursor='pointer';
+    bgArc.addEventListener('mouseenter',function(){bgArc.setAttribute('stroke-opacity','0.45');});
+    bgArc.addEventListener('mouseleave',function(){bgArc.setAttribute('stroke-opacity','0.2');});
     svg.appendChild(bgArc);
-    if(filled>0){var arc=document.createElementNS('http://www.w3.org/2000/svg','circle');arc.setAttribute('cx','100');arc.setAttribute('cy','100');arc.setAttribute('r',String(R));arc.setAttribute('fill','none');arc.setAttribute('stroke',p.color);arc.setAttribute('stroke-width','8');arc.setAttribute('stroke-dasharray',filled+' '+(C-filled));arc.setAttribute('stroke-dashoffset',String(-dashStart));arc.setAttribute('stroke-linecap','round');arc.style.filter='drop-shadow(0 0 3px '+p.color+')';svg.appendChild(arc);}
+    if(filled>0){
+      var arc=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      arc.setAttribute('cx','100');arc.setAttribute('cy','100');arc.setAttribute('r',String(R));
+      arc.setAttribute('fill','none');arc.setAttribute('stroke','url(#pwGrad-'+p.key+')');
+      arc.setAttribute('stroke-width','10');arc.setAttribute('stroke-dasharray',filled+' '+(C-filled));
+      arc.setAttribute('stroke-dashoffset',String(-dashStart));arc.setAttribute('stroke-linecap','round');
+      arc.setAttribute('filter','url(#wheelGlow)');svg.appendChild(arc);
+    }
   });
 
   var allKeys=jp?['nourishment','purpose','ground','move','connect','prosper']:PILLAR_ORDER_LEGACY;
@@ -3701,6 +3925,114 @@ drawPillarWheel(MM_FLAGS.journeyPractice?{nourishment:0,purpose:0,ground:0,move:
     sh.style.left=(10+Math.random()*50)+'%';sh.style.top=(5+Math.random()*40)+'%';
     sh.style.animationDelay=(j*3+Math.random()*2)+'s';
     c.appendChild(sh);
+  }
+})();
+
+// ══ CELESTIAL BACKGROUND ══
+(function(){
+  var cv = document.getElementById('celestialCanvas');
+  if (!cv) return;
+
+  // Stardust nebula layer
+  var dust = document.createElement('div');
+  dust.className = 'cel-dust';
+  cv.appendChild(dust);
+
+  // Stars — 60 twinkling stars of varied sizes
+  for (var i = 0; i < 60; i++) {
+    var s = document.createElement('div');
+    s.className = 'cel-star';
+    var size = 1 + Math.random() * 2.5;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 6) + 's';
+    s.style.animationDuration = (2 + Math.random() * 5) + 's';
+    if (i % 5 === 0) s.classList.add('gold');
+    if (i % 8 === 0) s.classList.add('bright');
+    cv.appendChild(s);
+  }
+
+  // Shooting stars — 4 with varied angles and timing
+  for (var j = 0; j < 4; j++) {
+    var sh = document.createElement('div');
+    sh.className = 'cel-shoot';
+    sh.style.left = (5 + Math.random() * 60) + '%';
+    sh.style.top = (5 + Math.random() * 50) + '%';
+    var angle = -20 - Math.random() * 25;
+    sh.style.setProperty('--shoot-angle', angle + 'deg');
+    sh.style.animation = 'celShoot ' + (5 + j * 2) + 's ease-in-out ' + (j * 3 + Math.random() * 3) + 's infinite';
+    cv.appendChild(sh);
+  }
+
+  // Planets — 3 subtle celestial bodies
+  var planets = [
+    { size: 18, top: '12%', right: '8%', bg: 'radial-gradient(circle at 35% 35%, rgba(201,162,78,0.25), rgba(201,162,78,0.08) 60%, transparent)', delay: '0s' },
+    { size: 12, top: '45%', left: '5%', bg: 'radial-gradient(circle at 40% 30%, rgba(159,214,235,0.2), rgba(159,214,235,0.05) 70%, transparent)', delay: '5s' },
+    { size: 24, bottom: '20%', right: '12%', bg: 'radial-gradient(circle at 30% 30%, rgba(187,217,215,0.15), rgba(110,200,155,0.05) 60%, transparent)', delay: '10s' }
+  ];
+  planets.forEach(function(p) {
+    var el = document.createElement('div');
+    el.className = 'cel-planet';
+    el.style.width = p.size + 'px';
+    el.style.height = p.size + 'px';
+    el.style.background = p.bg;
+    el.style.animationDelay = p.delay;
+    if (p.top) el.style.top = p.top;
+    if (p.bottom) el.style.bottom = p.bottom;
+    if (p.left) el.style.left = p.left;
+    if (p.right) el.style.right = p.right;
+    cv.appendChild(el);
+  });
+
+  // Constellations — 3 small constellation patterns
+  var constellations = [
+    { x: 15, y: 25, points: [[0,0],[20,8],[35,-5],[50,12],[42,28]], w: 60, h: 40 },
+    { x: 70, y: 15, points: [[0,10],[15,0],[30,8],[22,25],[38,30]], w: 50, h: 40 },
+    { x: 55, y: 70, points: [[0,0],[18,12],[10,28],[30,20],[40,5]], w: 50, h: 35 }
+  ];
+  constellations.forEach(function(c) {
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'cel-constellation');
+    svg.setAttribute('viewBox', '0 0 ' + c.w + ' ' + c.h);
+    svg.style.width = c.w + 'px';
+    svg.style.height = c.h + 'px';
+    svg.style.left = c.x + '%';
+    svg.style.top = c.y + '%';
+    // Lines connecting stars
+    for (var k = 0; k < c.points.length - 1; k++) {
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', c.points[k][0]);
+      line.setAttribute('y1', c.points[k][1]);
+      line.setAttribute('x2', c.points[k+1][0]);
+      line.setAttribute('y2', c.points[k+1][1]);
+      svg.appendChild(line);
+    }
+    // Star dots at each point
+    c.points.forEach(function(pt) {
+      var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', pt[0]);
+      dot.setAttribute('cy', pt[1]);
+      dot.setAttribute('r', '1.5');
+      svg.appendChild(dot);
+    });
+    cv.appendChild(svg);
+  });
+
+  // Floating orchid petals — 5 subtle decorative petals
+  var petalColors = ['rgba(200,180,220,0.15)','rgba(159,214,235,0.12)','rgba(212,132,154,0.1)','rgba(187,217,215,0.12)','rgba(201,162,78,0.1)'];
+  for (var p = 0; p < 5; p++) {
+    var petal = document.createElement('div');
+    petal.className = 'cel-orchid';
+    petal.style.left = (10 + Math.random() * 80) + '%';
+    petal.style.top = (10 + Math.random() * 80) + '%';
+    petal.style.animationDelay = (p * 5 + Math.random() * 3) + 's';
+    petal.style.animationDuration = (20 + Math.random() * 15) + 's';
+    // SVG petal shape
+    var ps = 12 + Math.random() * 10;
+    petal.innerHTML = '<svg width="'+ps+'" height="'+ps+'" viewBox="0 0 24 24"><ellipse cx="12" cy="10" rx="6" ry="10" fill="'+petalColors[p]+'" transform="rotate('+(Math.random()*60-30)+' 12 12)"/><ellipse cx="10" cy="12" rx="10" ry="5" fill="'+petalColors[p]+'" opacity="0.7" transform="rotate('+(Math.random()*40-20)+' 12 12)"/></svg>';
+    cv.appendChild(petal);
   }
 })();
 
