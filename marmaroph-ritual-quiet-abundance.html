@@ -233,6 +233,30 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 .milestone-card .ms-icon{font-size:28px;margin-bottom:6px}
 .milestone-card .ms-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);font-style:italic}
 .milestone-card .ms-body{font-size:11px;color:rgba(255,255,255,.6);line-height:1.7;margin-top:4px}
+
+/* ── JP flag utilities ── */
+.mm-jp-only{display:none !important}
+body.mm-jp .mm-jp-only{display:block !important}
+body.mm-jp .mm-jp-only.mm-jp-flex{display:flex !important}
+body.mm-jp .mm-jp-only.mm-jp-inline{display:inline !important}
+body.mm-jp .mm-jp-hide{display:none !important}
+
+/* ── Journey | Practice tab bar ── */
+.jp-tab-bar{display:flex;gap:0;margin:10px 18px 6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:3px;position:relative;z-index:6}
+.jp-tab{flex:1;padding:10px 0;text-align:center;font-size:11px;font-weight:500;letter-spacing:.06em;color:rgba(255,255,255,.45);border-radius:11px;cursor:pointer;transition:all .25s;min-height:44px;display:flex;align-items:center;justify-content:center;gap:6px;border:none;background:none}
+.jp-tab.active{background:rgba(159,214,235,.12);color:var(--sky);font-weight:600;border:1px solid rgba(159,214,235,.2)}
+.jp-tab .jp-tab-ico{font-size:14px}
+
+/* ── Practice tool grid ── */
+.practice-grid-wrap{padding:0 18px}
+.practice-tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.practice-tool-card{padding:16px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;text-align:left;min-height:44px;transition:background .2s,border-color .2s}
+.practice-tool-card:active{background:rgba(159,214,235,.08);border-color:rgba(159,214,235,.15)}
+.practice-tool-card .ptc-ico{font-size:22px;margin-bottom:8px}
+.practice-tool-card .ptc-title{font-size:11.5px;font-weight:500;color:rgba(255,255,255,.85);margin-bottom:3px;letter-spacing:.02em}
+.practice-tool-card .ptc-sub{font-size:9.5px;color:rgba(255,255,255,.4);line-height:1.4}
+.practice-tool-card.ptc-wide{grid-column:1/-1}
+.practice-section-title{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:16px 0 8px;font-weight:600}
 </style>
 </head>
 <body>
@@ -254,9 +278,11 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
 
   <!-- 3. Title -->
   <div style="padding:12px 0 0;text-align:center">
-    <div class="eyebrow">The Home Sanctuary Club</div>
+    <div class="eyebrow mm-jp-hide">The Home Sanctuary Club</div>
+    <div class="eyebrow mm-jp-only">Sanctuary Club</div>
     <div style="display:flex;justify-content:center;margin:6px 0">
-      <span style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
+      <span class="mm-jp-hide" style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
+      <span class="mm-jp-only mm-jp-inline" style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(201,162,78,.1);color:#c9a24e;padding:3px 12px;border-radius:16px;border:1px solid rgba(201,162,78,.2);font-weight:600">✦ Prosper + Ground</span>
     </div>
     <div class="sec-title" style="font-size:38px;margin-top:12px">Quiet Abundance</div>
     <div class="sec-title-sub">R I T U A L</div>
@@ -404,12 +430,13 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
 
   <div class="glass rise" style="margin:12px 18px 0;padding:24px 20px;text-align:center;border:1.5px solid rgba(176,143,212,.2);background:linear-gradient(160deg,rgba(176,143,212,.05) 0%,rgba(44,62,80,.25) 100%);border-radius:20px">
-    <div class="rule-label" style="margin-bottom:8px"><span class="eyebrow">Ritual buddy</span></div>
-    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.3;color:#fff;margin-bottom:8px">You don't have to do this alone</p>
-    <p class="body-copy" style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.7);margin-bottom:6px">We will match you with another woman practising the same ritual. Someone to share the journey, check in with each other, and keep going when motivation dips.</p>
-    <p class="body-copy" style="font-size:11.5px;line-height:1.6;color:rgba(176,143,212,.65);margin-bottom:16px;font-style:italic">Accountability changes everything. Two women, one ritual, thirty days.</p>
-    <button class="btn btn-primary" id="buddyToggleBtn" onclick="show('s-buddy-profile');renderBuddyProfileForm()" style="font-size:11px">&#10047; &nbsp;Find My Ritual Buddy</button>
-    <p id="buddyActiveMsg" style="display:none;font-size:10.5px;color:rgba(176,143,212,.8);margin-top:8px">&#10003; You have an active buddy. <span style="text-decoration:underline;cursor:pointer" onclick="show('s-buddy-hub');renderBuddyHub()">Open Buddy Hub</span></p>
+    <div style="font-size:40px;margin-bottom:8px">&#128176;</div>
+    <div class="rule-label" style="margin-bottom:8px"><span class="eyebrow">Your Ritual Sister</span></div>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.3;color:#fff;margin-bottom:4px">Cleo</p>
+    <p class="body-copy" style="font-size:11.5px;line-height:1.6;color:rgba(176,143,212,.75);margin-bottom:10px;font-style:italic">The Abundance Sister</p>
+    <p class="body-copy" style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.7);margin-bottom:16px">Cleo walks the path of quiet abundance with you. She teaches that true wealth begins in stillness, and that prosperity flows naturally when you trust the process.</p>
+    <button class="btn btn-primary" id="buddyToggleBtn" onclick="show('s-buddy-profile');renderBuddyProfileForm()" style="font-size:11px">&#10047; &nbsp;Message My Sister</button>
+    <p id="buddyActiveMsg" style="display:none;font-size:10.5px;color:rgba(176,143,212,.8);margin-top:8px">&#10003; You have an active sister. <span style="text-decoration:underline;cursor:pointer" onclick="show('s-buddy-hub');renderBuddyHub()">Open Sister Hub</span></p>
   </div>
 
     <!-- Daily reminders -->
@@ -460,7 +487,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
   <!-- Logo + greeting + title -->
   <div class="rise">
     <div style="text-align:center;margin:10px 0 0"><img src="logo-copper.png" alt="Marmaroph" style="width:140px;opacity:0.92;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.15))"></div>
-    <div class="rule-label" style="margin-top:2px"><span class="eyebrow">The Home Sanctuary Club</span></div>
+    <div class="rule-label mm-jp-hide" style="margin-top:2px"><span class="eyebrow">The Home Sanctuary Club</span></div>
+    <div class="rule-label mm-jp-only" style="margin-top:2px"><span class="eyebrow">Sanctuary Club</span></div>
     <div class="hello">Hi, beautiful</div>
     <div style="position:relative;text-align:center;margin-top:0;padding:10px 0 8px">
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;line-height:.94;color:#fff;text-shadow:0 2px 24px rgba(8,13,36,.35)">Quiet<br>Abundance</div>
@@ -477,9 +505,57 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
       <div class="chip" id="chipStreak">✦ 0 streak</div>
     </div>
     <div style="display:flex;justify-content:center;margin:6px 0 0">
-      <span style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
+      <span class="mm-jp-hide" style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(180,160,220,.12);color:#b4a0dc;padding:3px 12px;border-radius:16px;border:1px solid rgba(180,160,220,.22);font-weight:600">✦ Purpose pillar</span>
+      <span class="mm-jp-only mm-jp-inline" style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:rgba(201,162,78,.1);color:#c9a24e;padding:3px 12px;border-radius:16px;border:1px solid rgba(201,162,78,.2);font-weight:600">✦ Prosper + Ground</span>
     </div>
   </div>
+
+  <!-- Journey | Practice tab bar (JP flag) -->
+  <div class="jp-tab-bar mm-jp-only mm-jp-flex" id="jpTabBar">
+    <button class="jp-tab active" data-tab="journey" onclick="switchJPTab('journey')"><span class="jp-tab-ico">✦</span> Journey</button>
+    <button class="jp-tab" data-tab="practice" onclick="switchJPTab('practice')"><span class="jp-tab-ico">⚙</span> Practice</button>
+  </div>
+
+  <!-- Practice tab content (JP flag) -->
+  <div class="mm-jp-only" id="jpPracticeContent" style="display:none !important">
+    <div class="practice-grid-wrap">
+      <div class="practice-section-title">Grounding</div>
+      <div class="practice-tool-grid">
+        <button class="practice-tool-card ptc-wide" onclick="openTool('breathwork','Grounding Breath')">
+          <div class="ptc-ico">🌬</div>
+          <div class="ptc-title">Grounding Breath</div>
+          <div class="ptc-sub">4-7-8, Box Breathing & Wim Hof guided timer</div>
+        </button>
+      </div>
+      <div class="practice-section-title">Abundance tools</div>
+      <div class="practice-tool-grid">
+        <button class="practice-tool-card" onclick="openTool('finance','My Finances')">
+          <div class="ptc-ico">💰</div>
+          <div class="ptc-title">Finance Tracker</div>
+          <div class="ptc-sub">Your financial diagnosis & money tracker</div>
+        </button>
+        <button class="practice-tool-card" onclick="openTool('space','Abundance Corner Analyser')">
+          <div class="ptc-ico">🏠</div>
+          <div class="ptc-title">Corner Analyser</div>
+          <div class="ptc-sub">Diagnose your abundance corner</div>
+        </button>
+        <button class="practice-tool-card" onclick="openLink&&openLink(typeof LINKS!=='undefined'&&LINKS.PLAYLIST_URL||'#')">
+          <div class="ptc-ico">🎵</div>
+          <div class="ptc-title">Meditation</div>
+          <div class="ptc-sub">Abundance ritual playlist</div>
+        </button>
+        <button class="practice-tool-card" onclick="showRefs()">
+          <div class="ptc-ico">📚</div>
+          <div class="ptc-title">Science & References</div>
+          <div class="ptc-sub">Studies behind every lesson</div>
+        </button>
+      </div>
+    </div>
+    <footer>Marmaroph Home &amp; Living</footer>
+  </div>
+
+  <!-- Journey tab content wrapper -->
+  <div id="jpJourneyContent">
 
   <!-- Sun calendar -->
   <div class="sun-cal-wrap"><canvas id="sunCal" width="380" height="380"></canvas></div>
@@ -492,10 +568,10 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <button class="btn btn-primary" style="width:100%" onclick="goStep(1)">Begin today's ritual</button>
   </div>
 
-  <!-- My Progress + My Ritual Buddy buttons row -->
+  <!-- My Progress + My Ritual Sister buttons row -->
   <div class="rise" style="display:flex;flex-direction:row;gap:10px;padding:6px 18px 0;position:relative;z-index:4">
     <button class="btn btn-ghost" onclick="goStep(1)" style="flex:1;border:1.5px solid rgba(180,160,220,.35);background:linear-gradient(160deg,rgba(180,160,220,.2) 0%,rgba(44,62,80,.45) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:#fff;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.25),inset 0 1px 0 rgba(180,160,220,.15)">&#9678; &nbsp;Check Progress</button>
-    <button class="btn btn-ghost" id="buddyHubBtn" onclick="goWelcome()" style="flex:1;border:1.5px solid rgba(180,160,220,.15);background:linear-gradient(160deg,rgba(180,160,220,.08) 0%,rgba(44,62,80,.25) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2)">&#128274; &nbsp;My Ritual Buddy</button>
+    <button class="btn btn-ghost" id="buddyHubBtn" onclick="goWelcome()" style="flex:1;border:1.5px solid rgba(180,160,220,.15);background:linear-gradient(160deg,rgba(180,160,220,.08) 0%,rgba(44,62,80,.25) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2)">&#128274; &nbsp;My Ritual Sister</button>
   </div>
 
   <!-- Buddy home card -->
@@ -505,7 +581,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
         <span style="font-size:20px">&#10047;</span>
       </div>
       <div style="flex:1;min-width:0">
-        <p id="buddyNameHome" style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#fff;margin-bottom:2px">Your Ritual Buddy</p>
+        <p id="buddyNameHome" style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#fff;margin-bottom:2px">Your Ritual Sister</p>
         <p id="buddyStatusHome" style="font-size:10.5px;color:rgba(176,143,212,.7)">Waiting for match...</p>
       </div>
     </div>
@@ -639,6 +715,8 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
   </div>
 
+  </div><!-- /jpJourneyContent -->
+
   <footer>Marmaroph Home &amp; Living</footer>
 </section>
 
@@ -650,7 +728,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <button class="back-link" onclick="goWelcome()">&#8592; Back</button>
   </div>
   <div style="text-align:center;padding:20px 24px 0">
-    <div class="rule-label" style="margin-bottom:6px"><span class="eyebrow">Ritual Buddy</span></div>
+    <div class="rule-label" style="margin-bottom:6px"><span class="eyebrow">Ritual Sister</span></div>
     <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#fff;line-height:1.3;margin-bottom:6px">Let us find your match</p>
     <p class="body-copy" style="font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:18px">Fill in your profile so we can pair you with someone who shares your rhythm.</p>
   </div>
@@ -726,7 +804,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     <div class="glass" style="padding:14px 16px;border-radius:14px;margin-bottom:16px">
       <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer" onclick="var c=document.getElementById('bpGuidelines');c.checked=!c.checked">
         <input type="checkbox" id="bpGuidelines" style="margin-top:3px;accent-color:rgba(176,143,212,.8);flex-shrink:0">
-        <span style="font-size:11px;color:rgba(255,255,255,.85);line-height:1.5;font-weight:500">I agree to be kind, respectful, and supportive. I understand this is a sacred space for growth and will honour my buddy's boundaries.</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.85);line-height:1.5;font-weight:500">I agree to be kind, respectful, and supportive. I understand this is a sacred space for growth and will honour my sister's boundaries.</span>
       </label>
     </div>
     <button class="btn btn-primary" onclick="saveBuddyProfile()" style="width:100%;font-size:12px" id="bpSubmitBtn">&#10047; &nbsp;Activate &amp; Find My Buddy</button>
@@ -787,7 +865,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
   </div>
   <div class="glass rise" style="margin:0 18px 12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(176,143,212,.15);background:linear-gradient(135deg,rgba(176,143,212,.04),rgba(44,62,80,.08))">
-    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Buddy's Journey</p>
+    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Sister's Journey</p>
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
       <div style="flex:1">
         <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden">
@@ -805,7 +883,7 @@ footer{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(25
     </div>
   </div>
   <div class="glass rise" id="buddyFullProfile" style="margin:0 18px 12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(176,143,212,.15);background:linear-gradient(135deg,rgba(176,143,212,.04),rgba(44,62,80,.08))">
-    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Buddy's Profile</p>
+    <p style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(176,143,212,.55);margin-bottom:10px;font-weight:600">Sister's Profile</p>
     <p id="hubBuddyBio" style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:10px;font-style:italic"></p>
     <div id="buddyProfileInterests" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
     <p id="buddyProfileLifeStage" style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px"></p>
@@ -1543,7 +1621,7 @@ function drawCelestial(){
 }
 
 /* ── Tool overlay ── */
-var TOOL_URLS={space:'abundance-corner-analyser.html',finance:'finance-tracker.html'};
+var TOOL_URLS={space:'abundance-corner-analyser.html',finance:'finance-tracker.html',breathwork:'breathwork-timer.html'};
 function openTool(name,title){
   var ov=document.getElementById('toolOverlay');
   document.getElementById('toTitle').textContent=title||'Tool';
@@ -1646,13 +1724,13 @@ function updateBuddyUI(){
     if(btn){btn.textContent='✖  Deactivate Buddy';btn.classList.add('btn-ghost');btn.classList.remove('btn-primary');}
     if(msg)msg.style.display='block';
     if(card)card.style.display='block';
-    if(hubBtn){hubBtn.innerHTML='&#10047; &nbsp;My Ritual Buddy';hubBtn.onclick=function(){show('s-buddy-hub');renderBuddyHub()};hubBtn.style.cssText='flex:1;border:1.5px solid rgba(180,160,220,.35);background:linear-gradient(160deg,rgba(180,160,220,.2) 0%,rgba(44,62,80,.45) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:#fff;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.25),inset 0 1px 0 rgba(180,160,220,.15)';}
+    if(hubBtn){hubBtn.innerHTML='&#10047; &nbsp;My Ritual Sister';hubBtn.onclick=function(){show('s-buddy-hub');renderBuddyHub()};hubBtn.style.cssText='flex:1;border:1.5px solid rgba(180,160,220,.35);background:linear-gradient(160deg,rgba(180,160,220,.2) 0%,rgba(44,62,80,.45) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:#fff;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.25),inset 0 1px 0 rgba(180,160,220,.15)';}
     loadBuddyHomeCard();
   } else {
-    if(btn){btn.innerHTML='&#10047; &nbsp;Find My Ritual Buddy';btn.classList.remove('btn-ghost');btn.classList.add('btn-primary');}
+    if(btn){btn.innerHTML='&#10047; &nbsp;Find My Ritual Sister';btn.classList.remove('btn-ghost');btn.classList.add('btn-primary');}
     if(msg)msg.style.display='none';
     if(card)card.style.display='none';
-    if(hubBtn){hubBtn.innerHTML='&#128274; &nbsp;My Ritual Buddy';hubBtn.onclick=function(){show('s-buddy-profile');renderBuddyProfileForm()};hubBtn.style.cssText='flex:1;border:1.5px solid rgba(180,160,220,.15);background:linear-gradient(160deg,rgba(180,160,220,.08) 0%,rgba(44,62,80,.25) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2)';}
+    if(hubBtn){hubBtn.innerHTML='&#128274; &nbsp;My Ritual Sister';hubBtn.onclick=function(){show('s-buddy-profile');renderBuddyProfileForm()};hubBtn.style.cssText='flex:1;border:1.5px solid rgba(180,160,220,.15);background:linear-gradient(160deg,rgba(180,160,220,.08) 0%,rgba(44,62,80,.25) 100%);border-radius:16px;padding:14px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.2)';}
   }
 }
 function loadBuddyHomeCard(){
@@ -1855,6 +1933,22 @@ function showToast(msg){
   document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},2500);
 }
 
+/* ── Journey | Practice feature flag ── */
+(function(){
+  try{var f=JSON.parse(localStorage.getItem('mm_feature_flags')||'{}');
+  if(f.journeyPractice)document.body.classList.add('mm-jp')}catch(e){}
+})();
+function switchJPTab(tab){
+  var jc=document.getElementById('jpJourneyContent');
+  var pc=document.getElementById('jpPracticeContent');
+  if(!jc||!pc)return;
+  if(tab==='practice'){jc.style.display='none';pc.style.cssText='display:block !important'}
+  else{jc.style.display='';pc.style.cssText='display:none !important'}
+  var bar=document.getElementById('jpTabBar');
+  if(bar){var btns=bar.querySelectorAll('.jp-tab');
+  for(var i=0;i<btns.length;i++){btns[i].classList.toggle('active',btns[i].getAttribute('data-tab')===tab)}}
+}
+
 document.addEventListener('DOMContentLoaded',function(){
   initCelestial();drawCelestial();
   buildMonthPicker();
@@ -1862,7 +1956,17 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(shootingStarLoop,2000);
   setTimeout(function(){var sl=document.getElementById('splashLoader');sl.classList.add('hide');setTimeout(function(){sl.style.display='none'},600)},1800);
   updateBuddyUI();
-  if(S.path){goHome()}
+  /* JP: handle startScreen + tool params */
+  var sp=new URLSearchParams(window.location.search);
+  var ss=sp.get('startScreen');
+  if(ss==='s-tools'&&document.body.classList.contains('mm-jp')){
+    show('s-home');switchJPTab('practice');
+    var tn=sp.get('tool');
+    if(tn&&typeof openTool==='function'){
+      var titles={breathwork:'Grounding Breath',finance:'My Finances',space:'Abundance Corner Analyser'};
+      setTimeout(function(){openTool(tn,titles[tn]||tn)},400);
+    }
+  } else if(S.path){goHome()}
   if(S.rsvp){var b=document.getElementById('rsvpBtn');if(b){b.textContent='✓ RSVP Confirmed';b.style.opacity='.65';b.onclick=null}}
   renderExpList();
 });

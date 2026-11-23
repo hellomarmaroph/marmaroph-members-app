@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Marmaroph — Home Sanctuary Club</title>
+<title>Marmaroph — Sanctuary Club</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,7 +67,7 @@
   .loading-img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top; }
   .loading-sub { position:absolute;bottom:60px;left:0;right:0;font-size:10px;font-weight:300;color:rgba(233,220,184,.7);letter-spacing:3px;text-align:center;text-transform:uppercase;font-family:var(--fb);z-index:2; }
 
-  .app { display: none; height: 100%; }
+  .app { display: none; height: 100%; position: relative; }
   .app.ready { display: flex; }
 
   /* ══ SIDEBAR ══ */
@@ -139,8 +139,8 @@
   /* ══ MOBILE ══ */
   .mobile-header {
     display: none; align-items: center; gap: 14px;
-    padding: 14px 20px; background: var(--em2); color: var(--white);
-    position: relative; z-index: 100;
+    padding: 14px 20px; background: rgba(13,46,52,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); color: var(--white);
+    position: relative; z-index: 100; transition: background 0.3s ease, backdrop-filter 0.3s ease;
   }
   .menu-btn { background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; padding: 4px; }
   .mobile-title { font-family: var(--fh); font-size: 18px; font-weight: 400; letter-spacing: 1px; flex: 1; }
@@ -152,21 +152,59 @@
   .mobile-menu .sb-logout { margin: 8px 20px 16px; width: calc(100% - 40px); }
 
   /* ══ MAIN ══ */
-  .main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .section { display: none; }
+  .main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #0d2e34; }
+  .section { display: none; background: #faf8f5; padding-top: 60px; }
   .section.active { display: block; }
+  #sec-home { background: #0d2e34; padding-top: 0; }
 
   /* ══ HOME SANCTUARY CLUB ══ */
   .home-bg {
     position: relative; overflow: hidden;
-    background: linear-gradient(180deg, #f0f7fa 0%, #faf8f5 5%, #ffffff 15%, #ffffff 50%, #faf8f5 80%, #f0f7fa 100%);
+    background: linear-gradient(180deg, #0d2e34 0%, #164048 5%, #2a5a5e 10%, #d8e8ed 18%, #f0f7fa 24%, #ffffff 30%, #ffffff 50%, #faf8f5 80%, #f0f7fa 100%);
     min-height: 100%;
+    padding-top: 60px;
+  }
+
+  /* Stars background */
+  .stars-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  .star {
+    position: absolute; width: 2px; height: 2px; background: rgba(159,214,235,0.5); border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  .star:nth-child(odd) { background: rgba(201,162,78,0.4); }
+  .star:nth-child(3n) { width: 3px; height: 3px; }
+  @keyframes twinkle { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+  .shooting-star {
+    position: absolute; width: 60px; height: 1px;
+    background: linear-gradient(90deg, rgba(159,214,235,0.7), transparent);
+    border-radius: 2px; opacity: 0;
+    animation: shoot 4s ease-in-out infinite;
+  }
+  .shooting-star::before {
+    content: ''; position: absolute; left: 0; top: -1px; width: 4px; height: 3px;
+    background: rgba(255,255,255,0.9); border-radius: 50%;
+    box-shadow: 0 0 6px 2px rgba(159,214,235,0.5);
+  }
+  @keyframes shoot {
+    0% { transform: translateX(0) translateY(0) rotate(-30deg); opacity: 0; }
+    5% { opacity: 1; }
+    15% { transform: translateX(200px) translateY(80px) rotate(-30deg); opacity: 0; }
+    100% { opacity: 0; }
+  }
+  .shooting-star:nth-child(2) { animation-delay: 2.5s; animation-duration: 5s; }
+  .shooting-star:nth-child(3) { animation-delay: 5s; animation-duration: 6s; }
+
+  /* Cover image */
+  .home-cover {
+    position: absolute; top: 0; left: 0; z-index: 0; width: 100%; height: 300px; object-fit: cover; object-position: center top; display: block;
+    mask-image: linear-gradient(to bottom, black 0%, black 15%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.3) 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 15%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.3) 65%, transparent 100%);
   }
 
   /* Floating flowers */
   .floating-flower { position: absolute; pointer-events: none; z-index: 3; opacity: 0; }
-  .flower-1 { top: -20px; right: -30px; width: 260px; animation: floatIn 1.5s ease-out 0.2s forwards; transform: scaleX(-1); filter: drop-shadow(0 4px 16px rgba(0,0,0,0.06)); }
-  .flower-2 { bottom: -20px; left: -40px; width: 280px; animation: floatIn 1.5s ease-out 0.4s forwards; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.06)); }
+  .flower-1 { top: 60px; right: -10px; width: 260px; animation: floatIn 1.5s ease-out 0.2s forwards; transform: scaleX(-1); filter: drop-shadow(0 4px 16px rgba(0,0,0,0.06)); }
+  .flower-2 { bottom: 0; left: -10px; width: 280px; animation: floatIn 1.5s ease-out 0.4s forwards; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.06)); }
   .flower-3 { top: 30%; left: -30px; width: 200px; animation: floatIn 1.5s ease-out 0.6s forwards, gentleFloat 8s ease-in-out 2s infinite; transform: scaleX(-1); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.04)); }
   .flower-4 { top: 55%; right: -30px; width: 180px; animation: floatIn 1.5s ease-out 0.8s forwards, gentleFloat 10s ease-in-out 2.5s infinite; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.04)); }
   @keyframes floatIn { 0%{opacity:0;transform:translateY(20px) scale(0.9)} 100%{opacity:0.6;transform:translateY(0) scale(1)} }
@@ -175,14 +213,14 @@
   /* Mascots */
   .mascot-float { position: absolute; pointer-events: none; z-index: 3; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.08)); }
   .mascot-lumi { bottom: 120px; right: 15px; width: 130px; opacity: 0; animation: mascotFloatIn 1.8s ease-out 1s forwards, mascotBob 6s ease-in-out 3s infinite; }
-  .mascot-marmi { top: 60px; left: 15px; width: 110px; opacity: 0; animation: mascotFloatIn 1.8s ease-out 1.2s forwards, mascotBob 7s ease-in-out 3.5s infinite; }
+  .mascot-marmi { top: 160px; left: 10px; width: 110px; opacity: 0; animation: mascotFloatIn 1.8s ease-out 1.2s forwards, mascotBob 7s ease-in-out 3.5s infinite; }
   @keyframes mascotFloatIn { 0%{opacity:0;transform:translateY(30px) scale(0.85)} 100%{opacity:0.85;transform:translateY(0) scale(1)} }
   @keyframes mascotBob { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
 
   /* ══ PILLAR WHEEL ══ */
   .pillar-hero { position: relative; z-index: 4; padding: 36px 32px 28px; text-align: center; }
-  .pillar-hero-title { font-family: var(--fh); font-size: 28px; font-weight: 600; color: var(--em2); margin-bottom: 4px; }
-  .pillar-hero-sub { font-size: 10px; color: var(--muted); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .pillar-hero-title { font-family: var(--fh); font-size: 28px; font-weight: 600; color: #ffffff; margin-bottom: 4px; text-shadow: 0 2px 12px rgba(0,0,0,0.5), 0 0 30px rgba(0,0,0,0.3); }
+  .pillar-hero-sub { font-size: 10px; color: rgba(255,255,255,0.9); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
   .pillar-wheel-svg { width: 180px; height: 180px; display: block; margin: 0 auto 20px; }
   .pillar-legend-row {
     display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
@@ -190,10 +228,10 @@
   .pillar-legend-item {
     display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 70px;
   }
-  .pillar-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .pillar-legend-dot { font-size: 12px; line-height: 1; }
   .pillar-legend-bar-track { width: 60px; height: 4px; background: rgba(4,65,71,0.06); border-radius: 10px; overflow: hidden; }
   .pillar-legend-bar-fill { height: 100%; border-radius: 10px; transition: width 1s ease; }
-  .pillar-legend-label { font-size: 9px; font-weight: 400; color: var(--muted); letter-spacing: 0.5px; }
+  .pillar-legend-label { font-size: 9px; font-weight: 400; color: rgba(255,255,255,0.85); letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
 
   /* ══ GLASS CARDS ══ */
   .glass {
@@ -540,9 +578,10 @@
   /* ══ RESPONSIVE ══ */
   @media (max-width: 768px) {
     .app, .app.ready { flex-direction: column !important; }
-    .mobile-header { position: sticky; top: 0; z-index: 100; }
+    .mobile-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+    .mobile-header.scrolled { background: rgba(13,46,52,0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
     .sidebar { display: none; }
-    .mobile-header { display: flex; flex-shrink: 0; }
+    .mobile-header { display: flex; }
     .mobile-menu { display: block; }
     .ritual-spotlight { padding: 0 16px 14px; }
     .ritual-spotlight-card { padding: 12px 14px; gap: 10px; }
@@ -586,6 +625,109 @@
 
   .floating-flower, .mascot-float { transform: translateZ(0); }
 
+  /* ── Chapter progress (flag-gated) ── */
+  .chapter-progress { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .chapter-step { width: 28px; height: 4px; border-radius: 2px; background: rgba(159,214,235,0.15); position: relative; transition: background 0.3s; }
+  .chapter-step.done { background: var(--em3); }
+  .chapter-step.active { background: linear-gradient(90deg, var(--em3), rgba(159,214,235,0.4)); }
+  .chapter-label { font-size: 9px; color: var(--muted); font-weight: 300; letter-spacing: 0.5px; margin-left: 4px; white-space: nowrap; }
+
+  /* ── My practices shelf (flag-gated) ── */
+  .practices-shelf { margin: 20px 0 8px; }
+  .practices-shelf-title { font-family: var(--fh); font-size: 16px; font-weight: 500; color: var(--em2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .practices-shelf-title span { font-size: 14px; }
+  .practices-grid { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .practices-grid::-webkit-scrollbar { display: none; }
+  .practice-card {
+    min-width: 110px; max-width: 130px; padding: 14px 12px; border-radius: 14px;
+    background: rgba(240,247,250,0.5); border: 1px solid rgba(187,217,215,0.12);
+    text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    flex-shrink: 0;
+  }
+  .practice-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(4,65,71,0.08); }
+  .practice-card:active { transform: scale(0.97); }
+  .practice-icon { font-size: 24px; margin-bottom: 6px; line-height: 1; }
+  .practice-name { font-family: var(--fh); font-size: 11px; font-weight: 500; color: var(--em2); line-height: 1.3; }
+  .practice-sub { font-size: 9px; color: var(--muted); font-weight: 300; margin-top: 2px; }
+
+  /* ── New pillar tag styles (flag-gated via body.mm-jp) ── */
+  .ptag-ground { color: #8bb8c9; background: rgba(139,184,201,0.1); border: 1px solid rgba(139,184,201,0.2); }
+  .ptag-ground::before { background: #8bb8c9; }
+  .ptag-move { color: #e8a86d; background: rgba(232,168,109,0.1); border: 1px solid rgba(232,168,109,0.2); }
+  .ptag-move::before { background: #e8a86d; }
+  .ptag-connect { color: #d4849a; background: rgba(212,132,154,0.1); border: 1px solid rgba(212,132,154,0.2); }
+  .ptag-connect::before { background: #d4849a; }
+  .ptag-prosper { color: #c9a24e; background: rgba(201,162,78,0.1); border: 1px solid rgba(201,162,78,0.2); }
+  .ptag-prosper::before { background: #c9a24e; }
+
+  /* ── Grouped rituals navigation (flag-gated) ── */
+  .jp-group-header { font-family: var(--fh); font-size: 13px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; margin: 28px 0 12px; display: flex; align-items: center; gap: 8px; }
+  .jp-group-header .jp-gh-icon { font-size: 14px; opacity: 0.7; }
+  .jp-group-header.dark { color: var(--sky); }
+  .jp-group-header.light { color: var(--em2); }
+  .jp-group-sub { font-size: 11px; font-weight: 300; font-style: italic; margin-bottom: 14px; line-height: 1.5; }
+  .jp-group-sub.dark { color: rgba(187,217,215,0.4); }
+  .jp-group-sub.light { color: var(--muted); }
+  .jp-practice-mini { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .jp-practice-chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .jp-practice-chip:hover { transform: translateY(-1px); }
+  .jp-practice-chip:active { transform: scale(0.96); }
+  .jp-practice-chip.dark { background: rgba(159,214,235,0.08); border: 1px solid rgba(159,214,235,0.15); color: rgba(187,217,215,0.8); }
+  .jp-practice-chip.dark:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .jp-practice-chip.light { background: rgba(240,247,250,0.6); border: 1px solid rgba(187,217,215,0.15); color: var(--em2); }
+  .jp-practice-chip.light:hover { box-shadow: 0 2px 8px rgba(4,65,71,0.08); }
+  .jp-practice-chip .chip-icon { font-size: 13px; line-height: 1; }
+  .jp-practice-chip .chip-label { font-family: var(--fh); }
+  .dark-status-practice { background: rgba(159,214,235,0.1); color: #9fd6eb; }
+
+  /* ── Keeper badge ── */
+  .jp-keeper-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; font-family: var(--fh); background: rgba(201,162,78,0.08); border: 1px solid rgba(201,162,78,0.15); color: rgba(201,162,78,0.7); transition: all 0.3s ease; }
+  .jp-keeper-badge.earned { background: linear-gradient(135deg, rgba(201,162,78,0.15), rgba(201,162,78,0.08)); border-color: rgba(201,162,78,0.35); color: #c9a24e; }
+  .jp-keeper-badge .keeper-icon { font-size: 14px; line-height: 1; }
+  .jp-keeper-badge .keeper-label { letter-spacing: 0.5px; }
+  .jp-keeper-progress { height: 3px; background: rgba(201,162,78,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .jp-keeper-fill { height: 100%; background: linear-gradient(90deg, rgba(201,162,78,0.4), #c9a24e); border-radius: 2px; transition: width 0.4s ease; }
+  .jp-keeper-card { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 12px; margin-top: 16px; }
+  .jp-keeper-card.dark { background: rgba(201,162,78,0.06); border: 1px solid rgba(201,162,78,0.12); }
+  .jp-keeper-card.light { background: rgba(201,162,78,0.04); border: 1px solid rgba(201,162,78,0.1); }
+  .jp-keeper-card .keeper-star { font-size: 28px; flex-shrink: 0; }
+  .jp-keeper-card .keeper-info { flex: 1; min-width: 0; }
+  .jp-keeper-card .keeper-title { font-family: var(--fh); font-size: 13px; font-weight: 500; letter-spacing: 0.3px; }
+  .jp-keeper-card.dark .keeper-title { color: #c9a24e; }
+  .jp-keeper-card.light .keeper-title { color: #a07d2e; }
+  .jp-keeper-card .keeper-desc { font-size: 11px; font-weight: 300; font-style: italic; margin-top: 2px; line-height: 1.4; }
+  .jp-keeper-card.dark .keeper-desc { color: rgba(187,217,215,0.5); }
+  .jp-keeper-card.light .keeper-desc { color: var(--muted); }
+
+  /* ── Bottom tab bar (JP flag) ── */
+  .jp-tab-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--em2); border-top: 1px solid rgba(159,214,235,0.1); padding: 6px 0 env(safe-area-inset-bottom, 0); }
+  .jp-tab-bar-inner { display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; }
+  .jp-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px; cursor: pointer; border: none; background: none; color: rgba(187,217,215,0.4); font-family: var(--fh); font-size: 10px; font-weight: 400; letter-spacing: 0.5px; transition: color 0.2s; min-width: 64px; -webkit-tap-highlight-color: transparent; }
+  .jp-tab .jp-tab-icon { font-size: 20px; line-height: 1; transition: opacity 0.2s; opacity: 0.5; }
+  .jp-tab .jp-tab-label { margin-top: 1px; }
+  .jp-tab.active { color: var(--sky); }
+  .jp-tab.active .jp-tab-icon { opacity: 1; }
+
+  /* ── Centered header (JP flag) ── */
+  body.mm-jp .mobile-header { justify-content: space-between; }
+  body.mm-jp .mobile-title { text-align: center; flex: 1; }
+
+  @media (max-width: 768px) {
+    body.mm-jp .jp-tab-bar { display: block !important; }
+    body.mm-jp .main { padding-bottom: 64px; }
+  }
+  @media (min-width: 769px) {
+    body.mm-jp .jp-tab-bar { display: none !important; }
+  }
+
+  /* ── Feature flag utilities ── */
+  .mm-jp-only { display: none !important; }
+  body.mm-jp .mm-jp-only { display: block !important; }
+  body.mm-jp .mm-jp-only.mm-jp-flex { display: flex !important; }
+  body.mm-jp .mm-jp-only.mm-jp-inline { display: inline !important; }
+  body.mm-jp .mm-jp-only.mm-jp-grid { display: grid !important; }
+  body.mm-jp .mm-jp-hide { display: none !important; }
+
 </style>
 </head>
 <body>
@@ -600,10 +742,10 @@
   <!-- Mobile header -->
   <div class="mobile-header">
     <button class="menu-btn" id="menuBtn">&#9776;</button>
-    <div class="mobile-title"><img src="logo-copper.png" alt="Marmaroph" style="height:28px;vertical-align:middle;opacity:0.95"></div>
+    <div class="mobile-title"><img src="logo-copper.png" alt="Marmaroph" style="height:38px;vertical-align:middle;opacity:0.95"></div>
     <div class="mobile-av" id="mobileAv" onclick="document.getElementById('avatarInput').click()"><span id="mobileAvInit">MA</span></div>
     <div class="mobile-menu" id="mobileMenu">
-      <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Home Sanctuary Club</div>
+      <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Sanctuary Club</div>
       <div class="sb-item" onclick="navigate('rituals',this)"><span class="sb-icon">&#10022;</span> My Rituals</div>
       <div class="sb-item" onclick="navigate('community',this)"><span class="sb-icon">&#9825;</span> Community <span class="sb-badge">new</span></div>
       <div class="sb-item" onclick="navigate('quiz',this)"><span class="sb-icon">&#10070;</span> Choose Your Next Ritual</div>
@@ -618,6 +760,28 @@
     </div>
   </div>
 
+  <!-- Bottom tab bar (JP flag) -->
+  <nav class="jp-tab-bar mm-jp-only" id="jpTabBar">
+    <div class="jp-tab-bar-inner">
+      <button class="jp-tab active" data-sec="home" onclick="jpTabNav('home',this)">
+        <span class="jp-tab-icon">&#9671;</span>
+        <span class="jp-tab-label">Home</span>
+      </button>
+      <button class="jp-tab" data-sec="rituals" onclick="jpTabNav('rituals',this)">
+        <span class="jp-tab-icon">&#10022;</span>
+        <span class="jp-tab-label">Rituals</span>
+      </button>
+      <button class="jp-tab" data-sec="community" onclick="jpTabNav('community',this)">
+        <span class="jp-tab-icon">&#9825;</span>
+        <span class="jp-tab-label">Sisters</span>
+      </button>
+      <button class="jp-tab" data-sec="subscription" onclick="jpTabNav('subscription',this)">
+        <span class="jp-tab-icon">&#9733;</span>
+        <span class="jp-tab-label">Progress</span>
+      </button>
+    </div>
+  </nav>
+
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <div class="sb-cosmos" id="sbCosmos"></div>
@@ -630,7 +794,7 @@
     </div>
     <div class="sb-sep"></div>
     <nav class="sb-nav">
-      <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Home Sanctuary Club</div>
+      <div class="sb-item active" onclick="navigate('home',this)"><span class="sb-icon">&#9671;</span> Sanctuary Club</div>
       <div class="sb-item" onclick="navigate('rituals',this)"><span class="sb-icon">&#10022;</span> My Rituals</div>
       <div class="sb-item" onclick="navigate('community',this)"><span class="sb-icon">&#9825;</span> Community <span class="sb-badge">new</span></div>
       <div class="sb-item" onclick="navigate('quiz',this)"><span class="sb-icon">&#10070;</span> Choose Your Next Ritual</div>
@@ -651,6 +815,12 @@
     <!-- ═══ HOME SANCTUARY CLUB (white bg + flowers + mascots) ═══ -->
     <div class="section active" id="sec-home">
       <div class="home-bg">
+
+        <!-- Cover image -->
+        <img class="home-cover" src="img/loading-screen.jpg" alt="" loading="lazy"/>
+
+        <!-- Stars & shooting stars -->
+        <div class="stars-container" id="starsContainer"></div>
 
         <img class="floating-flower flower-1" src="https://static.wixstatic.com/media/00228e_22eff6136de2418a96dbf2b074ae2586~mv2.png/v1/fill/w_500,h_500,al_c,q_85/flowers.png" alt="" loading="lazy"/>
         <img class="floating-flower flower-2" src="https://static.wixstatic.com/media/00228e_0911417b663942e6984eb073e505406b~mv2.png/v1/fill/w_500,h_500,al_c,q_85/orchids.png" alt="" loading="lazy"/>
@@ -685,37 +855,54 @@
           </svg>
           <div class="pillar-legend-row" id="pillarLegend">
             <div class="pillar-legend-item">
-              <div class="pillar-legend-dot" style="background:#6ec89b"></div>
+              <div class="pillar-legend-dot" style="color:#6ec89b">&#9829;</div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-nourishment" style="width:0%;background:linear-gradient(90deg,rgba(110,200,155,0.3),#6ec89b)"></div></div>
               <div class="pillar-legend-label">Nourish</div>
             </div>
             <div class="pillar-legend-item">
-              <div class="pillar-legend-dot" style="background:#b08fd4"></div>
+              <div class="pillar-legend-dot" style="color:#b08fd4">&#9829;</div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-purpose" style="width:0%;background:linear-gradient(90deg,rgba(176,143,212,0.3),#b08fd4)"></div></div>
               <div class="pillar-legend-label">Purpose</div>
             </div>
-            <div class="pillar-legend-item">
-              <div class="pillar-legend-dot" style="background:#8bb8c9"></div>
+            <div class="pillar-legend-item mm-jp-hide">
+              <div class="pillar-legend-dot" style="color:#8bb8c9">&#9829;</div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-regulate" style="width:0%;background:linear-gradient(90deg,rgba(139,184,201,0.3),#8bb8c9)"></div></div>
               <div class="pillar-legend-label">Regulate</div>
             </div>
-            <div class="pillar-legend-item">
-              <div class="pillar-legend-dot" style="background:#e8a86d"></div>
+            <div class="pillar-legend-item mm-jp-hide">
+              <div class="pillar-legend-dot" style="color:#e8a86d">&#9829;</div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-movement" style="width:0%;background:linear-gradient(90deg,rgba(232,168,109,0.3),#e8a86d)"></div></div>
               <div class="pillar-legend-label">Movement</div>
             </div>
-            <div class="pillar-legend-item">
-              <div class="pillar-legend-dot" style="background:#d4849a"></div>
+            <div class="pillar-legend-item mm-jp-hide">
+              <div class="pillar-legend-dot" style="color:#d4849a">&#9829;</div>
               <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-connection" style="width:0%;background:linear-gradient(90deg,rgba(212,132,154,0.3),#d4849a)"></div></div>
               <div class="pillar-legend-label">Connection</div>
+            </div>
+            <!-- JP flag: renamed pillars + Prosper -->
+            <!-- Ground shown as text in wheel center, not in legend -->
+            <div class="pillar-legend-item mm-jp-only" style="display:none">
+              <div class="pillar-legend-dot" style="color:#e8a86d">&#9829;</div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-move" style="width:0%;background:linear-gradient(90deg,rgba(232,168,109,0.3),#e8a86d)"></div></div>
+              <div class="pillar-legend-label">Move</div>
+            </div>
+            <div class="pillar-legend-item mm-jp-only" style="display:none">
+              <div class="pillar-legend-dot" style="color:#d4849a">&#9829;</div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-connect" style="width:0%;background:linear-gradient(90deg,rgba(212,132,154,0.3),#d4849a)"></div></div>
+              <div class="pillar-legend-label">Connect</div>
+            </div>
+            <div class="pillar-legend-item mm-jp-only" style="display:none">
+              <div class="pillar-legend-dot" style="color:#c9a24e">&#9829;</div>
+              <div class="pillar-legend-bar-track"><div class="pillar-legend-bar-fill" id="plBar-prosper" style="width:0%;background:linear-gradient(90deg,rgba(201,162,78,0.3),#c9a24e)"></div></div>
+              <div class="pillar-legend-label">Prosper</div>
             </div>
           </div>
         </div>
 
         <!-- Intro Text -->
         <div style="text-align:center;max-width:540px;margin:0 auto 28px;padding:0 20px;position:relative;z-index:5">
-          <div style="font-family:var(--fh);font-size:15px;font-weight:400;color:var(--em2);line-height:1.7;letter-spacing:0.2px">These rituals are made to be practiced monthly to create habits that will stay with you for the rest of your life. <span style="font-style:italic;color:var(--sky)">We provide the foundation — you do the rest.</span></div>
-          <div style="font-family:var(--fb);font-size:13px;font-weight:300;color:var(--muted);line-height:1.6;margin-top:10px">New rituals are added constantly based on our Marma members' needs — share what you'd like with us and let's build together.</div>
+          <div style="font-family:var(--fh);font-size:15px;font-weight:400;color:rgba(255,255,255,0.9);line-height:1.7;letter-spacing:0.2px;text-shadow:0 1px 6px rgba(0,0,0,0.3)">These rituals are made to be practiced monthly to create habits that will stay with you for the rest of your life. <span style="font-style:italic;color:var(--sky)">We provide the foundation — you do the rest.</span></div>
+          <div style="font-family:var(--fb);font-size:13px;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.6;margin-top:10px;text-shadow:0 1px 4px rgba(0,0,0,0.2)">New rituals are added constantly based on our Marma sisters' needs — share what you'd like with us and let's build together.</div>
         </div>
 
         <!-- Meet Your Guides -->
@@ -743,7 +930,7 @@
           <div class="home-rituals-header">
             <div class="hr-mascot" id="homeMascot"><img src="https://static.wixstatic.com/media/00228e_52d89c9ee5954a2d852ed2737e4b21fe~mv2.png" alt="Sanctuary" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
             <div class="hr-title">Your Ritual Journey</div>
-            <div class="hr-subtitle">HOME SANCTUARY CLUB</div>
+            <div class="hr-subtitle">SANCTUARY CLUB</div>
             <div class="hr-progress">
               <div class="hr-progress-labels"><span>JUST STARTING</span><span id="homeProgressLabel">0 OF 11 RITUALS</span></div>
               <div class="hr-progress-bar"><div class="hr-progress-fill" id="homeProgressFill" style="width:10%"></div></div>
@@ -761,19 +948,59 @@
                 <span class="ptag ptag-connection">CONNECTION</span>
               </div>
               <div class="ritual-desc" id="homeCurrentDesc">Transform your relationship with food through 30 days of mindful nourishment practices.</div>
+              <div class="chapter-progress mm-jp-only" id="homeChapterProgress" style="display:none">
+                <div class="chapter-step" data-ch="1"></div>
+                <div class="chapter-step" data-ch="2"></div>
+                <div class="chapter-step" data-ch="3"></div>
+                <div class="chapter-step" data-ch="4"></div>
+                <div class="chapter-step" data-ch="5"></div>
+                <span class="chapter-label" id="homeChapterLabel">Chapter 1 of 5</span>
+              </div>
             </div>
             <div class="ritual-right">
               <span class="status-tag status-current">CURRENT</span>
               <button class="btn-teal" onclick="goToRitual()">BEGIN &#8594;</button>
             </div>
           </div>
+          <!-- My Practices shelf (JP flag) -->
+          <div class="practices-shelf mm-jp-only" id="homePracticesShelf" style="display:none">
+            <div class="practices-shelf-title"><span>&#9881;</span> My Practices</div>
+            <div class="practices-grid" id="homePracticesGrid"></div>
+          </div>
+
+          <!-- Keeper badge card (JP flag) -->
+          <div class="mm-jp-only jp-keeper-card light" id="homeKeeperCard" style="display:none">
+            <div class="keeper-star">&#127775;</div>
+            <div class="keeper-info">
+              <div class="keeper-title">Keeper Badge</div>
+              <div class="keeper-desc">Use your practice tools for 30 days to earn this badge.</div>
+              <div class="jp-keeper-progress"><div class="jp-keeper-fill" style="width:0"></div></div>
+            </div>
+            <div class="jp-keeper-badge"></div>
+          </div>
+
+          <!-- JP grouped: practice-mode rituals for Home section -->
+          <div class="mm-jp-only" id="homeJpPracticesWrap" style="display:none">
+            <div class="jp-group-header light"><span class="jp-gh-icon">&#9881;</span> My Practices</div>
+            <div class="jp-group-sub light">Rituals you've completed — keep practising with your tools.</div>
+            <div id="homeJpPractices"></div>
+          </div>
+
+          <!-- JP grouped: not started rituals for Home section -->
+          <div class="mm-jp-only" id="homeJpNotStartedWrap" style="display:none">
+            <div class="jp-group-header light"><span class="jp-gh-icon">&#128274;</span> Not Started</div>
+            <div class="jp-group-sub light">Begin a new ritual when you're ready.</div>
+          </div>
+
+          <div class="mm-jp-hide">
           <div id="homeCompletedWrap" style="display:none">
             <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 6px;letter-spacing:0.3px">Completed Rituals</div>
             <div id="homeCompletedList"></div>
           </div>
           <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:var(--muted);margin:24px 0 6px;letter-spacing:0.3px">Next Rituals</div>
           <div style="font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-bottom:14px;line-height:1.5">Each ritual is designed to start on the 1st of the month. Choose a ritual below and pick the month you'd like to begin.</div>
-          <div id="homeLockedList">
+          </div>
+          <div id="homeLockedList" class="mm-jp-hide">
             <div class="ritual-card-light locked" onclick="selectRitual('energised-mornings')"><div class="ritual-icon" style="overflow:hidden;padding:0"><img src="https://static.wixstatic.com/media/00228e_3cbadc2bbc89467881e17a7794d58c4b~mv2.jpg" alt="Energised Mornings" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div><div class="ritual-info"><h3>Energised Mornings</h3><div class="ritual-pillars"><span class="ptag ptag-movement">MOVEMENT</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Design mornings that energise body and mind.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
             <div class="ritual-card-light locked" onclick="selectRitual('sanctuary-protection')"><div class="ritual-icon">&#128737;</div><div class="ritual-info"><h3>Sanctuary Protection</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Create boundaries that protect your peace.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
             <div class="ritual-card-light locked" onclick="selectRitual('im-enough')"><div class="ritual-icon">&#128150;</div><div class="ritual-info"><h3>I'm Enough</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Reclaim your self-worth from the inside out.</div></div><div class="ritual-right"><span class="status-tag status-locked">LOCKED</span></div></div>
@@ -801,9 +1028,13 @@
               <div class="journey-graphic">
                 <div class="journey-bar" style="height:65%;background:linear-gradient(180deg,#6ec89b,rgba(110,200,155,0.3))"><div class="journey-bar-label">Nourish</div></div>
                 <div class="journey-bar" style="height:40%;background:linear-gradient(180deg,#b08fd4,rgba(176,143,212,0.3))"><div class="journey-bar-label">Purpose</div></div>
-                <div class="journey-bar" style="height:10%;background:linear-gradient(180deg,#8bb8c9,rgba(139,184,201,0.3))"><div class="journey-bar-label">Regulate</div></div>
-                <div class="journey-bar" style="height:4%;background:linear-gradient(180deg,#e8a86d,rgba(232,168,109,0.2))"><div class="journey-bar-label">Move</div></div>
-                <div class="journey-bar" style="height:4%;background:linear-gradient(180deg,#d4849a,rgba(212,132,154,0.2))"><div class="journey-bar-label">Connect</div></div>
+                <div class="journey-bar mm-jp-hide" style="height:10%;background:linear-gradient(180deg,#8bb8c9,rgba(139,184,201,0.3))"><div class="journey-bar-label">Regulate</div></div>
+                <div class="journey-bar mm-jp-hide" style="height:4%;background:linear-gradient(180deg,#e8a86d,rgba(232,168,109,0.2))"><div class="journey-bar-label">Move</div></div>
+                <div class="journey-bar mm-jp-hide" style="height:4%;background:linear-gradient(180deg,#d4849a,rgba(212,132,154,0.2))"><div class="journey-bar-label">Connect</div></div>
+                <div class="journey-bar mm-jp-only" style="display:none;height:10%;background:linear-gradient(180deg,#8bb8c9,rgba(139,184,201,0.3))"><div class="journey-bar-label">Ground</div></div>
+                <div class="journey-bar mm-jp-only" style="display:none;height:4%;background:linear-gradient(180deg,#e8a86d,rgba(232,168,109,0.2))"><div class="journey-bar-label">Move</div></div>
+                <div class="journey-bar mm-jp-only" style="display:none;height:4%;background:linear-gradient(180deg,#d4849a,rgba(212,132,154,0.2))"><div class="journey-bar-label">Connect</div></div>
+                <div class="journey-bar mm-jp-only" style="display:none;height:4%;background:linear-gradient(180deg,#c9a24e,rgba(201,162,78,0.2))"><div class="journey-bar-label">Prosper</div></div>
               </div>
               <div style="text-align:center;font-size:10px;color:var(--muted);font-weight:300;margin-top:22px">2 of 11 rituals completed</div>
             </div>
@@ -844,7 +1075,7 @@
             <div class="referral-card">
               <div style="font-size:28px;margin-bottom:8px">&#127873;</div>
               <div class="referral-title">Give a Month, Get a Month</div>
-              <div class="referral-desc">Invite a friend to join Marmaroph. When they subscribe, you <strong>both</strong> get your next month free — and you can become ritual buddies.</div>
+              <div class="referral-desc">Invite a friend to join Marmaroph. When they subscribe, you <strong>both</strong> get your next month free — and you can become ritual sisters.</div>
               <div class="referral-perks">
                 <div class="referral-perk">
                   <div class="referral-perk-icon">&#127775;</div>
@@ -900,7 +1131,8 @@
           <div class="rituals-header-dark">
             <div class="dark-mascot" id="ritualsMascot"><img src="https://static.wixstatic.com/media/00228e_52d89c9ee5954a2d852ed2737e4b21fe~mv2.png" alt="Sanctuary" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
             <div class="dark-h1">Your Ritual Journey</div>
-            <div class="dark-subtitle">HOME SANCTUARY CLUB</div>
+            <div class="dark-subtitle mm-jp-hide">HOME SANCTUARY CLUB</div>
+            <div class="dark-subtitle mm-jp-only">SANCTUARY CLUB</div>
             <div class="dark-progress">
               <div class="dark-progress-labels"><span>JUST STARTING</span><span id="ritualsProgressLabel">0 OF 11 RITUALS</span></div>
               <div class="dark-progress-bar"><div class="dark-progress-fill" id="ritualsProgressFill" style="width:10%"></div></div>
@@ -908,20 +1140,58 @@
           </div>
 
           <div class="dark-month" id="ritualsMonth"></div>
+
+          <!-- ── JP grouped navigation (flag-gated) ── -->
+          <div class="mm-jp-only" id="jpGroupedNav" style="display:none">
+            <!-- Current group -->
+            <div class="jp-group-header dark"><span class="jp-gh-icon">&#10022;</span> Current</div>
+            <div id="jpGroupCurrent"></div>
+
+            <!-- My Practices group -->
+            <div id="jpGroupPracticesWrap" style="display:none">
+              <div class="jp-group-header dark"><span class="jp-gh-icon">&#9881;</span> My Practices</div>
+              <div class="jp-group-sub dark">Rituals you've completed — keep practising with your tools.</div>
+              <div id="jpGroupPractices"></div>
+            </div>
+
+            <!-- Not Started group -->
+            <div id="jpGroupNotStartedWrap">
+              <div class="jp-group-header dark"><span class="jp-gh-icon">&#128274;</span> Not Started</div>
+              <div class="jp-group-sub dark">Begin a new ritual when you're ready.</div>
+              <div id="jpGroupNotStarted"></div>
+            </div>
+
+            <!-- Keeper badge card (dark) -->
+            <div class="jp-keeper-card dark" id="darkKeeperCard" style="display:none">
+              <div class="keeper-star">&#127775;</div>
+              <div class="keeper-info">
+                <div class="keeper-title">Keeper Badge</div>
+                <div class="keeper-desc">Use your practice tools for 30 days to earn this badge.</div>
+                <div class="jp-keeper-progress"><div class="jp-keeper-fill" style="width:0"></div></div>
+              </div>
+              <div class="jp-keeper-badge"></div>
+            </div>
+          </div>
+
+          <!-- ── Original layout (non-JP) ── -->
+          <div class="mm-jp-hide">
           <div class="dark-section-title"><span>&#10022;</span> Your Current Ritual</div>
-          <div class="ritual-card-dark current">
+          </div>
+          <div class="ritual-card-dark current mm-jp-hide">
             <div class="ritual-icon" style="overflow:hidden;padding:0"><img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div>
             <div class="ritual-info"><h3 id="ritualsCurrentName">Mindful Eating</h3><div class="ritual-pillars" id="ritualsCurrentPillars"><span class="ptag ptag-nourishment">NOURISHMENT</span><span class="ptag ptag-regulate">REGULATE</span><span class="ptag ptag-connection">CONNECTION</span></div><div class="ritual-desc" id="ritualsCurrentDesc">Transform your relationship with food through 30 days of mindful nourishment practices.</div></div>
             <div class="ritual-right"><span class="status-tag dark-status-current">CURRENT</span><button class="btn-glow" onclick="goToRitual()">BEGIN &#8594;</button></div>
           </div>
 
+          <div class="mm-jp-hide">
           <div id="ritualsCompletedWrap" style="display:none">
             <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:rgba(187,217,215,0.5);margin:24px 0 6px;letter-spacing:0.3px">Completed Rituals</div>
             <div id="ritualsCompletedList"></div>
           </div>
           <div style="font-family:var(--fh);font-size:18px;font-weight:500;color:rgba(187,217,215,0.5);margin:24px 0 6px;letter-spacing:0.3px">Next Rituals</div>
           <div style="font-size:11px;color:rgba(187,217,215,0.4);font-weight:300;font-style:italic;margin-bottom:14px;line-height:1.5">Each ritual is designed to start on the 1st of the month. Choose a ritual below and pick the month you'd like to begin.</div>
-          <div id="ritualsLockedList">
+          </div>
+          <div id="ritualsLockedList" class="mm-jp-hide">
             <div class="ritual-card-dark locked" onclick="selectRitual('energised-mornings')"><div class="ritual-icon" style="overflow:hidden;padding:0"><img src="https://static.wixstatic.com/media/00228e_3cbadc2bbc89467881e17a7794d58c4b~mv2.jpg" alt="Energised Mornings" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/></div><div class="ritual-info"><h3>Energised Mornings</h3><div class="ritual-pillars"><span class="ptag ptag-movement">MOVEMENT</span><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Design mornings that energise body and mind.</div></div><div class="ritual-right"><span class="status-tag dark-status-locked">LOCKED</span></div></div>
             <div class="ritual-card-dark locked" onclick="selectRitual('sanctuary-protection')"><div class="ritual-icon">&#128737;</div><div class="ritual-info"><h3>Sanctuary Protection</h3><div class="ritual-pillars"><span class="ptag ptag-regulate">REGULATE</span></div><div class="ritual-desc">Create boundaries that protect your peace.</div></div><div class="ritual-right"><span class="status-tag dark-status-locked">LOCKED</span></div></div>
             <div class="ritual-card-dark locked" onclick="selectRitual('im-enough')"><div class="ritual-icon">&#128150;</div><div class="ritual-info"><h3>I'm Enough</h3><div class="ritual-pillars"><span class="ptag ptag-purpose">PURPOSE</span></div><div class="ritual-desc">Reclaim your self-worth from the inside out.</div></div><div class="ritual-right"><span class="status-tag dark-status-locked">LOCKED</span></div></div>
@@ -950,7 +1220,7 @@
         <div class="cm-tabs">
           <button class="cm-tab-btn active" onclick="cmTab('circles',this)">Ritual Circles</button>
           <button class="cm-tab-btn" onclick="cmTab('celebrations',this)">Celebrations</button>
-          <button class="cm-tab-btn" onclick="cmTab('buddy',this)">Find a Buddy</button>
+          <button class="cm-tab-btn" onclick="cmTab('buddy',this)">Ritual Sister</button>
         </div>
         <div class="cm-panel active" id="cm-circles">
           <div class="circle-card"><div class="circle-top"><div class="circle-icon" style="overflow:hidden"><img src="https://static.wixstatic.com/media/00228e_fdf59fda0ab44152a770580efc2b6584~mv2.png" alt="Mindful Eating" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/></div><div><div class="circle-name">Mindful Eating Circle</div><div class="circle-meta">34 women &#183; 8 online now &#183; Your circle</div></div></div><div class="circle-preview">Day 18 discussions happening now. Today's prompt: "What does nourishment mean beyond food?"</div><div class="circle-footer"><div class="circle-avatars"><div class="circle-av">SA</div><div class="circle-av">LR</div><div class="circle-av">IM</div><span class="circle-count">+31</span></div><button class="btn-sky" style="font-size:10px;padding:6px 14px" onclick="showToast('Circles open soon! You will be notified when your circle is live.')">Enter circle &#8594;</button></div></div>
@@ -968,8 +1238,18 @@
           <div class="cele-post"><div class="cele-av" style="background:rgba(212,132,154,0.15);color:#a0445e">IM</div><div class="cele-content"><div><span class="cele-name">Isabella M.</span> <span class="cele-time">&#183; Sacred Connection with Partner &#183; Day 22 &#183; 1d ago</span></div><div class="cele-text">The journaling prompt today really opened something in me. Writing letters to my younger self &#8212; powerful and healing. Has anyone else tried this?</div><div class="cele-actions"><span>&#9825; 31</span><span>&#128172; 11</span><span>&#127881; Celebrate</span><span>&#128588; Support</span></div></div></div>
         </div>
         <div class="cm-panel" id="cm-buddy">
-          <div class="buddy-card"><div style="font-size:32px;margin-bottom:8px">&#128588;</div><h4>Find Your Ritual Buddy</h4><p>Get matched with a woman doing the same ritual as you. Hold each other accountable, share daily reflections, and celebrate wins together.</p><button class="btn-sky" onclick="showToast('Buddy matching launches soon! We will notify you when it is ready.')">Find my buddy &#8594;</button></div>
-          <div class="card" style="margin-top:16px"><div class="card-t">How It Works</div><div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">1</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">We match you</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Based on your current ritual, goals, and timezone</div></div></div><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">2</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">Daily check-ins</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Share reflections, send encouragement, track together</div></div></div><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">3</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">Meet in person</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Connect at community events and rituals gatherings</div></div></div></div></div>
+          <div class="buddy-card" id="sisterCard">
+            <div style="font-size:36px;margin-bottom:8px" id="sisterEmoji">&#128588;</div>
+            <h4 id="sisterTitle">Your Ritual Sister</h4>
+            <p id="sisterDesc">Your ritual sister for this month is assigned based on your active ritual. Start a ritual to meet your sister!</p>
+            <div id="sisterInfo" style="display:none;margin-top:12px;padding:16px;background:linear-gradient(135deg,rgba(159,214,235,0.08),rgba(187,217,215,0.04));border-radius:14px;border:1px solid rgba(159,214,235,0.12)">
+              <div style="font-family:var(--fh);font-size:20px;font-weight:500;color:var(--em2);margin-bottom:4px" id="sisterName"></div>
+              <div style="font-size:11px;color:var(--sky);font-weight:400;font-style:italic;margin-bottom:8px" id="sisterRole"></div>
+              <div style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.6" id="sisterBio"></div>
+            </div>
+            <button class="btn-sky" style="margin-top:14px" onclick="showToast('Sister messaging launches soon! You will be notified when it is ready.')">Message my sister &#8594;</button>
+          </div>
+          <div class="card" style="margin-top:16px"><div class="card-t">How Ritual Sisters Work</div><div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">1</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">We match you</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Based on your current ritual, goals, and timezone</div></div></div><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">2</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">Daily encouragement</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Share reflections, send encouragement, grow together</div></div></div><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:50%;background:rgba(159,214,235,0.1);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:600;color:var(--em);flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">3</div><div><div style="font-size:13px;font-weight:500;color:var(--em2)">Meet in person</div><div style="font-size:11px;color:var(--muted);font-weight:300;margin-top:2px">Connect at community events and ritual gatherings</div></div></div></div></div>
         </div>
       </div>
     </div>
@@ -1057,16 +1337,37 @@
       </div>
     </div>
 
-    <!-- ═══ SUBSCRIPTION ═══ -->
-    <div class="section" id="sec-subscription">
+    <!-- ═══ SUBSCRIPTION (original, hidden in JP) ═══ -->
+    <div class="section mm-jp-hide" id="sec-subscription-legacy" style="display:none">
       <div class="content-area">
         <div class="sec-title">Subscription</div><div class="sec-sub">Manage your Sanctuary Club membership.</div>
-
         <div class="card" style="display:flex;align-items:center;gap:14px;padding:20px">
           <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,rgba(159,214,235,0.15),rgba(187,217,215,0.1));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid rgba(159,214,235,0.15)">&#10024;</div>
-          <div><div style="font-family:var(--fh);font-size:17px;font-weight:500;color:var(--em2)">Home Wellness Sanctuary Club</div><div style="font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-top:2px">$29 / month &#8212; 30-day guided rituals with daily lessons and community</div><div style="margin-top:5px" id="subBadge"><span class="badge badge-active">Active</span></div></div>
+          <div><div style="font-family:var(--fh);font-size:17px;font-weight:500;color:var(--em2)">Home Wellness Sanctuary Club</div><div style="font-size:11px;color:var(--muted);font-weight:300;font-style:italic;margin-top:2px">$29 / month &#8212; 30-day guided rituals with daily lessons and community</div><div style="margin-top:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap" id="subBadge"><span class="badge badge-active">Active</span><span class="jp-keeper-badge mm-jp-only"></span></div></div>
         </div>
         <div class="card"><div class="card-t">Details</div><div class="grid-2"><div><div class="form-label">Status</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subStatus">Active</div></div><div><div class="form-label">Current ritual</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subRitual">Mindful Eating</div></div><div><div class="form-label">Cycle started</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subStart">&#8212;</div></div><div><div class="form-label">Completed</div><div style="font-size:13px;font-weight:400;color:var(--text);margin-top:3px" id="subCompleted">0 rituals</div></div></div><button class="btn-sky" onclick="openPortal()" id="portalBtn">Manage subscription on Stripe</button><div style="font-size:11px;color:var(--muted);margin-top:6px;font-weight:300;font-style:italic">Update payment method, view invoices, or manage your subscription.</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ PROGRESS (JP mode) ═══ -->
+    <div class="section" id="sec-subscription">
+      <div class="content-area">
+        <div class="sec-title"><span style="font-size:16px;opacity:0.6">&#9733;</span> Your Progress</div>
+        <div class="sec-sub">See how you're growing across every wellness pillar.</div>
+
+        <!-- Pillar progress cards -->
+        <div id="progressPillars" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px"></div>
+
+        <!-- Badges section -->
+        <div class="card">
+          <div class="card-t">Your Badges</div>
+          <div id="progressBadges" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center"></div>
+        </div>
+
+        <!-- Subscription link -->
+        <div style="margin-top:16px;text-align:center">
+          <button class="btn-ghost" onclick="openPortal()" style="font-size:11px;padding:8px 20px">Manage subscription on Stripe</button>
+        </div>
       </div>
     </div>
 
@@ -1079,7 +1380,7 @@
         <div class="referral-card" style="margin-bottom:16px">
           <div style="font-size:36px;margin-bottom:10px">&#127873;</div>
           <div class="referral-title">Give a Month, Get a Month</div>
-          <div class="referral-desc">Invite a friend to join Marmaroph. When they subscribe, you <strong>both</strong> get your next month free — and you can become ritual buddies.</div>
+          <div class="referral-desc">Invite a friend to join Marmaroph. When they subscribe, you <strong>both</strong> get your next month free — and you can become ritual sisters.</div>
           <div class="referral-perks">
             <div class="referral-perk">
               <div class="referral-perk-icon">&#127775;</div>
@@ -1243,6 +1544,171 @@
 var API = 'https://www.marmaroph.com/_functions';
 var memberData = {};
 
+// ── Feature flags ──────────────────────────────────────────
+var MM_FLAGS_KEY = 'mm_feature_flags';
+var MM_FLAGS_DEFAULTS = { journeyPractice: false };
+var MM_FLAGS = (function() {
+  try {
+    var stored = JSON.parse(localStorage.getItem(MM_FLAGS_KEY) || '{}');
+    var merged = {};
+    for (var k in MM_FLAGS_DEFAULTS) merged[k] = stored.hasOwnProperty(k) ? stored[k] : MM_FLAGS_DEFAULTS[k];
+    return merged;
+  } catch(e) { return JSON.parse(JSON.stringify(MM_FLAGS_DEFAULTS)); }
+})();
+function mmSetFlag(key, val) {
+  MM_FLAGS[key] = val;
+  try { localStorage.setItem(MM_FLAGS_KEY, JSON.stringify(MM_FLAGS)); } catch(e) {}
+  location.reload();
+}
+window.MM_FLAGS = MM_FLAGS;
+window.mmSetFlag = mmSetFlag;
+
+// ── Ritual status data model ───────────────────────────────
+var MM_STATUS_KEY = 'mm_ritual_status';
+var MM_STATUS_DEFAULTS = {
+  em: 'not_started', me: 'not_started', qa: 'not_started',
+  activeRitual: null, activeChapter: 1,
+  keeperDays: [], keeperBadge: false
+};
+var mmRitualStatus = (function() {
+  try {
+    var stored = JSON.parse(localStorage.getItem(MM_STATUS_KEY) || '{}');
+    var merged = {};
+    for (var k in MM_STATUS_DEFAULTS) {
+      if (stored.hasOwnProperty(k)) {
+        merged[k] = stored[k];
+      } else {
+        var def = MM_STATUS_DEFAULTS[k];
+        merged[k] = Array.isArray(def) ? def.slice() : def;
+      }
+    }
+    if (!Array.isArray(merged.keeperDays)) merged.keeperDays = [];
+    return merged;
+  } catch(e) { return JSON.parse(JSON.stringify(MM_STATUS_DEFAULTS)); }
+})();
+function mmSaveStatus() {
+  try { localStorage.setItem(MM_STATUS_KEY, JSON.stringify(mmRitualStatus)); } catch(e) {}
+}
+window.mmRitualStatus = mmRitualStatus;
+window.mmSaveStatus = mmSaveStatus;
+
+var RITUAL_SLUG_TO_KEY = {'mindful-eating':'me', 'energised-mornings':'em', 'quiet-abundance':'qa'};
+var RITUAL_KEY_TO_SLUG = {me:'mindful-eating', em:'energised-mornings', qa:'quiet-abundance'};
+
+function mmActivateRitual(slug) {
+  if (!MM_FLAGS.journeyPractice) return;
+  var key = RITUAL_SLUG_TO_KEY[slug];
+  if (!key) return;
+  var prev = mmRitualStatus.activeRitual;
+  if (prev && prev !== slug) {
+    var prevKey = RITUAL_SLUG_TO_KEY[prev];
+    if (prevKey && mmRitualStatus[prevKey] === 'active') {
+      mmRitualStatus[prevKey] = 'not_started';
+    }
+  }
+  mmRitualStatus[key] = 'active';
+  mmRitualStatus.activeRitual = slug;
+  mmRitualStatus.activeChapter = 1;
+  mmSaveStatus();
+}
+
+function mmCompleteRitual(slug) {
+  if (!MM_FLAGS.journeyPractice) return;
+  var key = RITUAL_SLUG_TO_KEY[slug];
+  if (!key) return;
+  mmRitualStatus[key] = 'practice';
+  if (mmRitualStatus.activeRitual === slug) {
+    mmRitualStatus.activeRitual = null;
+    mmRitualStatus.activeChapter = 1;
+  }
+  mmSaveStatus();
+}
+
+function mmUpdateChapter(ch) {
+  if (!MM_FLAGS.journeyPractice) return;
+  ch = Math.max(1, Math.min(5, parseInt(ch) || 1));
+  mmRitualStatus.activeChapter = ch;
+  mmSaveStatus();
+}
+window.mmActivateRitual = mmActivateRitual;
+window.mmCompleteRitual = mmCompleteRitual;
+window.mmUpdateChapter = mmUpdateChapter;
+
+function mmSyncStatusFromProgress(currentRitual, completedRituals) {
+  if (!MM_FLAGS.journeyPractice) return;
+  var changed = false;
+  completedRituals.forEach(function(slug) {
+    var key = RITUAL_SLUG_TO_KEY[slug];
+    if (key && mmRitualStatus[key] !== 'practice') {
+      mmRitualStatus[key] = 'practice';
+      changed = true;
+    }
+  });
+  if (currentRitual) {
+    var curKey = RITUAL_SLUG_TO_KEY[currentRitual];
+    if (curKey && mmRitualStatus[curKey] === 'not_started') {
+      mmRitualStatus[curKey] = 'active';
+      mmRitualStatus.activeRitual = currentRitual;
+      changed = true;
+    }
+    if (curKey && mmRitualStatus[curKey] === 'active' && mmRitualStatus.activeRitual !== currentRitual) {
+      mmRitualStatus.activeRitual = currentRitual;
+      changed = true;
+    }
+  }
+  if (!mmRitualStatus.activeRitual) {
+    for (var k in RITUAL_SLUG_TO_KEY) {
+      if (mmRitualStatus[RITUAL_SLUG_TO_KEY[k]] === 'active') {
+        mmRitualStatus.activeRitual = k;
+        changed = true;
+        break;
+      }
+    }
+  }
+  if (changed) mmSaveStatus();
+}
+
+function mmLogPracticeDay() {
+  if (!MM_FLAGS.journeyPractice) return;
+  var today = new Date().toISOString().slice(0, 10);
+  if (!Array.isArray(mmRitualStatus.keeperDays)) mmRitualStatus.keeperDays = [];
+  if (mmRitualStatus.keeperDays.indexOf(today) !== -1) return;
+  mmRitualStatus.keeperDays.push(today);
+  if (mmRitualStatus.keeperDays.length >= 30 && !mmRitualStatus.keeperBadge) {
+    mmRitualStatus.keeperBadge = true;
+  }
+  mmSaveStatus();
+  mmRenderKeeperBadge();
+}
+window.mmLogPracticeDay = mmLogPracticeDay;
+
+function mmRenderKeeperBadge() {
+  if (!MM_FLAGS.journeyPractice) return;
+  var days = (mmRitualStatus.keeperDays || []).length;
+  var earned = !!mmRitualStatus.keeperBadge;
+  var els = document.querySelectorAll('.jp-keeper-badge');
+  els.forEach(function(el) {
+    if (earned) {
+      el.innerHTML = '<span class="keeper-icon">&#127775;</span><span class="keeper-label">Keeper</span>';
+      el.classList.add('earned');
+      el.title = 'Keeper — 30 practice days achieved!';
+    } else if (days > 0) {
+      el.innerHTML = '<span class="keeper-icon">&#127775;</span><span class="keeper-label">' + days + '/30</span>';
+      el.classList.remove('earned');
+      el.title = days + ' of 30 practice days toward Keeper badge';
+    } else {
+      el.innerHTML = '';
+      el.classList.remove('earned');
+    }
+  });
+  var bars = document.querySelectorAll('.jp-keeper-progress');
+  bars.forEach(function(bar) {
+    bar.style.display = (days > 0 && !earned) ? '' : 'none';
+    var fill = bar.querySelector('.jp-keeper-fill');
+    if (fill) fill.style.width = Math.min(100, (days / 30) * 100) + '%';
+  });
+}
+
 var isInIframe = (window.parent && window.parent !== window);
 function postToParent(msg) { if (isInIframe) window.parent.postMessage(msg, '*'); }
 var ritualIsOpen = false;
@@ -1265,6 +1731,16 @@ function sendHeight() {
 
 window.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'memberData') { memberData = e.data; saveMemberData(); initApp(); }
+  if (e.data && e.data.type === 'mmChapterUpdate' && MM_FLAGS.journeyPractice) {
+    var ch = parseInt(e.data.chapter);
+    if (ch >= 1 && ch <= 5) mmUpdateChapter(ch);
+  }
+  if (e.data && e.data.type === 'mmRitualComplete' && MM_FLAGS.journeyPractice) {
+    if (e.data.slug) mmCompleteRitual(e.data.slug);
+  }
+  if (e.data && e.data.type === 'mmPracticeDay' && MM_FLAGS.journeyPractice) {
+    mmLogPracticeDay();
+  }
 });
 
 function saveMemberData() {
@@ -1822,7 +2298,8 @@ function showInstallPrompt() {
 
   var banner = document.createElement('div');
   banner.id = 'installBanner';
-  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#033039,#044147);border-top:1px solid rgba(233,220,184,.2);padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 -4px 20px rgba(0,0,0,.3);animation:slideUp .4s ease';
+  var bannerBottom = (document.body.classList.contains('mm-jp') && window.innerWidth <= 768) ? '54px' : '0';
+  banner.style.cssText = 'position:fixed;bottom:'+bannerBottom+';left:0;right:0;z-index:9999;background:linear-gradient(135deg,#033039,#044147);border-top:1px solid rgba(233,220,184,.2);padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 -4px 20px rgba(0,0,0,.3);animation:slideUp .4s ease';
 
   var style = document.createElement('style');
   style.textContent = '@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}';
@@ -2235,7 +2712,28 @@ function navigate(sec,el){
   document.getElementById('mainArea').scrollTop=0;
   var mm=document.getElementById('mobileMenu');if(mm)mm.classList.remove('open');
   if (sec === 'quiz') initQuiz();
+  if (sec === 'community') updateSisterCard();
+  if (sec === 'subscription') renderProgressTab();
+  jpSyncTabBar(sec);
   setTimeout(sendHeight,100);
+}
+
+function jpTabNav(sec, btn) {
+  navigate(sec);
+  document.querySelectorAll('.jp-tab').forEach(function(t){ t.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+}
+
+function jpSyncTabBar(sec) {
+  var tabs = document.querySelectorAll('.jp-tab');
+  var matched = false;
+  tabs.forEach(function(t) {
+    if (t.getAttribute('data-sec') === sec) { t.classList.add('active'); matched = true; }
+    else { t.classList.remove('active'); }
+  });
+  if (!matched) {
+    tabs.forEach(function(t) { if (t.getAttribute('data-sec') === 'home') t.classList.add('active'); });
+  }
 }
 
 function cmTab(tab,btn){document.querySelectorAll('.cm-panel').forEach(function(p){p.classList.remove('active');});document.getElementById('cm-'+tab).classList.add('active');document.querySelectorAll('.cm-tab-btn').forEach(function(b){b.classList.remove('active');});if(btn)btn.classList.add('active');}
@@ -2257,6 +2755,25 @@ function goToRitual(){
   postToParent({ type: 'navigate', url: ritualUrl });
   setTimeout(function(){ window.open(ritualUrl, '_top'); }, 300);
 }
+function openPracticeTool(ritualKey, tool) {
+  var slugMap = {me:'mindful-eating', em:'energised-mornings', qa:'quiet-abundance'};
+  var slug = slugMap[ritualKey];
+  if (!slug) return;
+  var r = RITUALS[slug];
+  if (!r) return;
+  var rKey = RITUAL_SLUG_TO_KEY[slug];
+  if (rKey && mmRitualStatus[rKey] === 'practice') mmLogPracticeDay();
+  var base = 'https://app.marmaroph.com/';
+  var ritualUrl = base + r.html;
+  var params = [];
+  if (memberData.memberId) params.push('memberId=' + memberData.memberId);
+  params.push('startScreen=s-tools');
+  params.push('tool=' + tool);
+  ritualUrl += '?' + params.join('&');
+  postToParent({ type: 'navigate', url: ritualUrl });
+  setTimeout(function(){ window.open(ritualUrl, '_top'); }, 300);
+}
+
 function closeRitualEmbed(){
   var embed = document.getElementById('ritualEmbed');
   if(!embed || embed.style.display === 'none') return;
@@ -2269,25 +2786,68 @@ function closeRitualEmbed(){
 }
 
 var RITUALS = {
-  'mindful-eating': { name:'Mindful Eating', desc:'Transform your relationship with food through 30 days of mindful nourishment practices.', pillars:['nourishment','regulate','connection'], html:'marmaroph-ritual-mindful-eating.html', wixUrl:'https://www.marmaroph.com/homewellnessthemes/mindful-eating-home-wellness-ritual', icon:'<img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>' },
-  'energised-mornings': { name:'Energised Mornings', desc:'Design mornings that energise body and mind with movement and intention.', pillars:['movement','purpose'], html:'marmaroph-ritual-energised-mornings.html', wixUrl:'https://www.marmaroph.com/homewellnessthemes/essential-mornings', icon:'<img src="https://static.wixstatic.com/media/00228e_3cbadc2bbc89467881e17a7794d58c4b~mv2.jpg" alt="Energised Mornings" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>' },
-  'sanctuary-protection': { name:'Sanctuary Protection', desc:'Create boundaries that protect your peace and regulate your nervous system.', pillars:['regulate'], html:'marmaroph-ritual-sanctuary-protection.html', icon:'&#128737;' },
-  'im-enough': { name:'I\'m Enough', desc:'Reclaim your self-worth from the inside out through daily affirmations and reflection.', pillars:['purpose'], html:'marmaroph-ritual-im-enough.html', icon:'&#128150;' },
-  'sacred-connection': { name:'Sacred Connection with Partner', desc:'Strengthen and deepen the bond with your partner through intentional practices of presence, communication, and shared rituals.', pillars:['connection'], html:'marmaroph-ritual-sacred-connection.html', icon:'&#128145;' },
-  'kindred-bonds': { name:'Kindred Bonds™', desc:'Nurture the relationships that shape your world — friends, family, and colleagues. Build deeper trust, meaningful conversations, and a circle of support through intentional connection.', pillars:['connection'], html:'marmaroph-ritual-kindred-bonds.html', icon:'&#129309;' },
-  'quiet-abundance': { name:'Quiet Abundance', desc:'Wealth is not a destination you reach. It is a quiet structure you build — one intentional month at a time — underneath the life you are designing.', pillars:['purpose','regulate'], html:'marmaroph-ritual-quiet-abundance.html', icon:'&#128176;' },
-  'bloom-in-gratitude': { name:'Bloom in Gratitude™', desc:'Just as a flower blooms with care, your mind flourishes when nourished with gratitude. Unplug, color with intention, reflect on life\'s blessings, and create moments of calm.', pillars:['purpose','regulate'], html:'marmaroph-ritual-bloom-in-gratitude.html', icon:'&#127804;' },
-  'new-beginnings': { name:'The New Beginnings Ritual™', desc:'Your journey into motherhood begins with caring for yourself. Embrace this transformative time with nourishing rituals for body, mind, and the life growing within you.', pillars:['nourishment','regulate'], html:'marmaroph-ritual-new-beginnings.html', icon:'&#129328;' },
-  'nurtured-mother': { name:'The Nurtured Mother Ritual™', desc:'As you care for your baby, remember that you deserve care too. Restore your energy, reclaim moments of calm, and build a foundation of self-love in your new chapter.', pillars:['nourishment','regulate','connection'], html:'marmaroph-ritual-nurtured-mother.html', icon:'&#128105;&#8205;&#127868;' },
-  'healing-heart': { name:'The Healing Heart Ritual™', desc:'Healing takes time, and every small act of self-care is a step forward. Gently rebuild your sense of self, release what no longer serves you, and open your heart to new possibilities.', pillars:['regulate','purpose'], html:'marmaroph-ritual-healing-heart.html', icon:'&#128148;' }
+  'mindful-eating': { name:'Mindful Eating', desc:'Transform your relationship with food through 30 days of mindful nourishment practices.', pillars:['nourishment','regulate','connection'], pillarsJP:['nourishment','ground'], html:'marmaroph-ritual-mindful-eating.html', wixUrl:'https://www.marmaroph.com/homewellnessthemes/mindful-eating-home-wellness-ritual', icon:'<img src="https://static.wixstatic.com/media/00228e_806bff2701834fdc990f062c7c1afb7d~mv2.jpg" alt="Plate" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>', sister:{name:'Nadia',emoji:'\u{1F33F}',role:'The Nourishment Keeper',bio:'Nadia guides you through mindful eating with warmth and patience. She believes every meal is a ceremony of self-love.'} },
+  'energised-mornings': { name:'Energised Mornings', desc:'Design mornings that energise body and mind with movement and intention.', pillars:['movement','purpose'], pillarsJP:['move','ground'], html:'marmaroph-ritual-energised-mornings.html', wixUrl:'https://www.marmaroph.com/homewellnessthemes/essential-mornings', icon:'<img src="https://static.wixstatic.com/media/00228e_3cbadc2bbc89467881e17a7794d58c4b~mv2.jpg" alt="Energised Mornings" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>', sister:{name:'Aurora',emoji:'\u{2600}\u{FE0F}',role:'The Dawn Sister',bio:'Aurora rises with the sun and brings energy to every morning. She helps you design rituals that awaken your body and spirit.'} },
+  'sanctuary-protection': { name:'Sanctuary Protection', desc:'Create boundaries that protect your peace and regulate your nervous system.', pillars:['regulate'], html:'marmaroph-ritual-sanctuary-protection.html', icon:'&#128737;', sister:{name:'Selene',emoji:'\u{1F6E1}\u{FE0F}',role:'The Guardian Sister',bio:'Selene holds the space for your boundaries. She teaches you that protection is an act of self-love, not isolation.'} },
+  'im-enough': { name:'I\'m Enough', desc:'Reclaim your self-worth from the inside out through daily affirmations and reflection.', pillars:['purpose'], html:'marmaroph-ritual-im-enough.html', icon:'&#128150;', sister:{name:'Iris',emoji:'\u{1F496}',role:'The Worth Keeper',bio:'Iris reflects your inner light back to you. She walks beside you as you remember that you have always been enough.'} },
+  'sacred-connection': { name:'Sacred Connection with Partner', desc:'Strengthen and deepen the bond with your partner through intentional practices of presence, communication, and shared rituals.', pillars:['connection'], html:'marmaroph-ritual-sacred-connection.html', icon:'&#128145;', sister:{name:'Thea',emoji:'\u{1F491}',role:'The Bond Sister',bio:'Thea understands the language of partnership. She guides you in creating sacred space between you and your loved one.'} },
+  'kindred-bonds': { name:'Kindred Bonds™', desc:'Nurture the relationships that shape your world — friends, family, and colleagues. Build deeper trust, meaningful conversations, and a circle of support through intentional connection.', pillars:['connection'], html:'marmaroph-ritual-kindred-bonds.html', icon:'&#129309;', sister:{name:'Daphne',emoji:'\u{1F91D}',role:'The Circle Keeper',bio:'Daphne weaves the threads of community. She helps you deepen every relationship with presence and intention.'} },
+  'quiet-abundance': { name:'Quiet Abundance', desc:'Wealth is not a destination you reach. It is a quiet structure you build — one intentional month at a time — underneath the life you are designing.', pillars:['purpose','regulate'], pillarsJP:['prosper','ground'], html:'marmaroph-ritual-quiet-abundance.html', icon:'&#128176;', sister:{name:'Cleo',emoji:'\u{1F4B0}',role:'The Abundance Sister',bio:'Cleo shows you that wealth begins in stillness. She guides you to build prosperity with intention and grace.'} },
+  'bloom-in-gratitude': { name:'Bloom in Gratitude™', desc:'Just as a flower blooms with care, your mind flourishes when nourished with gratitude. Unplug, color with intention, reflect on life’s blessings, and create moments of calm.', pillars:['purpose','regulate'], html:'marmaroph-ritual-bloom-in-gratitude.html', icon:'&#127804;', sister:{name:'Flora',emoji:'\u{1F33C}',role:'The Gratitude Keeper',bio:'Flora finds beauty in every moment. She reminds you that gratitude is the soil from which joy blooms.'} },
+  'new-beginnings': { name:'The New Beginnings Ritual™', desc:'Your journey into motherhood begins with caring for yourself. Embrace this transformative time with nourishing rituals for body, mind, and the life growing within you.', pillars:['nourishment','regulate'], html:'marmaroph-ritual-new-beginnings.html', icon:'&#129328;', sister:{name:'Luna',emoji:'\u{1F31C}',role:'The New Moon Sister',bio:'Luna holds your hand through transformation. She nurtures the mother within as new life unfolds.'} },
+  'nurtured-mother': { name:'The Nurtured Mother Ritual™', desc:'As you care for your baby, remember that you deserve care too. Restore your energy, reclaim moments of calm, and build a foundation of self-love in your new chapter.', pillars:['nourishment','regulate','connection'], html:'marmaroph-ritual-nurtured-mother.html', icon:'&#128105;&#8205;&#127868;', sister:{name:'Hera',emoji:'\u{1F476}',role:'The Mother Keeper',bio:'Hera reminds you that caring for yourself is caring for your child. She helps you reclaim your energy and peace.'} },
+  'healing-heart': { name:'The Healing Heart Ritual™', desc:'Healing takes time, and every small act of self-care is a step forward. Gently rebuild your sense of self, release what no longer serves you, and open your heart to new possibilities.', pillars:['regulate','purpose'], html:'marmaroph-ritual-healing-heart.html', icon:'&#128148;', sister:{name:'Athena',emoji:'\u{1F49C}',role:'The Healing Sister',bio:'Athena walks the path of healing with you. She teaches that every ending carries the seed of a beautiful beginning.'} }
 };
 var selectedRitualSlug = '';
+
+function updateSisterCard() {
+  var status = null;
+  try { status = JSON.parse(localStorage.getItem('mm_ritual_status')); } catch(e){}
+  var activeSlug = '';
+  if (status) {
+    for (var slug in status) {
+      if (status[slug] && (status[slug].status === 'active' || status[slug].status === 'practice')) {
+        activeSlug = slug; break;
+      }
+    }
+  }
+  if (!activeSlug && displayRitualSlug) activeSlug = displayRitualSlug;
+  var r = activeSlug ? RITUALS[activeSlug] : null;
+  var sisterInfo = document.getElementById('sisterInfo');
+  var sisterDesc = document.getElementById('sisterDesc');
+  var sisterEmoji = document.getElementById('sisterEmoji');
+  var sisterTitle = document.getElementById('sisterTitle');
+  if (!sisterInfo) return;
+  if (r && r.sister) {
+    sisterEmoji.innerHTML = r.sister.emoji;
+    sisterTitle.textContent = 'Your Ritual Sister for This Month';
+    sisterDesc.textContent = 'Based on your active ritual — ' + r.name;
+    document.getElementById('sisterName').textContent = r.sister.name;
+    document.getElementById('sisterRole').textContent = r.sister.role;
+    document.getElementById('sisterBio').textContent = r.sister.bio;
+    sisterInfo.style.display = 'block';
+  } else {
+    sisterEmoji.innerHTML = '&#128588;';
+    sisterTitle.textContent = 'Your Ritual Sister';
+    sisterDesc.textContent = 'Your ritual sister for this month is assigned based on your active ritual. Start a ritual to meet your sister!';
+    sisterInfo.style.display = 'none';
+  }
+}
 var displayRitualSlug = '';
 
 function selectRitual(slug) {
   var r = RITUALS[slug];
   if (!r) return;
   if (memberData.subscriptionActive) {
+    if (MM_FLAGS.journeyPractice) {
+      var rKey = RITUAL_SLUG_TO_KEY[slug];
+      if (rKey) {
+        var st = mmRitualStatus[rKey] || 'not_started';
+        if (st === 'not_started') {
+          mmActivateRitual(slug);
+        }
+      }
+    }
     var base = 'https://app.marmaroph.com/';
     var url = base + r.html;
     var params = [];
@@ -2331,7 +2891,8 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
     document.getElementById('ritualsCurrentName').textContent = cr.name;
     document.getElementById('subRitual').textContent = cr.name;
     document.getElementById('ritualEmbedTitle').textContent = cr.name;
-    var pillarsHtml = cr.pillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
+    var crPillars = (MM_FLAGS.journeyPractice && cr.pillarsJP) ? cr.pillarsJP : cr.pillars;
+    var pillarsHtml = crPillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
     var hasImg = cr.icon.indexOf('<img') !== -1;
     var iconStyle = hasImg ? 'overflow:hidden;padding:0' : '';
 
@@ -2360,6 +2921,53 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
       if (hBtn) hBtn.innerHTML = btnLabel;
     }
 
+    // Chapter progress (JP flag)
+    if (MM_FLAGS.journeyPractice) {
+      var ch = mmRitualStatus.activeChapter || 1;
+      var cpEl = document.getElementById('homeChapterProgress');
+      if (cpEl) {
+        cpEl.querySelectorAll('.chapter-step').forEach(function(s) {
+          var n = parseInt(s.getAttribute('data-ch'));
+          s.className = 'chapter-step' + (n < ch ? ' done' : n === ch ? ' active' : '');
+        });
+        var lbl = document.getElementById('homeChapterLabel');
+        if (lbl) lbl.textContent = 'Chapter ' + ch + ' of 5';
+      }
+      // Practices shelf
+      var PRACTICE_TOOLS = {
+        'mindful-eating': [
+          {icon:'&#128168;', name:'Grounding Breath', sub:'Breathe', action:'openPracticeTool("me","breath")'},
+          {icon:'&#129385;', name:'Protein Calc', sub:'Calculate', action:'openPracticeTool("me","protein")'},
+          {icon:'&#127991;', name:'Label Guide', sub:'Learn', action:'openPracticeTool("me","label")'},
+          {icon:'&#128270;', name:'Space Analyser', sub:'Analyse', action:'openPracticeTool("me","sanctuary")'},
+          {icon:'&#127925;', name:'Meditation', sub:'Listen', action:'openPracticeTool("me","meditation")'}
+        ],
+        'energised-mornings': [
+          {icon:'&#128168;', name:'Grounding Breath', sub:'Breathe', action:'openPracticeTool("em","breath")'},
+          {icon:'&#9200;', name:'Breathwork Timer', sub:'Practice', action:'openPracticeTool("em","breathwork")'},
+          {icon:'&#128270;', name:'Sanctuary Analyser', sub:'Analyse', action:'openPracticeTool("em","sanctuary")'},
+          {icon:'&#127748;', name:'Morning Builder', sub:'Design', action:'openPracticeTool("em","routine")'},
+          {icon:'&#127925;', name:'Meditation', sub:'Listen', action:'openPracticeTool("em","meditation")'}
+        ],
+        'quiet-abundance': [
+          {icon:'&#128168;', name:'Grounding Breath', sub:'Breathe', action:'openPracticeTool("qa","breath")'},
+          {icon:'&#128176;', name:'Finance Tracker', sub:'Track', action:'openPracticeTool("qa","finance")'},
+          {icon:'&#128270;', name:'Corner Analyser', sub:'Analyse', action:'openPracticeTool("qa","sanctuary")'},
+          {icon:'&#128172;', name:'Affirmations', sub:'Speak', action:'openPracticeTool("qa","affirmations")'}
+        ]
+      };
+      var grid = document.getElementById('homePracticesGrid');
+      var tools = PRACTICE_TOOLS[displayRitual];
+      if (grid && tools) {
+        grid.innerHTML = tools.map(function(t) {
+          return '<div class="practice-card" onclick="'+t.action+'">' +
+            '<div class="practice-icon">'+t.icon+'</div>' +
+            '<div class="practice-name">'+t.name+'</div>' +
+            '<div class="practice-sub">'+t.sub+'</div></div>';
+        }).join('');
+      }
+    }
+
     var darkCards = document.querySelectorAll('#sec-rituals .ritual-card-dark.current');
     darkCards.forEach(function(dc) {
       dc.querySelector('.ritual-icon').innerHTML = cr.icon;
@@ -2378,7 +2986,8 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
   completed.forEach(function(slug) {
     var r = RITUALS[slug];
     if (!r || slug === displayRitual) return;
-    var pillarsHtml2 = r.pillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
+    var rPillars = (MM_FLAGS.journeyPractice && r.pillarsJP) ? r.pillarsJP : r.pillars;
+    var pillarsHtml2 = rPillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
     var hasImg = r.icon.indexOf('<img') !== -1;
     var cIconStyle = hasImg ? 'overflow:hidden;padding:0' : '';
     completedHtml.home += '<div class="ritual-card-light completed" onclick="selectRitual(\''+slug+'\')" style="cursor:pointer"><div class="ritual-icon"'+(cIconStyle?' style="'+cIconStyle+'"':'')+'>'+r.icon+'</div><div class="ritual-info"><h3>'+r.name+'</h3><div class="ritual-pillars">'+pillarsHtml2+'</div><div class="ritual-desc">'+r.desc+'</div></div><div class="ritual-right"><span class="status-tag status-current" style="background:rgba(110,200,155,0.1);color:#1a7a42">COMPLETED</span><button class="btn-teal" onclick="event.stopPropagation();selectRitual(\''+slug+'\')">REVISIT &#8594;</button></div></div>';
@@ -2427,6 +3036,179 @@ function unlockRitualCards(currentRitual, unlockedRituals) {
   });
 
   calcPillarScores(completed, displayRitual);
+
+  // ── Sync ritual status model from progress data ──
+  mmSyncStatusFromProgress(displayRitual, completed);
+  if (MM_FLAGS.journeyPractice && displayRitual && mmRitualStatus.activeRitual === displayRitual && memberData.currentDay) {
+    var derivedChapter = Math.min(5, Math.max(1, Math.ceil(memberData.currentDay / 6)));
+    if (mmRitualStatus.activeChapter !== derivedChapter) {
+      mmRitualStatus.activeChapter = derivedChapter;
+      mmSaveStatus();
+    }
+  }
+
+  // ── JP grouped navigation ──
+  if (MM_FLAGS.journeyPractice) {
+    try {
+    var RITUAL_KEY_MAP = {'mindful-eating':'me', 'energised-mornings':'em', 'quiet-abundance':'qa'};
+    var jpRituals = ['mindful-eating','energised-mornings','quiet-abundance'];
+
+    // Build current card for dark section
+    var jpCurrent = document.getElementById('jpGroupCurrent');
+    if (jpCurrent && displayRitual) {
+      var cR = RITUALS[displayRitual];
+      if (cR) {
+        var cPillars = cR.pillarsJP || cR.pillars;
+        var cPH = cPillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
+        var cHasImg = cR.icon.indexOf('<img') !== -1;
+        var cIS = cHasImg ? 'overflow:hidden;padding:0' : '';
+        var cCh = mmRitualStatus.activeChapter || 1;
+        var chSteps = '';
+        for (var ci = 1; ci <= 5; ci++) {
+          chSteps += '<div class="chapter-step' + (ci < cCh ? ' done' : ci === cCh ? ' active' : '') + '" data-ch="'+ci+'"></div>';
+        }
+        var chLabel = '<span class="chapter-label">Chapter '+cCh+' of 5</span>';
+        var cBtnLabel = (displayRitual === currentRitual && memberData.currentDay && memberData.currentDay > 1) ? 'CONTINUE &#8594;' : 'BEGIN &#8594;';
+        jpCurrent.innerHTML =
+          '<div class="ritual-card-dark current" onclick="selectRitual(\''+displayRitual+'\')" style="cursor:pointer">' +
+            '<div class="ritual-icon"'+(cIS?' style="'+cIS+'"':'')+'>'+cR.icon+'</div>' +
+            '<div class="ritual-info"><h3>'+cR.name+'</h3>' +
+              '<div class="ritual-pillars">'+cPH+'</div>' +
+              '<div class="ritual-desc">'+cR.desc+'</div>' +
+              '<div class="chapter-progress" style="margin-top:8px">'+chSteps+chLabel+'</div>' +
+            '</div>' +
+            '<div class="ritual-right"><span class="status-tag dark-status-current">CURRENT</span>' +
+              '<button class="btn-glow" onclick="event.stopPropagation();selectRitual(\''+displayRitual+'\')">'+cBtnLabel+'</button></div>' +
+          '</div>';
+      }
+    }
+
+    // Build practice-mode ritual cards
+    var PRACTICE_TOOLS_JP = {
+      'mindful-eating': [
+        {icon:'&#128168;', label:'Breath', action:'openPracticeTool("me","breath")'},
+        {icon:'&#129385;', label:'Protein', action:'openPracticeTool("me","protein")'},
+        {icon:'&#127991;', label:'Labels', action:'openPracticeTool("me","label")'},
+        {icon:'&#128270;', label:'Analyser', action:'openPracticeTool("me","sanctuary")'},
+        {icon:'&#127925;', label:'Meditate', action:'openPracticeTool("me","meditation")'}
+      ],
+      'energised-mornings': [
+        {icon:'&#128168;', label:'Breath', action:'openPracticeTool("em","breath")'},
+        {icon:'&#9200;', label:'Breathwork', action:'openPracticeTool("em","breathwork")'},
+        {icon:'&#128270;', label:'Analyser', action:'openPracticeTool("em","sanctuary")'},
+        {icon:'&#127748;', label:'Morning', action:'openPracticeTool("em","routine")'},
+        {icon:'&#127925;', label:'Meditate', action:'openPracticeTool("em","meditation")'}
+      ],
+      'quiet-abundance': [
+        {icon:'&#128168;', label:'Breath', action:'openPracticeTool("qa","breath")'},
+        {icon:'&#128176;', label:'Finance', action:'openPracticeTool("qa","finance")'},
+        {icon:'&#128270;', label:'Analyser', action:'openPracticeTool("qa","sanctuary")'},
+        {icon:'&#128172;', label:'Affirm', action:'openPracticeTool("qa","affirmations")'}
+      ]
+    };
+
+    var practiceHtml = {dark:'', home:''};
+    var notStartedHtml = {dark:'', home:''};
+
+    allSlugs.forEach(function(slug) {
+      if (slug === displayRitual) return;
+      var r = RITUALS[slug];
+      if (!r) return;
+      var rKey = RITUAL_KEY_MAP[slug];
+      var status = rKey ? (mmRitualStatus[rKey] || 'not_started') : 'not_started';
+      var rPillars = (r.pillarsJP) ? r.pillarsJP : r.pillars;
+      var pH = rPillars.map(function(p){return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';}).join('');
+      var hasImg = r.icon.indexOf('<img') !== -1;
+      var iS = hasImg ? 'overflow:hidden;padding:0' : '';
+
+      if (status === 'practice') {
+        var chips = PRACTICE_TOOLS_JP[slug] || [];
+        var chipsDark = chips.map(function(c) {
+          return '<div class="jp-practice-chip dark" onclick="event.stopPropagation();'+c.action+'"><span class="chip-icon">'+c.icon+'</span><span class="chip-label">'+c.label+'</span></div>';
+        }).join('');
+        var chipsLight = chips.map(function(c) {
+          return '<div class="jp-practice-chip light" onclick="event.stopPropagation();'+c.action+'"><span class="chip-icon">'+c.icon+'</span><span class="chip-label">'+c.label+'</span></div>';
+        }).join('');
+
+        practiceHtml.dark +=
+          '<div class="ritual-card-dark" onclick="selectRitual(\''+slug+'\')" style="cursor:pointer">' +
+            '<div class="ritual-icon"'+(iS?' style="'+iS+'"':'')+'>'+r.icon+'</div>' +
+            '<div class="ritual-info"><h3>'+r.name+'</h3>' +
+              '<div class="ritual-pillars">'+pH+'</div>' +
+              '<div class="ritual-desc">'+r.desc+'</div>' +
+              (chipsDark ? '<div class="jp-practice-mini">'+chipsDark+'</div>' : '') +
+            '</div>' +
+            '<div class="ritual-right"><span class="status-tag dark-status-practice">PRACTICE</span></div>' +
+          '</div>';
+
+        practiceHtml.home +=
+          '<div class="ritual-card-light" onclick="selectRitual(\''+slug+'\')" style="cursor:pointer">' +
+            '<div class="ritual-icon"'+(iS?' style="'+iS+'"':'')+'>'+r.icon+'</div>' +
+            '<div class="ritual-info"><h3>'+r.name+'</h3>' +
+              '<div class="ritual-pillars">'+pH+'</div>' +
+              '<div class="ritual-desc">'+r.desc+'</div>' +
+              (chipsLight ? '<div class="jp-practice-mini">'+chipsLight+'</div>' : '') +
+            '</div>' +
+            '<div class="ritual-right"><span class="status-tag" style="background:rgba(159,214,235,0.1);color:#0a6b72">PRACTICE</span></div>' +
+          '</div>';
+
+      } else if (status === 'not_started') {
+        var isAvailable = memberData.subscriptionActive && jpRituals.indexOf(slug) !== -1;
+        var sTag = isAvailable ? '<span class="status-tag dark-status-current" style="background:rgba(159,214,235,0.1);color:#0a6b72">AVAILABLE</span>' : '<span class="status-tag dark-status-locked">LOCKED</span>';
+        var sTagLight = isAvailable ? '<span class="status-tag status-current" style="background:rgba(159,214,235,0.1);color:#0a6b72">AVAILABLE</span>' : '<span class="status-tag status-locked">LOCKED</span>';
+
+        notStartedHtml.dark +=
+          '<div class="ritual-card-dark'+(isAvailable?'':' locked')+'" onclick="selectRitual(\''+slug+'\')" style="cursor:pointer">' +
+            '<div class="ritual-icon"'+(iS?' style="'+iS+'"':'')+'>'+r.icon+'</div>' +
+            '<div class="ritual-info"><h3>'+r.name+'</h3>' +
+              '<div class="ritual-pillars">'+pH+'</div>' +
+              '<div class="ritual-desc">'+r.desc+'</div>' +
+            '</div>' +
+            '<div class="ritual-right">'+sTag+'</div>' +
+          '</div>';
+
+        notStartedHtml.home +=
+          '<div class="ritual-card-light'+(isAvailable?'':' locked')+'" onclick="selectRitual(\''+slug+'\')" style="cursor:pointer">' +
+            '<div class="ritual-icon"'+(iS?' style="'+iS+'"':'')+'>'+r.icon+'</div>' +
+            '<div class="ritual-info"><h3>'+r.name+'</h3>' +
+              '<div class="ritual-pillars">'+pH+'</div>' +
+              '<div class="ritual-desc">'+r.desc+'</div>' +
+            '</div>' +
+            '<div class="ritual-right">'+sTagLight+'</div>' +
+          '</div>';
+      }
+    });
+
+    // Dark section
+    var jpPW = document.getElementById('jpGroupPracticesWrap');
+    var jpP = document.getElementById('jpGroupPractices');
+    if (jpP) jpP.innerHTML = practiceHtml.dark;
+    if (jpPW) jpPW.style.display = practiceHtml.dark ? '' : 'none';
+
+    var jpNS = document.getElementById('jpGroupNotStarted');
+    var jpNSW = document.getElementById('jpGroupNotStartedWrap');
+    if (jpNS) jpNS.innerHTML = notStartedHtml.dark;
+    if (jpNSW) jpNSW.style.display = notStartedHtml.dark ? '' : 'none';
+
+    // Home section
+    var homePW = document.getElementById('homeJpPracticesWrap');
+    var homeP = document.getElementById('homeJpPractices');
+    if (homeP) homeP.innerHTML = practiceHtml.home;
+    if (homePW) homePW.style.cssText = practiceHtml.home ? 'display:block !important' : 'display:none !important';
+
+    var homeNSW = document.getElementById('homeJpNotStartedWrap');
+    if (homeNSW) homeNSW.style.cssText = notStartedHtml.home ? 'display:block !important' : 'display:none !important';
+
+    // Keeper badge cards — show when any ritual is in practice mode or badge earned
+    var hasPractice = practiceHtml.dark || mmRitualStatus.keeperBadge || (mmRitualStatus.keeperDays && mmRitualStatus.keeperDays.length > 0);
+    var darkKeeper = document.getElementById('darkKeeperCard');
+    var homeKeeper = document.getElementById('homeKeeperCard');
+    if (darkKeeper) darkKeeper.style.display = hasPractice ? '' : 'none';
+    if (homeKeeper) homeKeeper.style.cssText = hasPractice ? 'display:flex !important' : 'display:none !important';
+    mmRenderKeeperBadge();
+
+    } catch(e) { console.warn('JP grouped nav error:', e); }
+  }
 }
 
 function calcPillarScores(completed, currentRitualSlug) {
@@ -2447,19 +3229,22 @@ function calcPillarScores(completed, currentRitualSlug) {
     } catch(e) { ritualProgress[slug] = 0; }
   });
   // Each pillar's score = average progress of built rituals that feed it
+  var jp = MM_FLAGS.journeyPractice;
+  var scoreOrder = jp ? ['nourishment','purpose','ground','move','connect','prosper'] : PILLAR_ORDER_LEGACY;
   var pillarScores = {};
   var pillarCounts = {};
-  PILLAR_ORDER.forEach(function(p) { pillarScores[p] = 0; pillarCounts[p] = 0; });
+  scoreOrder.forEach(function(p) { pillarScores[p] = 0; pillarCounts[p] = 0; });
   builtSlugs.forEach(function(slug) {
     var r = RITUALS[slug];
     if (!r) return;
-    r.pillars.forEach(function(p) {
-      pillarScores[p] += ritualProgress[slug] || 0;
-      pillarCounts[p]++;
+    var pils = (jp && r.pillarsJP) ? r.pillarsJP : r.pillars;
+    pils.forEach(function(p) {
+      pillarScores[p] = (pillarScores[p] || 0) + (ritualProgress[slug] || 0);
+      pillarCounts[p] = (pillarCounts[p] || 0) + 1;
     });
   });
   var pctScores = {};
-  PILLAR_ORDER.forEach(function(p) {
+  scoreOrder.forEach(function(p) {
     pctScores[p] = pillarCounts[p] > 0 ? Math.round((pillarScores[p] / pillarCounts[p]) * 100) : 0;
   });
   drawPillarWheel(pctScores);
@@ -2845,31 +3630,166 @@ document.getElementById('menuBtn').addEventListener('click',function(){document.
 })();
 
 // Pillar wheel (thin elegant arcs)
-var PILLAR_COLORS = {nourishment:'#6ec89b',purpose:'#b08fd4',regulate:'#8bb8c9',movement:'#e8a86d',connection:'#d4849a'};
-var PILLAR_ORDER = ['nourishment','purpose','regulate','movement','connection'];
+var PILLAR_COLORS_LEGACY = {nourishment:'#6ec89b',purpose:'#b08fd4',regulate:'#8bb8c9',movement:'#e8a86d',connection:'#d4849a'};
+var PILLAR_ORDER_LEGACY = ['nourishment','purpose','regulate','movement','connection'];
+var PILLAR_COLORS_JP = {nourishment:'#6ec89b',purpose:'#b08fd4',ground:'#8bb8c9',move:'#e8a86d',connect:'#d4849a',prosper:'#c9a24e'};
+var PILLAR_ORDER_JP = ['nourishment','purpose','move','connect','prosper'];
+var PILLAR_COLORS = MM_FLAGS.journeyPractice ? PILLAR_COLORS_JP : PILLAR_COLORS_LEGACY;
+var PILLAR_ORDER = MM_FLAGS.journeyPractice ? PILLAR_ORDER_JP : PILLAR_ORDER_LEGACY;
 
 function drawPillarWheel(scores) {
   var svg=document.getElementById('pillarWheel');if(!svg)return;
   while(svg.childNodes.length>1) svg.removeChild(svg.lastChild);
-  var pillars=PILLAR_ORDER.map(function(k){return{pct:Math.min(100,(scores[k]||0)),color:PILLAR_COLORS[k]};});
-  var R=80,C=2*Math.PI*R,segLen=C/5,gap=6,offset=-C/4;
+  var jp=MM_FLAGS.journeyPractice;
+  var ringPillars=jp?PILLAR_ORDER_JP:PILLAR_ORDER_LEGACY;
+  var colors=jp?PILLAR_COLORS_JP:PILLAR_COLORS_LEGACY;
+  var n=ringPillars.length;
+  var pillars=ringPillars.map(function(k){return{key:k,pct:Math.min(100,(scores[k]||0)),color:colors[k]};});
+  var R=80,C=2*Math.PI*R,segLen=C/n,gap=6,offset=-C/4;
+
+  if(jp){
+    var groundPct=Math.min(100,(scores.ground||0));
+    var gc=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    gc.setAttribute('cx','100');gc.setAttribute('cy','100');gc.setAttribute('r','30');
+    gc.setAttribute('fill','none');gc.setAttribute('stroke','#8bb8c9');gc.setAttribute('stroke-opacity','0.5');
+    gc.setAttribute('stroke-width','6');svg.appendChild(gc);
+    if(groundPct>0){
+      var gf=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      var gC=2*Math.PI*30,gFill=(groundPct/100)*gC;
+      gf.setAttribute('cx','100');gf.setAttribute('cy','100');gf.setAttribute('r','30');
+      gf.setAttribute('fill','none');gf.setAttribute('stroke','#8bb8c9');gf.setAttribute('stroke-width','6');
+      gf.setAttribute('stroke-dasharray',gFill+' '+(gC-gFill));gf.setAttribute('stroke-dashoffset',String(-gC/4));
+      gf.setAttribute('stroke-linecap','round');gf.style.filter='drop-shadow(0 0 3px #8bb8c9)';svg.appendChild(gf);
+    }
+    var gt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    gt.setAttribute('x','100');gt.setAttribute('y','104');gt.setAttribute('text-anchor','middle');
+    gt.setAttribute('font-size','10');gt.setAttribute('fill','#8bb8c9');gt.setAttribute('font-family','var(--fh)');
+    gt.setAttribute('font-weight','400');gt.setAttribute('opacity','0.7');gt.textContent='Ground';svg.appendChild(gt);
+  }
+
   pillars.forEach(function(p,i){
     var filled=((p.pct/100)*segLen);if(filled<1&&p.pct>0)filled=2;
     var dashStart=offset+(i*segLen);
     var bgArc=document.createElementNS('http://www.w3.org/2000/svg','circle');
     bgArc.setAttribute('cx','100');bgArc.setAttribute('cy','100');bgArc.setAttribute('r',String(R));
-    bgArc.setAttribute('fill','none');bgArc.setAttribute('stroke',p.color);bgArc.setAttribute('stroke-opacity','0.1');
+    bgArc.setAttribute('fill','none');bgArc.setAttribute('stroke',p.color);bgArc.setAttribute('stroke-opacity','0.5');
     bgArc.setAttribute('stroke-width','8');bgArc.setAttribute('stroke-dasharray',(segLen-gap)+' '+(C-segLen+gap));
     bgArc.setAttribute('stroke-dashoffset',String(-dashStart));bgArc.setAttribute('stroke-linecap','round');
     svg.appendChild(bgArc);
     if(filled>0){var arc=document.createElementNS('http://www.w3.org/2000/svg','circle');arc.setAttribute('cx','100');arc.setAttribute('cy','100');arc.setAttribute('r',String(R));arc.setAttribute('fill','none');arc.setAttribute('stroke',p.color);arc.setAttribute('stroke-width','8');arc.setAttribute('stroke-dasharray',filled+' '+(C-filled));arc.setAttribute('stroke-dashoffset',String(-dashStart));arc.setAttribute('stroke-linecap','round');arc.style.filter='drop-shadow(0 0 3px '+p.color+')';svg.appendChild(arc);}
   });
-  PILLAR_ORDER.forEach(function(k){
+
+  var allKeys=jp?['nourishment','purpose','ground','move','connect','prosper']:PILLAR_ORDER_LEGACY;
+  allKeys.forEach(function(k){
     var bar=document.getElementById('plBar-'+k);
     if(bar) bar.style.width=Math.min(100,(scores[k]||0))+'%';
   });
 }
-drawPillarWheel({nourishment:0,purpose:0,regulate:0,movement:0,connection:0});
+drawPillarWheel(MM_FLAGS.journeyPractice?{nourishment:0,purpose:0,ground:0,move:0,connect:0,prosper:0}:{nourishment:0,purpose:0,regulate:0,movement:0,connection:0});
+
+// Generate stars
+(function(){
+  var c=document.getElementById('starsContainer');if(!c)return;
+  for(var i=0;i<40;i++){
+    var s=document.createElement('div');s.className='star';
+    s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=(Math.random()*5)+'s';s.style.animationDuration=(2+Math.random()*4)+'s';
+    c.appendChild(s);
+  }
+  for(var j=0;j<3;j++){
+    var sh=document.createElement('div');sh.className='shooting-star';
+    sh.style.left=(10+Math.random()*50)+'%';sh.style.top=(5+Math.random()*40)+'%';
+    sh.style.animationDelay=(j*3+Math.random()*2)+'s';
+    c.appendChild(sh);
+  }
+})();
+
+// Progress tab rendering
+var PILLAR_LABELS_JP = {nourishment:'Nourishment',purpose:'Purpose',ground:'Ground',move:'Move',connect:'Connect',prosper:'Prosper'};
+var PILLAR_LABELS_LEGACY = {nourishment:'Nourishment',purpose:'Purpose',regulate:'Regulate',movement:'Movement',connection:'Connection'};
+
+function renderProgressTab() {
+  var jp = MM_FLAGS.journeyPractice;
+  // Calculate pillar scores inline (calcPillarScores returns void)
+  var builtSlugs = Object.keys(RITUAL_LS_KEYS);
+  var ritualProgress = {};
+  builtSlugs.forEach(function(slug) {
+    try {
+      var raw = localStorage.getItem(RITUAL_LS_KEYS[slug]);
+      if (raw) { var st = JSON.parse(raw); ritualProgress[slug] = Math.min(1, ((st.days && st.days.length) || 0) / 30); }
+      else { ritualProgress[slug] = 0; }
+    } catch(e) { ritualProgress[slug] = 0; }
+  });
+  var scoreOrder = jp ? ['nourishment','purpose','ground','move','connect','prosper'] : PILLAR_ORDER_LEGACY;
+  var pillarScores = {}, pillarCounts = {};
+  scoreOrder.forEach(function(p) { pillarScores[p] = 0; pillarCounts[p] = 0; });
+  builtSlugs.forEach(function(slug) {
+    var r = RITUALS[slug]; if (!r) return;
+    var pils = (jp && r.pillarsJP) ? r.pillarsJP : r.pillars;
+    pils.forEach(function(p) { pillarScores[p] = (pillarScores[p] || 0) + (ritualProgress[slug] || 0); pillarCounts[p] = (pillarCounts[p] || 0) + 1; });
+  });
+  var scores = {};
+  scoreOrder.forEach(function(p) { scores[p] = pillarCounts[p] > 0 ? Math.round((pillarScores[p] / pillarCounts[p]) * 100) : 0; });
+  var order = scoreOrder;
+  var colors = jp ? PILLAR_COLORS_JP : PILLAR_COLORS_LEGACY;
+  var labels = jp ? PILLAR_LABELS_JP : PILLAR_LABELS_LEGACY;
+  var container = document.getElementById('progressPillars');
+  if (!container) return;
+  container.innerHTML = '';
+  order.forEach(function(k) {
+    var pct = Math.min(100, Math.round(scores[k] || 0));
+    var improved = pct > 0;
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.style.padding = '16px';
+    card.innerHTML =
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' +
+        '<div style="color:' + colors[k] + ';font-size:16px">&#9829;</div>' +
+        '<div style="flex:1"><div style="font-family:var(--fh);font-size:14px;font-weight:500;color:var(--em2)">' + (labels[k] || k) + '</div></div>' +
+        '<div style="font-family:var(--fh);font-size:16px;font-weight:600;color:' + colors[k] + '">' + pct + '%</div>' +
+      '</div>' +
+      '<div style="width:100%;height:6px;background:rgba(4,65,71,0.06);border-radius:10px;overflow:hidden">' +
+        '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,rgba(' + hexToRgb(colors[k]) + ',0.3),' + colors[k] + ');border-radius:10px;transition:width 1s ease"></div>' +
+      '</div>' +
+      '<div style="font-size:10px;color:var(--muted);margin-top:6px;font-weight:300">' +
+        (improved ? '&#10003; Improving — keep going!' : 'Start a ritual that covers this pillar to begin growing.') +
+      '</div>';
+    container.appendChild(card);
+  });
+
+  // Badges
+  var badgesEl = document.getElementById('progressBadges');
+  if (!badgesEl) return;
+  badgesEl.innerHTML = '';
+  var status = null;
+  try { status = JSON.parse(localStorage.getItem('mm_ritual_status')); } catch(e){}
+  var hasBadges = false;
+  for (var slug in RITUALS) {
+    var r = RITUALS[slug];
+    var st = status && status[slug] ? status[slug] : null;
+    var completed = st && st.status === 'practice';
+    var active = st && st.status === 'active';
+    var badge = document.createElement('div');
+    badge.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px;padding:10px 6px;border-radius:12px;' +
+      (completed ? 'background:linear-gradient(135deg,rgba(159,214,235,0.1),rgba(201,162,78,0.08));border:1px solid rgba(201,162,78,0.2)' :
+       active ? 'background:rgba(159,214,235,0.05);border:1px solid rgba(159,214,235,0.12)' :
+       'background:rgba(4,65,71,0.02);border:1px solid rgba(4,65,71,0.04);opacity:0.5');
+    badge.innerHTML =
+      '<div style="font-size:24px;' + (completed ? '' : active ? 'opacity:0.7' : 'filter:grayscale(1);opacity:0.3') + '">' + (typeof r.icon === 'string' && r.icon.indexOf('<img') === 0 ? '&#10024;' : r.icon) + '</div>' +
+      '<div style="font-size:9px;font-weight:' + (completed ? '600' : '400') + ';color:' + (completed ? 'var(--em2)' : 'var(--muted)') + ';text-align:center;line-height:1.3">' + r.name.replace(/™/g,'') + '</div>' +
+      (completed ? '<div style="font-size:8px;color:rgba(201,162,78,0.8);font-weight:500">&#9733; Keeper</div>' : active ? '<div style="font-size:8px;color:var(--sky)">In progress</div>' : '');
+    badgesEl.appendChild(badge);
+    if (completed || active) hasBadges = true;
+  }
+  if (!hasBadges) {
+    badgesEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;font-weight:300">Complete rituals to earn Keeper badges!</div>';
+  }
+}
+
+function hexToRgb(hex) {
+  var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return r+','+g+','+b;
+}
 
 var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var now=new Date();var monthLabel=months[now.getMonth()]+' '+now.getFullYear();
@@ -2903,6 +3823,86 @@ document.getElementById('ritualsMonth').textContent=monthLabel;
     var ro = new ResizeObserver(function() { sendHeight(); });
     ro.observe(document.body);
   }
+
+  // ── Feature flag admin toggle (5 rapid clicks on sidebar logo) ──
+  (function() {
+    var clickCount = 0, clickTimer = null;
+    var logos = document.querySelectorAll('.sb-logo');
+    logos.forEach(function(logo) {
+      logo.addEventListener('click', function() {
+        clickCount++;
+        if (clickTimer) clearTimeout(clickTimer);
+        clickTimer = setTimeout(function() { clickCount = 0; }, 1200);
+        if (clickCount >= 5) {
+          clickCount = 0;
+          var on = !MM_FLAGS.journeyPractice;
+          if (confirm((on ? 'Enable' : 'Disable') + ' Journey/Practice mode?')) {
+            mmSetFlag('journeyPractice', on);
+          }
+        }
+      });
+    });
+  })();
+
+  // ── Apply flag-based visibility ──
+  (function() {
+    var flag = MM_FLAGS.journeyPractice;
+    document.querySelectorAll('[data-flag]').forEach(function(el) {
+      var key = el.getAttribute('data-flag');
+      var invert = key.charAt(0) === '!';
+      if (invert) key = key.slice(1);
+      var show = MM_FLAGS[key] ? !invert : invert;
+      el.style.display = show ? '' : 'none';
+    });
+    document.body.classList.toggle('mm-jp', flag);
+
+    // Rewrite hardcoded pillar tags on ritual cards when flag is on
+    if (flag) {
+      var PILLAR_RENAME = {regulate:'ground',movement:'move',connection:'connect'};
+      var RITUAL_RETAG = {
+        'mindful-eating':    ['nourishment','ground'],
+        'energised-mornings':['move','ground'],
+        'quiet-abundance':   ['prosper','ground']
+      };
+      document.querySelectorAll('[onclick*="selectRitual"]').forEach(function(card) {
+        var m = card.getAttribute('onclick').match(/selectRitual\('([^']+)'\)/);
+        if (!m) return;
+        var slug = m[1];
+        var pillarsDiv = card.querySelector('.ritual-pillars');
+        if (!pillarsDiv) return;
+
+        if (RITUAL_RETAG[slug]) {
+          pillarsDiv.innerHTML = RITUAL_RETAG[slug].map(function(p) {
+            return '<span class="ptag ptag-'+p+'">'+p.toUpperCase()+'</span>';
+          }).join('');
+        } else {
+          pillarsDiv.querySelectorAll('.ptag').forEach(function(tag) {
+            for (var old in PILLAR_RENAME) {
+              if (tag.classList.contains('ptag-'+old)) {
+                tag.classList.remove('ptag-'+old);
+                tag.classList.add('ptag-'+PILLAR_RENAME[old]);
+                tag.textContent = PILLAR_RENAME[old].toUpperCase();
+              }
+            }
+          });
+        }
+      });
+    }
+  })();
+})();
+
+// Header scroll effect
+(function(){
+  var hdr=document.querySelector('.mobile-header');
+  if(!hdr)return;
+  var main=document.getElementById('mainArea');
+  function onScroll(){
+    var st=main&&main.scrollTop>0?main.scrollTop:(window.scrollY||document.documentElement.scrollTop||0);
+    if(st>40) hdr.classList.add('scrolled');
+    else hdr.classList.remove('scrolled');
+  }
+  if(main) main.addEventListener('scroll',onScroll);
+  window.addEventListener('scroll',onScroll);
 })();
 </script>
 <script>
